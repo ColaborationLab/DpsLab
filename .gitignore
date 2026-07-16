@@ -21,3 +21,6 @@ results/comparisons/
 # Paquetes temporales de migración
 DpsLab_migration_*/
 DpsLab_migration_*.zip
+
+# Resultados locales del quality gate
+.dpslab/quality-gates/

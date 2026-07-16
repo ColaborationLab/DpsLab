@@ -46,3 +46,20 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - Mantener compatibilidad de lectura con esquemas históricos.
 - Regenerar snapshots o resúmenes existentes solo cuando la tarea lo solicite explícitamente.
 - Informar hashes protegidos y cualquier artefacto ignorado por `.gitignore`.
+
+## Quality gate y autorizaciones
+
+- No modificar el árbol sin una tarea explícitamente autorizada y con alcance
+  cerrado en `docs/NEXT_TASK.md`.
+- Iniciar cada tarea futura desde un árbol Git limpio; los cambios previos no
+  se adoptan ni se reparan automáticamente.
+- Ejecutar `python tools/quality_gate.py run` después de implementar una tarea
+  autorizada. Las pruebas focales deben pasar antes de la suite completa.
+- Requerir una auditoría independiente declarada y procedimental antes de
+  aprobar el bloque; esta separación no constituye una garantía criptográfica
+  de identidad.
+- El quality gate no autoriza ni invoca SimulationCraft y no amplía el alcance
+  funcional de la tarea.
+- No aprobar ni iniciar automáticamente el bloque siguiente.
+- Escalar a Daniel cualquier archivo adicional, eliminación, rename, cambio de
+  alcance o excepción no incluida expresamente en el contrato autorizado.

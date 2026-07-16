@@ -137,17 +137,27 @@ class SimulationConfigTests(unittest.TestCase):
         self.assertIsNone(config.desired_targets)
         self.assertIsNone(config.target_error)
 
-    def test_repository_local_config_preserves_real_executable(self) -> None:
-        local = (Path(__file__).resolve().parents[2] / "config" / "dpslab.local.toml").read_text(
+    def test_local_config_preserves_configured_executable_path(self) -> None:
+        nested_exe = self.root / "portable" / "SimulationCraft" / "simc.exe"
+        nested_exe.parent.mkdir(parents=True)
+        nested_exe.touch()
+        (self.root / "config" / "dpslab.local.toml").write_text(
+            "[simulationcraft]\n"
+            f'simc_exe = "{nested_exe.as_posix()}"\n'
+            'runs_dir = "results/runs"\n'
+            "threads = 2\n"
+            "timeout_seconds = 900\n",
             encoding="utf-8"
         )
-        self.assertIn(
-            'simc_exe = "D:/Games/SimulationCraft-1205.01-Windows-x64-portable/simc.exe"',
-            local,
+        config = resolve_simulation_config(environ={}, root=self.root)
+        self.assertEqual(config.simc_exe, nested_exe.resolve())
+        self.assertEqual(config.executable_source, "local_config")
+        self.assertEqual(config.threads, 2)
+        self.assertEqual(config.timeout_seconds, 900)
+        self.assertEqual(
+            config.runs_dir,
+            (self.root / "results" / "runs").resolve(),
         )
-        self.assertIn('runs_dir = "results/runs"', local)
-        self.assertIn("threads = 2", local)
-        self.assertIn("timeout_seconds = 900", local)
 
 
 if __name__ == "__main__":
