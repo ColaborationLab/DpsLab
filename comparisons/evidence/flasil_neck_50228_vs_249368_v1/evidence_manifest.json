@@ -1,0 +1,44 @@
+{
+  "evidence_manifest_schema_version": "0.1",
+  "comparison_id": "flasil_neck_50228_vs_249368_v1",
+  "recorded_at": "2026-07-15T23:22:34.052802Z",
+  "provenance": "Tooltips dentro de World of Warcraft aportados por el usuario",
+  "images": [
+    {
+      "file": "eternal_voidsong_chain_tooltip.png",
+      "sha256": "9f6d2d9ffcc83d1b5716c9aed823c9f9f5d1778f47ae5018ad91a5b867ab74e8",
+      "subject": "Eternal Voidsong Chain",
+      "item_id": 249368,
+      "item_level": 276,
+      "visible_stats": {"stamina": 848, "haste": 230, "mastery": 44},
+      "visible_socket": "Prismatic Socket",
+      "visible_effect": "Voidstalker Sting"
+    },
+    {
+      "file": "barbed_ymirheim_choker_tooltip.png",
+      "sha256": "eccab6e476b344198e1a13c69a818174f0d1c9711506682c7752d061a74600f8",
+      "subject": "Barbed Ymirheim Choker",
+      "item_id": 50228,
+      "item_level": 276,
+      "visible_stats": {"stamina": 848, "critical_strike": 176, "haste": 98},
+      "visible_socketed_gem": "Flawless Quick Garnet"
+    },
+    {
+      "file": "flawless_quick_garnet_socket.png",
+      "sha256": "ced373ca0b8c95c368714adb8709ebf04db318fa355c763e49e0d8fd6f9eb35c",
+      "subject": "Flawless Quick Garnet socket interface",
+      "gem_profile_id": 240906,
+      "visible_gem_stats": {"critical_strike": 16, "haste": 7}
+    }
+  ],
+  "profile_correlation": {
+    "equipped_item_id": 50228,
+    "declared_gem_id": 240906,
+    "gem_identity": "Flawless Quick Garnet"
+  },
+  "compatibility_conclusion": "Eternal Voidsong Chain muestra un Prismatic Socket y la interfaz permite insertar la misma Flawless Quick Garnet declarada como gem_id=240906 en el perfil.",
+  "limitations": [
+    "La evidencia visual no documenta la semántica individual de los bonus IDs.",
+    "El efecto Voidstalker Sting debe resolverlo SimulationCraft desde item ID y bonus IDs; no se codifica manualmente."
+  ]
+}

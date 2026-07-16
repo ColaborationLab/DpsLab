@@ -1,0 +1,40 @@
+{
+  "version": "test-simc",
+  "report_version": "2.0.0",
+  "sim": {
+    "options": {
+      "threads": 1,
+      "iterations": 100,
+      "max_time": 60,
+      "vary_combat_length": 0,
+      "fight_style": "Patchwerk",
+      "desired_targets": 1
+    },
+    "players": [
+      {
+        "name": "Anonymous",
+        "class": "mage",
+        "specialization": "frost",
+        "level": 80,
+        "collected_data": {
+          "dps": {
+            "mean": 1000.0,
+            "median": 990.0,
+            "min": 800.0,
+            "max": 1200.0,
+            "std_dev": 100.0,
+            "mean_std_dev": 10.0,
+            "count": 99
+          }
+        }
+      }
+    ],
+    "statistics": {
+      "elapsed_time_seconds": 0.25,
+      "simulation_length": {
+        "sum": 4500.0,
+        "mean": 45.0
+      }
+    }
+  }
+}

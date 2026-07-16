@@ -1,0 +1,7 @@
+[simulationcraft]
+# Copia este archivo como dpslab.local.toml y reemplaza la ruta.
+simc_exe = "C:/ruta/a/SimulationCraft/simc.exe"
+threads = 2
+timeout_seconds = 900
+generate_html = false
+runs_dir = "results/runs"

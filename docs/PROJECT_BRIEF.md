@@ -1,0 +1,84 @@
+# Project Brief — DpsLab
+
+## Propósito
+
+DpsLab es una aplicación local para convertir perfiles de SimulationCraft en
+datos tipados, ejecutar simulaciones reproducibles y auditables, interpretar
+sus resultados y, en una fase futura, comparar de forma controlada talentos y
+equipo. El proyecto prioriza reproducibilidad, procedencia y conservación
+byte a byte de las entradas.
+
+## Arquitectura actual
+
+- `profiles/`: perfiles base inmutables.
+- `scenarios/`: condiciones reproducibles de combate y precisión.
+- `variants/`: overrides declarativos y restringidos aplicados a perfiles efectivos.
+- `config/`: configuración dependiente del computador; el archivo local no se versiona.
+- `desktop-app/src/dpslab/`: parser, modelos, configuración, runner, escenarios, variantes, resumen y auditoría.
+- `results/`: snapshot, runs locales y auditorías versionables.
+- `desktop-app/tests/`: suite unitaria con procesos simulados y fixtures mínimos.
+
+## Componentes implementados
+
+- Parser `.simc`, dataclasses y snapshot 0.1.
+- Extracción de personaje, talentos, loadouts, equipo equipado y bolsas.
+- Runner seguro de SimulationCraft y metadatos de ejecución.
+- Intérprete de resultados, tiempos diferenciados y escritura atómica.
+- Esquema actual de nuevas ejecuciones/resúmenes: 0.3; lectura compatible con 0.1 y 0.2.
+- Escenarios TOML tipados, validados y verificados por SHA-256.
+- Variantes TOML y `effective_profile.simc` construido desde bytes.
+- Auditoría profunda ejecutable mediante `python -m dpslab.deep_audit`.
+- 208 pruebas automáticas vigentes.
+- Comparador A/B schema 0.1 implementado para el contrato cerrado de `neck`,
+  con transformación de equipo separada de `ProfileVariant`, procedencia por
+  bloque/intento/miembro y análisis Welch–delta/emparejado.
+
+## Entradas y salidas
+
+Entradas principales:
+
+- `profiles/flasil.simc`
+- `scenarios/st_lightmovement_300s_v1.toml`
+- Variante disponible: `variants/flasil_soul_shards_0_v1.toml`
+- Configuración local: `config/dpslab.local.toml`
+
+Salidas principales:
+
+- `results/flasil_snapshot.json`
+- `results/runs/<run-id>/metadata.json`, `simc.json`, stdout, stderr y `run_summary.json`
+- `effective_profile.simc` dentro del run cuando se usa una variante
+- Auditorías bajo `results/audits/`
+
+## Baseline y referencia histórica
+
+- Baseline canónica: `results/runs/20260715T072501.415324Z-95439dae`
+- DPS formal: `88511.37941600244`
+- Referencia manual histórica: `82950.55`
+- Diferencia respecto de la referencia manual: `6.703788 %`
+- La causa permanece sin demostrar.
+
+La APL manual reconstruida pudo recuperarse, pero la APL formal completa no
+está expuesta en los artefactos. El HTML solo identifica `LightMovement` y no
+expone su expansión completa de raid events. Estas son las principales
+limitaciones de la comparación actual.
+
+`warlock.soul_shards=0` es `no_op_by_source` en SimC revisión `a81c39d` y no
+explica el diferencial.
+
+## Limitaciones conocidas
+
+- El comparador está implementado, pero no existe una ejecución comparativa
+  autorizada ni un `comparison_result` real.
+- No se ejecutan matrices ni se generan combinaciones.
+- No existe GUI ni addon de WoW.
+- Las fuentes de daño manuales no pudieron normalizarse completamente porque
+  el objeto JavaScript correspondiente no era JSON válido.
+- Algunos artefactos históricos conservan esquema 0.2 y no se regeneran automáticamente.
+- La configuración local y `results/runs/` están excluidos del control de versiones.
+
+## Visión multiclase futura
+
+La arquitectura busca admitir múltiples clases mediante modelos comunes,
+adaptadores específicos por clase y comparación reproducible de variantes.
+Esta visión no autoriza todavía implementar módulos multiclase, reglas de
+optimización ni un entrenador de combate.

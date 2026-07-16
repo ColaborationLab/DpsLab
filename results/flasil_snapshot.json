@@ -1,0 +1,337 @@
+{
+  "schema_version": "0.1",
+  "source_file": "profiles/flasil.simc",
+  "source_sha256": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+  "simc_checksum": "d2f54453",
+  "character": {
+    "name": "Flasil",
+    "region": "us",
+    "realm": "quelthalas",
+    "character_class": "warlock",
+    "specialization": "demonology",
+    "level": 90,
+    "race": "gnome",
+    "role": "spell",
+    "professions": {
+      "tailoring": 75,
+      "enchanting": 69
+    },
+    "loot_spec": "demonology"
+  },
+  "active_talent_hash": "CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA",
+  "saved_loadouts": [
+    {
+      "name": "Raid Diabo",
+      "talent_hash": "CoQAMrNP5kak+EBqLfUa3dMm+yMmZGmNGmZmZ2GAAAAAAAwYGDLwAbDbYYxYmxysNzMjZAgZGjZmZGgZmZMDAAwYmZGDDLzYAD"
+    },
+    {
+      "name": "M+",
+      "talent_hash": "CoQAMrNP5kak+EBqLfUa3dMm+yMjZGmNzYbmZMLDAAAAAAAYMjhFYgthNMsYMzYZMjZGDAMzMDzMzAMmZmZAAAGzMzYMYbmZAD"
+    },
+    {
+      "name": "TEST MURLOKIO",
+      "talent_hash": "CoQAMrNP5kak+EBqLfUa3dMm+uMmxMzY2MjFmZmlBAAAAAAYssMjZmhNDDzsNbWwM2MzYsMLzMzwAAmxMzMzMYmZmZmxsAAAGzwYMDLzYAD"
+    },
+    {
+      "name": "Raid Main ST Diabo",
+      "talent_hash": "CoQAMrNP5kak+EBqLfUa3dMm+amxMzwsxwMzY2GAAAAAAAwYGDLwAbDLYYxYMWmlZmZMDAYGzMzMzAMzMmZAAAGzMzYMDLzYAD"
+    },
+    {
+      "name": "Delves",
+      "talent_hash": "CoQAMrNP5kak+EBqLfUa3dMm+amhZGmNzYbmZMLDAAAAAAAYMjhFYgthNMsYMzYZMzMmZAgZmZGzMzAMzMMzGAAYMzMjxgtZGgB"
+    }
+  ],
+  "equipped_gear": [
+    {
+      "slot": "head",
+      "name": "Abyssal Immolator's Smoldering Flames",
+      "item_level": 276,
+      "item_id": 250042,
+      "attributes": {
+        "enchant_id": "7959",
+        "bonus_id": "6652/12667/13338/13575/12798"
+      }
+    },
+    {
+      "slot": "neck",
+      "name": "Barbed Ymirheim Choker",
+      "item_level": 276,
+      "item_id": 50228,
+      "attributes": {
+        "gem_id": "240906",
+        "bonus_id": "13440/6652/13668/12699/12798"
+      }
+    },
+    {
+      "slot": "shoulder",
+      "name": "Abyssal Immolator's Fury",
+      "item_level": 276,
+      "item_id": 250040,
+      "attributes": {
+        "bonus_id": "6652/13340/13574/12798"
+      }
+    },
+    {
+      "slot": "back",
+      "name": "Preyseeker's Sleek Capelet",
+      "item_level": 276,
+      "item_id": 259910,
+      "attributes": {
+        "bonus_id": "6652/13577/12798"
+      }
+    },
+    {
+      "slot": "chest",
+      "name": "Abyssal Immolator's Dreadrobe",
+      "item_level": 276,
+      "item_id": 250045,
+      "attributes": {
+        "bonus_id": "6652/12798/13336/13575/3161"
+      }
+    },
+    {
+      "slot": "wrist",
+      "name": "Martyr's Bindings",
+      "item_level": 272,
+      "item_id": 239648,
+      "attributes": {
+        "bonus_id": "12214/13667/12497/12066/8960/12384/8790/13621/12667",
+        "content_tuning": "3615",
+        "crafted_stats": "49/36",
+        "crafting_quality": "5"
+      }
+    },
+    {
+      "slot": "hands",
+      "name": "Abyssal Immolator's Grasps",
+      "item_level": 276,
+      "item_id": 250043,
+      "attributes": {
+        "bonus_id": "13337/6652/13574/12798"
+      }
+    },
+    {
+      "slot": "waist",
+      "name": "Abyssal Immolator's Blazing Core",
+      "item_level": 276,
+      "item_id": 250039,
+      "attributes": {
+        "bonus_id": "6652/12667/12798"
+      }
+    },
+    {
+      "slot": "legs",
+      "name": "Abyssal Immolator's Pillars",
+      "item_level": 276,
+      "item_id": 250041,
+      "attributes": {
+        "enchant_id": "7939",
+        "bonus_id": "13339/6652/13575/12798"
+      }
+    },
+    {
+      "slot": "feet",
+      "name": "Slippers of the Midnight Flame",
+      "item_level": 276,
+      "item_id": 249305,
+      "attributes": {
+        "bonus_id": "6652/13577/13334/12798"
+      }
+    },
+    {
+      "slot": "finger1",
+      "name": "Signet of the Starved Beast",
+      "item_level": 263,
+      "item_id": 249336,
+      "attributes": {
+        "enchant_id": "8025",
+        "bonus_id": "6652/13668/13334/12794"
+      }
+    },
+    {
+      "slot": "finger2",
+      "name": "Preyseeker's Circle",
+      "item_level": 276,
+      "item_id": 259914,
+      "attributes": {
+        "enchant_id": "8025",
+        "gem_id": "240888",
+        "bonus_id": "6652/13668/12798"
+      }
+    },
+    {
+      "slot": "trinket1",
+      "name": "Gaze of the Alnseer",
+      "item_level": 276,
+      "item_id": 249343,
+      "attributes": {
+        "bonus_id": "6652/13334/12798"
+      }
+    },
+    {
+      "slot": "trinket2",
+      "name": "Vaelgor's Final Stare",
+      "item_level": 272,
+      "item_id": 249346,
+      "attributes": {
+        "bonus_id": "6652/13334/12797"
+      }
+    },
+    {
+      "slot": "main_hand",
+      "name": "Aln'hara Cane",
+      "item_level": 285,
+      "item_id": 245770,
+      "attributes": {
+        "enchant_id": "8039",
+        "bonus_id": "12214/13667/12497/12066/12693/8960/8790/13622",
+        "content_tuning": "3615",
+        "crafted_stats": "40/49",
+        "crafting_quality": "5"
+      }
+    }
+  ],
+  "bag_gear": [
+    {
+      "slot": "neck",
+      "name": "Eternal Voidsong Chain",
+      "item_level": 276,
+      "item_id": 249368,
+      "attributes": {
+        "bonus_id": "6652/13668/13334/12798"
+      }
+    },
+    {
+      "slot": "neck",
+      "name": "Preyseeker's Clasp",
+      "item_level": 246,
+      "item_id": 259915,
+      "attributes": {
+        "bonus_id": "12785/6652/13668",
+        "content_tuning": "5236"
+      }
+    },
+    {
+      "slot": "waist",
+      "name": "Tarnished Dawnlit Commander's Greatbelt",
+      "item_level": 192,
+      "item_id": 258942,
+      "attributes": {
+        "bonus_id": "13729/13578",
+        "drop_level": "90",
+        "content_tuning": "3321"
+      }
+    },
+    {
+      "slot": "feet",
+      "name": "Dream-Scorched Striders",
+      "item_level": 263,
+      "item_id": 249373,
+      "attributes": {
+        "bonus_id": "40/13577/13334/12794"
+      }
+    },
+    {
+      "slot": "feet",
+      "name": "Tarnished Dawnlit Sentinel's Sabatons",
+      "item_level": 192,
+      "item_id": 258929,
+      "attributes": {
+        "bonus_id": "13729/13578",
+        "drop_level": "90",
+        "content_tuning": "3321"
+      }
+    },
+    {
+      "slot": "finger1",
+      "name": "Preyseeker's Band",
+      "item_level": 263,
+      "item_id": 259911,
+      "attributes": {
+        "enchant_id": "8025",
+        "gem_id": "240888",
+        "bonus_id": "6652/13668/12790",
+        "content_tuning": "5236"
+      }
+    },
+    {
+      "slot": "trinket1",
+      "name": "Sealed Chaos Urn",
+      "item_level": 263,
+      "item_id": 251787,
+      "attributes": {
+        "bonus_id": "6652/12794",
+        "content_tuning": "6015"
+      }
+    },
+    {
+      "slot": "trinket1",
+      "name": "Wraps of Cosmic Madness",
+      "item_level": 263,
+      "item_id": 249340,
+      "attributes": {
+        "bonus_id": "6652/13334/12794"
+      }
+    },
+    {
+      "slot": "trinket1",
+      "name": "Sylvan Wakrapuku",
+      "item_level": 230,
+      "item_id": 251784,
+      "attributes": {
+        "bonus_id": "6652/12772",
+        "content_tuning": "3321"
+      }
+    },
+    {
+      "slot": "trinket1",
+      "name": "Void-Reaper's Libram",
+      "item_level": 246,
+      "item_id": 251785,
+      "attributes": {
+        "bonus_id": "6652/12785",
+        "content_tuning": "5236"
+      }
+    },
+    {
+      "slot": "main_hand",
+      "name": "Elderoot Spire",
+      "item_level": 250,
+      "item_id": 249670,
+      "attributes": {
+        "bonus_id": "12786/6652",
+        "content_tuning": "6015"
+      }
+    },
+    {
+      "slot": "main_hand",
+      "name": "Bloomweaver's Pierce",
+      "item_level": 233,
+      "item_id": 259356,
+      "attributes": {
+        "bonus_id": "12777/6652",
+        "content_tuning": "3321"
+      }
+    },
+    {
+      "slot": "main_hand",
+      "name": "Bloomweaver's Pierce",
+      "item_level": 233,
+      "item_id": 259356,
+      "attributes": {
+        "bonus_id": "12777/6652",
+        "content_tuning": "3321"
+      }
+    },
+    {
+      "slot": "off_hand",
+      "name": "Tome of Alnscorned Regret",
+      "item_level": 263,
+      "item_id": 249922,
+      "attributes": {
+        "bonus_id": "6652/13334/12794"
+      }
+    }
+  ],
+  "unparsed_fields": []
+}

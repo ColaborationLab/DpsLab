@@ -1,0 +1,8 @@
+[variant]
+id = "flasil_soul_shards_0_v1"
+name = "Flasil — Initial Soul Shards 0"
+description = "Reproducción explícita de la opción observada en el informe manual; en SimC a81c39d el valor 0 no altera el recurso inicial"
+
+[[overrides]]
+key = "warlock.soul_shards"
+value = "0"

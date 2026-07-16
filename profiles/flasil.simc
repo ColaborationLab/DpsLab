@@ -1,0 +1,118 @@
+# Flasil - Demonology - 2026-07-14 23:09 - US/Quel'Thalas
+# SimC Addon 12.1.0
+# WoW 12.0.7.68453, TOC 120007
+# Requires SimulationCraft 1000-01 or newer
+
+warlock="Flasil"
+level=90
+race=gnome
+region=us
+server=quelthalas
+role=spell
+professions=tailoring=75/enchanting=69
+spec=demonology
+# loot_spec=demonology
+
+talents=CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA
+
+# Saved Loadout: Raid Diabo
+# talents=CoQAMrNP5kak+EBqLfUa3dMm+yMmZGmNGmZmZ2GAAAAAAAwYGDLwAbDbYYxYmxysNzMjZAgZGjZmZGgZmZMDAAwYmZGDDLzYAD
+# Saved Loadout: M+
+# talents=CoQAMrNP5kak+EBqLfUa3dMm+yMjZGmNzYbmZMLDAAAAAAAYMjhFYgthNMsYMzYZMjZGDAMzMDzMzAMmZmZAAAGzMzYMYbmZAD
+# Saved Loadout: TEST MURLOKIO
+# talents=CoQAMrNP5kak+EBqLfUa3dMm+uMmxMzY2MjFmZmlBAAAAAAYssMjZmhNDDzsNbWwM2MzYsMLzMzwAAmxMzMzMYmZmZmxsAAAGzwYMDLzYAD
+# Saved Loadout: Raid Main ST Diabo
+# talents=CoQAMrNP5kak+EBqLfUa3dMm+amxMzwsxwMzY2GAAAAAAAwYGDLwAbDLYYxYMWmlZmZMDAYGzMzMzAMzMmZAAAGzMzYMDLzYAD
+# Saved Loadout: Delves
+# talents=CoQAMrNP5kak+EBqLfUa3dMm+amhZGmNzYbmZMLDAAAAAAAYMjhFYgthNMsYMzYZMzMmZAgZmZGzMzAMzMMzGAAYMzMjxgtZGgB
+
+# Abyssal Immolator's Smoldering Flames (276)
+head=,id=250042,enchant_id=7959,bonus_id=6652/12667/13338/13575/12798
+# Barbed Ymirheim Choker (276)
+neck=,id=50228,gem_id=240906,bonus_id=13440/6652/13668/12699/12798
+# Abyssal Immolator's Fury (276)
+shoulder=,id=250040,bonus_id=6652/13340/13574/12798
+# Preyseeker's Sleek Capelet (276)
+back=,id=259910,bonus_id=6652/13577/12798
+# Abyssal Immolator's Dreadrobe (276)
+chest=,id=250045,bonus_id=6652/12798/13336/13575/3161
+# Martyr's Bindings (272)
+wrist=,id=239648,bonus_id=12214/13667/12497/12066/8960/12384/8790/13621/12667,content_tuning=3615,crafted_stats=49/36,crafting_quality=5
+# Abyssal Immolator's Grasps (276)
+hands=,id=250043,bonus_id=13337/6652/13574/12798
+# Abyssal Immolator's Blazing Core (276)
+waist=,id=250039,bonus_id=6652/12667/12798
+# Abyssal Immolator's Pillars (276)
+legs=,id=250041,enchant_id=7939,bonus_id=13339/6652/13575/12798
+# Slippers of the Midnight Flame (276)
+feet=,id=249305,bonus_id=6652/13577/13334/12798
+# Signet of the Starved Beast (263)
+finger1=,id=249336,enchant_id=8025,bonus_id=6652/13668/13334/12794
+# Preyseeker's Circle (276)
+finger2=,id=259914,enchant_id=8025,gem_id=240888,bonus_id=6652/13668/12798
+# Gaze of the Alnseer (276)
+trinket1=,id=249343,bonus_id=6652/13334/12798
+# Vaelgor's Final Stare (272)
+trinket2=,id=249346,bonus_id=6652/13334/12797
+# Aln'hara Cane (285)
+main_hand=,id=245770,enchant_id=8039,bonus_id=12214/13667/12497/12066/12693/8960/8790/13622,content_tuning=3615,crafted_stats=40/49,crafting_quality=5
+
+### Gear from Bags
+#
+# Eternal Voidsong Chain (276)
+# neck=,id=249368,bonus_id=6652/13668/13334/12798
+#
+# Preyseeker's Clasp (246)
+# neck=,id=259915,bonus_id=12785/6652/13668,content_tuning=5236
+#
+# Tarnished Dawnlit Commander's Greatbelt (192)
+# waist=,id=258942,bonus_id=13729/13578,drop_level=90,content_tuning=3321
+#
+# Dream-Scorched Striders (263)
+# feet=,id=249373,bonus_id=40/13577/13334/12794
+#
+# Tarnished Dawnlit Sentinel's Sabatons (192)
+# feet=,id=258929,bonus_id=13729/13578,drop_level=90,content_tuning=3321
+#
+# Preyseeker's Band (263)
+# finger1=,id=259911,enchant_id=8025,gem_id=240888,bonus_id=6652/13668/12790,content_tuning=5236
+#
+# Sealed Chaos Urn (263)
+# trinket1=,id=251787,bonus_id=6652/12794,content_tuning=6015
+#
+# Wraps of Cosmic Madness (263)
+# trinket1=,id=249340,bonus_id=6652/13334/12794
+#
+# Sylvan Wakrapuku (230)
+# trinket1=,id=251784,bonus_id=6652/12772,content_tuning=3321
+#
+# Void-Reaper's Libram (246)
+# trinket1=,id=251785,bonus_id=6652/12785,content_tuning=5236
+#
+# Elderoot Spire (250)
+# main_hand=,id=249670,bonus_id=12786/6652,content_tuning=6015
+#
+# Bloomweaver's Pierce (233)
+# main_hand=,id=259356,bonus_id=12777/6652,content_tuning=3321
+#
+# Bloomweaver's Pierce (233)
+# main_hand=,id=259356,bonus_id=12777/6652,content_tuning=3321
+#
+# Tome of Alnscorned Regret (263)
+# off_hand=,id=249922,bonus_id=6652/13334/12794
+
+### Weekly Reward Choices
+#
+### End of Weekly Reward Choices
+
+### Additional Character Info
+#
+# catalyst_currencies=3269:8/3378:4/2813:8/3116:8
+#
+# upgrade_currencies=c:3343:54/c:3347:60/c:3383:64/c:3345:44/c:3341:85/i:268552:1/i:224072:1/i:232875:12/i:231769:1
+#
+# slot_high_watermarks=0:276:276/1:276:276/2:276:276/3:276:276/4:276:276/5:276:276/6:276:276/7:272:272/8:276:276/9:263:263/10:272:272/11:276:276/12:285:285/13:259:259/14:0:266/15:0:263/16:263:263
+#
+# upgrade_achievements=40942/41886/41887/41888/41892/42767/42768/61809
+
+# Checksum: d2f54453

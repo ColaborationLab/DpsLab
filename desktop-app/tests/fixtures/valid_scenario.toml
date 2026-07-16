@@ -1,0 +1,13 @@
+[scenario]
+id = "anonymous_scenario_v1"
+name = "Anonymous Scenario"
+description = "Fixture mínimo"
+fight_style = "Patchwerk"
+desired_targets = 1
+max_time = 120
+vary_combat_length = 0.10
+
+[precision]
+target_error = 0.05
+iterations = 0
+

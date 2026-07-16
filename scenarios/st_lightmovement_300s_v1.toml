@@ -1,0 +1,13 @@
+[scenario]
+id = "st_lightmovement_300s_v1"
+name = "Single Target Light Movement 300s"
+description = "Un objetivo con movimiento ligero y duración media de 300 segundos"
+fight_style = "LightMovement"
+desired_targets = 1
+max_time = 300
+vary_combat_length = 0.20
+
+[precision]
+target_error = 0.10
+iterations = 0
+

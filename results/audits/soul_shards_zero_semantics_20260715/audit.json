@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1",
+  "audit_id": "soul_shards_zero_semantics_20260715",
+  "simulationcraft": {
+    "version": "1205-01",
+    "revision": "a81c39d"
+  },
+  "option": {
+    "key": "warlock.soul_shards",
+    "analyzed_value": 0,
+    "constructor_observed": "initial_soul_shards()",
+    "registration_observed": "add_option(opt_int(\"warlock.soul_shards\", initial_soul_shards))",
+    "resource_initialization_condition": "initial_soul_shards > 0",
+    "resource_assignment": "resources.current[RESOURCE_SOUL_SHARD] = initial_soul_shards"
+  },
+  "conclusion": "no_op_by_source",
+  "reason": "The default is 0 and the resource assignment executes only when initial_soul_shards is greater than 0. Omitting the option and explicitly assigning 0 therefore produce the same internal behavior for this option in revision a81c39d.",
+  "audit_impact": {
+    "can_explain_manual_vs_baseline_dps_difference": false,
+    "difference_percent": 6.703788481212528,
+    "statement": "warlock.soul_shards=0 no puede explicar el diferencial de 6.703788 %."
+  },
+  "simulation_performed": false,
+  "simulation_omission_reason": "No se realizó una simulación porque ambos casos producen el mismo estado interno de esta opción según el código fuente de la revisión exacta utilizada.",
+  "causality_claimed": false
+}

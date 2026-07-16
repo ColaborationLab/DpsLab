@@ -1,0 +1,13 @@
+{
+  "run_id": "anonymous-run",
+  "simc_version": "test-simc",
+  "profile": "profiles/anonymous.simc",
+  "threads": 1,
+  "iterations": 100,
+  "max_time": 60,
+  "vary_combat_length": 0,
+  "duration_seconds": 1.5,
+  "status": "completed",
+  "exit_code": 0
+}
+

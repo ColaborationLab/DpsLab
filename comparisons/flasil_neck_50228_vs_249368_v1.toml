@@ -1,0 +1,98 @@
+schema_version = "0.1"
+comparison_id = "flasil_neck_50228_vs_249368_v1"
+description = "Barbed Ymirheim Choker vs Eternal Voidsong Chain"
+status = "frozen"
+created_at = "2026-07-15T23:22:34.052802Z"
+frozen_at = "2026-07-15T23:22:34.052802Z"
+
+[scope]
+comparison_type = "equipment_ab"
+slot = "neck"
+character = "Flasil"
+allowed_changed_slots = ["neck"]
+baseline_role = "historical_reference_only"
+matrix_generation = false
+optimization = false
+
+[inputs.base_profile]
+path = "profiles/flasil.simc"
+sha256 = "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738"
+
+[inputs.scenario]
+path = "scenarios/st_lightmovement_300s_v1.toml"
+sha256 = "93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa"
+scenario_id = "st_lightmovement_300s_v1"
+
+[arms.a]
+label = "Barbed Ymirheim Choker"
+item_id = 50228
+item_level = 276
+source = "equipped"
+slot = "neck"
+declared_bonus_ids = [13440, 6652, 13668, 12699, 12798]
+declared_gem_id = 240906
+expected_profile_line = "neck=,id=50228,gem_id=240906,bonus_id=13440/6652/13668/12699/12798"
+
+[arms.b]
+label = "Eternal Voidsong Chain"
+item_id = 249368
+item_level = 276
+source = "bag"
+slot = "neck"
+declared_bonus_ids = [6652, 13668, 13334, 12798]
+declared_gem_id = 240906
+expected_profile_line = "neck=,id=249368,gem_id=240906,bonus_id=6652/13668/13334/12798"
+
+[normalization]
+policy = "normalized"
+status = "approved"
+target_gem_id = 240906
+socket_type = "prismatic"
+enchant = false
+copy_bonus_ids = false
+invent_sockets = false
+fallback_to_as_equipped = false
+
+[normalization.evidence]
+type = "wow_tooltip_bundle_v1"
+reference = "comparisons/evidence/flasil_neck_50228_vs_249368_v1/evidence_manifest.json"
+sha256 = "0472ee720a94e8bb46d446b671bedd5d15c95a72cce808de6f20f69dd374e8fe"
+
+[precision]
+precision_source = "comparison_spec"
+precision_mode = "fixed_iterations"
+iterations_per_run = 5000
+
+[protocol]
+blocks = 8
+threads = 2
+within_pair_pause_seconds = 30
+between_block_pause_seconds = 60
+timeout_seconds = 900
+max_pair_attempts = 2
+retry_full_pair = true
+require_all_blocks_valid = true
+exclude_dps_outliers = false
+early_stopping = false
+
+[seeds]
+seed_derivation = "sha256_first_u32_masked_31bit_v1"
+derivation_identifier = "flasil_neck_50228_vs_249368_v1"
+values = [1367750201, 618936042, 288306750, 1083574406, 1600660097, 1339438866, 1945530490, 1927693846]
+orders = ["AB", "BA", "AB", "BA", "AB", "BA", "AB", "BA"]
+
+[analysis]
+primary_method = "welch_delta_ratio_percent_v1"
+sensitivity_method = "paired_ratio_percent_t_v1"
+quantile_provider = "scipy.stats.t.ppf"
+confidence_level = 0.95
+epsilon_percent = 0.5
+stochastic_analysis = false
+bootstrap = false
+monte_carlo = false
+
+[software_requirements]
+python_minimum = "3.11"
+scipy = ">=1.11.0,<2.0.0"
+simulationcraft_version = "1205-01"
+simulationcraft_revision = "a81c39d"

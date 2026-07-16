@@ -1,0 +1,25 @@
+mage="Testmage"
+level=80
+race=human
+region=eu
+server=testrealm
+spec=frost
+role=spell
+professions=tailoring=75/enchanting=60
+# loot_spec=arcane
+talents=ACTIVE_HASH
+
+# Saved Loadout: Raid
+# talents=RAID_HASH
+
+# Test Helm (200)
+head=,id=100,enchant_id=7,bonus_id=1/2
+
+### Gear from Bags
+#
+# Spare Helm (190)
+# head=,id=101,bonus_id=3
+#
+### Weekly Reward Choices
+
+# Checksum: fixture123

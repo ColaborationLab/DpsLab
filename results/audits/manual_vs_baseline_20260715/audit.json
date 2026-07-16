@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.1",
+  "audit_id": "manual_vs_baseline_20260715",
+  "sources": {"manual":"flasil.simc.html","baseline":"results/runs/20260715T072501.415324Z-95439dae","profile":"profiles/flasil.simc"},
+  "manual_report_confirmed": true,
+  "dps_comparison": {"manual":82950.55,"baseline":88511.37941600244,"absolute_difference":5560.829416002438,"percent_difference_relative_to_manual":6.703788481212528,"classification":"different"},
+  "comparisons": [
+    {"field":"simc_version_and_build","manual":"1205-01 / a81c39d","baseline":"1205-01 / a81c39d","classification":"identical"},
+    {"field":"wow_and_hotfix","manual":"12.0.7.68453 Live; 2026-07-13/68453","baseline":"12.0.7.68453 Live; 2026-07-13/68453","classification":"identical"},
+    {"field":"identity","manual":"Flasil; Warlock; Demonology; gnome; 90","baseline":"Flasil; Warlock; Demonology; gnome; 90","classification":"identical"},
+    {"field":"talent_hash","manual":"CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA","baseline":"CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA","classification":"identical"},
+    {"field":"equipped_gear","manual":"15 item IDs; enchants, gems, bonus IDs and crafted stats normalized","baseline":"15 item IDs; enchants, gems, bonus IDs and crafted stats normalized","classification":"identical"},
+    {"field":"consumables","manual":"potion_of_recklessness_2; flask_of_the_shattered_sun_2; harandar_celebration; void_touched; thalassian_phoenix_oil_2","baseline":"potion_of_recklessness_2; flask_of_the_shattered_sun_2; harandar_celebration; void_touched; thalassian_phoenix_oil_2","classification":"identical"},
+    {"field":"apl_source","manual":"default","baseline":"default","classification":"identical"},
+    {"field":"fight_style","manual":"LightMovement","baseline":"LightMovement","classification":"identical"},
+    {"field":"raid_events","manual":"LightMovement; details not exposed","baseline":"movement_distance first=15 cooldown=40±10 players_only=true","classification":"unavailable"},
+    {"field":"desired_targets","manual":null,"baseline":1,"classification":"unavailable"},
+    {"field":"max_time_mean_vary","manual":"300; mean 299.7; vary 0.20","baseline":"300; mean 300.2075030855125; vary 0.20","classification":"identical"},
+    {"field":"precision","manual":"13520 completed; target error unavailable","baseline":"adaptive; parameter 0; 3405 completed; 3403 samples; target 0.1%","classification":"different"},
+    {"field":"threads","manual":8,"baseline":2,"classification":"likely_irrelevant"},
+    {"field":"calculate_scale_factors","manual":true,"baseline":false,"classification":"likely_irrelevant"},
+    {"field":"latency_world_lag","manual":"world 100±10 ms; queue 5±1 ms","baseline":"world 100±10 ms; queue 5±1 ms","classification":"identical"},
+    {"field":"position","manual":"back","baseline":"back/default","classification":"identical"},
+    {"field":"target","manual":"Fluffy_Pillow; humanoid; level 93","baseline":"Fluffy_Pillow; humanoid; level 93","classification":"identical"},
+    {"field":"raid_overrides","manual":null,"baseline":"arcane_intellect,battle_shout,power_word_fortitude,chaos_brand,mystic_touch,mortal_wounds,bleeding,bloodlust","classification":"unavailable"},
+    {"field":"initial_soul_shards","manual":0,"baseline":null,"classification":"different","note":"The HTML embeds warlock.soul_shards=0; profiles/flasil.simc does not. Baseline effective initial value is not unambiguously exposed."},
+    {"field":"dps","manual":82950.55,"baseline":88511.37941600244,"classification":"different"},
+    {"field":"apm_waiting","manual":"49.3; 2.71%","baseline":"49.2829265346629; 2.7105771104449725%","classification":"identical"},
+    {"field":"top_damage_sources","manual":"wild_imp/fel_firebolt 21.1%; demonic_tyrant/demonfire 8.5%; diabolic_oculi 6.2%; grimoire_imp_lord/greater_felbolt 6.1%; hand_of_guldan 4.6%; demonbolt 4.6%","baseline":null,"classification":"unavailable"}
+  ],
+  "investigation_priorities": [
+    {"priority":1,"hypothesis":"The manual report sets warlock.soul_shards=0 while the formal profile does not; verify the effective initial resource.","causality_established":false},
+    {"priority":2,"hypothesis":"A non-preserved manual raid event, override or command argument may differ.","causality_established":false},
+    {"priority":3,"hypothesis":"Different precision changes uncertainty but should not by itself explain 6.70%.","causality_established":false},
+    {"priority":4,"hypothesis":"Threads and scale-factor calculation are observed but likely irrelevant to mean DPS.","causality_established":false}
+  ]
+}

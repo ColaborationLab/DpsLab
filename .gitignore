@@ -1,0 +1,23 @@
+# Configuración local con rutas propias del computador
+config/dpslab.local.toml
+
+# Herramientas locales
+.agents/
+.codex/
+
+# Artefactos de Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Ejecuciones locales de SimulationCraft
+results/runs/
+results/comparisons/
+
+# Paquetes temporales de migración
+DpsLab_migration_*/
+DpsLab_migration_*.zip

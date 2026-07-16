@@ -1,0 +1,1538 @@
+{
+  "audit_schema_version": "0.1",
+  "manual_profile_role": "manual_report_embedded_profile",
+  "active_assignments": {
+    "manual": [
+      {
+        "line": 1,
+        "text": "warlock=\"Flasil\"",
+        "key": "warlock",
+        "value": "\"Flasil\""
+      },
+      {
+        "line": 2,
+        "text": "source=default",
+        "key": "source",
+        "value": "default"
+      },
+      {
+        "line": 3,
+        "text": "spec=demonology",
+        "key": "spec",
+        "value": "demonology"
+      },
+      {
+        "line": 4,
+        "text": "level=90",
+        "key": "level",
+        "value": "90"
+      },
+      {
+        "line": 5,
+        "text": "race=gnome",
+        "key": "race",
+        "value": "gnome"
+      },
+      {
+        "line": 6,
+        "text": "role=spell",
+        "key": "role",
+        "value": "spell"
+      },
+      {
+        "line": 7,
+        "text": "position=back",
+        "key": "position",
+        "value": "back"
+      },
+      {
+        "line": 8,
+        "text": "professions=tailoring=75/enchanting=69",
+        "key": "professions",
+        "value": "tailoring=75/enchanting=69"
+      },
+      {
+        "line": 9,
+        "text": "talents=CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA",
+        "key": "talents",
+        "value": "CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA"
+      },
+      {
+        "line": 12,
+        "text": "potion=potion_of_recklessness_2",
+        "key": "potion",
+        "value": "potion_of_recklessness_2"
+      },
+      {
+        "line": 13,
+        "text": "flask=flask_of_the_shattered_sun_2",
+        "key": "flask",
+        "value": "flask_of_the_shattered_sun_2"
+      },
+      {
+        "line": 14,
+        "text": "food=harandar_celebration",
+        "key": "food",
+        "value": "harandar_celebration"
+      },
+      {
+        "line": 15,
+        "text": "augmentation=void_touched",
+        "key": "augmentation",
+        "value": "void_touched"
+      },
+      {
+        "line": 16,
+        "text": "temporary_enchant=main_hand:thalassian_phoenix_oil_2",
+        "key": "temporary_enchant",
+        "value": "main_hand:thalassian_phoenix_oil_2"
+      },
+      {
+        "line": 25,
+        "text": "actions.precombat=summon_pet",
+        "key": "actions.precombat",
+        "value": "summon_pet"
+      },
+      {
+        "line": 26,
+        "text": "actions.precombat+=/snapshot_stats",
+        "key": "actions.precombat+",
+        "value": "/snapshot_stats"
+      },
+      {
+        "line": 27,
+        "text": "actions.precombat+=/variable,name=in_opener,op=set,value=1",
+        "key": "actions.precombat+",
+        "value": "/variable,name=in_opener,op=set,value=1"
+      },
+      {
+        "line": 28,
+        "text": "actions.precombat+=/variable,name=trinket_1_buffs,value=trinket.1.has_use_buff",
+        "key": "actions.precombat+",
+        "value": "/variable,name=trinket_1_buffs,value=trinket.1.has_use_buff"
+      },
+      {
+        "line": 29,
+        "text": "actions.precombat+=/variable,name=trinket_2_buffs,value=trinket.2.has_use_buff",
+        "key": "actions.precombat+",
+        "value": "/variable,name=trinket_2_buffs,value=trinket.2.has_use_buff"
+      },
+      {
+        "line": 30,
+        "text": "actions.precombat+=/variable,name=trinket_1_buff_duration,value=trinket.1.proc.any_dps.duration",
+        "key": "actions.precombat+",
+        "value": "/variable,name=trinket_1_buff_duration,value=trinket.1.proc.any_dps.duration"
+      },
+      {
+        "line": 31,
+        "text": "actions.precombat+=/variable,name=trinket_2_buff_duration,value=trinket.2.proc.any_dps.duration",
+        "key": "actions.precombat+",
+        "value": "/variable,name=trinket_2_buff_duration,value=trinket.2.proc.any_dps.duration"
+      },
+      {
+        "line": 32,
+        "text": "actions.precombat+=/variable,name=trinket_1_sync,op=setif,value=1,value_else=0.5,condition=variable.trinket_1_buffs&(trinket.1.cooldown.duration%%cooldown.summon_demonic_tyrant.duration=0|cooldown.summon_demonic_tyrant.duration%%trinket.1.cooldown.duration=0)",
+        "key": "actions.precombat+",
+        "value": "/variable,name=trinket_1_sync,op=setif,value=1,value_else=0.5,condition=variable.trinket_1_buffs&(trinket.1.cooldown.duration%%cooldown.summon_demonic_tyrant.duration=0|cooldown.summon_demonic_tyrant.duration%%trinket.1.cooldown.duration=0)"
+      },
+      {
+        "line": 33,
+        "text": "actions.precombat+=/variable,name=trinket_2_sync,op=setif,value=1,value_else=0.5,condition=variable.trinket_2_buffs&(trinket.2.cooldown.duration%%cooldown.summon_demonic_tyrant.duration=0|cooldown.summon_demonic_tyrant.duration%%trinket.2.cooldown.duration=0)",
+        "key": "actions.precombat+",
+        "value": "/variable,name=trinket_2_sync,op=setif,value=1,value_else=0.5,condition=variable.trinket_2_buffs&(trinket.2.cooldown.duration%%cooldown.summon_demonic_tyrant.duration=0|cooldown.summon_demonic_tyrant.duration%%trinket.2.cooldown.duration=0)"
+      },
+      {
+        "line": 34,
+        "text": "actions.precombat+=/variable,name=damage_trinket_priority,op=setif,value=2,value_else=1,condition=!variable.trinket_1_buffs&!variable.trinket_2_buffs&trinket.2.ilvl>trinket.1.ilvl",
+        "key": "actions.precombat+",
+        "value": "/variable,name=damage_trinket_priority,op=setif,value=2,value_else=1,condition=!variable.trinket_1_buffs&!variable.trinket_2_buffs&trinket.2.ilvl>trinket.1.ilvl"
+      },
+      {
+        "line": 35,
+        "text": "actions.precombat+=/variable,name=trinket_priority,op=setif,value=2,value_else=1,condition=!variable.trinket_1_buffs&variable.trinket_2_buffs|variable.trinket_2_buffs&((trinket.2.cooldown.duration%variable.trinket_2_buff_duration)*(1.5+trinket.2.has_buff.intellect)*(variable.trinket_2_sync))>(((trinket.1.cooldown.duration%variable.trinket_1_buff_duration)*(1.5+trinket.1.has_buff.intellect)*(variable.trinket_1_sync))*(1+((trinket.1.ilvl-trinket.2.ilvl)%100)))",
+        "key": "actions.precombat+",
+        "value": "/variable,name=trinket_priority,op=setif,value=2,value_else=1,condition=!variable.trinket_1_buffs&variable.trinket_2_buffs|variable.trinket_2_buffs&((trinket.2.cooldown.duration%variable.trinket_2_buff_duration)*(1.5+trinket.2.has_buff.intellect)*(variable.trinket_2_sync))>(((trinket.1.cooldown.duration%variable.trinket_1_buff_duration)*(1.5+trinket.1.has_buff.intellect)*(variable.trinket_1_sync))*(1+((trinket.1.ilvl-trinket.2.ilvl)%100)))"
+      },
+      {
+        "line": 36,
+        "text": "actions.precombat+=/power_siphon",
+        "key": "actions.precombat+",
+        "value": "/power_siphon"
+      },
+      {
+        "line": 37,
+        "text": "actions.precombat+=/demonbolt,if=!buff.power_siphon.up&(talent.ruination&!talent.grimoire_imp_lord|talent.ruination&!talent.summon_doomguard)",
+        "key": "actions.precombat+",
+        "value": "/demonbolt,if=!buff.power_siphon.up&(talent.ruination&!talent.grimoire_imp_lord|talent.ruination&!talent.summon_doomguard)"
+      },
+      {
+        "line": 38,
+        "text": "actions.precombat+=/shadow_bolt",
+        "key": "actions.precombat+",
+        "value": "/shadow_bolt"
+      },
+      {
+        "line": 41,
+        "text": "actions=potion,if=pet.demonic_tyrant.active|fight_remains<=30",
+        "key": "actions",
+        "value": "potion,if=pet.demonic_tyrant.active|fight_remains<=30"
+      },
+      {
+        "line": 42,
+        "text": "actions+=/invoke_external_buff,name=power_infusion,if=pet.demonic_tyrant.active",
+        "key": "actions+",
+        "value": "/invoke_external_buff,name=power_infusion,if=pet.demonic_tyrant.active"
+      },
+      {
+        "line": 43,
+        "text": "actions+=/call_action_list,name=racials,if=pet.demonic_tyrant.active|fight_remains<22,use_off_gcd=1",
+        "key": "actions+",
+        "value": "/call_action_list,name=racials,if=pet.demonic_tyrant.active|fight_remains<22,use_off_gcd=1"
+      },
+      {
+        "line": 44,
+        "text": "actions+=/call_action_list,name=items,use_off_gcd=1",
+        "key": "actions+",
+        "value": "/call_action_list,name=items,use_off_gcd=1"
+      },
+      {
+        "line": 45,
+        "text": "actions+=/call_action_list,name=diabolist,if=talent.diabolic_ritual",
+        "key": "actions+",
+        "value": "/call_action_list,name=diabolist,if=talent.diabolic_ritual"
+      },
+      {
+        "line": 46,
+        "text": "actions+=/call_action_list,name=soulharvest,if=talent.demonic_soul",
+        "key": "actions+",
+        "value": "/call_action_list,name=soulharvest,if=talent.demonic_soul"
+      },
+      {
+        "line": 48,
+        "text": "actions.diabolist=power_siphon,if=buff.demonic_core.stack<=1|fight_remains<10",
+        "key": "actions.diabolist",
+        "value": "power_siphon,if=buff.demonic_core.stack<=1|fight_remains<10"
+      },
+      {
+        "line": 49,
+        "text": "actions.diabolist+=/hand_of_guldan,if=buff.dominion_of_argus.up",
+        "key": "actions.diabolist+",
+        "value": "/hand_of_guldan,if=buff.dominion_of_argus.up"
+      },
+      {
+        "line": 50,
+        "text": "actions.diabolist+=/grimoire_imp_lord",
+        "key": "actions.diabolist+",
+        "value": "/grimoire_imp_lord"
+      },
+      {
+        "line": 51,
+        "text": "actions.diabolist+=/grimoire_fel_ravager",
+        "key": "actions.diabolist+",
+        "value": "/grimoire_fel_ravager"
+      },
+      {
+        "line": 52,
+        "text": "actions.diabolist+=/summon_doomguard",
+        "key": "actions.diabolist+",
+        "value": "/summon_doomguard"
+      },
+      {
+        "line": 53,
+        "text": "actions.diabolist+=/call_dreadstalkers,if=talent.reign_of_tyranny&(cooldown.summon_demonic_tyrant.remains>=20+gcd.max|cooldown.summon_demonic_tyrant.remains<=12-gcd.max)",
+        "key": "actions.diabolist+",
+        "value": "/call_dreadstalkers,if=talent.reign_of_tyranny&(cooldown.summon_demonic_tyrant.remains>=20+gcd.max|cooldown.summon_demonic_tyrant.remains<=12-gcd.max)"
+      },
+      {
+        "line": 54,
+        "text": "actions.diabolist+=/call_dreadstalkers,if=!talent.reign_of_tyranny",
+        "key": "actions.diabolist+",
+        "value": "/call_dreadstalkers,if=!talent.reign_of_tyranny"
+      },
+      {
+        "line": 55,
+        "text": "actions.diabolist+=/summon_demonic_tyrant,if=soul_shard=5",
+        "key": "actions.diabolist+",
+        "value": "/summon_demonic_tyrant,if=soul_shard=5"
+      },
+      {
+        "line": 56,
+        "text": "actions.diabolist+=/implosion,if=buff.wild_imps.stack>=6&(active_enemies>2|talent.to_hell_and_back.enabled)",
+        "key": "actions.diabolist+",
+        "value": "/implosion,if=buff.wild_imps.stack>=6&(active_enemies>2|talent.to_hell_and_back.enabled)"
+      },
+      {
+        "line": 57,
+        "text": "actions.diabolist+=/ruination",
+        "key": "actions.diabolist+",
+        "value": "/ruination"
+      },
+      {
+        "line": 58,
+        "text": "actions.diabolist+=/hand_of_guldan,if=soul_shard>=3&cooldown.summon_demonic_tyrant.remains>5|soul_shard=5",
+        "key": "actions.diabolist+",
+        "value": "/hand_of_guldan,if=soul_shard>=3&cooldown.summon_demonic_tyrant.remains>5|soul_shard=5"
+      },
+      {
+        "line": 59,
+        "text": "actions.diabolist+=/infernal_bolt,if=soul_shard<3",
+        "key": "actions.diabolist+",
+        "value": "/infernal_bolt,if=soul_shard<3"
+      },
+      {
+        "line": 60,
+        "text": "actions.diabolist+=/demonbolt,target_if=(!debuff.doom.up),if=soul_shard<4&buff.demonic_core.react&talent.doom",
+        "key": "actions.diabolist+",
+        "value": "/demonbolt,target_if=(!debuff.doom.up),if=soul_shard<4&buff.demonic_core.react&talent.doom"
+      },
+      {
+        "line": 61,
+        "text": "actions.diabolist+=/demonbolt,if=soul_shard<4&buff.demonic_core.react",
+        "key": "actions.diabolist+",
+        "value": "/demonbolt,if=soul_shard<4&buff.demonic_core.react"
+      },
+      {
+        "line": 62,
+        "text": "actions.diabolist+=/shadow_bolt",
+        "key": "actions.diabolist+",
+        "value": "/shadow_bolt"
+      },
+      {
+        "line": 63,
+        "text": "actions.diabolist+=/infernal_bolt",
+        "key": "actions.diabolist+",
+        "value": "/infernal_bolt"
+      },
+      {
+        "line": 65,
+        "text": "actions.items=use_item,use_off_gcd=1,slot=trinket1,if=variable.trinket_1_buffs&(!pet.demonic_tyrant.active&trinket.1.cast_time>0|!trinket.1.cast_time>0)&(pet.demonic_tyrant.active|!talent.summon_demonic_tyrant|variable.trinket_priority=2&cooldown.summon_demonic_tyrant.remains>20&!pet.demonic_tyrant.active&trinket.2.cooldown.remains<cooldown.summon_demonic_tyrant.remains+5)&(!trinket.2.has_cooldown|trinket.2.cooldown.remains|variable.trinket_priority=1)|variable.trinket_1_buff_duration>=fight_remains",
+        "key": "actions.items",
+        "value": "use_item,use_off_gcd=1,slot=trinket1,if=variable.trinket_1_buffs&(!pet.demonic_tyrant.active&trinket.1.cast_time>0|!trinket.1.cast_time>0)&(pet.demonic_tyrant.active|!talent.summon_demonic_tyrant|variable.trinket_priority=2&cooldown.summon_demonic_tyrant.remains>20&!pet.demonic_tyrant.active&trinket.2.cooldown.remains<cooldown.summon_demonic_tyrant.remains+5)&(!trinket.2.has_cooldown|trinket.2.cooldown.remains|variable.trinket_priority=1)|variable.trinket_1_buff_duration>=fight_remains"
+      },
+      {
+        "line": 66,
+        "text": "actions.items+=/use_item,use_off_gcd=1,slot=trinket2,if=variable.trinket_2_buffs&(!pet.demonic_tyrant.active&trinket.2.cast_time>0|!trinket.2.cast_time>0)&(pet.demonic_tyrant.active|!talent.summon_demonic_tyrant|variable.trinket_priority=1&cooldown.summon_demonic_tyrant.remains>20&!pet.demonic_tyrant.active&trinket.1.cooldown.remains<cooldown.summon_demonic_tyrant.remains+5)&(!trinket.1.has_cooldown|trinket.1.cooldown.remains|variable.trinket_priority=2)|variable.trinket_2_buff_duration>=fight_remains",
+        "key": "actions.items+",
+        "value": "/use_item,use_off_gcd=1,slot=trinket2,if=variable.trinket_2_buffs&(!pet.demonic_tyrant.active&trinket.2.cast_time>0|!trinket.2.cast_time>0)&(pet.demonic_tyrant.active|!talent.summon_demonic_tyrant|variable.trinket_priority=1&cooldown.summon_demonic_tyrant.remains>20&!pet.demonic_tyrant.active&trinket.1.cooldown.remains<cooldown.summon_demonic_tyrant.remains+5)&(!trinket.1.has_cooldown|trinket.1.cooldown.remains|variable.trinket_priority=2)|variable.trinket_2_buff_duration>=fight_remains"
+      },
+      {
+        "line": 67,
+        "text": "actions.items+=/use_item,use_off_gcd=1,slot=trinket1,if=!variable.trinket_1_buffs&((variable.damage_trinket_priority=1|trinket.2.cooldown.remains)&(trinket.1.cast_time>0&!pet.demonic_tyrant.active|!trinket.1.cast_time>0)|(time<20&variable.trinket_2_buffs)|cooldown.summon_demonic_tyrant.remains_expected>20)",
+        "key": "actions.items+",
+        "value": "/use_item,use_off_gcd=1,slot=trinket1,if=!variable.trinket_1_buffs&((variable.damage_trinket_priority=1|trinket.2.cooldown.remains)&(trinket.1.cast_time>0&!pet.demonic_tyrant.active|!trinket.1.cast_time>0)|(time<20&variable.trinket_2_buffs)|cooldown.summon_demonic_tyrant.remains_expected>20)"
+      },
+      {
+        "line": 68,
+        "text": "actions.items+=/use_item,use_off_gcd=1,slot=trinket2,if=!variable.trinket_2_buffs&((variable.damage_trinket_priority=2|trinket.1.cooldown.remains)&(trinket.2.cast_time>0&!pet.demonic_tyrant.active|!trinket.2.cast_time>0)|(time<20&variable.trinket_1_buffs)|cooldown.summon_demonic_tyrant.remains_expected>20)",
+        "key": "actions.items+",
+        "value": "/use_item,use_off_gcd=1,slot=trinket2,if=!variable.trinket_2_buffs&((variable.damage_trinket_priority=2|trinket.1.cooldown.remains)&(trinket.2.cast_time>0&!pet.demonic_tyrant.active|!trinket.2.cast_time>0)|(time<20&variable.trinket_1_buffs)|cooldown.summon_demonic_tyrant.remains_expected>20)"
+      },
+      {
+        "line": 69,
+        "text": "actions.items+=/use_item,slot=trinket1,if=!variable.trinket_1_buffs&(variable.damage_trinket_priority=1|trinket.2.cooldown.remains)",
+        "key": "actions.items+",
+        "value": "/use_item,slot=trinket1,if=!variable.trinket_1_buffs&(variable.damage_trinket_priority=1|trinket.2.cooldown.remains)"
+      },
+      {
+        "line": 70,
+        "text": "actions.items+=/use_item,slot=trinket2,if=!variable.trinket_2_buffs&(variable.damage_trinket_priority=2|trinket.1.cooldown.remains)",
+        "key": "actions.items+",
+        "value": "/use_item,slot=trinket2,if=!variable.trinket_2_buffs&(variable.damage_trinket_priority=2|trinket.1.cooldown.remains)"
+      },
+      {
+        "line": 71,
+        "text": "actions.items+=/use_item,use_off_gcd=1,slot=main_hand",
+        "key": "actions.items+",
+        "value": "/use_item,use_off_gcd=1,slot=main_hand"
+      },
+      {
+        "line": 73,
+        "text": "actions.racials=berserking,use_off_gcd=1",
+        "key": "actions.racials",
+        "value": "berserking,use_off_gcd=1"
+      },
+      {
+        "line": 74,
+        "text": "actions.racials+=/blood_fury",
+        "key": "actions.racials+",
+        "value": "/blood_fury"
+      },
+      {
+        "line": 75,
+        "text": "actions.racials+=/fireblood",
+        "key": "actions.racials+",
+        "value": "/fireblood"
+      },
+      {
+        "line": 76,
+        "text": "actions.racials+=/ancestral_call",
+        "key": "actions.racials+",
+        "value": "/ancestral_call"
+      },
+      {
+        "line": 78,
+        "text": "actions.soulharvest=power_siphon,if=buff.demonic_core.stack<=1|fight_remains<10",
+        "key": "actions.soulharvest",
+        "value": "power_siphon,if=buff.demonic_core.stack<=1|fight_remains<10"
+      },
+      {
+        "line": 79,
+        "text": "actions.soulharvest+=/hand_of_guldan,if=buff.dominion_of_argus.up",
+        "key": "actions.soulharvest+",
+        "value": "/hand_of_guldan,if=buff.dominion_of_argus.up"
+      },
+      {
+        "line": 80,
+        "text": "actions.soulharvest+=/grimoire_imp_lord",
+        "key": "actions.soulharvest+",
+        "value": "/grimoire_imp_lord"
+      },
+      {
+        "line": 81,
+        "text": "actions.soulharvest+=/grimoire_fel_ravager",
+        "key": "actions.soulharvest+",
+        "value": "/grimoire_fel_ravager"
+      },
+      {
+        "line": 82,
+        "text": "actions.soulharvest+=/summon_doomguard",
+        "key": "actions.soulharvest+",
+        "value": "/summon_doomguard"
+      },
+      {
+        "line": 83,
+        "text": "actions.soulharvest+=/call_dreadstalkers",
+        "key": "actions.soulharvest+",
+        "value": "/call_dreadstalkers"
+      },
+      {
+        "line": 84,
+        "text": "actions.soulharvest+=/summon_demonic_tyrant",
+        "key": "actions.soulharvest+",
+        "value": "/summon_demonic_tyrant"
+      },
+      {
+        "line": 85,
+        "text": "actions.soulharvest+=/implosion,if=buff.wild_imps.stack>=6&(active_enemies>2|talent.to_hell_and_back.enabled)",
+        "key": "actions.soulharvest+",
+        "value": "/implosion,if=buff.wild_imps.stack>=6&(active_enemies>2|talent.to_hell_and_back.enabled)"
+      },
+      {
+        "line": 86,
+        "text": "actions.soulharvest+=/hand_of_guldan",
+        "key": "actions.soulharvest+",
+        "value": "/hand_of_guldan"
+      },
+      {
+        "line": 87,
+        "text": "actions.soulharvest+=/infernal_bolt,if=soul_shard<3",
+        "key": "actions.soulharvest+",
+        "value": "/infernal_bolt,if=soul_shard<3"
+      },
+      {
+        "line": 88,
+        "text": "actions.soulharvest+=/demonbolt,target_if=(!debuff.doom.up),if=soul_shard<4&buff.demonic_core.stack>=1&talent.doom",
+        "key": "actions.soulharvest+",
+        "value": "/demonbolt,target_if=(!debuff.doom.up),if=soul_shard<4&buff.demonic_core.stack>=1&talent.doom"
+      },
+      {
+        "line": 89,
+        "text": "actions.soulharvest+=/demonbolt,if=soul_shard<4&buff.demonic_core.stack>=2&!talent.doom",
+        "key": "actions.soulharvest+",
+        "value": "/demonbolt,if=soul_shard<4&buff.demonic_core.stack>=2&!talent.doom"
+      },
+      {
+        "line": 90,
+        "text": "actions.soulharvest+=/demonbolt,if=soul_shard<4&buff.demonic_core.react",
+        "key": "actions.soulharvest+",
+        "value": "/demonbolt,if=soul_shard<4&buff.demonic_core.react"
+      },
+      {
+        "line": 91,
+        "text": "actions.soulharvest+=/shadow_bolt",
+        "key": "actions.soulharvest+",
+        "value": "/shadow_bolt"
+      },
+      {
+        "line": 93,
+        "text": "head=abyssal_immolators_smoldering_flames,id=250042,bonus_id=6652/12667/12798/13338/13575,enchant_id=7959",
+        "key": "head",
+        "value": "abyssal_immolators_smoldering_flames,id=250042,bonus_id=6652/12667/12798/13338/13575,enchant_id=7959"
+      },
+      {
+        "line": 94,
+        "text": "neck=barbed_ymirheim_choker,id=50228,bonus_id=6652/12699/12798/13440/13668,gem_id=240906",
+        "key": "neck",
+        "value": "barbed_ymirheim_choker,id=50228,bonus_id=6652/12699/12798/13440/13668,gem_id=240906"
+      },
+      {
+        "line": 95,
+        "text": "shoulders=abyssal_immolators_fury,id=250040,bonus_id=6652/12798/13340/13574",
+        "key": "shoulders",
+        "value": "abyssal_immolators_fury,id=250040,bonus_id=6652/12798/13340/13574"
+      },
+      {
+        "line": 96,
+        "text": "back=preyseekers_sleek_capelet,id=259910,bonus_id=6652/12798/13577",
+        "key": "back",
+        "value": "preyseekers_sleek_capelet,id=259910,bonus_id=6652/12798/13577"
+      },
+      {
+        "line": 97,
+        "text": "chest=abyssal_immolators_dreadrobe,id=250045,bonus_id=3161/6652/12798/13336/13575",
+        "key": "chest",
+        "value": "abyssal_immolators_dreadrobe,id=250045,bonus_id=3161/6652/12798/13336/13575"
+      },
+      {
+        "line": 98,
+        "text": "wrists=martyrs_bindings,id=239648,bonus_id=8790/8960/12066/12214/12384/12667/13621/13667/12497,crafted_stats=49/36,content_tuning=3615",
+        "key": "wrists",
+        "value": "martyrs_bindings,id=239648,bonus_id=8790/8960/12066/12214/12384/12667/13621/13667/12497,crafted_stats=49/36,content_tuning=3615"
+      },
+      {
+        "line": 99,
+        "text": "hands=abyssal_immolators_grasps,id=250043,bonus_id=6652/12798/13337/13574",
+        "key": "hands",
+        "value": "abyssal_immolators_grasps,id=250043,bonus_id=6652/12798/13337/13574"
+      },
+      {
+        "line": 100,
+        "text": "waist=abyssal_immolators_blazing_core,id=250039,bonus_id=6652/12667/12798",
+        "key": "waist",
+        "value": "abyssal_immolators_blazing_core,id=250039,bonus_id=6652/12667/12798"
+      },
+      {
+        "line": 101,
+        "text": "legs=abyssal_immolators_pillars,id=250041,bonus_id=6652/12798/13339/13575,enchant_id=7939",
+        "key": "legs",
+        "value": "abyssal_immolators_pillars,id=250041,bonus_id=6652/12798/13339/13575,enchant_id=7939"
+      },
+      {
+        "line": 102,
+        "text": "feet=slippers_of_the_midnight_flame,id=249305,bonus_id=6652/12798/13334/13577",
+        "key": "feet",
+        "value": "slippers_of_the_midnight_flame,id=249305,bonus_id=6652/12798/13334/13577"
+      },
+      {
+        "line": 103,
+        "text": "finger1=signet_of_the_starved_beast,id=249336,bonus_id=6652/12794/13334/13668,enchant_id=8025",
+        "key": "finger1",
+        "value": "signet_of_the_starved_beast,id=249336,bonus_id=6652/12794/13334/13668,enchant_id=8025"
+      },
+      {
+        "line": 104,
+        "text": "finger2=preyseekers_circle,id=259914,bonus_id=6652/12798/13668,gem_id=240888,enchant_id=8025",
+        "key": "finger2",
+        "value": "preyseekers_circle,id=259914,bonus_id=6652/12798/13668,gem_id=240888,enchant_id=8025"
+      },
+      {
+        "line": 105,
+        "text": "trinket1=gaze_of_the_alnseer,id=249343,bonus_id=6652/12798/13334",
+        "key": "trinket1",
+        "value": "gaze_of_the_alnseer,id=249343,bonus_id=6652/12798/13334"
+      },
+      {
+        "line": 106,
+        "text": "trinket2=vaelgors_final_stare,id=249346,bonus_id=6652/12797/13334",
+        "key": "trinket2",
+        "value": "vaelgors_final_stare,id=249346,bonus_id=6652/12797/13334"
+      },
+      {
+        "line": 107,
+        "text": "main_hand=alnhara_cane,id=245770,bonus_id=8790/8960/12066/12214/12693/13622/13667/12497,enchant_id=8039,crafted_stats=40/49,content_tuning=3615",
+        "key": "main_hand",
+        "value": "alnhara_cane,id=245770,bonus_id=8790/8960/12066/12214/12693/13622/13667/12497,enchant_id=8039,crafted_stats=40/49,content_tuning=3615"
+      },
+      {
+        "line": 121,
+        "text": "warlock.soul_shards=0",
+        "key": "warlock.soul_shards",
+        "value": "0"
+      },
+      {
+        "line": 122,
+        "text": "warlock.default_pet=felguard",
+        "key": "warlock.default_pet",
+        "value": "felguard"
+      }
+    ],
+    "formal": [
+      {
+        "line": 6,
+        "text": "warlock=\"Flasil\"",
+        "key": "warlock",
+        "value": "\"Flasil\""
+      },
+      {
+        "line": 7,
+        "text": "level=90",
+        "key": "level",
+        "value": "90"
+      },
+      {
+        "line": 8,
+        "text": "race=gnome",
+        "key": "race",
+        "value": "gnome"
+      },
+      {
+        "line": 9,
+        "text": "region=us",
+        "key": "region",
+        "value": "us"
+      },
+      {
+        "line": 10,
+        "text": "server=quelthalas",
+        "key": "server",
+        "value": "quelthalas"
+      },
+      {
+        "line": 11,
+        "text": "role=spell",
+        "key": "role",
+        "value": "spell"
+      },
+      {
+        "line": 12,
+        "text": "professions=tailoring=75/enchanting=69",
+        "key": "professions",
+        "value": "tailoring=75/enchanting=69"
+      },
+      {
+        "line": 13,
+        "text": "spec=demonology",
+        "key": "spec",
+        "value": "demonology"
+      },
+      {
+        "line": 16,
+        "text": "talents=CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA",
+        "key": "talents",
+        "value": "CoQAMrNP5kak+EBqLfUa3dMm+amxMzoZjhZmxsNAAAAAAAgxMGWgB2GtQDLGjxysMzMjZAAzYmZmZGgZmxMDAAwYmZGjZYZGDYA"
+      },
+      {
+        "line": 30,
+        "text": "head=,id=250042,enchant_id=7959,bonus_id=6652/12667/13338/13575/12798",
+        "key": "head",
+        "value": ",id=250042,enchant_id=7959,bonus_id=6652/12667/13338/13575/12798"
+      },
+      {
+        "line": 32,
+        "text": "neck=,id=50228,gem_id=240906,bonus_id=13440/6652/13668/12699/12798",
+        "key": "neck",
+        "value": ",id=50228,gem_id=240906,bonus_id=13440/6652/13668/12699/12798"
+      },
+      {
+        "line": 34,
+        "text": "shoulder=,id=250040,bonus_id=6652/13340/13574/12798",
+        "key": "shoulder",
+        "value": ",id=250040,bonus_id=6652/13340/13574/12798"
+      },
+      {
+        "line": 36,
+        "text": "back=,id=259910,bonus_id=6652/13577/12798",
+        "key": "back",
+        "value": ",id=259910,bonus_id=6652/13577/12798"
+      },
+      {
+        "line": 38,
+        "text": "chest=,id=250045,bonus_id=6652/12798/13336/13575/3161",
+        "key": "chest",
+        "value": ",id=250045,bonus_id=6652/12798/13336/13575/3161"
+      },
+      {
+        "line": 40,
+        "text": "wrist=,id=239648,bonus_id=12214/13667/12497/12066/8960/12384/8790/13621/12667,content_tuning=3615,crafted_stats=49/36,crafting_quality=5",
+        "key": "wrist",
+        "value": ",id=239648,bonus_id=12214/13667/12497/12066/8960/12384/8790/13621/12667,content_tuning=3615,crafted_stats=49/36,crafting_quality=5"
+      },
+      {
+        "line": 42,
+        "text": "hands=,id=250043,bonus_id=13337/6652/13574/12798",
+        "key": "hands",
+        "value": ",id=250043,bonus_id=13337/6652/13574/12798"
+      },
+      {
+        "line": 44,
+        "text": "waist=,id=250039,bonus_id=6652/12667/12798",
+        "key": "waist",
+        "value": ",id=250039,bonus_id=6652/12667/12798"
+      },
+      {
+        "line": 46,
+        "text": "legs=,id=250041,enchant_id=7939,bonus_id=13339/6652/13575/12798",
+        "key": "legs",
+        "value": ",id=250041,enchant_id=7939,bonus_id=13339/6652/13575/12798"
+      },
+      {
+        "line": 48,
+        "text": "feet=,id=249305,bonus_id=6652/13577/13334/12798",
+        "key": "feet",
+        "value": ",id=249305,bonus_id=6652/13577/13334/12798"
+      },
+      {
+        "line": 50,
+        "text": "finger1=,id=249336,enchant_id=8025,bonus_id=6652/13668/13334/12794",
+        "key": "finger1",
+        "value": ",id=249336,enchant_id=8025,bonus_id=6652/13668/13334/12794"
+      },
+      {
+        "line": 52,
+        "text": "finger2=,id=259914,enchant_id=8025,gem_id=240888,bonus_id=6652/13668/12798",
+        "key": "finger2",
+        "value": ",id=259914,enchant_id=8025,gem_id=240888,bonus_id=6652/13668/12798"
+      },
+      {
+        "line": 54,
+        "text": "trinket1=,id=249343,bonus_id=6652/13334/12798",
+        "key": "trinket1",
+        "value": ",id=249343,bonus_id=6652/13334/12798"
+      },
+      {
+        "line": 56,
+        "text": "trinket2=,id=249346,bonus_id=6652/13334/12797",
+        "key": "trinket2",
+        "value": ",id=249346,bonus_id=6652/13334/12797"
+      },
+      {
+        "line": 58,
+        "text": "main_hand=,id=245770,enchant_id=8039,bonus_id=12214/13667/12497/12066/12693/8960/8790/13622,content_tuning=3615,crafted_stats=40/49,crafting_quality=5",
+        "key": "main_hand",
+        "value": ",id=245770,enchant_id=8039,bonus_id=12214/13667/12497/12066/12693/8960/8790/13622,content_tuning=3615,crafted_stats=40/49,crafting_quality=5"
+      }
+    ]
+  },
+  "comments": {
+    "manual": [
+      {
+        "line": 11,
+        "text": "# Default consumables"
+      },
+      {
+        "line": 18,
+        "text": "# This default action priority list is automatically created based on your character."
+      },
+      {
+        "line": 19,
+        "text": "# It is a attempt to provide you with a action list that is both simple and practicable,"
+      },
+      {
+        "line": 20,
+        "text": "# while resulting in a meaningful and good simulation. It may not result in the absolutely highest possible dps."
+      },
+      {
+        "line": 21,
+        "text": "# Feel free to edit, adapt and improve it to your own needs."
+      },
+      {
+        "line": 22,
+        "text": "# SimulationCraft is always looking for updates and improvements to the default action lists."
+      },
+      {
+        "line": 24,
+        "text": "# Executed before combat begins. Accepts non-harmful actions only."
+      },
+      {
+        "line": 40,
+        "text": "# Executed every time the actor is available."
+      },
+      {
+        "line": 109,
+        "text": "# Gear Summary"
+      },
+      {
+        "line": 110,
+        "text": "# gear_ilvl=275.20"
+      },
+      {
+        "line": 111,
+        "text": "# gear_stamina=14798"
+      },
+      {
+        "line": 112,
+        "text": "# gear_intellect=1436"
+      },
+      {
+        "line": 113,
+        "text": "# gear_crit_rating=1106"
+      },
+      {
+        "line": 114,
+        "text": "# gear_haste_rating=607"
+      },
+      {
+        "line": 115,
+        "text": "# gear_mastery_rating=482"
+      },
+      {
+        "line": 116,
+        "text": "# gear_versatility_rating=91"
+      },
+      {
+        "line": 117,
+        "text": "# gear_leech_rating=33"
+      },
+      {
+        "line": 118,
+        "text": "# gear_armor=493"
+      },
+      {
+        "line": 119,
+        "text": "# set_bonus=midnight_season_1_2pc=1"
+      },
+      {
+        "line": 120,
+        "text": "# set_bonus=midnight_season_1_4pc=1"
+      }
+    ],
+    "formal": [
+      {
+        "line": 1,
+        "text": "# Flasil - Demonology - 2026-07-14 23:09 - US/Quel'Thalas"
+      },
+      {
+        "line": 2,
+        "text": "# SimC Addon 12.1.0"
+      },
+      {
+        "line": 3,
+        "text": "# WoW 12.0.7.68453, TOC 120007"
+      },
+      {
+        "line": 4,
+        "text": "# Requires SimulationCraft 1000-01 or newer"
+      },
+      {
+        "line": 14,
+        "text": "# loot_spec=demonology"
+      },
+      {
+        "line": 18,
+        "text": "# Saved Loadout: Raid Diabo"
+      },
+      {
+        "line": 19,
+        "text": "# talents=CoQAMrNP5kak+EBqLfUa3dMm+yMmZGmNGmZmZ2GAAAAAAAwYGDLwAbDbYYxYmxysNzMjZAgZGjZmZGgZmZMDAAwYmZGDDLzYAD"
+      },
+      {
+        "line": 20,
+        "text": "# Saved Loadout: M+"
+      },
+      {
+        "line": 21,
+        "text": "# talents=CoQAMrNP5kak+EBqLfUa3dMm+yMjZGmNzYbmZMLDAAAAAAAYMjhFYgthNMsYMzYZMjZGDAMzMDzMzAMmZmZAAAGzMzYMYbmZAD"
+      },
+      {
+        "line": 22,
+        "text": "# Saved Loadout: TEST MURLOKIO"
+      },
+      {
+        "line": 23,
+        "text": "# talents=CoQAMrNP5kak+EBqLfUa3dMm+uMmxMzY2MjFmZmlBAAAAAAYssMjZmhNDDzsNbWwM2MzYsMLzMzwAAmxMzMzMYmZmZmxsAAAGzwYMDLzYAD"
+      },
+      {
+        "line": 24,
+        "text": "# Saved Loadout: Raid Main ST Diabo"
+      },
+      {
+        "line": 25,
+        "text": "# talents=CoQAMrNP5kak+EBqLfUa3dMm+amxMzwsxwMzY2GAAAAAAAwYGDLwAbDLYYxYMWmlZmZMDAYGzMzMzAMzMmZAAAGzMzYMDLzYAD"
+      },
+      {
+        "line": 26,
+        "text": "# Saved Loadout: Delves"
+      },
+      {
+        "line": 27,
+        "text": "# talents=CoQAMrNP5kak+EBqLfUa3dMm+amhZGmNzYbmZMLDAAAAAAAYMjhFYgthNMsYMzYZMzMmZAgZmZGzMzAMzMMzGAAYMzMjxgtZGgB"
+      },
+      {
+        "line": 29,
+        "text": "# Abyssal Immolator's Smoldering Flames (276)"
+      },
+      {
+        "line": 31,
+        "text": "# Barbed Ymirheim Choker (276)"
+      },
+      {
+        "line": 33,
+        "text": "# Abyssal Immolator's Fury (276)"
+      },
+      {
+        "line": 35,
+        "text": "# Preyseeker's Sleek Capelet (276)"
+      },
+      {
+        "line": 37,
+        "text": "# Abyssal Immolator's Dreadrobe (276)"
+      },
+      {
+        "line": 39,
+        "text": "# Martyr's Bindings (272)"
+      },
+      {
+        "line": 41,
+        "text": "# Abyssal Immolator's Grasps (276)"
+      },
+      {
+        "line": 43,
+        "text": "# Abyssal Immolator's Blazing Core (276)"
+      },
+      {
+        "line": 45,
+        "text": "# Abyssal Immolator's Pillars (276)"
+      },
+      {
+        "line": 47,
+        "text": "# Slippers of the Midnight Flame (276)"
+      },
+      {
+        "line": 49,
+        "text": "# Signet of the Starved Beast (263)"
+      },
+      {
+        "line": 51,
+        "text": "# Preyseeker's Circle (276)"
+      },
+      {
+        "line": 53,
+        "text": "# Gaze of the Alnseer (276)"
+      },
+      {
+        "line": 55,
+        "text": "# Vaelgor's Final Stare (272)"
+      },
+      {
+        "line": 57,
+        "text": "# Aln'hara Cane (285)"
+      },
+      {
+        "line": 60,
+        "text": "### Gear from Bags"
+      },
+      {
+        "line": 61,
+        "text": "#"
+      },
+      {
+        "line": 62,
+        "text": "# Eternal Voidsong Chain (276)"
+      },
+      {
+        "line": 63,
+        "text": "# neck=,id=249368,bonus_id=6652/13668/13334/12798"
+      },
+      {
+        "line": 64,
+        "text": "#"
+      },
+      {
+        "line": 65,
+        "text": "# Preyseeker's Clasp (246)"
+      },
+      {
+        "line": 66,
+        "text": "# neck=,id=259915,bonus_id=12785/6652/13668,content_tuning=5236"
+      },
+      {
+        "line": 67,
+        "text": "#"
+      },
+      {
+        "line": 68,
+        "text": "# Tarnished Dawnlit Commander's Greatbelt (192)"
+      },
+      {
+        "line": 69,
+        "text": "# waist=,id=258942,bonus_id=13729/13578,drop_level=90,content_tuning=3321"
+      },
+      {
+        "line": 70,
+        "text": "#"
+      },
+      {
+        "line": 71,
+        "text": "# Dream-Scorched Striders (263)"
+      },
+      {
+        "line": 72,
+        "text": "# feet=,id=249373,bonus_id=40/13577/13334/12794"
+      },
+      {
+        "line": 73,
+        "text": "#"
+      },
+      {
+        "line": 74,
+        "text": "# Tarnished Dawnlit Sentinel's Sabatons (192)"
+      },
+      {
+        "line": 75,
+        "text": "# feet=,id=258929,bonus_id=13729/13578,drop_level=90,content_tuning=3321"
+      },
+      {
+        "line": 76,
+        "text": "#"
+      },
+      {
+        "line": 77,
+        "text": "# Preyseeker's Band (263)"
+      },
+      {
+        "line": 78,
+        "text": "# finger1=,id=259911,enchant_id=8025,gem_id=240888,bonus_id=6652/13668/12790,content_tuning=5236"
+      },
+      {
+        "line": 79,
+        "text": "#"
+      },
+      {
+        "line": 80,
+        "text": "# Sealed Chaos Urn (263)"
+      },
+      {
+        "line": 81,
+        "text": "# trinket1=,id=251787,bonus_id=6652/12794,content_tuning=6015"
+      },
+      {
+        "line": 82,
+        "text": "#"
+      },
+      {
+        "line": 83,
+        "text": "# Wraps of Cosmic Madness (263)"
+      },
+      {
+        "line": 84,
+        "text": "# trinket1=,id=249340,bonus_id=6652/13334/12794"
+      },
+      {
+        "line": 85,
+        "text": "#"
+      },
+      {
+        "line": 86,
+        "text": "# Sylvan Wakrapuku (230)"
+      },
+      {
+        "line": 87,
+        "text": "# trinket1=,id=251784,bonus_id=6652/12772,content_tuning=3321"
+      },
+      {
+        "line": 88,
+        "text": "#"
+      },
+      {
+        "line": 89,
+        "text": "# Void-Reaper's Libram (246)"
+      },
+      {
+        "line": 90,
+        "text": "# trinket1=,id=251785,bonus_id=6652/12785,content_tuning=5236"
+      },
+      {
+        "line": 91,
+        "text": "#"
+      },
+      {
+        "line": 92,
+        "text": "# Elderoot Spire (250)"
+      },
+      {
+        "line": 93,
+        "text": "# main_hand=,id=249670,bonus_id=12786/6652,content_tuning=6015"
+      },
+      {
+        "line": 94,
+        "text": "#"
+      },
+      {
+        "line": 95,
+        "text": "# Bloomweaver's Pierce (233)"
+      },
+      {
+        "line": 96,
+        "text": "# main_hand=,id=259356,bonus_id=12777/6652,content_tuning=3321"
+      },
+      {
+        "line": 97,
+        "text": "#"
+      },
+      {
+        "line": 98,
+        "text": "# Bloomweaver's Pierce (233)"
+      },
+      {
+        "line": 99,
+        "text": "# main_hand=,id=259356,bonus_id=12777/6652,content_tuning=3321"
+      },
+      {
+        "line": 100,
+        "text": "#"
+      },
+      {
+        "line": 101,
+        "text": "# Tome of Alnscorned Regret (263)"
+      },
+      {
+        "line": 102,
+        "text": "# off_hand=,id=249922,bonus_id=6652/13334/12794"
+      },
+      {
+        "line": 104,
+        "text": "### Weekly Reward Choices"
+      },
+      {
+        "line": 105,
+        "text": "#"
+      },
+      {
+        "line": 106,
+        "text": "### End of Weekly Reward Choices"
+      },
+      {
+        "line": 108,
+        "text": "### Additional Character Info"
+      },
+      {
+        "line": 109,
+        "text": "#"
+      },
+      {
+        "line": 110,
+        "text": "# catalyst_currencies=3269:8/3378:4/2813:8/3116:8"
+      },
+      {
+        "line": 111,
+        "text": "#"
+      },
+      {
+        "line": 112,
+        "text": "# upgrade_currencies=c:3343:54/c:3347:60/c:3383:64/c:3345:44/c:3341:85/i:268552:1/i:224072:1/i:232875:12/i:231769:1"
+      },
+      {
+        "line": 113,
+        "text": "#"
+      },
+      {
+        "line": 114,
+        "text": "# slot_high_watermarks=0:276:276/1:276:276/2:276:276/3:276:276/4:276:276/5:276:276/6:276:276/7:272:272/8:276:276/9:263:263/10:272:272/11:276:276/12:285:285/13:259:259/14:0:266/15:0:263/16:263:263"
+      },
+      {
+        "line": 115,
+        "text": "#"
+      },
+      {
+        "line": 116,
+        "text": "# upgrade_achievements=40942/41886/41887/41888/41892/42767/42768/61809"
+      },
+      {
+        "line": 118,
+        "text": "# Checksum: d2f54453"
+      }
+    ]
+  },
+  "blank_lines": {
+    "manual": [
+      10,
+      17,
+      23,
+      39,
+      47,
+      64,
+      72,
+      77,
+      92,
+      108,
+      123
+    ],
+    "formal": [
+      5,
+      15,
+      17,
+      28,
+      59,
+      103,
+      107,
+      117,
+      119
+    ]
+  },
+  "duplicate_keys": {
+    "manual": {
+      "actions.precombat+": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38
+      ],
+      "actions+": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "actions.diabolist+": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63
+      ],
+      "actions.items+": [
+        66,
+        67,
+        68,
+        69,
+        70,
+        71
+      ],
+      "actions.racials+": [
+        74,
+        75,
+        76
+      ],
+      "actions.soulharvest+": [
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91
+      ]
+    },
+    "formal": {}
+  },
+  "manual_only_lines": [
+    "source=default",
+    "position=back",
+    "potion=potion_of_recklessness_2",
+    "flask=flask_of_the_shattered_sun_2",
+    "food=harandar_celebration",
+    "augmentation=void_touched",
+    "temporary_enchant=main_hand:thalassian_phoenix_oil_2",
+    "actions.precombat=summon_pet",
+    "actions.precombat+=/snapshot_stats",
+    "actions.precombat+=/variable,name=in_opener,op=set,value=1",
+    "actions.precombat+=/variable,name=trinket_1_buffs,value=trinket.1.has_use_buff",
+    "actions.precombat+=/variable,name=trinket_2_buffs,value=trinket.2.has_use_buff",
+    "actions.precombat+=/variable,name=trinket_1_buff_duration,value=trinket.1.proc.any_dps.duration",
+    "actions.precombat+=/variable,name=trinket_2_buff_duration,value=trinket.2.proc.any_dps.duration",
+    "actions.precombat+=/variable,name=trinket_1_sync,op=setif,value=1,value_else=0.5,condition=variable.trinket_1_buffs&(trinket.1.cooldown.duration%%cooldown.summon_demonic_tyrant.duration=0|cooldown.summon_demonic_tyrant.duration%%trinket.1.cooldown.duration=0)",
+    "actions.precombat+=/variable,name=trinket_2_sync,op=setif,value=1,value_else=0.5,condition=variable.trinket_2_buffs&(trinket.2.cooldown.duration%%cooldown.summon_demonic_tyrant.duration=0|cooldown.summon_demonic_tyrant.duration%%trinket.2.cooldown.duration=0)",
+    "actions.precombat+=/variable,name=damage_trinket_priority,op=setif,value=2,value_else=1,condition=!variable.trinket_1_buffs&!variable.trinket_2_buffs&trinket.2.ilvl>trinket.1.ilvl",
+    "actions.precombat+=/variable,name=trinket_priority,op=setif,value=2,value_else=1,condition=!variable.trinket_1_buffs&variable.trinket_2_buffs|variable.trinket_2_buffs&((trinket.2.cooldown.duration%variable.trinket_2_buff_duration)*(1.5+trinket.2.has_buff.intellect)*(variable.trinket_2_sync))>(((trinket.1.cooldown.duration%variable.trinket_1_buff_duration)*(1.5+trinket.1.has_buff.intellect)*(variable.trinket_1_sync))*(1+((trinket.1.ilvl-trinket.2.ilvl)%100)))",
+    "actions.precombat+=/power_siphon",
+    "actions.precombat+=/demonbolt,if=!buff.power_siphon.up&(talent.ruination&!talent.grimoire_imp_lord|talent.ruination&!talent.summon_doomguard)",
+    "actions.precombat+=/shadow_bolt",
+    "actions=potion,if=pet.demonic_tyrant.active|fight_remains<=30",
+    "actions+=/invoke_external_buff,name=power_infusion,if=pet.demonic_tyrant.active",
+    "actions+=/call_action_list,name=racials,if=pet.demonic_tyrant.active|fight_remains<22,use_off_gcd=1",
+    "actions+=/call_action_list,name=items,use_off_gcd=1",
+    "actions+=/call_action_list,name=diabolist,if=talent.diabolic_ritual",
+    "actions+=/call_action_list,name=soulharvest,if=talent.demonic_soul",
+    "actions.diabolist=power_siphon,if=buff.demonic_core.stack<=1|fight_remains<10",
+    "actions.diabolist+=/hand_of_guldan,if=buff.dominion_of_argus.up",
+    "actions.diabolist+=/grimoire_imp_lord",
+    "actions.diabolist+=/grimoire_fel_ravager",
+    "actions.diabolist+=/summon_doomguard",
+    "actions.diabolist+=/call_dreadstalkers,if=talent.reign_of_tyranny&(cooldown.summon_demonic_tyrant.remains>=20+gcd.max|cooldown.summon_demonic_tyrant.remains<=12-gcd.max)",
+    "actions.diabolist+=/call_dreadstalkers,if=!talent.reign_of_tyranny",
+    "actions.diabolist+=/summon_demonic_tyrant,if=soul_shard=5",
+    "actions.diabolist+=/implosion,if=buff.wild_imps.stack>=6&(active_enemies>2|talent.to_hell_and_back.enabled)",
+    "actions.diabolist+=/ruination",
+    "actions.diabolist+=/hand_of_guldan,if=soul_shard>=3&cooldown.summon_demonic_tyrant.remains>5|soul_shard=5",
+    "actions.diabolist+=/infernal_bolt,if=soul_shard<3",
+    "actions.diabolist+=/demonbolt,target_if=(!debuff.doom.up),if=soul_shard<4&buff.demonic_core.react&talent.doom",
+    "actions.diabolist+=/demonbolt,if=soul_shard<4&buff.demonic_core.react",
+    "actions.diabolist+=/shadow_bolt",
+    "actions.diabolist+=/infernal_bolt",
+    "actions.items=use_item,use_off_gcd=1,slot=trinket1,if=variable.trinket_1_buffs&(!pet.demonic_tyrant.active&trinket.1.cast_time>0|!trinket.1.cast_time>0)&(pet.demonic_tyrant.active|!talent.summon_demonic_tyrant|variable.trinket_priority=2&cooldown.summon_demonic_tyrant.remains>20&!pet.demonic_tyrant.active&trinket.2.cooldown.remains<cooldown.summon_demonic_tyrant.remains+5)&(!trinket.2.has_cooldown|trinket.2.cooldown.remains|variable.trinket_priority=1)|variable.trinket_1_buff_duration>=fight_remains",
+    "actions.items+=/use_item,use_off_gcd=1,slot=trinket2,if=variable.trinket_2_buffs&(!pet.demonic_tyrant.active&trinket.2.cast_time>0|!trinket.2.cast_time>0)&(pet.demonic_tyrant.active|!talent.summon_demonic_tyrant|variable.trinket_priority=1&cooldown.summon_demonic_tyrant.remains>20&!pet.demonic_tyrant.active&trinket.1.cooldown.remains<cooldown.summon_demonic_tyrant.remains+5)&(!trinket.1.has_cooldown|trinket.1.cooldown.remains|variable.trinket_priority=2)|variable.trinket_2_buff_duration>=fight_remains",
+    "actions.items+=/use_item,use_off_gcd=1,slot=trinket1,if=!variable.trinket_1_buffs&((variable.damage_trinket_priority=1|trinket.2.cooldown.remains)&(trinket.1.cast_time>0&!pet.demonic_tyrant.active|!trinket.1.cast_time>0)|(time<20&variable.trinket_2_buffs)|cooldown.summon_demonic_tyrant.remains_expected>20)",
+    "actions.items+=/use_item,use_off_gcd=1,slot=trinket2,if=!variable.trinket_2_buffs&((variable.damage_trinket_priority=2|trinket.1.cooldown.remains)&(trinket.2.cast_time>0&!pet.demonic_tyrant.active|!trinket.2.cast_time>0)|(time<20&variable.trinket_1_buffs)|cooldown.summon_demonic_tyrant.remains_expected>20)",
+    "actions.items+=/use_item,slot=trinket1,if=!variable.trinket_1_buffs&(variable.damage_trinket_priority=1|trinket.2.cooldown.remains)",
+    "actions.items+=/use_item,slot=trinket2,if=!variable.trinket_2_buffs&(variable.damage_trinket_priority=2|trinket.1.cooldown.remains)",
+    "actions.items+=/use_item,use_off_gcd=1,slot=main_hand",
+    "actions.racials=berserking,use_off_gcd=1",
+    "actions.racials+=/blood_fury",
+    "actions.racials+=/fireblood",
+    "actions.racials+=/ancestral_call",
+    "actions.soulharvest=power_siphon,if=buff.demonic_core.stack<=1|fight_remains<10",
+    "actions.soulharvest+=/hand_of_guldan,if=buff.dominion_of_argus.up",
+    "actions.soulharvest+=/grimoire_imp_lord",
+    "actions.soulharvest+=/grimoire_fel_ravager",
+    "actions.soulharvest+=/summon_doomguard",
+    "actions.soulharvest+=/call_dreadstalkers",
+    "actions.soulharvest+=/summon_demonic_tyrant",
+    "actions.soulharvest+=/implosion,if=buff.wild_imps.stack>=6&(active_enemies>2|talent.to_hell_and_back.enabled)",
+    "actions.soulharvest+=/hand_of_guldan",
+    "actions.soulharvest+=/infernal_bolt,if=soul_shard<3",
+    "actions.soulharvest+=/demonbolt,target_if=(!debuff.doom.up),if=soul_shard<4&buff.demonic_core.stack>=1&talent.doom",
+    "actions.soulharvest+=/demonbolt,if=soul_shard<4&buff.demonic_core.stack>=2&!talent.doom",
+    "actions.soulharvest+=/demonbolt,if=soul_shard<4&buff.demonic_core.react",
+    "actions.soulharvest+=/shadow_bolt",
+    "head=abyssal_immolators_smoldering_flames,id=250042,bonus_id=6652/12667/12798/13338/13575,enchant_id=7959",
+    "neck=barbed_ymirheim_choker,id=50228,bonus_id=6652/12699/12798/13440/13668,gem_id=240906",
+    "shoulders=abyssal_immolators_fury,id=250040,bonus_id=6652/12798/13340/13574",
+    "back=preyseekers_sleek_capelet,id=259910,bonus_id=6652/12798/13577",
+    "chest=abyssal_immolators_dreadrobe,id=250045,bonus_id=3161/6652/12798/13336/13575",
+    "wrists=martyrs_bindings,id=239648,bonus_id=8790/8960/12066/12214/12384/12667/13621/13667/12497,crafted_stats=49/36,content_tuning=3615",
+    "hands=abyssal_immolators_grasps,id=250043,bonus_id=6652/12798/13337/13574",
+    "waist=abyssal_immolators_blazing_core,id=250039,bonus_id=6652/12667/12798",
+    "legs=abyssal_immolators_pillars,id=250041,bonus_id=6652/12798/13339/13575,enchant_id=7939",
+    "feet=slippers_of_the_midnight_flame,id=249305,bonus_id=6652/12798/13334/13577",
+    "finger1=signet_of_the_starved_beast,id=249336,bonus_id=6652/12794/13334/13668,enchant_id=8025",
+    "finger2=preyseekers_circle,id=259914,bonus_id=6652/12798/13668,gem_id=240888,enchant_id=8025",
+    "trinket1=gaze_of_the_alnseer,id=249343,bonus_id=6652/12798/13334",
+    "trinket2=vaelgors_final_stare,id=249346,bonus_id=6652/12797/13334",
+    "main_hand=alnhara_cane,id=245770,bonus_id=8790/8960/12066/12214/12693/13622/13667/12497,enchant_id=8039,crafted_stats=40/49,content_tuning=3615",
+    "warlock.soul_shards=0",
+    "warlock.default_pet=felguard"
+  ],
+  "formal_only_lines": [
+    "region=us",
+    "server=quelthalas",
+    "head=,id=250042,enchant_id=7959,bonus_id=6652/12667/13338/13575/12798",
+    "neck=,id=50228,gem_id=240906,bonus_id=13440/6652/13668/12699/12798",
+    "shoulder=,id=250040,bonus_id=6652/13340/13574/12798",
+    "back=,id=259910,bonus_id=6652/13577/12798",
+    "chest=,id=250045,bonus_id=6652/12798/13336/13575/3161",
+    "wrist=,id=239648,bonus_id=12214/13667/12497/12066/8960/12384/8790/13621/12667,content_tuning=3615,crafted_stats=49/36,crafting_quality=5",
+    "hands=,id=250043,bonus_id=13337/6652/13574/12798",
+    "waist=,id=250039,bonus_id=6652/12667/12798",
+    "legs=,id=250041,enchant_id=7939,bonus_id=13339/6652/13575/12798",
+    "feet=,id=249305,bonus_id=6652/13577/13334/12798",
+    "finger1=,id=249336,enchant_id=8025,bonus_id=6652/13668/13334/12794",
+    "finger2=,id=259914,enchant_id=8025,gem_id=240888,bonus_id=6652/13668/12798",
+    "trinket1=,id=249343,bonus_id=6652/13334/12798",
+    "trinket2=,id=249346,bonus_id=6652/13334/12797",
+    "main_hand=,id=245770,enchant_id=8039,bonus_id=12214/13667/12497/12066/12693/8960/8790/13622,content_tuning=3615,crafted_stats=40/49,crafting_quality=5"
+  ],
+  "differing_assignments": [
+    {
+      "field": "profile.assignment.back",
+      "key": "back",
+      "manual_value": "preyseekers_sleek_capelet,id=259910,bonus_id=6652/12798/13577",
+      "formal_value": ",id=259910,bonus_id=6652/13577/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/back",
+      "formal_locator": "active_assignment/back",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.chest",
+      "key": "chest",
+      "manual_value": "abyssal_immolators_dreadrobe,id=250045,bonus_id=3161/6652/12798/13336/13575",
+      "formal_value": ",id=250045,bonus_id=6652/12798/13336/13575/3161",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/chest",
+      "formal_locator": "active_assignment/chest",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.feet",
+      "key": "feet",
+      "manual_value": "slippers_of_the_midnight_flame,id=249305,bonus_id=6652/12798/13334/13577",
+      "formal_value": ",id=249305,bonus_id=6652/13577/13334/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/feet",
+      "formal_locator": "active_assignment/feet",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.finger1",
+      "key": "finger1",
+      "manual_value": "signet_of_the_starved_beast,id=249336,bonus_id=6652/12794/13334/13668,enchant_id=8025",
+      "formal_value": ",id=249336,enchant_id=8025,bonus_id=6652/13668/13334/12794",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/finger1",
+      "formal_locator": "active_assignment/finger1",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.finger2",
+      "key": "finger2",
+      "manual_value": "preyseekers_circle,id=259914,bonus_id=6652/12798/13668,gem_id=240888,enchant_id=8025",
+      "formal_value": ",id=259914,enchant_id=8025,gem_id=240888,bonus_id=6652/13668/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/finger2",
+      "formal_locator": "active_assignment/finger2",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.hands",
+      "key": "hands",
+      "manual_value": "abyssal_immolators_grasps,id=250043,bonus_id=6652/12798/13337/13574",
+      "formal_value": ",id=250043,bonus_id=13337/6652/13574/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/hands",
+      "formal_locator": "active_assignment/hands",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.head",
+      "key": "head",
+      "manual_value": "abyssal_immolators_smoldering_flames,id=250042,bonus_id=6652/12667/12798/13338/13575,enchant_id=7959",
+      "formal_value": ",id=250042,enchant_id=7959,bonus_id=6652/12667/13338/13575/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/head",
+      "formal_locator": "active_assignment/head",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.legs",
+      "key": "legs",
+      "manual_value": "abyssal_immolators_pillars,id=250041,bonus_id=6652/12798/13339/13575,enchant_id=7939",
+      "formal_value": ",id=250041,enchant_id=7939,bonus_id=13339/6652/13575/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/legs",
+      "formal_locator": "active_assignment/legs",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.main_hand",
+      "key": "main_hand",
+      "manual_value": "alnhara_cane,id=245770,bonus_id=8790/8960/12066/12214/12693/13622/13667/12497,enchant_id=8039,crafted_stats=40/49,content_tuning=3615",
+      "formal_value": ",id=245770,enchant_id=8039,bonus_id=12214/13667/12497/12066/12693/8960/8790/13622,content_tuning=3615,crafted_stats=40/49,crafting_quality=5",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/main_hand",
+      "formal_locator": "active_assignment/main_hand",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.neck",
+      "key": "neck",
+      "manual_value": "barbed_ymirheim_choker,id=50228,bonus_id=6652/12699/12798/13440/13668,gem_id=240906",
+      "formal_value": ",id=50228,gem_id=240906,bonus_id=13440/6652/13668/12699/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/neck",
+      "formal_locator": "active_assignment/neck",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.trinket1",
+      "key": "trinket1",
+      "manual_value": "gaze_of_the_alnseer,id=249343,bonus_id=6652/12798/13334",
+      "formal_value": ",id=249343,bonus_id=6652/13334/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/trinket1",
+      "formal_locator": "active_assignment/trinket1",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.trinket2",
+      "key": "trinket2",
+      "manual_value": "vaelgors_final_stare,id=249346,bonus_id=6652/12797/13334",
+      "formal_value": ",id=249346,bonus_id=6652/13334/12797",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/trinket2",
+      "formal_locator": "active_assignment/trinket2",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    },
+    {
+      "field": "profile.assignment.waist",
+      "key": "waist",
+      "manual_value": "abyssal_immolators_blazing_core,id=250039,bonus_id=6652/12667/12798",
+      "formal_value": ",id=250039,bonus_id=6652/12667/12798",
+      "manual_source": "flasil.simc.html",
+      "formal_source": "profiles/flasil.simc",
+      "manual_locator": "manual_report_embedded_profile/waist",
+      "formal_locator": "active_assignment/waist",
+      "comparison_status": "different",
+      "manual_availability": "present",
+      "formal_availability": "present",
+      "relevance": "unknown",
+      "justification": "El perfil del HTML es reconstruido por SimC; una diferencia textual no demuestra una diferencia efectiva."
+    }
+  ],
+  "exact_active_sequence_equal": false
+}
