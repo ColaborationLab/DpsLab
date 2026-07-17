@@ -20,7 +20,19 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
   ejecutado ni existe un `comparison_result` real.
 - El Subbloque 2.2.b1 está aprobado (`block_2_2_b1_approved`): el alta
   planificada de miembros es pura, copy-on-write y no persistente.
-- La suite vigente contiene 208 pruebas.
+- Automation Foundation fue implementada, auditada mediante independencia
+  declarada y procedimental, y registrada en el commit
+  `3828c098946f6842885fc520f841ef4fdb4e12af`
+  (`automation_foundation_0_1_committed`).
+- Según la evidencia recopilada el 2026-07-17, `main` y `origin/main`
+  apuntaban a `3828c098946f6842885fc520f841ef4fdb4e12af`. El estado remoto
+  acreditado es `github_remote_0_1_published`, no
+  `github_remote_0_1_approved`.
+- Las pruebas focales de 2.2.b1 registraron 20 pruebas aprobadas, 55 subtests
+  aprobados y código de salida 0.
+- La suite global recopilada el 2026-07-17 registró 208 pruebas aprobadas,
+  573 subtests aprobados, 1 prueba fallida y código de salida 1. Por tanto,
+  no debe describirse como una suite global limpia.
 
 ## Integridad obligatoria
 
@@ -42,10 +54,22 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 
 ## Verificación
 
-- Ejecutar toda la suite después de cambios de código: actualmente 208 pruebas.
+- Ejecutar toda la suite después de cambios de código y reportar por separado
+  pruebas aprobadas, subtests, fallos y código de salida. El último resultado
+  documentado no es limpio: 208 pruebas aprobadas, 573 subtests aprobados,
+  1 prueba fallida y código de salida 1.
 - Mantener compatibilidad de lectura con esquemas históricos.
 - Regenerar snapshots o resúmenes existentes solo cuando la tarea lo solicite explícitamente.
 - Informar hashes protegidos y cualquier artefacto ignorado por `.gitignore`.
+
+## Incidencia global abierta
+
+- Prueba fallida:
+  `tests/test_comparison_models.py::ComparisonModelTests::test_global_frozen_field_matrix_is_individual_and_prephysical`.
+- Fallo observado: `AssertionError: ComparisonResultError not raised`.
+- Esta incidencia no revoca automáticamente `block_2_2_b1_approved`.
+- Su registro no autoriza corregir `comparison_models`, modificar código ni
+  ejecutar una intervención técnica.
 
 ## Quality gate y autorizaciones
 
@@ -61,5 +85,6 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - El quality gate no autoriza ni invoca SimulationCraft y no amplía el alcance
   funcional de la tarea.
 - No aprobar ni iniciar automáticamente el bloque siguiente.
+- El Subbloque 2.2.b2 permanece como trabajo futuro candidato y no autorizado.
 - Escalar a Daniel cualquier archivo adicional, eliminación, rename, cambio de
   alcance o excepción no incluida expresamente en el contrato autorizado.

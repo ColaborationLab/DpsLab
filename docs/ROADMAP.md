@@ -10,7 +10,11 @@
 - [x] Variantes de perfil y perfil efectivo atómico.
 - [x] Baseline formal canónica.
 - [x] Auditorías comparativa, semántica y profunda.
-- [x] Suite de 208 pruebas.
+- [x] Infraestructura y cobertura automática establecidas.
+- Estado de verificación: la última suite global documentada registró 208
+  pruebas aprobadas, 573 subtests aprobados, 1 prueba fallida y código de
+  salida 1. La incidencia de `comparison_models` permanece abierta y separada
+  de los bloques aprobados.
 
 ## Comparador A/B de collar — implementado, no ejecutado
 
@@ -23,7 +27,7 @@
 - [x] Subbloque 2.2.b1: alta planificada pura y no persistente de miembros
   (`block_2_2_b1_approved`).
 - [ ] Subbloque 2.2.b2: persistencia transaccional del alta planificada,
-  pendiente de autorización específica.
+  candidata no autorizada y pendiente de autorización específica.
 - [ ] Ejecución real del experimento, sujeta a autorización independiente.
 
 ## Etapas posteriores no aprobadas

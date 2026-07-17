@@ -1,5 +1,25 @@
 # Next Task — DpsLab
 
+## Vigencia del contrato
+
+El contrato `automation_foundation_0_1` conservado a continuación corresponde
+a una autorización histórica ya consumida. Su implementación fue auditada
+mediante independencia declarada y procedimental y quedó registrada en el
+commit `3828c098946f6842885fc520f841ef4fdb4e12af`.
+
+Estado conciliado: `automation_foundation_0_1_committed`.
+
+El schema contractual 0.1 no dispone de un estado `consumed`. Por ello,
+`design_only` se utiliza exclusivamente como estado operativo de desactivación:
+impide que `quality_gate.py run` trate el contrato anterior como autorización
+vigente. No describe retrospectivamente el estado original de la autorización,
+cuya identidad, autoridad y fecha se conservan en el contrato.
+
+Este contrato no autoriza repetir la implementación, regenerar artefactos,
+modificar archivos, crear commits ni operar sobre remotes. Una tarea futura
+requerirá una decisión humana nueva y el reemplazo explícito de este contrato
+por otro contrato autorizado y de alcance cerrado.
+
 <!-- DPSLAB_TASK_CONTRACT_BEGIN -->
 ```json
 {
@@ -8,7 +28,7 @@
   "title": "Infraestructura mínima de autorización y quality gate",
   "baseline_commit": "b4098ae01799544e4e8aa207166dd06f45b65489",
   "authorization": {
-    "status": "authorized_for_implementation",
+    "status": "design_only",
     "authorization_id": "automation_foundation_0_1-20260716-daniel",
     "authorized_by": "Daniel",
     "authorized_at": "2026-07-16T00:00:00-05:00"
@@ -111,8 +131,7 @@
 ## Estado
 
 El primer bloque técnico está finalizado. Parser, snapshot, runner, intérprete,
-escenarios, variantes, baseline y auditorías están implementados y cubiertos
-por 208 pruebas.
+escenarios, variantes, baseline y auditorías están implementados.
 
 La implementación del comparador A/B de collar fue aprobada sin autorizar una
 ejecución real de SimulationCraft.
@@ -120,18 +139,74 @@ ejecución real de SimulationCraft.
 El Subbloque 2.2.b1 está aprobado (`block_2_2_b1_approved`). La creación
 planificada de un miembro y su reserva es pura, copy-on-write y no persistente.
 
-`automation_foundation_0_1` está autorizado para implementación y pendiente de
-pruebas y auditoría independiente. Esta autorización no aprueba el bloque.
+Automation Foundation fue implementada, auditada mediante independencia
+declarada y procedimental, y registrada en el commit
+`3828c098946f6842885fc520f841ef4fdb4e12af`.
 
-## Próxima tarea candidata
+Estado conciliado: `automation_foundation_0_1_committed`.
+
+La autorización de implementación asociada fue consumida. No permanece activa
+y no autoriza una nueva ejecución del quality gate.
+
+## Estado Git y GitHub
+
+Según la evidencia recopilada el 2026-07-17:
+
+- rama local `main`: `3828c098946f6842885fc520f841ef4fdb4e12af`;
+- `origin/main`: `3828c098946f6842885fc520f841ef4fdb4e12af`;
+- tag `baseline-block-2.2.b1-approved`: objeto
+  `5496df72af18562597d6e5986e3dac755c62f67f`;
+- target del tag: `b4098ae01799544e4e8aa207166dd06f45b65489`;
+- estado conciliado: `github_remote_0_1_published`.
+
+`published` acredita la publicación de las refs verificadas, pero no equivale
+a `github_remote_0_1_approved`. Este registro no autoriza commits, pushes,
+tags ni cambios de remoto.
+
+## Estado de verificación
+
+Las pruebas focales de 2.2.b1 finalizaron con:
+
+- 20 pruebas aprobadas;
+- 55 subtests aprobados;
+- código de salida 0.
+
+La suite global recopilada el 2026-07-17 finalizó con:
+
+- 208 pruebas aprobadas;
+- 573 subtests aprobados;
+- 1 prueba fallida;
+- código de salida 1.
+
+## Incidencia global abierta
+
+Prueba fallida:
+
+`tests/test_comparison_models.py::ComparisonModelTests::test_global_frozen_field_matrix_is_individual_and_prephysical`
+
+Fallo observado:
+
+`AssertionError: ComparisonResultError not raised`
+
+Esta incidencia impide describir la suite global como limpia. Permanece
+separada de `block_2_2_b1_approved`: no revoca automáticamente esa aprobación
+y no autoriza corregir `comparison_models`.
+
+## Próxima tarea candidata — no autorizada
 
 Subbloque 2.2.b2: diseñar e implementar exclusivamente el commit transaccional
 del alta producida por 2.2.b1, sin crear carpetas físicas de run, sin ejecutar
 el Comparator y sin invocar SimulationCraft.
 
-Esta candidatura no constituye autorización. Requiere alcance explícito para
-los archivos modificables, contrato de atomicidad, validación del delta,
-idempotencia, rollback y pruebas de fallos físicos.
+Estado: `not_authorized`.
+
+Esta candidatura no constituye autorización para diseño, implementación,
+pruebas, persistencia, creación de carpetas físicas, integración con Comparator
+o runner, ejecución de SimulationCraft, modificación documental, commits o
+pushes. Una eventual intervención requiere una decisión humana nueva y un
+contrato de alcance independiente que defina los archivos modificables,
+atomicidad, validación del delta, idempotencia, rollback y pruebas de fallos
+físicos.
 
 ## Expresamente excluido hasta aprobación
 

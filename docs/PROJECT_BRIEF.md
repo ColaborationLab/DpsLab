@@ -28,7 +28,9 @@ byte a byte de las entradas.
 - Escenarios TOML tipados, validados y verificados por SHA-256.
 - Variantes TOML y `effective_profile.simc` construido desde bytes.
 - Auditoría profunda ejecutable mediante `python -m dpslab.deep_audit`.
-- 208 pruebas automáticas vigentes.
+- Cobertura automática establecida. La última verificación global documentada
+  presenta una incidencia abierta en `comparison_models`; el estado detallado
+  debe consultarse en `docs/NEXT_TASK.md`.
 - Comparador A/B schema 0.1 implementado para el contrato cerrado de `neck`,
   con transformación de equipo separada de `ProfileVariant`, procedencia por
   bloque/intento/miembro y análisis Welch–delta/emparejado.
