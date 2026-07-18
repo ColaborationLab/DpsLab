@@ -16,10 +16,12 @@ DOCUMENTATION = ROOT / "docs" / "GITHUB_AUTOMATION.md"
 GITATTRIBUTES = ROOT / ".gitattributes"
 
 CANONICAL_LF_PATHS = (
+    ".gitattributes",
     "profiles/flasil.simc",
     "variants/flasil_soul_shards_0_v1.toml",
     "scenarios/st_lightmovement_300s_v1.toml",
     "comparisons/flasil_neck_50228_vs_249368_v1.toml",
+    "comparisons/evidence/flasil_neck_50228_vs_249368_v1/evidence_manifest.json",
 )
 
 CHECKOUT_SHA = "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
@@ -79,7 +81,10 @@ class GitHubAutomationTests(unittest.TestCase):
     def test_contractual_text_types_have_canonical_lf_git_attributes(self) -> None:
         self.assertEqual(
             GITATTRIBUTES.read_bytes(),
-            b"*.simc text eol=lf\n*.toml text eol=lf\n",
+            b"*.simc text eol=lf\n"
+            b"*.toml text eol=lf\n"
+            b".gitattributes text eol=lf\n"
+            b"*.json text eol=lf\n",
         )
 
         eol = subprocess.run(
