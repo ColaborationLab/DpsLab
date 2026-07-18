@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -12,6 +13,14 @@ ROOT = Path(__file__).resolve().parents[2]
 WORKFLOW = ROOT / ".github" / "workflows" / "dpslab-ci.yml"
 NEXT_TASK = ROOT / "docs" / "NEXT_TASK.md"
 DOCUMENTATION = ROOT / "docs" / "GITHUB_AUTOMATION.md"
+GITATTRIBUTES = ROOT / ".gitattributes"
+
+CANONICAL_LF_PATHS = (
+    "profiles/flasil.simc",
+    "variants/flasil_soul_shards_0_v1.toml",
+    "scenarios/st_lightmovement_300s_v1.toml",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml",
+)
 
 CHECKOUT_SHA = "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
 SETUP_PYTHON_SHA = "a309ff8b426b58ec0e2a45f0f869d46889d02405"
@@ -66,6 +75,46 @@ class GitHubAutomationTests(unittest.TestCase):
         self.assertLess(setup, install)
         self.assertLess(install, suite)
         self.assertEqual(self.workflow.count("python -m pip install ./desktop-app"), 1)
+
+    def test_contractual_text_types_have_canonical_lf_git_attributes(self) -> None:
+        self.assertEqual(
+            GITATTRIBUTES.read_bytes(),
+            b"*.simc text eol=lf\n*.toml text eol=lf\n",
+        )
+
+        eol = subprocess.run(
+            ["git", "ls-files", "--eol", "--", *CANONICAL_LF_PATHS],
+            cwd=ROOT,
+            text=True,
+            encoding="utf-8",
+            capture_output=True,
+            shell=False,
+            check=False,
+        )
+        self.assertEqual(eol.returncode, 0, eol.stderr)
+        eol_by_path = {
+            line.split("\t", 1)[1]: line.split("\t", 1)[0].split()
+            for line in eol.stdout.splitlines()
+        }
+        self.assertEqual(set(eol_by_path), set(CANONICAL_LF_PATHS))
+        for path in CANONICAL_LF_PATHS:
+            self.assertEqual(eol_by_path[path][0], "i/lf")
+            self.assertEqual(eol_by_path[path][2:], ["attr/text", "eol=lf"])
+
+        attributes = subprocess.run(
+            ["git", "check-attr", "eol", "--", *CANONICAL_LF_PATHS],
+            cwd=ROOT,
+            text=True,
+            encoding="utf-8",
+            capture_output=True,
+            shell=False,
+            check=False,
+        )
+        self.assertEqual(attributes.returncode, 0, attributes.stderr)
+        self.assertEqual(
+            attributes.stdout.splitlines(),
+            [f"{path}: eol: lf" for path in CANONICAL_LF_PATHS],
+        )
 
     def test_actions_are_pinned_and_checkout_drops_credentials(self) -> None:
         expected = {
