@@ -58,6 +58,15 @@ class GitHubAutomationTests(unittest.TestCase):
         self.assertIn("PYTHONPATH: src", self.workflow)
         self.assertIn("python -m unittest discover -s tests -v", self.workflow)
 
+    def test_functional_suite_installs_authoritative_project_first(self) -> None:
+        functional = self.workflow.split("\n  functional-suite:\n", 1)[1]
+        setup = functional.index(f"actions/setup-python@{SETUP_PYTHON_SHA}")
+        install = functional.index("python -m pip install ./desktop-app")
+        suite = functional.index("python -m unittest discover -s tests -v")
+        self.assertLess(setup, install)
+        self.assertLess(install, suite)
+        self.assertEqual(self.workflow.count("python -m pip install ./desktop-app"), 1)
+
     def test_actions_are_pinned_and_checkout_drops_credentials(self) -> None:
         expected = {
             f"actions/checkout@{CHECKOUT_SHA}": 3,
