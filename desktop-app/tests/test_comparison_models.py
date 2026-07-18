@@ -130,7 +130,6 @@ class ComparisonModelTests(unittest.TestCase):
             "software.dpslab.source_identity_kind": lambda c: setattr(c, "software", replace(c.software, dpslab=replace(c.software.dpslab, source_identity_kind="other"))),
             "software.dpslab.version": lambda c: setattr(c, "software", replace(c.software, dpslab=replace(c.software.dpslab, version="9"))),
             "software.dpslab.commit": lambda c: setattr(c, "software", replace(c.software, dpslab=replace(c.software.dpslab, commit="abc"))),
-            "software.dpslab.dirty_state": lambda c: setattr(c, "software", replace(c.software, dpslab=replace(c.software.dpslab, dirty_state=True))),
             "software.dpslab.source_tree_sha256": lambda c: setattr(c, "software", replace(c.software, dpslab=replace(c.software.dpslab, source_tree_sha256="0" * 64))),
             "software.dpslab.source_inventory_method": lambda c: setattr(c, "software", replace(c.software, dpslab=replace(c.software.dpslab, source_inventory_method="other"))),
             "software.dpslab.source_inventory": lambda c: setattr(c, "software", replace(c.software, dpslab=replace(c.software.dpslab, source_inventory=(*c.software.dpslab.source_inventory, "other.py")))),
@@ -168,6 +167,13 @@ class ComparisonModelTests(unittest.TestCase):
             previous = _new_result(SPEC, f"frozen-{index}"); candidate = execution_transition_candidate(previous, "running", "start")
             mutation(candidate)
             with self.subTest(path=path_name): self._assert_logical_rejection(previous, candidate, f"frozen-{index}")
+        for dirty_state, mutated_dirty_state in ((False, True), (True, False), (None, False)):
+            previous = _new_result(SPEC, f"frozen-dirty-{dirty_state}")
+            previous.software = replace(previous.software, dpslab=replace(previous.software.dpslab, dirty_state=dirty_state))
+            candidate = execution_transition_candidate(previous, "running", "start")
+            candidate.software = replace(candidate.software, dpslab=replace(candidate.software.dpslab, dirty_state=mutated_dirty_state))
+            with self.subTest(path="software.dpslab.dirty_state", original=dirty_state):
+                self._assert_logical_rejection(previous, candidate, f"frozen-dirty-{dirty_state}")
 
     def test_exhaustive_previous_event_history_matrix_for_all_global_transitions(self) -> None:
         transitions = (("ready", "blocked"), ("ready", "running"), ("running", "completed"), ("running", "inconclusive"), ("running", "failed_protocol"))
