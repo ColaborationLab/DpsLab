@@ -1,0 +1,114 @@
+name: DpsLab CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  policy:
+    name: Policy and contract
+    runs-on: windows-latest
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.13.14
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: 3.13.14
+      - name: Validate workflow policy
+        run: |
+          $output = & python -m unittest tools.tests.test_github_automation -v 2>&1 | Tee-Object -FilePath policy.log
+          $exitCode = $LASTEXITCODE
+          @{ lane = "policy"; exit_code = $exitCode; conclusion = $(if ($exitCode -eq 0) { "passed" } else { "failed" }) } |
+            ConvertTo-Json | Set-Content -Encoding utf8 policy-summary.json
+          exit $exitCode
+      - name: Upload policy evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dpslab-policy-evidence
+          path: |
+            policy.log
+            policy-summary.json
+          retention-days: 7
+          if-no-files-found: error
+
+  tools-tests:
+    name: Tools tests
+    runs-on: windows-latest
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.13.14
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: 3.13.14
+      - name: Run tools tests
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          $output = & python -m unittest discover -s tools/tests -v 2>&1 | Tee-Object -FilePath tools-tests.log
+          $exitCode = $LASTEXITCODE
+          @{ lane = "tools-tests"; exit_code = $exitCode; conclusion = $(if ($exitCode -eq 0) { "passed" } else { "failed" }) } |
+            ConvertTo-Json | Set-Content -Encoding utf8 tools-tests-summary.json
+          exit $exitCode
+      - name: Upload tools evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dpslab-tools-evidence
+          path: |
+            tools-tests.log
+            tools-tests-summary.json
+          retention-days: 7
+          if-no-files-found: error
+
+  functional-suite:
+    name: Functional suite
+    runs-on: windows-latest
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.13.14
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: 3.13.14
+      - name: Run full functional suite
+        working-directory: desktop-app
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          $output = & python -m unittest discover -s tests -v 2>&1 | Tee-Object -FilePath functional-suite.log
+          $exitCode = $LASTEXITCODE
+          @{ lane = "functional-suite"; exit_code = $exitCode; conclusion = $(if ($exitCode -eq 0) { "passed" } else { "failed" }) } |
+            ConvertTo-Json | Set-Content -Encoding utf8 functional-suite-summary.json
+          exit $exitCode
+      - name: Upload functional evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dpslab-functional-evidence
+          path: |
+            desktop-app/functional-suite.log
+            desktop-app/functional-suite-summary.json
+          retention-days: 7
+          if-no-files-found: error

@@ -1,0 +1,114 @@
+"""Synthetic contract tests for GitHub Automation 0.1."""
+
+from __future__ import annotations
+
+import json
+import re
+import unittest
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[2]
+WORKFLOW = ROOT / ".github" / "workflows" / "dpslab-ci.yml"
+NEXT_TASK = ROOT / "docs" / "NEXT_TASK.md"
+DOCUMENTATION = ROOT / "docs" / "GITHUB_AUTOMATION.md"
+
+CHECKOUT_SHA = "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
+SETUP_PYTHON_SHA = "a309ff8b426b58ec0e2a45f0f869d46889d02405"
+UPLOAD_ARTIFACT_SHA = "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+
+
+def contract() -> dict[str, object]:
+    text = NEXT_TASK.read_text(encoding="utf-8")
+    match = re.search(
+        r"<!-- DPSLAB_TASK_CONTRACT_BEGIN -->\s*```json\s*(\{.*?\})\s*```\s*"
+        r"<!-- DPSLAB_TASK_CONTRACT_END -->",
+        text,
+        re.DOTALL,
+    )
+    if match is None:
+        raise AssertionError("active contract is missing")
+    return json.loads(match.group(1))
+
+
+class GitHubAutomationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.workflow = WORKFLOW.read_text(encoding="utf-8")
+
+    def test_exact_triggers_and_no_pull_request_target(self) -> None:
+        self.assertRegex(self.workflow, r"(?m)^  pull_request:$")
+        self.assertRegex(self.workflow, r"(?m)^  workflow_dispatch:$")
+        self.assertRegex(self.workflow, r"(?m)^  push:$")
+        self.assertEqual(self.workflow.count("      - main"), 2)
+        self.assertNotIn("pull_request_target", self.workflow)
+
+    def test_global_permissions_are_read_only(self) -> None:
+        self.assertRegex(
+            self.workflow,
+            r"(?m)^permissions:\n  contents: read\n\ndefaults:",
+        )
+        self.assertNotRegex(self.workflow, r"(?m)^[ \t]+permissions:")
+
+    def test_host_python_and_lanes_are_exact(self) -> None:
+        self.assertEqual(self.workflow.count("runs-on: windows-latest"), 3)
+        self.assertEqual(self.workflow.count("python-version: 3.13.14"), 3)
+        for job in ("policy", "tools-tests", "functional-suite"):
+            self.assertRegex(self.workflow, rf"(?m)^  {re.escape(job)}:$")
+        self.assertIn("PYTHONPATH: src", self.workflow)
+        self.assertIn("python -m unittest discover -s tests -v", self.workflow)
+
+    def test_actions_are_pinned_and_checkout_drops_credentials(self) -> None:
+        expected = {
+            f"actions/checkout@{CHECKOUT_SHA}": 3,
+            f"actions/setup-python@{SETUP_PYTHON_SHA}": 3,
+            f"actions/upload-artifact@{UPLOAD_ARTIFACT_SHA}": 3,
+        }
+        for reference, count in expected.items():
+            self.assertEqual(self.workflow.count(reference), count)
+        self.assertNotRegex(self.workflow, r"uses:\s+actions/[^@\s]+@v\d")
+        self.assertEqual(self.workflow.count("persist-credentials: false"), 3)
+
+    def test_forbidden_capabilities_are_absent(self) -> None:
+        lowered = self.workflow.lower()
+        for forbidden in (
+            "secrets.", "self-hosted", "quality_gate.py", "simulationcraft",
+            "simc.exe", "results/runs", "results/comparisons",
+        ):
+            self.assertNotIn(forbidden, lowered)
+
+    def test_artifacts_are_minimal_and_retained_seven_days(self) -> None:
+        self.assertEqual(self.workflow.count("retention-days: 7"), 3)
+        self.assertEqual(self.workflow.count("if: ${{ always() }}"), 3)
+        self.assertEqual(self.workflow.count(".log"), 6)
+        self.assertEqual(self.workflow.count("summary.json"), 6)
+
+    def test_active_contract_has_closed_scope(self) -> None:
+        active = contract()
+        self.assertEqual(active["task_id"], "dpslab_github_automation_0_1")
+        self.assertEqual(active["baseline_commit"], "6bff15c2d6b03c96a65ed520ca4f800161d53d2c")
+        self.assertEqual(
+            active["scope"]["allowed_paths"],
+            [
+                ".github/workflows/dpslab-ci.yml",
+                "docs/GITHUB_AUTOMATION.md",
+                "docs/NEXT_TASK.md",
+                "tools/tests/test_github_automation.py",
+            ],
+        )
+        self.assertFalse(active["scope"]["allow_deletions"])
+        self.assertFalse(active["scope"]["allow_renames"])
+
+    def test_documentation_preserves_authority_boundary(self) -> None:
+        documentation = DOCUMENTATION.read_text(encoding="utf-8")
+        for phrase in (
+            "does not approve a\nchange",
+            "never invokes `tools/quality_gate.py`",
+            "seven days",
+            "Branch protection and rulesets",
+        ):
+            self.assertIn(phrase, documentation)
+
+
+if __name__ == "__main__":
+    unittest.main()
