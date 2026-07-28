@@ -48,7 +48,9 @@ class AdapterMemberOutcome:
 
 
 RunnerBoundary = Callable[..., RunResult]
-ALLOWED_EXECUTABLE_SOURCES = frozenset({"explicit", "environment", "local_config", "test"})
+ALLOWED_EXECUTABLE_SOURCES = frozenset(
+    {"explicit", "explicit_cli", "environment", "local_config", "test"}
+)
 REQUIRED_ARTIFACT_KINDS = frozenset({"metadata", "simc_json", "stdout", "stderr", "summary", "effective_profile"})
 
 

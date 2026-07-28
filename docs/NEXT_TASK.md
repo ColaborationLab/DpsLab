@@ -1,6 +1,131 @@
 # Next Task — DpsLab
 
-## Active implementation authorization — SimulationCraft identity manifest 0.1
+## Active implementation authorization — Comparison execution bridge 0.1
+
+Daniel authorized autonomous continuation on 2026-07-28. This block implements
+only the closed bridge between the already-audited readiness boundary and the
+simulated comparison protocol. Implementation and tests must not invoke
+SimulationCraft or create repository runs.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "comparison_execution_bridge_0_1",
+  "title": "Closed operational bridge for the frozen A/B comparison",
+  "baseline_commit": "7fe6bf1ad7f9ea49b2e09e1b0d460738bba29a6d",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "comparison_execution_bridge_0_1-20260728-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-28T10:15:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/comparison_execution.py",
+      "desktop-app/src/dpslab/comparison_adapter.py",
+      "desktop-app/src/dpslab/comparator.py",
+      "desktop-app/src/dpslab/__main__.py",
+      "desktop-app/tests/test_comparison_execution.py",
+      "desktop-app/tests/test_comparison_adapter.py",
+      "desktop-app/tests/test_comparator.py",
+      "desktop-app/tests/test_comparison_cli.py",
+      "desktop-app/tests/test_comparison_member_transactions.py",
+      "desktop-app/tests/test_comparison_models.py",
+      "desktop-app/tests/test_planned_member.py",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/comparison_execution_bridge_0_1/implementation.json",
+      ".dpslab/quality-gates/comparison_execution_bridge_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_comparison_*.py",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 255,
+    "minimum_test_count": 267
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "scenarios/st_lightmovement_300s_v1.toml": "93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "comparisons/simulationcraft_identity_manifest_0_1.json": "0a305a5991de0d3c1c4aafbb1756351b6643366a663f532877d6e137b69542eb"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the twelve authorized versioned paths in the delta",
+    "readiness software identity is injected without recapture",
+    "all preconditions pass before exclusive output creation",
+    "the bridge delegates exactly once to comparator orchestration",
+    "profiles preserve every byte outside the single neck line",
+    "explicit_cli is accepted only with exact SimulationCraft identity",
+    "CLI errors are static and contain no personal paths",
+    "at least 267 functional tests and all tools tests pass",
+    "protected hashes remain intact",
+    "simulationcraft_invoked remains false during implementation"
+  ],
+  "express_exclusions": [
+    "real SimulationCraft invocation",
+    "real comparison, run, or result creation",
+    "changes to frozen specifications, evidence, profiles, or scenarios",
+    "workflow, tools, GitHub settings, tags, or baselines",
+    "authorization of the later real execution block"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+## Completed implementation authorization — SimulationCraft identity manifest 0.1
 
 Daniel explicitly authorized `simulationcraft_identity_manifest_0_1` on
 2026-07-28 after three controlled probes demonstrated that
@@ -9,7 +134,7 @@ This block records Daniel's trust-on-first-use attestation for one exact
 executable SHA-256 and permits a fail-closed manifest fallback. It does not
 authorize another SimulationCraft invocation, comparison, run, or result.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -130,7 +255,7 @@ authorize another SimulationCraft invocation, comparison, run, or result.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed implementation authorization — Comparison readiness CLI 0.1
 

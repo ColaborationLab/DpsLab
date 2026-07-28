@@ -58,6 +58,15 @@ class ComparisonAdapterTests(unittest.TestCase):
         self.assertEqual(outcome.run_id, self.request.planned_run_id)
         self.assertEqual(outcome.mean_dps, 100000.0)
 
+    def test_explicit_cli_is_an_authorized_executable_source(self) -> None:
+        identity = SimulationCraftIdentity(
+            "1205-01", "a81c39d", "a" * 64
+        )
+        self.assertEqual(
+            validate_simc_identity(identity, identity, "explicit_cli"),
+            (),
+        )
+
     def test_parameter_mismatch_blocks_before_runner(self) -> None:
         called = False
         def runner(*args, **kwargs):

@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from dpslab.comparator import MemberPreparation, orchestrate, validate_analysis_preconditions
 from dpslab.comparison_adapter import ComparisonMemberExecutionResponse
+from dpslab.comparison_environment import software_record
 from dpslab.comparison_models import EffectiveParameters, InvocationRecord, MemberDps, MemberIntegrity, RunArtifactReference, SimulationCraftIdentity, StructuredError, utc_now
 from dpslab.comparison_spec import load_comparison_spec
 from dpslab.comparison_stats import ComparisonAnalysisError
@@ -93,7 +94,7 @@ class ComparatorTests(unittest.TestCase):
 
     def _orchestrate(self, run, *, time=None, prepare=None, analyzer=None):
         selected = time or self.time
-        kwargs = {"reserve_member": self._reserve, "prepare_member": prepare or self._prepare, "clock": selected.clock, "sleeper": selected.sleep}
+        kwargs = {"reserve_member": self._reserve, "prepare_member": prepare or self._prepare, "software": software_record(ROOT), "clock": selected.clock, "sleeper": selected.sleep}
         if analyzer is not None:
             kwargs["analyzer"] = analyzer
         return orchestrate(SPEC, "execution", self.output, run, **kwargs)
@@ -116,7 +117,7 @@ class ComparatorTests(unittest.TestCase):
         if terminal == "failed_protocol":
             def prepare(plan, reservation): effects.append(("prepare", plan.block_index)); DistinguishableStore.timeline.append("prepare"); raise RuntimeError("preparation")
         with patch("dpslab.comparator.ComparisonResultStore", DistinguishableStore):
-            result = orchestrate(SPEC, "execution", self.output, run, reserve_member=reserve, prepare_member=prepare, analyzer=analyzer, clock=self.time.clock, sleeper=self.time.sleep)
+            result = orchestrate(SPEC, "execution", self.output, run, reserve_member=reserve, prepare_member=prepare, software=software_record(ROOT), analyzer=analyzer, clock=self.time.clock, sleeper=self.time.sleep)
         return result, DistinguishableStore.instances[-1], effects
 
     def test_comparator_adopts_distinguishable_confirmed_objects_for_real_global_routes(self) -> None:
@@ -154,7 +155,7 @@ class ComparatorTests(unittest.TestCase):
                 return self._response(plan, reservation, 100000 + plan.block_index + (1000 if plan.arm == "b" else 0))
             def analyzer(*args, **kwargs): effects.append("analyze"); return self._fixed_stats("inconclusive" if failed_status == "inconclusive" else "winner_b")
             with self.subTest(status=failed_status), patch("dpslab.comparator.ComparisonResultStore", DistinguishableStore), self.assertRaisesRegex(RuntimeError, f"commit failed:{failed_status}"):
-                orchestrate(SPEC, "execution", self.output, run, reserve_member=reserve, prepare_member=prepare, analyzer=analyzer, clock=self.time.clock, sleeper=self.time.sleep)
+                orchestrate(SPEC, "execution", self.output, run, reserve_member=reserve, prepare_member=prepare, software=software_record(ROOT), analyzer=analyzer, clock=self.time.clock, sleeper=self.time.sleep)
             store = DistinguishableStore.instances[-1]; failed = store.commits[-1]
             self.assertEqual(failed[0], failed_status); self.assertEqual(failed[1], failed[3]); self.assertIsNot(failed[1], failed[2])
             self.assertNotIn(failed_status, store.confirmed_by_status); self.assertEqual(store.generic_commit_calls, 0)
@@ -288,6 +289,76 @@ class ComparatorTests(unittest.TestCase):
         self.assertTrue(all(member.reservation.status == "abandoned" for member in members))
         self.assertTrue(all(member.invocation.status == "failed_before_start" for member in members))
 
+    def test_reservation_failure_is_durably_failed_protocol(self) -> None:
+        def reserve(_plan):
+            raise OSError("private path")
+
+        def run(_plan, _reservation):
+            self.fail("runner must not start")
+
+        result = orchestrate(
+            SPEC,
+            "execution",
+            self.output,
+            run,
+            reserve_member=reserve,
+            prepare_member=self._prepare,
+            software=software_record(ROOT),
+            clock=self.time.clock,
+            sleeper=self.time.sleep,
+        )
+        self.assertEqual(result.status, "failed_protocol")
+        self.assertEqual(result.blocks[0].status, "exhausted")
+        self.assertEqual(
+            [error.code for error in result.protocol_failures],
+            ["reservation_failed"],
+        )
+        document = __import__("json").loads(
+            self.output.read_text(encoding="utf-8")
+        )
+        self.assertEqual(document["status"], "failed_protocol")
+        self.assertNotIn("private path", self.output.read_text(encoding="utf-8"))
+
+    def test_invalid_reservation_contract_is_durably_failed(self) -> None:
+        cases = (
+            ("object", object()),
+            (
+                "owner",
+                reserve_run(
+                    Path(self.temp.name) / "wrong-owner",
+                    comparison_execution_id="other",
+                    member_id="other",
+                ),
+            ),
+            (
+                "consumed",
+                reserve_run(Path(self.temp.name) / "consumed"),
+            ),
+        )
+        cases[2][1].consume(
+            comparison_execution_id="standalone", member_id="standalone"
+        )
+        for label, candidate in cases:
+            with self.subTest(label=label):
+                output = Path(self.temp.name) / f"{label}.json"
+                result = orchestrate(
+                    SPEC,
+                    f"execution-{label}",
+                    output,
+                    lambda *_args: self.fail("runner must not start"),
+                    reserve_member=lambda _plan, value=candidate: value,
+                    prepare_member=self._prepare,
+                    software=software_record(ROOT),
+                    clock=self.time.clock,
+                    sleeper=self.time.sleep,
+                )
+                self.assertEqual(result.status, "failed_protocol")
+                self.assertEqual(
+                    result.protocol_failures[0].code,
+                    "reservation_failed",
+                )
+        self.assertEqual(cases[1][1].status, "abandoned")
+
     def test_injected_analysis_failure_is_failed_protocol_without_classification(self) -> None:
         def run(plan, reservation):
             reservation.consume(comparison_execution_id=plan.comparison_execution_id, member_id=plan.member_id)
@@ -297,6 +368,22 @@ class ComparatorTests(unittest.TestCase):
         result = self._orchestrate(run, analyzer=broken)
         self.assertEqual(result.status, "failed_protocol")
         self.assertIsNone(result.analysis.final_classification)
+
+    def test_analysis_failure_does_not_persist_private_exception_text(self) -> None:
+        def run(plan, reservation):
+            reservation.consume(
+                comparison_execution_id=plan.comparison_execution_id,
+                member_id=plan.member_id,
+            )
+            return self._response(plan, reservation, 100000 + plan.block_index)
+
+        def broken(*_args, **_kwargs):
+            raise RuntimeError("C:/Users/private/secret")
+
+        result = self._orchestrate(run, analyzer=broken)
+        serialized = self.output.read_text(encoding="utf-8")
+        self.assertEqual(result.status, "failed_protocol")
+        self.assertNotIn("C:/Users/private", serialized)
 
     def test_analysis_is_not_called_before_eight_valid_blocks(self) -> None:
         calls = []

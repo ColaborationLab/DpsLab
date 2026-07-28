@@ -11,6 +11,10 @@ from pathlib import Path
 from typing import Sequence
 
 from .comparison_environment import software_record
+from .comparison_execution import (
+    ComparisonExecutionError,
+    execute_frozen_comparison,
+)
 from .comparison_readiness import (
     ComparisonReadinessError,
     assess_comparison_readiness,
@@ -81,6 +85,22 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
         type=float,
         default=30.0,
         help="Timeout de la sonda de identidad en segundos",
+    )
+    comparison_execute = commands.add_parser(
+        "comparison-execute",
+        help="Ejecuta el protocolo A/B congelado después de readiness",
+    )
+    comparison_execute.add_argument(
+        "--comparison",
+        type=Path,
+        default=root / "comparisons" / "flasil_neck_50228_vs_249368_v1.toml",
+    )
+    comparison_execute.add_argument("--simc-exe", type=Path, required=True)
+    comparison_execute.add_argument(
+        "--probe-timeout", type=float, default=30.0
+    )
+    comparison_execute.add_argument(
+        "--confirm-comparison-id", required=True
     )
     return parser.parse_args(argv)
 
@@ -198,6 +218,68 @@ def _comparison_ready(args: argparse.Namespace) -> int:
     return 0
 
 
+def _comparison_execute(args: argparse.Namespace) -> int:
+    if (
+        not math.isfinite(args.probe_timeout)
+        or args.probe_timeout <= 0
+        or args.probe_timeout > 60.0
+    ):
+        raise ComparisonExecutionError("comparison_probe_timeout_invalid")
+    try:
+        root = project_root()
+        spec = load_comparison_spec(args.comparison, root=root)
+        scenario = load_scenario(spec.scenario)
+        values = scenario.scenario
+        config = resolve_simulation_config(
+            explicit_simc_exe=args.simc_exe,
+            root=root,
+            timeout_seconds=spec.protocol.timeout_seconds,
+            generate_html=False,
+            runs_dir=root / "results" / "runs",
+            threads=spec.protocol.threads,
+            iterations=spec.protocol.iterations_per_run,
+            max_time=values.max_time,
+            vary_combat_length=values.vary_combat_length,
+            fight_style=values.fight_style,
+            desired_targets=values.desired_targets,
+            target_error=None,
+            scenario=scenario,
+            variant=None,
+            seed=None,
+        )
+        readiness = assess_comparison_readiness(
+            spec,
+            config,
+            software_record(root),
+            root=root,
+            probe_timeout_seconds=args.probe_timeout,
+        )
+        result = execute_frozen_comparison(
+            spec,
+            config,
+            readiness,
+            confirmation=args.confirm_comparison_id,
+            root=root,
+        )
+    except ComparisonExecutionError:
+        raise
+    except Exception:
+        raise ComparisonExecutionError(
+            "comparison_execution_setup_failed"
+        ) from None
+    print(
+        json.dumps(
+            {
+                "comparison_execution_id": result.comparison_execution_id,
+                "comparison_id": result.comparison_id,
+                "status": result.status,
+            },
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _arguments(argv)
     try:
@@ -207,9 +289,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _simulate(args)
         if args.command == "comparison-ready":
             return _comparison_ready(args)
+        if args.command == "comparison-execute":
+            return _comparison_execute(args)
         return _summarize(args)
     except (
         ComparisonReadinessError,
+        ComparisonExecutionError,
         ComparisonSpecError,
         ConfigurationError,
         ProfileParseError,

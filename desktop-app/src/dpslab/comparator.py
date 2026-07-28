@@ -10,11 +10,10 @@ from time import monotonic, sleep
 from typing import Callable
 
 from .comparison_adapter import ComparisonMemberExecutionResponse
-from .comparison_environment import software_record
 from .comparison_models import (
     AnalysisDiagnostics, ComparisonAnalysis, ComparisonBlock, ComparisonInputs,
     ComparisonMember, ComparisonNormalization, ComparisonPrecision,
-    ComparisonProtocol, ComparisonResult, ComparisonValidation,
+    ComparisonProtocol, ComparisonResult, ComparisonSoftware, ComparisonValidation,
     EffectiveParameters, InputFile, InvocationRecord, MemberDps, MemberIntegrity, PairAttempt,
     PairedSensitivityResult, PlannedParameters, PrimaryAnalysisResult,
     RunArtifactReference, RunArtifactSet, RunReservationRecord, SimulationCraftIdentity,
@@ -68,12 +67,16 @@ def _warning(code: str, level: str = "advisory_warning") -> StructuredWarning:
     return StructuredWarning(code, code.replace("_", " "), level)
 
 
-def _new_result(spec: ComparisonSpec, execution_id: str) -> ComparisonResult:
+def _new_result(
+    spec: ComparisonSpec,
+    execution_id: str,
+    software: ComparisonSoftware,
+) -> ComparisonResult:
     root = spec.source_file.parents[1]
     evidence = InputFile(spec.evidence_manifest.relative_to(root).as_posix(), spec.evidence_sha256, True)
     result = ComparisonResult(
         spec.comparison_id, execution_id, spec.source_file.name, spec.source_sha256,
-        software_record(root),
+        software,
         ComparisonInputs(
             InputFile(spec.base_profile.relative_to(root).as_posix(), spec.base_profile_sha256, True),
             InputFile(spec.scenario.relative_to(root).as_posix(), spec.scenario_sha256, True), evidence,
@@ -89,7 +92,8 @@ def _new_result(spec: ComparisonSpec, execution_id: str) -> ComparisonResult:
 
 def _analysis_failure(result: ComparisonResult, store: ComparisonResultStore, exc: Exception, stage: str) -> ComparisonResult:
     store_analysis(result, ComparisonAnalysis(status="failed"))
-    append_protocol_failure(result, StructuredError(f"statistical_error:{type(exc).__name__}", str(exc), stage))
+    code = f"statistical_error:{type(exc).__name__}"
+    append_protocol_failure(result, StructuredError(code, code, stage))
     store.write(result)
     result = store.commit_execution(result, execution_transition_candidate(result, "failed_protocol", "statistical_analysis_failed"))
     return result
@@ -142,11 +146,12 @@ def orchestrate(
     run_member: Callable[[MemberPlan, RunReservation], ComparisonMemberExecutionResponse], *,
     reserve_member: Callable[[MemberPlan], RunReservation],
     prepare_member: Callable[[MemberPlan, RunReservation], MemberPreparation],
+    software: ComparisonSoftware,
     analyzer: Callable[..., object] = analyze,
     clock: Callable[[], float] = monotonic,
     sleeper: Callable[[float], None] = sleep,
 ) -> ComparisonResult:
-    result = _new_result(spec, execution_id)
+    result = _new_result(spec, execution_id, software)
     store = ComparisonResultStore(output); result = store.create(result)
     result = store.commit_execution(result, execution_transition_candidate(result, "running", "protocol_started"))
     a_values: list[float] = []; b_values: list[float] = []; used_runs: set[str] = set(); selected_runs: list[str] = []
@@ -164,9 +169,53 @@ def orchestrate(
                 arm = upper_arm.lower(); spec_arm = spec.arm_a if arm == "a" else spec.arm_b
                 member_id = f"{attempt_id}:{arm}"
                 base_plan = MemberPlan(spec.comparison_id, execution_id, block.block_index, block.seed, block.planned_order, arm, position, attempt_number, spec_arm.item_id, member_id)
-                reservation = reserve_member(base_plan)
-                if reservation.comparison_execution_id != execution_id or reservation.member_id != member_id:
-                    raise ValueError("reservation_owner_mismatch")
+                try:
+                    reservation = reserve_member(base_plan)
+                    if (
+                        not isinstance(reservation, RunReservation)
+                        or reservation.status != "reserved"
+                        or reservation.comparison_execution_id != execution_id
+                        or reservation.member_id != member_id
+                    ):
+                        if (
+                            isinstance(reservation, RunReservation)
+                            and reservation.status == "reserved"
+                        ):
+                            reservation.abandon(
+                                comparison_execution_id=reservation.comparison_execution_id,
+                                member_id=reservation.member_id,
+                            )
+                        raise ValueError("reservation_contract_invalid")
+                except Exception:
+                    transition(
+                        attempt,
+                        "attempt",
+                        attempt_id,
+                        "invalid",
+                        "reservation_failed",
+                        result,
+                    )
+                    transition(
+                        block,
+                        "block",
+                        block_id,
+                        "exhausted",
+                        "reservation_failed",
+                        result,
+                    )
+                    append_protocol_failure(
+                        result,
+                        _error("reservation_failed", "reservation"),
+                    )
+                    store.write(result)
+                    return store.commit_execution(
+                        result,
+                        execution_transition_candidate(
+                            result,
+                            "failed_protocol",
+                            "reservation_failed",
+                        ),
+                    )
                 plan = replace(base_plan, planned_run_id=reservation.run_id)
                 reservation_record = RunReservationRecord(reservation.run_id, execution_id, member_id, sha256(reservation.reservation_token.encode()).hexdigest(), reservation.status, reservation.created_at)
                 member = ComparisonMember(

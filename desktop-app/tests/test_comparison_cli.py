@@ -9,6 +9,7 @@ from unittest.mock import Mock, patch
 
 from dpslab.__main__ import _arguments, main
 from dpslab.comparison_readiness import ComparisonReadinessError
+from dpslab.comparison_execution import ComparisonExecutionError
 
 
 class ComparisonReadinessCliTests(unittest.TestCase):
@@ -59,6 +60,23 @@ class ComparisonReadinessCliTests(unittest.TestCase):
         )
         self.assertIsNone(args.simc_exe)
         self.assertEqual(args.probe_timeout, 30.0)
+
+    def test_execution_arguments_require_explicit_confirmation(self) -> None:
+        args = _arguments(
+            [
+                "comparison-execute",
+                "--simc-exe",
+                "C:/private/simc.exe",
+                "--confirm-comparison-id",
+                "flasil_neck_50228_vs_249368_v1",
+            ]
+        )
+        self.assertEqual(args.command, "comparison-execute")
+        self.assertEqual(args.probe_timeout, 30.0)
+        self.assertEqual(
+            args.confirm_comparison_id,
+            "flasil_neck_50228_vs_249368_v1",
+        )
 
     @patch("subprocess.Popen", side_effect=AssertionError("process_forbidden"))
     @patch("dpslab.__main__.assess_comparison_readiness")
@@ -184,6 +202,32 @@ class ComparisonReadinessCliTests(unittest.TestCase):
         self.assertEqual(
             stderr.getvalue(),
             "error: comparison_readiness_setup_failed\n",
+        )
+        self.assertNotIn(private_path, stderr.getvalue())
+
+    @patch("dpslab.__main__._comparison_execute")
+    def test_execution_error_channel_is_static_and_sanitized(
+        self, command: Mock
+    ) -> None:
+        command.side_effect = ComparisonExecutionError(
+            "comparison_execution_setup_failed"
+        )
+        private_path = "C:/Users/private/simc.exe"
+        stderr = io.StringIO()
+        with patch("sys.stderr", stderr):
+            result = main(
+                [
+                    "comparison-execute",
+                    "--simc-exe",
+                    private_path,
+                    "--confirm-comparison-id",
+                    "flasil_neck_50228_vs_249368_v1",
+                ]
+            )
+        self.assertEqual(result, 1)
+        self.assertEqual(
+            stderr.getvalue(),
+            "error: comparison_execution_setup_failed\n",
         )
         self.assertNotIn(private_path, stderr.getvalue())
 

@@ -9,7 +9,8 @@ from hashlib import sha256
 from pathlib import Path
 from unittest.mock import patch
 
-from dpslab.comparator import _new_result
+from dpslab.comparator import _new_result as _new_result_impl
+from dpslab.comparison_environment import software_record
 from dpslab.comparison_models import (
     ComparisonResultError,
     PairAttempt,
@@ -37,6 +38,13 @@ SPEC = load_comparison_spec(
     ROOT / "comparisons/flasil_neck_50228_vs_249368_v1.toml",
     root=ROOT,
 )
+SOFTWARE = software_record(ROOT)
+
+
+def _new_result(spec, execution_id):
+    return _new_result_impl(spec, execution_id, SOFTWARE)
+
+
 PREVIOUS_TIME = "2026-07-16T00:00:00Z"
 EVENT_TIME = "2026-07-16T00:00:01Z"
 LATER_TIME = "2026-07-16T00:00:02Z"
