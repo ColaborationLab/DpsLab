@@ -88,7 +88,7 @@ class ComparisonExecutionBridgeTests(unittest.TestCase):
         self.assertEqual(arguments.args[1], EXECUTION_ID)
         self.assertEqual(
             arguments.args[2],
-            self.root
+            self.root.resolve()
             / "results"
             / "comparisons"
             / EXECUTION_ID

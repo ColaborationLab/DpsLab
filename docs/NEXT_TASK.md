@@ -1,13 +1,127 @@
 # Next Task — DpsLab
 
-## Active implementation authorization — Comparison execution bridge 0.1
+## Active implementation authorization — Comparison execution bridge CI fix 0.1
+
+Daniel authorized autonomous continuation on 2026-07-28. GitHub Actions run
+`30370837485` demonstrated one Windows-only test defect: the runner exposes its
+temporary directory through an 8.3 alias while the bridge deliberately resolves
+the root before orchestration. This correction may align only that assertion
+with the production path-normalization contract.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "comparison_execution_bridge_ci_fix_0_1",
+  "title": "Portable Windows assertion for the comparison execution bridge",
+  "baseline_commit": "d8ef26c8ed92d9528f861e5f24891a58251d285d",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "comparison_execution_bridge_ci_fix_0_1-20260728-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-28T12:30:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/tests/test_comparison_execution.py",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/comparison_execution_bridge_ci_fix_0_1/implementation.json",
+      ".dpslab/quality-gates/comparison_execution_bridge_ci_fix_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_comparison_execution.py",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 267,
+    "minimum_test_count": 267
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "scenarios/st_lightmovement_300s_v1.toml": "93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "comparisons/simulationcraft_identity_manifest_0_1.json": "0a305a5991de0d3c1c4aafbb1756351b6643366a663f532877d6e137b69542eb",
+    "desktop-app/src/dpslab/comparison_execution.py": "bedfd9109c64ef33849337cf6f60639b30d2de3e6bd84eaf977e72572ca74084"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the two authorized versioned paths in the delta",
+    "the test compares the output path against the resolved temporary root",
+    "no production behavior or expectation is relaxed",
+    "the focused test, at least 267 functional tests, and all tools tests pass",
+    "protected hashes remain intact",
+    "simulationcraft_invoked remains false"
+  ],
+  "express_exclusions": [
+    "production code",
+    "workflow or tools changes",
+    "real SimulationCraft invocation",
+    "real comparison, run, or result creation",
+    "changes to frozen specifications, evidence, profiles, or scenarios"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+## Completed implementation authorization — Comparison execution bridge 0.1
 
 Daniel authorized autonomous continuation on 2026-07-28. This block implements
 only the closed bridge between the already-audited readiness boundary and the
 simulated comparison protocol. Implementation and tests must not invoke
 SimulationCraft or create repository runs.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -123,7 +237,7 @@ SimulationCraft or create repository runs.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed implementation authorization — SimulationCraft identity manifest 0.1
 
