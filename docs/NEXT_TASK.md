@@ -1,14 +1,145 @@
 # Next Task — DpsLab
 
-## Active implementation authorization — Comparison readiness bridge 0.1
+## Active implementation authorization — Comparison readiness CLI 0.1
+
+Daniel authorized autonomous continuation on 2026-07-28. This block exposes
+the audited readiness bridge through a narrow command-line entry point that
+reports only portable, non-sensitive readiness evidence. Tests inject every
+collaborator and forbid process creation. Implementing the command does not
+authorize invoking SimulationCraft; a real probe still requires a separate,
+explicit execution authorization.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "comparison_readiness_cli_0_1",
+  "title": "Portable comparison readiness CLI",
+  "baseline_commit": "a66e96a1001ff2fbc37e565a14305ee0c053fbb2",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "comparison_readiness_cli_0_1-20260728-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-28T02:01:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/__main__.py",
+      "desktop-app/tests/test_comparison_cli.py",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/comparison_readiness_cli_0_1/implementation.json",
+      ".dpslab/quality-gates/comparison_readiness_cli_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/dpslab/comparison_readiness.py",
+      "desktop-app/src/dpslab/comparison_preflight.py",
+      "desktop-app/src/dpslab/simc_identity.py",
+      "desktop-app/src/dpslab/comparison_environment.py",
+      "desktop-app/src/dpslab/comparison_spec.py",
+      "desktop-app/src/dpslab/config.py",
+      "desktop-app/src/dpslab/runner.py",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "comparisons/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_comparison_cli.py",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 247,
+    "minimum_test_count": 251
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "desktop-app/src/dpslab/comparison_readiness.py": "e2a4ce520b88d9df7ba1dda96ff99e5af4c25bdb91c67411931a480f7cf14ab2",
+    "desktop-app/src/dpslab/comparison_preflight.py": "1282997a6190845876283f66ba13d92cd14bb6d79b57f62443608b0111e931a2",
+    "desktop-app/src/dpslab/simc_identity.py": "e243695b6802fd4a3bc2d9a273646d2da2d42a4e075c1445c8c8a03d6ec82c26",
+    "desktop-app/src/dpslab/comparison_environment.py": "8ce3ec80c2f88430f6ee97a2b55f91a50175e785a8adaa456f0102c78b6ed94e",
+    "desktop-app/src/dpslab/comparison_spec.py": "2974dc8cbe8480dbe9667ffe61b2758bc5edb95bc997f49af4c45f7cf8f238d4",
+    "desktop-app/src/dpslab/config.py": "a933de29661b8d06b6d6f1d1d89b2dc7d74e17c0b87d2d584891824c67c6b53b"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the three authorized versioned paths in the delta",
+    "one comparison-ready command composes frozen spec, scenario, exact protocol config, software identity, and the audited readiness bridge",
+    "the command emits deterministic JSON containing only portable readiness evidence and no personal paths",
+    "dependency failures use the existing CLI error channel and nonzero exit status",
+    "all focused tests inject collaborators and fail if any process starts",
+    "focused tests, at least 251 functional tests, and tools tests pass",
+    "protected hashes remain intact",
+    "no real SimulationCraft, comparison, commit, push, or remote mutation occurs during implementation"
+  ],
+  "express_exclusions": [
+    "real SimulationCraft invocation or readiness probe",
+    "real comparison, run reservation, or result creation",
+    "comparison orchestration, persistence, or retry scheduling",
+    "profiles, scenarios, variants, comparison specs, results, and local config",
+    "workflow, quality gate, tools, or GitHub settings changes",
+    "authorization of comparison execution or any later block"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+## Completed implementation authorization — Comparison readiness bridge 0.1
 
 Daniel authorized autonomous continuation on 2026-07-28. This block connects
 the independently audited SimulationCraft identity probe to the frozen
 comparison preflight through an injectable, fail-closed readiness boundary.
-Tests use only simulated collaborators; this authorization does not permit a
-real SimulationCraft invocation, run reservation, comparison, or result.
+Tests use only simulated collaborators. The audited implementation was
+published in `a66e96a1001ff2fbc37e565a14305ee0c053fbb2`, and GitHub Actions run
+`30336527406` passed all three lanes. The authorization is consumed and does
+not permit a real SimulationCraft invocation, run reservation, comparison, or
+result.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -129,7 +260,7 @@ real SimulationCraft invocation, run reservation, comparison, or result.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed implementation authorization — SimulationCraft identity probe 0.1
 

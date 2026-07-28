@@ -4,10 +4,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
+from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from typing import Sequence
 
+from .comparison_environment import software_record
+from .comparison_readiness import (
+    ComparisonReadinessError,
+    assess_comparison_readiness,
+)
+from .comparison_spec import ComparisonSpecError, load_comparison_spec
 from .config import ConfigurationError, project_root, resolve_simulation_config
 from .parser import ProfileParseError, parse_profile
 from .result_parser import ResultSummaryError, summarize_run
@@ -52,6 +60,28 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
     )
     summarize = commands.add_parser("summarize", help="Resume una ejecución existente")
     summarize.add_argument("run_dir", type=Path, help="Carpeta de la ejecución")
+
+    comparison_ready = commands.add_parser(
+        "comparison-ready",
+        help="Verifica la preparación portable de una comparación congelada",
+    )
+    comparison_ready.add_argument(
+        "--comparison",
+        type=Path,
+        default=root / "comparisons" / "flasil_neck_50228_vs_249368_v1.toml",
+        help="Contrato TOML de comparación congelado",
+    )
+    comparison_ready.add_argument(
+        "--simc-exe",
+        type=Path,
+        help="Ruta explícita a simc.exe",
+    )
+    comparison_ready.add_argument(
+        "--probe-timeout",
+        type=float,
+        default=30.0,
+        help="Timeout de la sonda de identidad en segundos",
+    )
     return parser.parse_args(argv)
 
 
@@ -98,6 +128,76 @@ def _summarize(args: argparse.Namespace) -> int:
     return 0
 
 
+def _comparison_ready(args: argparse.Namespace) -> int:
+    if (
+        not math.isfinite(args.probe_timeout)
+        or args.probe_timeout <= 0
+        or args.probe_timeout > 60.0
+    ):
+        raise ComparisonReadinessError("probe_timeout_invalid")
+    try:
+        root = project_root()
+        spec = load_comparison_spec(args.comparison, root=root)
+        scenario = load_scenario(spec.scenario)
+        values = scenario.scenario
+        config = resolve_simulation_config(
+            explicit_simc_exe=args.simc_exe,
+            root=root,
+            timeout_seconds=spec.protocol.timeout_seconds,
+            generate_html=False,
+            runs_dir=root / "results" / "runs",
+            threads=spec.protocol.threads,
+            iterations=spec.protocol.iterations_per_run,
+            max_time=values.max_time,
+            vary_combat_length=values.vary_combat_length,
+            fight_style=values.fight_style,
+            desired_targets=values.desired_targets,
+            target_error=None,
+            scenario=scenario,
+            variant=None,
+            seed=None,
+        )
+        readiness = assess_comparison_readiness(
+            spec,
+            config,
+            software_record(root),
+            root=root,
+            probe_timeout_seconds=args.probe_timeout,
+        )
+    except ComparisonReadinessError:
+        raise
+    except (
+        ComparisonSpecError,
+        ConfigurationError,
+        PackageNotFoundError,
+        ScenarioError,
+        OSError,
+    ):
+        raise ComparisonReadinessError(
+            "comparison_readiness_setup_failed"
+        ) from None
+    report = readiness.preflight
+    print(
+        json.dumps(
+            {
+                "base_profile_sha256": report.base_profile_sha256,
+                "comparison_id": report.comparison_id,
+                "comparison_spec_sha256": report.comparison_spec_sha256,
+                "evidence_manifest_sha256": report.evidence_manifest_sha256,
+                "executable_source": readiness.executable_source,
+                "portable_probe_argv": list(readiness.portable_probe_argv),
+                "ready": readiness.ready,
+                "runs_dir": report.runs_dir,
+                "scenario_sha256": report.scenario_sha256,
+                "simulationcraft_branch": readiness.simulationcraft_branch,
+            },
+            ensure_ascii=True,
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _arguments(argv)
     try:
@@ -105,8 +205,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _snapshot(args)
         if args.command == "simulate":
             return _simulate(args)
+        if args.command == "comparison-ready":
+            return _comparison_ready(args)
         return _summarize(args)
     except (
+        ComparisonReadinessError,
+        ComparisonSpecError,
         ConfigurationError,
         ProfileParseError,
         ResultSummaryError,
