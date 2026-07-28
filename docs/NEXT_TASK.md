@@ -1,16 +1,32 @@
 # Next Task — DpsLab
 
-## Active implementation authorization
+## Completed implementation authorization — Subblock 2.2.b2
 
 Daniel explicitly authorized continuation of Subblock 2.2.b2 and subsequently
 authorized the one additional CI-contract compatibility path on 2026-07-27.
-The active task is `planned_member_transactional_commit_0_1`.
+The completed task is `planned_member_transactional_commit_0_1`.
 
 The task is limited to durable, transactional persistence of the already
 approved pure planned-member candidate. It accepts the existing single-writer
 file model; it does not claim multiprocess compare-and-swap or locking.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+The authorization has been consumed. Implementation, independent audit,
+controlled commit and publication, and canonical CI verification are complete:
+
+- commit: `d8bc2406b6b9ea2acc46bf16e5b4811d01573243`;
+- GitHub Actions run: `30328581221`;
+- focused tests: 26/26;
+- related modules: 73/73;
+- functional suite: 219/219;
+- tools tests: 51/51;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+The machine-readable contract below preserves the authorization exactly as it
+existed during implementation. Its `authorized_for_implementation` value is
+historical evidence and does not authorize another edit, rerun, commit, push,
+real comparison, SimulationCraft invocation, or later block.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -125,7 +141,7 @@ file model; it does not claim multiprocess compare-and-swap or locking.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed implementation authorization
 
@@ -311,7 +327,7 @@ evidence does not authorize the next task.
 - Canonical formal baseline: `results/runs/20260715T072501.415324Z-95439dae`.
 - Subblock 2.2.b1 remains approved (`block_2_2_b1_approved`).
 - The A/B collar comparator has not executed a real comparison.
-- The current functional-suite baseline is 208/208 passing tests.
+- The current functional-suite baseline is 219/219 passing tests.
 - The Python 3.12 `updated_at` observation is closed by
   `comparison_timestamp_monotonicity_0_1`: logical timestamps now advance
   strictly, durable boundaries enforce the invariant, and local Python 3.12.13
@@ -321,7 +337,8 @@ evidence does not authorize the next task.
   `6bff15c2d6b03c96a65ed520ca4f800161d53d2c`.
 - GitHub Automation 0.1 is implemented, independently audited, published, and
   operational (`dpslab_github_automation_0_1_completed_and_operational`).
-- Subblock 2.2.b2 is now the active, narrowly authorized transactional
-  persistence task; it does not authorize execution of a real comparison.
-- `planned_member_transactional_commit_0_1` is the only active implementation
-  contract.
+- Subblock 2.2.b2 is implemented, independently audited, published, and
+  verified by canonical CI in
+  `d8bc2406b6b9ea2acc46bf16e5b4811d01573243`.
+- `planned_member_transactional_commit_0_1` is consumed; no implementation
+  contract is active and no real comparison is authorized.

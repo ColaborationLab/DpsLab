@@ -18,8 +18,12 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - Se implementaron auditorías semánticas, comparativas y profundas reproducibles.
 - El comparador A/B de collar schema 0.1 está implementado, pero no se ha
   ejecutado ni existe un `comparison_result` real.
-- El Subbloque 2.2.b1 está aprobado (`block_2_2_b1_approved`): el alta
-  planificada de miembros es pura, copy-on-write y no persistente.
+- El Subbloque 2.2.b1 permanece aprobado (`block_2_2_b1_approved`): el alta
+  planificada pura y copy-on-write conserva intacto su contrato.
+- El Subbloque 2.2.b2 está implementado, auditado y publicado en
+  `d8bc2406b6b9ea2acc46bf16e5b4811d01573243`: la persistencia transaccional
+  reutiliza el candidato puro, confirma el estado durable y mantiene
+  idempotencia sin escritura bajo el modelo single-writer declarado.
 - Automation Foundation fue implementada, auditada mediante independencia
   declarada y procedimental, y registrada en el commit
   `3828c098946f6842885fc520f841ef4fdb4e12af`
@@ -94,11 +98,15 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - El quality gate no autoriza ni invoca SimulationCraft y no amplía el alcance
   funcional de la tarea.
 - No aprobar ni iniciar automáticamente el bloque siguiente.
-- El Subbloque 2.2.b2 permanece como trabajo futuro candidato y no autorizado.
+- La autorización `planned_member_transactional_commit_0_1` está consumida;
+  GitHub Actions run `30328581221` aprobó Policy and contract, Tools tests y
+  Functional suite. Este cierre no autoriza ejecución real ni el bloque
+  siguiente.
 - El contrato de GitHub Automation 0.1 está consumido y se conserva en
   `docs/NEXT_TASK.md` como evidencia histórica legible por la CI; no autoriza
   nuevas mutaciones.
 - La autorización `comparison_timestamp_monotonicity_0_1` también está
-  consumida; su cierre no autoriza 2.2.b2 ni una ejecución de SimulationCraft.
+  consumida; su cierre no autoriza tareas posteriores ni una ejecución de
+  SimulationCraft.
 - Escalar a Daniel cualquier archivo adicional, eliminación, rename, cambio de
   alcance o excepción no incluida expresamente en el contrato autorizado.

@@ -18,7 +18,9 @@
   lanes. La observación intermitente posterior de Python 3.12 fue corregida,
   auditada y publicada en `b19fb6eae2a44240467cc8684adfd2733e09f0bb`;
   la verificación local pasó 213/213 y GitHub Actions run `30326263409`
-  aprobó sus tres lanes.
+  aprobó sus tres lanes. La persistencia transaccional 2.2.b2 fue publicada en
+  `d8bc2406b6b9ea2acc46bf16e5b4811d01573243`; la suite vigente pasó 219/219 y
+  GitHub Actions run `30328581221` aprobó sus tres lanes.
 - [x] GitHub Automation 0.1 implementada, auditada, publicada y operativa en
   `bf2db644bfebeb07246f8e967f39101a7aa3e77a`.
 
@@ -32,8 +34,8 @@
 - [x] Subbloque 2.2.a: identidad efímera de runs planificados.
 - [x] Subbloque 2.2.b1: alta planificada pura y no persistente de miembros
   (`block_2_2_b1_approved`).
-- [ ] Subbloque 2.2.b2: persistencia transaccional del alta planificada,
-  candidata no autorizada y pendiente de un contrato específico futuro.
+- [x] Subbloque 2.2.b2: persistencia transaccional del alta planificada,
+  auditada, publicada y verificada bajo modelo single-writer.
 - [ ] Ejecución real del experimento, sujeta a autorización independiente.
 
 ## Etapas posteriores no aprobadas

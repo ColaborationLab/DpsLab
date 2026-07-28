@@ -29,17 +29,16 @@ SETUP_PYTHON_SHA = "a309ff8b426b58ec0e2a45f0f869d46889d02405"
 UPLOAD_ARTIFACT_SHA = "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
 
 
-def contract() -> dict[str, object]:
+def historical_contracts() -> list[dict[str, object]]:
     text = NEXT_TASK.read_text(encoding="utf-8")
-    match = re.search(
-        r"<!-- DPSLAB_TASK_CONTRACT_BEGIN -->\s*```json\s*(\{.*?\})\s*```\s*"
-        r"<!-- DPSLAB_TASK_CONTRACT_END -->",
+    matches = re.findall(
+        r"<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->\s*"
+        r"```json\s*(\{.*?\})\s*```\s*"
+        r"<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->",
         text,
         re.DOTALL,
     )
-    if match is None:
-        raise AssertionError("active contract is missing")
-    return json.loads(match.group(1))
+    return [json.loads(match) for match in matches]
 
 
 class GitHubAutomationTests(unittest.TestCase):
@@ -146,20 +145,29 @@ class GitHubAutomationTests(unittest.TestCase):
         self.assertEqual(self.workflow.count(".log"), 6)
         self.assertEqual(self.workflow.count("summary.json"), 6)
 
-    def test_active_contract_is_rotatable_and_has_closed_scope(self) -> None:
-        active = contract()
-        self.assertRegex(active["task_id"], r"^[a-z0-9][a-z0-9_]*$")
-        self.assertRegex(active["baseline_commit"], r"^[0-9a-f]{40}$")
-        self.assertIn(
-            active["authorization"]["status"],
-            {"design_only", "authorized_for_implementation"},
+    def test_consumed_contract_is_historical_and_has_closed_scope(self) -> None:
+        text = NEXT_TASK.read_text(encoding="utf-8")
+        self.assertNotIn("<!-- DPSLAB_TASK_CONTRACT_BEGIN -->", text)
+        self.assertNotIn("<!-- DPSLAB_TASK_CONTRACT_END -->", text)
+
+        historical = historical_contracts()
+        self.assertEqual(len(historical), 2)
+        consumed = historical[0]
+        self.assertEqual(
+            consumed["task_id"],
+            "planned_member_transactional_commit_0_1",
         )
-        allowed = active["scope"]["allowed_paths"]
+        self.assertRegex(consumed["baseline_commit"], r"^[0-9a-f]{40}$")
+        self.assertEqual(
+            consumed["authorization"]["status"],
+            "authorized_for_implementation",
+        )
+        allowed = consumed["scope"]["allowed_paths"]
         self.assertTrue(allowed)
         self.assertEqual(len(allowed), len(set(allowed)))
         self.assertIn("docs/NEXT_TASK.md", allowed)
-        self.assertFalse(active["scope"]["allow_deletions"])
-        self.assertFalse(active["scope"]["allow_renames"])
+        self.assertFalse(consumed["scope"]["allow_deletions"])
+        self.assertFalse(consumed["scope"]["allow_renames"])
 
     def test_documentation_preserves_authority_boundary(self) -> None:
         documentation = DOCUMENTATION.read_text(encoding="utf-8")

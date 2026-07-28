@@ -36,7 +36,10 @@ byte a byte de las entradas.
   posterior de Python 3.12 fue corregida mediante timestamps lógicos
   estrictamente crecientes y validación durable fail-closed. La verificación
   local resultante pasó 213/213 y GitHub Actions run `30326263409` aprobó sus
-  tres lanes.
+  tres lanes. La persistencia transaccional del alta planificada de miembros
+  (Subbloque 2.2.b2) fue implementada, auditada y publicada en
+  `d8bc2406b6b9ea2acc46bf16e5b4811d01573243`; la suite vigente pasó 219/219 y
+  GitHub Actions run `30328581221` aprobó sus tres lanes.
 - Comparador A/B schema 0.1 implementado para el contrato cerrado de `neck`,
   con transformación de equipo separada de `ProfileVariant`, procedencia por
   bloque/intento/miembro y análisis Welch–delta/emparejado.
@@ -79,7 +82,8 @@ explica el diferencial.
 ## Limitaciones conocidas
 
 - El comparador está implementado, pero no existe una ejecución comparativa
-  autorizada ni un `comparison_result` real.
+  autorizada ni un `comparison_result` real. La persistencia de altas
+  planificadas ya está disponible, pero no autoriza ni inicia la ejecución.
 - No se ejecutan matrices ni se generan combinaciones.
 - No existe GUI ni addon de WoW.
 - Las fuentes de daño manuales no pudieron normalizarse completamente porque
