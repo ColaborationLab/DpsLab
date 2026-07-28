@@ -146,19 +146,18 @@ class GitHubAutomationTests(unittest.TestCase):
         self.assertEqual(self.workflow.count(".log"), 6)
         self.assertEqual(self.workflow.count("summary.json"), 6)
 
-    def test_active_contract_has_closed_scope(self) -> None:
+    def test_active_contract_is_rotatable_and_has_closed_scope(self) -> None:
         active = contract()
-        self.assertEqual(active["task_id"], "dpslab_github_automation_0_1")
-        self.assertEqual(active["baseline_commit"], "6bff15c2d6b03c96a65ed520ca4f800161d53d2c")
-        self.assertEqual(
-            active["scope"]["allowed_paths"],
-            [
-                ".github/workflows/dpslab-ci.yml",
-                "docs/GITHUB_AUTOMATION.md",
-                "docs/NEXT_TASK.md",
-                "tools/tests/test_github_automation.py",
-            ],
+        self.assertRegex(active["task_id"], r"^[a-z0-9][a-z0-9_]*$")
+        self.assertRegex(active["baseline_commit"], r"^[0-9a-f]{40}$")
+        self.assertIn(
+            active["authorization"]["status"],
+            {"design_only", "authorized_for_implementation"},
         )
+        allowed = active["scope"]["allowed_paths"]
+        self.assertTrue(allowed)
+        self.assertEqual(len(allowed), len(set(allowed)))
+        self.assertIn("docs/NEXT_TASK.md", allowed)
         self.assertFalse(active["scope"]["allow_deletions"])
         self.assertFalse(active["scope"]["allow_renames"])
 

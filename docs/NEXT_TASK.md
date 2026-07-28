@@ -1,5 +1,132 @@
 # Next Task — DpsLab
 
+## Active implementation authorization
+
+Daniel explicitly authorized continuation of Subblock 2.2.b2 and subsequently
+authorized the one additional CI-contract compatibility path on 2026-07-27.
+The active task is `planned_member_transactional_commit_0_1`.
+
+The task is limited to durable, transactional persistence of the already
+approved pure planned-member candidate. It accepts the existing single-writer
+file model; it does not claim multiprocess compare-and-swap or locking.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "planned_member_transactional_commit_0_1",
+  "title": "Subblock 2.2.b2 transactional planned-member commit",
+  "baseline_commit": "6da6d075cf934edfc1ea6a07bed7464cbfbfbf4a",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "planned_member_transactional_commit_0_1-20260727-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-27T22:56:42-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/comparison_result_io.py",
+      "desktop-app/tests/test_planned_member.py",
+      "docs/NEXT_TASK.md",
+      "tools/tests/test_github_automation.py"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/planned_member_transactional_commit_0_1/implementation.json",
+      ".dpslab/quality-gates/planned_member_transactional_commit_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/dpslab/planned_member.py",
+      "desktop-app/src/dpslab/comparator.py",
+      "desktop-app/src/dpslab/comparison_models.py",
+      "desktop-app/src/dpslab/comparison_transitions.py",
+      "desktop-app/src/dpslab/runner.py",
+      "desktop-app/src/dpslab/comparison_adapter.py",
+      "desktop-app/tests/test_comparator.py",
+      "desktop-app/tests/test_comparison_models.py",
+      "desktop-app/tests/test_comparison_member_transactions.py",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "comparisons/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/quality_gate.py",
+      "tools/tests/test_quality_gate.py"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tests.test_planned_member",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 213,
+    "minimum_test_count": 219
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/planned_member.py": "8e9aac859576abefc3f810f152e93f2541880d673825d1cfa1474f04b1e6a2b2",
+    "desktop-app/tests/test_comparison_models.py": "420989a5f9d56a15ac3c67e3375420f7cc0f441001a62a0434b5edc7b33c92d0"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the four authorized versioned paths in the delta",
+    "no deletions or renames",
+    "durable state must exist and equal previous before candidate construction",
+    "new planned member persists through the existing atomic commit boundary",
+    "exact idempotence confirms durable state without any physical write",
+    "durable updated_at advances strictly and all pure 2.2.b1 invariants remain fail-closed",
+    "reservation_token plaintext never enters JSON, physical operations, or errors",
+    "physical failures preserve previous bytes and remove temporary files",
+    "full suite reports at least 219 tests and tools tests remain green",
+    "protected hashes remain intact",
+    "no SimulationCraft, real comparison, commit, push, or remote mutation"
+  ],
+  "express_exclusions": [
+    "multiprocess locking or compare-and-swap",
+    "changes to planned_member.py or the comparator orchestrator",
+    "runner, adapter, SimulationCraft, profiles, scenarios, variants, comparisons, results, and config",
+    "GitHub workflow or settings changes",
+    "commits, pushes, tags, branches, pull requests, and remote changes",
+    "Subblock 2.2.b3 and real experiment execution"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
 ## Completed implementation authorization
 
 Daniel authorized autonomous continuation on 2026-07-27. The closed task is
@@ -58,7 +185,7 @@ evidence. Its implementation authorization has been consumed: it does not
 authorize additional edits, reruns, commits, pushes, remote changes, GitHub
 settings, SimulationCraft, Subblock 2.2.b2, or a later task.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -166,7 +293,7 @@ settings, SimulationCraft, Subblock 2.2.b2, or a later task.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed output state
 
@@ -194,5 +321,7 @@ evidence does not authorize the next task.
   `6bff15c2d6b03c96a65ed520ca4f800161d53d2c`.
 - GitHub Automation 0.1 is implemented, independently audited, published, and
   operational (`dpslab_github_automation_0_1_completed_and_operational`).
-- Subblock 2.2.b2 remains future, candidate, and unauthorized.
-- No new implementation contract is active after this consumed authorization.
+- Subblock 2.2.b2 is now the active, narrowly authorized transactional
+  persistence task; it does not authorize execution of a real comparison.
+- `planned_member_transactional_commit_0_1` is the only active implementation
+  contract.

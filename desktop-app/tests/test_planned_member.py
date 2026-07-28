@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import tempfile
 import unittest
 from copy import deepcopy
 from dataclasses import FrozenInstanceError, fields, replace
@@ -15,7 +16,11 @@ from dpslab.comparison_models import (
     SimulationCraftIdentity,
     StateEvent,
 )
-from dpslab.comparison_result_io import result_to_document
+from dpslab.comparison_result_io import (
+    ComparisonResultStore,
+    _ComparisonFileOperations,
+    result_to_document,
+)
 from dpslab.comparison_spec import load_comparison_spec
 from dpslab.planned_member import (
     PlannedMemberCreationPlan,
@@ -39,6 +44,26 @@ TOKEN_A = "a" * 32
 TOKEN_B = "b" * 32
 RUN_A = "20260716T000001.000000Z-aaaaaaaa"
 RUN_B = "20260716T000002.000000Z-bbbbbbbb"
+
+
+class NoWriteFileOperations(_ComparisonFileOperations):
+    def _forbidden(self, *_args, **_kwargs):
+        raise AssertionError("idempotent commit must not write")
+
+    make_directory = _forbidden
+    temporary_file = _forbidden
+    serialize = _forbidden
+    flush = _forbidden
+    sync = _forbidden
+    close = _forbidden
+    link = _forbidden
+    replace = _forbidden
+    unlink = _forbidden
+
+
+class ReplaceFailingFileOperations(_ComparisonFileOperations):
+    def replace(self, source: str, destination: Path) -> None:
+        raise OSError("controlled replace failure")
 
 
 class PlannedMemberTests(unittest.TestCase):
@@ -753,6 +778,156 @@ class PlannedMemberTests(unittest.TestCase):
         self.assertNotIn(TOKEN_A, repr(member))
         self.assertNotIn(TOKEN_A, repr(candidate.events[-1]))
         self.assertEqual(member.reservation.token_sha256, plan.token_sha256)
+
+    def test_durable_commit_round_trips_without_plaintext_token(self) -> None:
+        previous = self._previous()
+        plan = self._plan()
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "comparison_result.json"
+            store = ComparisonResultStore(path)
+            store.create(previous)
+            confirmed = store.commit_planned_member(
+                previous,
+                plan,
+                occurred_at=EVENT_TIME,
+                event_id="durable-member-created",
+                reason="planned member persisted",
+            )
+            self.assertEqual(store.read(), confirmed)
+            self.assertEqual(
+                self._member(confirmed, plan.run_identity.member_id).status,
+                "planned",
+            )
+            serialized = path.read_text(encoding="utf-8")
+            self.assertNotIn(TOKEN_A, serialized)
+            self.assertIn(plan.token_sha256, serialized)
+
+    def test_durable_exact_idempotence_confirms_without_writing(self) -> None:
+        previous = self._previous()
+        plan = self._plan()
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "comparison_result.json"
+            store = ComparisonResultStore(path)
+            store.create(previous)
+            confirmed = store.commit_planned_member(
+                previous,
+                plan,
+                occurred_at=EVENT_TIME,
+                event_id="durable-member-created",
+                reason="planned member persisted",
+            )
+            before = path.read_bytes()
+            no_write_store = ComparisonResultStore(
+                path,
+                file_operations=NoWriteFileOperations(),
+            )
+            repeated = no_write_store.commit_planned_member(
+                confirmed,
+                plan,
+                occurred_at=LATER_TIME,
+                event_id="must-not-be-used",
+                reason="must not be used",
+            )
+            self.assertEqual(repeated, confirmed)
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_durable_commit_rejects_missing_or_stale_previous_prephysical(self) -> None:
+        previous = self._previous()
+        plan = self._plan()
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "comparison_result.json"
+            store = ComparisonResultStore(path)
+            with self.assertRaisesRegex(ComparisonResultError, "no existe"):
+                store.commit_planned_member(
+                    previous,
+                    plan,
+                    occurred_at=EVENT_TIME,
+                    event_id="missing",
+                    reason="missing",
+                )
+            store.create(previous)
+            stale = deepcopy(previous)
+            stale.updated_at = "2026-07-16T00:00:00.500000Z"
+            before = path.read_bytes()
+            with self.assertRaisesRegex(ComparisonResultError, "estado confirmado"):
+                store.commit_planned_member(
+                    stale,
+                    plan,
+                    occurred_at=EVENT_TIME,
+                    event_id="stale",
+                    reason="stale",
+                )
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_durable_commit_requires_strict_timestamp_progress(self) -> None:
+        previous = self._previous()
+        plan = self._plan()
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "comparison_result.json"
+            store = ComparisonResultStore(path)
+            store.create(previous)
+            before = path.read_bytes()
+            with self.assertRaisesRegex(ComparisonResultError, "timestamp durable"):
+                store.commit_planned_member(
+                    previous,
+                    plan,
+                    occurred_at=PREVIOUS_TIME,
+                    event_id="equal-time",
+                    reason="equal time",
+                )
+            self.assertEqual(path.read_bytes(), before)
+
+    def test_durable_commit_preserves_bytes_and_removes_temp_on_replace_failure(self) -> None:
+        previous = self._previous()
+        plan = self._plan()
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            path = directory / "comparison_result.json"
+            ComparisonResultStore(path).create(previous)
+            before = path.read_bytes()
+            store = ComparisonResultStore(
+                path,
+                file_operations=ReplaceFailingFileOperations(),
+            )
+            with self.assertRaisesRegex(OSError, "controlled replace failure"):
+                store.commit_planned_member(
+                    previous,
+                    plan,
+                    occurred_at=EVENT_TIME,
+                    event_id="replace-failure",
+                    reason="replace failure",
+                )
+            self.assertEqual(path.read_bytes(), before)
+            self.assertEqual(tuple(directory.glob(".comparison_result.*.tmp")), ())
+
+    def test_durable_layer_does_not_call_runner_adapter_or_subprocess(self) -> None:
+        previous = self._previous()
+        plan = self._plan()
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "comparison_result.json"
+            store = ComparisonResultStore(path)
+            store.create(previous)
+            with patch(
+                "dpslab.runner.reserve_run",
+                side_effect=AssertionError("reserve_run"),
+            ), patch(
+                "dpslab.runner.run_simulation",
+                side_effect=AssertionError("runner"),
+            ), patch(
+                "dpslab.comparison_adapter.execute_comparison_member",
+                side_effect=AssertionError("adapter"),
+            ), patch(
+                "subprocess.run",
+                side_effect=AssertionError("subprocess"),
+            ):
+                confirmed = store.commit_planned_member(
+                    previous,
+                    plan,
+                    occurred_at=EVENT_TIME,
+                    event_id="no-execution",
+                    reason="durable only",
+                )
+            self.assertEqual(store.read(), confirmed)
 
     def test_layer_has_no_filesystem_store_runner_adapter_or_process_effects(self) -> None:
         previous = self._previous()

@@ -9,12 +9,15 @@ import tempfile
 from dataclasses import fields, is_dataclass
 from pathlib import Path
 from types import UnionType
-from typing import Literal, Union, get_args, get_origin, get_type_hints
+from typing import TYPE_CHECKING, Literal, Union, get_args, get_origin, get_type_hints
 
 from .comparison_models import (
     ComparisonResult, ComparisonResultError, _parse_aware_timestamp,
     validate_result,
 )
+
+if TYPE_CHECKING:
+    from .planned_member import PlannedMemberCreationPlan
 
 
 class _ComparisonFileOperations:
@@ -216,6 +219,42 @@ class ComparisonResultStore:
         from .comparison_transitions import validate_member_candidate
 
         validate_member_candidate(previous, candidate, member_id)
+        return self.commit(previous, candidate)
+
+    def commit_planned_member(
+        self,
+        previous: ComparisonResult,
+        creation_plan: "PlannedMemberCreationPlan",
+        *,
+        occurred_at: str,
+        event_id: str,
+        reason: str,
+    ) -> ComparisonResult:
+        """Persist one approved planned-member candidate under a single-writer model."""
+        from .planned_member import planned_member_candidate
+
+        if not self._file_operations.exists(self.path):
+            raise ComparisonResultError("comparison_result no existe")
+        confirmed = self.read()
+        if confirmed != previous:
+            raise ComparisonResultError(
+                "previous no coincide con el estado confirmado"
+            )
+        candidate = planned_member_candidate(
+            previous,
+            creation_plan,
+            occurred_at,
+            event_id,
+            reason,
+        )
+        if candidate is previous:
+            return confirmed
+        if _parse_aware_timestamp(candidate.updated_at) <= _parse_aware_timestamp(
+            previous.updated_at
+        ):
+            raise ComparisonResultError(
+                "planned member no avanza el timestamp durable"
+            )
         return self.commit(previous, candidate)
 
     def _write_document(self, document: dict[str, object], *, exclusive: bool) -> None:
