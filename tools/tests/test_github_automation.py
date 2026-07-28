@@ -28,17 +28,89 @@ CHECKOUT_SHA = "de0fac2e4500dabe0009e67214ff5f5447ce83dd"
 SETUP_PYTHON_SHA = "a309ff8b426b58ec0e2a45f0f869d46889d02405"
 UPLOAD_ARTIFACT_SHA = "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
 
+ACTIVE_BEGIN = "<!-- DPSLAB_TASK_CONTRACT_BEGIN -->"
+ACTIVE_END = "<!-- DPSLAB_TASK_CONTRACT_END -->"
+HISTORICAL_BEGIN = "<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->"
+HISTORICAL_END = "<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->"
+ACTIVE_PATTERN = re.compile(
+    re.escape(ACTIVE_BEGIN) + r"\s*"
+    r"```json\s*(\{.*?\})\s*```\s*"
+    + re.escape(ACTIVE_END),
+    re.DOTALL,
+)
+HISTORICAL_PATTERN = re.compile(
+    re.escape(HISTORICAL_BEGIN) + r"\s*"
+    r"```json\s*(\{.*?\})\s*```\s*"
+    + re.escape(HISTORICAL_END),
+    re.DOTALL,
+)
 
-def historical_contracts() -> list[dict[str, object]]:
-    text = NEXT_TASK.read_text(encoding="utf-8")
-    matches = re.findall(
-        r"<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->\s*"
-        r"```json\s*(\{.*?\})\s*```\s*"
-        r"<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->",
-        text,
-        re.DOTALL,
-    )
+
+def contract_documents(
+    text: str,
+    pattern: re.Pattern[str],
+    begin: str,
+    end: str,
+    label: str,
+) -> list[dict[str, object]]:
+    begin_count = text.count(begin)
+    end_count = text.count(end)
+    if begin_count != end_count:
+        raise AssertionError(f"{label} delimiter mismatch")
+    matches = pattern.findall(text)
+    if len(matches) != begin_count:
+        raise AssertionError(f"{label} malformed block")
     return [json.loads(match) for match in matches]
+
+
+def active_contract(text: str) -> dict[str, object] | None:
+    matches = contract_documents(
+        text, ACTIVE_PATTERN, ACTIVE_BEGIN, ACTIVE_END, "active"
+    )
+    if len(matches) > 1:
+        raise AssertionError("more than one active contract")
+    return matches[0] if matches else None
+
+
+def historical_contracts(text: str) -> list[dict[str, object]]:
+    return contract_documents(
+        text,
+        HISTORICAL_PATTERN,
+        HISTORICAL_BEGIN,
+        HISTORICAL_END,
+        "historical",
+    )
+
+
+def assert_unique_authority(
+    active: dict[str, object] | None,
+    historical: list[dict[str, object]],
+) -> None:
+    contracts = ([active] if active is not None else []) + historical
+    task_ids = [contract["task_id"] for contract in contracts]
+    authorization_ids = [
+        contract["authorization"]["authorization_id"]
+        for contract in contracts
+    ]
+    if len(task_ids) != len(set(task_ids)):
+        raise AssertionError("task identity replay")
+    if len(authorization_ids) != len(set(authorization_ids)):
+        raise AssertionError("authorization identity replay")
+
+
+def assert_closed_contract(test: unittest.TestCase, contract: dict[str, object]) -> None:
+    test.assertRegex(contract["task_id"], r"^[a-z0-9][a-z0-9_]*$")
+    test.assertRegex(contract["baseline_commit"], r"^[0-9a-f]{40}$")
+    test.assertIn(
+        contract["authorization"]["status"],
+        {"design_only", "authorized_for_implementation"},
+    )
+    allowed = contract["scope"]["allowed_paths"]
+    test.assertTrue(allowed)
+    test.assertEqual(len(allowed), len(set(allowed)))
+    test.assertIn("docs/NEXT_TASK.md", allowed)
+    test.assertFalse(contract["scope"]["allow_deletions"])
+    test.assertFalse(contract["scope"]["allow_renames"])
 
 
 class GitHubAutomationTests(unittest.TestCase):
@@ -145,29 +217,56 @@ class GitHubAutomationTests(unittest.TestCase):
         self.assertEqual(self.workflow.count(".log"), 6)
         self.assertEqual(self.workflow.count("summary.json"), 6)
 
-    def test_consumed_contract_is_historical_and_has_closed_scope(self) -> None:
+    def test_contract_lifecycle_accepts_zero_or_one_active_contract(self) -> None:
         text = NEXT_TASK.read_text(encoding="utf-8")
-        self.assertNotIn("<!-- DPSLAB_TASK_CONTRACT_BEGIN -->", text)
-        self.assertNotIn("<!-- DPSLAB_TASK_CONTRACT_END -->", text)
+        active = active_contract(text)
+        self.assertIsNotNone(active)
+        assert active is not None
+        self.assertEqual(active["task_id"], "contract_lifecycle_rotatability_0_2")
+        assert_closed_contract(self, active)
 
-        historical = historical_contracts()
-        self.assertEqual(len(historical), 2)
-        consumed = historical[0]
-        self.assertEqual(
-            consumed["task_id"],
+        without_active = ACTIVE_PATTERN.sub("", text)
+        self.assertIsNone(active_contract(without_active))
+        active_block = ACTIVE_PATTERN.search(text)
+        assert active_block is not None
+        with self.assertRaisesRegex(AssertionError, "more than one active"):
+            active_contract(text + "\n" + active_block.group(0))
+        for marker in (ACTIVE_BEGIN, ACTIVE_END):
+            with self.assertRaisesRegex(AssertionError, "delimiter mismatch"):
+                active_contract(text + "\n" + marker)
+
+    def test_historical_contracts_are_non_authoritative_and_append_only(self) -> None:
+        text = NEXT_TASK.read_text(encoding="utf-8")
+        active = active_contract(text)
+        historical = historical_contracts(text)
+        self.assertGreaterEqual(len(historical), 2)
+        assert_unique_authority(active, historical)
+        task_ids = [contract["task_id"] for contract in historical]
+        self.assertIn(
             "planned_member_transactional_commit_0_1",
+            task_ids,
         )
-        self.assertRegex(consumed["baseline_commit"], r"^[0-9a-f]{40}$")
-        self.assertEqual(
-            consumed["authorization"]["status"],
-            "authorized_for_implementation",
-        )
-        allowed = consumed["scope"]["allowed_paths"]
-        self.assertTrue(allowed)
-        self.assertEqual(len(allowed), len(set(allowed)))
-        self.assertIn("docs/NEXT_TASK.md", allowed)
-        self.assertFalse(consumed["scope"]["allow_deletions"])
-        self.assertFalse(consumed["scope"]["allow_renames"])
+        for contract in historical:
+            self.assertEqual(
+                contract["authorization"]["status"],
+                "authorized_for_implementation",
+            )
+            assert_closed_contract(self, contract)
+        for marker in (HISTORICAL_BEGIN, HISTORICAL_END):
+            with self.assertRaisesRegex(AssertionError, "delimiter mismatch"):
+                historical_contracts(text + "\n" + marker)
+
+        assert active is not None
+        for field in ("task_id", "authorization_id"):
+            replay = json.loads(json.dumps(active))
+            if field == "task_id":
+                replay["task_id"] = historical[0]["task_id"]
+            else:
+                replay["authorization"]["authorization_id"] = (
+                    historical[0]["authorization"]["authorization_id"]
+                )
+            with self.assertRaisesRegex(AssertionError, "identity replay"):
+                assert_unique_authority(replay, historical)
 
     def test_documentation_preserves_authority_boundary(self) -> None:
         documentation = DOCUMENTATION.read_text(encoding="utf-8")

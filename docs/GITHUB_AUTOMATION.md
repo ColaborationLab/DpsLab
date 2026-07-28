@@ -46,6 +46,30 @@ Each lane uploads only its test log and a small JSON summary. Artifacts are
 retained for seven days and contain no profiles, scenarios, variants, local
 configuration, SimulationCraft output, run artifacts, or secrets.
 
+## Contract lifecycle
+
+The policy lane accepts either no active implementation contract or exactly
+one contract delimited by `DPSLAB_TASK_CONTRACT_BEGIN/END`. When present, the
+active contract must retain a valid task identifier, a full baseline commit,
+an explicit authorization state, a nonempty unique allowlist containing
+`docs/NEXT_TASK.md`, and closed deletion and rename flags. More than one active
+contract fails closed. Orphaned, unbalanced, or malformed active delimiters
+also fail closed.
+
+Consumed contracts use only
+`DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN/END`. The historical collection is
+append-only and may grow without changing a hard-coded count; task identifiers
+and authorization identifiers must remain unique across the active and
+historical union. Reusing a consumed identity as an active contract fails
+closed. Historical delimiter counts must be balanced and match the number of
+complete parsed blocks. Historical JSON preserves evidence but is never
+interpreted as active authority by the quality gate.
+
+When no active delimiters exist, CI may document that legitimate idle state,
+while `tools/quality_gate.py` independently rejects implementation preflight
+and execution. Creating or consuming a contract therefore remains a separately
+authorized document transition rather than an authority decision made by CI.
+
 ## Compensating controls
 
 Branch protection and rulesets are repository settings and are outside this

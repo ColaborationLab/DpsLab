@@ -1,5 +1,121 @@
 # Next Task — DpsLab
 
+## Active implementation authorization — Contract lifecycle 0.2
+
+Daniel authorized `contract_lifecycle_rotatability_0_2` on 2026-07-27. This
+prerequisite restores machine-checked rotation between a legitimate active
+contract and an append-only historical record without granting any functional
+or execution authority.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "contract_lifecycle_rotatability_0_2",
+  "title": "Rotatable active and historical task-contract lifecycle",
+  "baseline_commit": "7f8b5bf131f0bf82a757f9c5f47290ead4e99592",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "contract_lifecycle_rotatability_0_2-20260727-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-27T23:45:55-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "docs/NEXT_TASK.md",
+      "docs/GITHUB_AUTOMATION.md",
+      "tools/tests/test_github_automation.py"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/contract_lifecycle_rotatability_0_2/implementation.json",
+      ".dpslab/quality-gates/contract_lifecycle_rotatability_0_2/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "comparisons/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/quality_gate.py",
+      "tools/tests/test_quality_gate.py"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tools.tests.test_github_automation",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": ".",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 51,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "tools/quality_gate.py": "c13fed03827c5e81cec9304f2dd0a01a69925f4b7ee8a5107a34480ea5fc6bbd",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the three authorized versioned paths in the delta",
+    "zero or one active contract is accepted by the CI lifecycle parser",
+    "more than one active contract fails closed",
+    "orphaned, unbalanced, or malformed active and historical delimiters fail closed",
+    "an active contract retains strict closed-scope validation",
+    "two or more historical contracts are accepted without an exact-count ceiling",
+    "task and authorization identities are unique across the active and historical union",
+    "a consumed historical identity cannot be replayed as active authority",
+    "historical contracts are never interpreted as active authority",
+    "quality_gate.py remains unchanged and fails closed when no active delimiters exist",
+    "focused and complete tools tests pass with at least 52 tests",
+    "protected hashes remain intact",
+    "no SimulationCraft, comparison, functional code, commit, push, or remote mutation"
+  ],
+  "express_exclusions": [
+    "changes to quality_gate.py or its tests",
+    "workflow or GitHub settings changes",
+    "desktop application and comparison implementation",
+    "SimulationCraft invocation or real comparison",
+    "profiles, scenarios, variants, comparisons, results, and local config",
+    "commits, pushes, tags, branches, pull requests, and remote changes",
+    "authorization of simulationcraft_revision_capture_0_1 or any later block"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
 ## Completed implementation authorization — Subblock 2.2.b2
 
 Daniel explicitly authorized continuation of Subblock 2.2.b2 and subsequently
