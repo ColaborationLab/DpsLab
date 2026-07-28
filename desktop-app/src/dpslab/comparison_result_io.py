@@ -6,13 +6,15 @@ import json
 import math
 import os
 import tempfile
-from datetime import datetime
 from dataclasses import fields, is_dataclass
 from pathlib import Path
 from types import UnionType
 from typing import Literal, Union, get_args, get_origin, get_type_hints
 
-from .comparison_models import ComparisonResult, ComparisonResultError, validate_result
+from .comparison_models import (
+    ComparisonResult, ComparisonResultError, _parse_aware_timestamp,
+    validate_result,
+)
 
 
 class _ComparisonFileOperations:
@@ -188,20 +190,20 @@ class ComparisonResultStore:
         if event.sequence != len(candidate.events) or not event.event_id or any(old.event_id == event.event_id for old in previous.events): raise ComparisonResultError("Secuencia o event_id global invalido")
         if (event.entity_type, event.entity_id, event.previous_status, event.new_status) != ("comparison_execution", previous.comparison_execution_id, previous.status, candidate.status): raise ComparisonResultError("Evento global no corresponde a la transicion")
         if not event.reason.strip(): raise ComparisonResultError("Motivo global vacio")
-        try: event_time = datetime.fromisoformat(event.occurred_at.replace("Z", "+00:00"))
-        except (TypeError, ValueError) as exc: raise ComparisonResultError("Timestamp global invalido") from exc
-        try: updated_time = datetime.fromisoformat(candidate.updated_at.replace("Z", "+00:00"))
-        except (TypeError, ValueError) as exc: raise ComparisonResultError("updated_at global invalido") from exc
-        if candidate.updated_at == previous.updated_at or updated_time < event_time: raise ComparisonResultError("updated_at no corresponde al evento global")
+        previous_time = _parse_aware_timestamp(previous.updated_at)
+        event_time = _parse_aware_timestamp(event.occurred_at)
+        updated_time = _parse_aware_timestamp(candidate.updated_at)
+        if (
+            candidate.updated_at != event.occurred_at
+            or updated_time != event_time
+            or updated_time <= previous_time
+        ):
+            raise ComparisonResultError("updated_at no corresponde al evento global")
         if (previous.status, candidate.status) == ("ready", "running"):
-            if previous.started_at is not None or candidate.started_at is None: raise ComparisonResultError("started_at global invalido")
-            try: datetime.fromisoformat(candidate.started_at.replace("Z", "+00:00"))
-            except (TypeError, ValueError) as exc: raise ComparisonResultError("started_at global invalido") from exc
+            if previous.started_at is not None or candidate.started_at != candidate.updated_at: raise ComparisonResultError("started_at global invalido")
         elif candidate.started_at != previous.started_at: raise ComparisonResultError("started_at global modificado")
         if candidate.status in {"completed", "inconclusive", "failed_protocol"}:
-            if previous.finished_at is not None or candidate.finished_at is None: raise ComparisonResultError("finished_at global invalido")
-            try: datetime.fromisoformat(candidate.finished_at.replace("Z", "+00:00"))
-            except (TypeError, ValueError) as exc: raise ComparisonResultError("finished_at global invalido") from exc
+            if previous.finished_at is not None or candidate.finished_at != candidate.updated_at: raise ComparisonResultError("finished_at global invalido")
         elif candidate.finished_at != previous.finished_at: raise ComparisonResultError("finished_at global modificado")
         return self.commit(previous, candidate)
 

@@ -1,5 +1,42 @@
 # Next Task — DpsLab
 
+## Active implementation authorization
+
+Daniel authorized autonomous continuation on 2026-07-27. The active closed
+task is `comparison_timestamp_monotonicity_0_1`, based on the independently
+reviewed Python 3.12 diagnosis.
+
+Allowed versioned paths:
+
+- `desktop-app/src/dpslab/comparison_models.py`
+- `desktop-app/src/dpslab/comparison_result_io.py`
+- `desktop-app/tests/test_comparison_models.py`
+- `docs/NEXT_TASK.md`
+
+Required behavior:
+
+- sample the wall clock once per new event;
+- make the durable logical timestamp strictly later than the previous
+  `updated_at`, advancing by one microsecond when the wall-clock sample is
+  equal or earlier;
+- assign the same logical timestamp to `StateEvent.occurred_at` and
+  `ComparisonResult.updated_at`, and reuse it for transition-specific
+  `started_at` or `finished_at`;
+- reject malformed, timezone-naive, or out-of-range historical timestamps as
+  `ComparisonResultError` before mutating status or events;
+- enforce the same invariants again at the durable commit boundary, including
+  exact event/updated/transition-side timestamp equality and strict progress
+  from the confirmed state;
+- preserve fail-closed validation, durable ISO-8601 UTC timestamps, historical
+  schema compatibility, and all protected assets;
+- verify deterministic equal, earlier, and normally later clock cases;
+- run the focused module, full functional suite, tools tests, independent
+  audit, controlled commit, push, and canonical CI verification.
+
+This authorization excludes SimulationCraft, Subblock 2.2.b2, profiles,
+scenarios, variants, comparisons, results, GitHub settings, workflow changes,
+and every other production or test path.
+
 ## Latest consumed implementation contract
 
 Daniel authorized the closed local implementation of GitHub Automation 0.1.

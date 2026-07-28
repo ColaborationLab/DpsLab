@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from copy import deepcopy
 from dataclasses import replace
+from datetime import datetime
 from pathlib import Path
 from unittest.mock import patch
 
@@ -225,6 +226,114 @@ class ComparisonModelTests(unittest.TestCase):
                 candidate = execution_transition_candidate(previous, final, "transition"); mutation(candidate)
                 with self.subTest(transition=f"{initial}->{final}", field=label):
                     self._assert_logical_rejection(previous, candidate, f"timestamp-{transition_index}-{mutation_index}")
+
+    def test_event_timestamp_is_logically_monotonic_for_wall_clock_matrix(self) -> None:
+        cases = (
+            ("equal", "2026-01-01T00:00:00Z", "2026-01-01T00:00:00.000001Z"),
+            ("earlier", "2025-12-31T23:59:59Z", "2026-01-01T00:00:00.000001Z"),
+            ("later", "2026-01-01T00:00:01Z", "2026-01-01T00:00:01Z"),
+        )
+        transitions = (
+            ("ready", "blocked", None),
+            ("ready", "running", "started_at"),
+            ("running", "completed", "finished_at"),
+            ("running", "inconclusive", "finished_at"),
+            ("running", "failed_protocol", "finished_at"),
+        )
+        for transition_index, (initial, final, side_timestamp) in enumerate(transitions):
+            for label, sampled, expected in cases:
+                previous = self._historical_previous(initial, f"logical-clock-{transition_index}-{label}")
+                previous.updated_at = "2026-01-01T00:00:00Z"
+                path = Path(self.temp.name) / f"logical-clock-{transition_index}-{label}.json"
+                store = ComparisonResultStore(path)
+                store.create(previous)
+                with self.subTest(transition=f"{initial}->{final}", case=label), patch(
+                    "dpslab.comparison_models.utc_now", return_value=sampled
+                ) as clock:
+                    candidate = execution_transition_candidate(previous, final, label)
+                self.assertEqual(clock.call_count, 1)
+                self.assertEqual(candidate.updated_at, expected)
+                self.assertEqual(candidate.events[-1].occurred_at, expected)
+                if side_timestamp is not None:
+                    self.assertEqual(getattr(candidate, side_timestamp), expected)
+                self.assertGreater(
+                    datetime.fromisoformat(candidate.updated_at.replace("Z", "+00:00")),
+                    datetime.fromisoformat(previous.updated_at.replace("Z", "+00:00")),
+                )
+                self.assertEqual(store.commit_execution(previous, candidate), candidate)
+
+    def test_logical_timestamp_rejects_invalid_history_without_partial_mutation(self) -> None:
+        invalid_values = (
+            None,
+            "",
+            "not-a-timestamp",
+            "2026-01-01T00:00:00",
+            "9999-12-31T23:59:59.999999Z",
+        )
+        for index, invalid in enumerate(invalid_values):
+            previous = self._historical_previous("ready", f"invalid-clock-{index}")
+            previous.updated_at = invalid
+            snapshot = deepcopy(previous)
+            with self.subTest(value=invalid), patch(
+                "dpslab.comparison_models.utc_now", return_value="2026-01-01T00:00:00Z"
+            ), self.assertRaises(ComparisonResultError):
+                previous.transition_execution("blocked", "invalid_clock")
+            self.assertEqual(previous, snapshot)
+
+    def test_logical_timestamp_accepts_offset_history_and_normalizes_to_utc(self) -> None:
+        previous = self._historical_previous("ready", "offset-clock")
+        previous.updated_at = "2026-01-01T01:00:00+01:00"
+        with patch(
+            "dpslab.comparison_models.utc_now", return_value="2026-01-01T00:00:00Z"
+        ) as clock:
+            candidate = execution_transition_candidate(previous, "blocked", "offset_clock")
+        self.assertEqual(clock.call_count, 1)
+        self.assertEqual(candidate.updated_at, "2026-01-01T00:00:00.000001Z")
+        self.assertEqual(candidate.events[-1].occurred_at, candidate.updated_at)
+
+    def test_durable_boundary_rejects_nonmonotonic_or_divergent_timestamps(self) -> None:
+        mutations = {
+            "event_and_updated_before_previous": lambda c: (
+                setattr(c, "updated_at", "2025-12-31T23:59:59Z"),
+                c.events.__setitem__(-1, replace(c.events[-1], occurred_at="2025-12-31T23:59:59Z")),
+            ),
+            "equivalent_but_not_exact_event": lambda c: c.events.__setitem__(
+                -1, replace(c.events[-1], occurred_at="2026-01-01T01:00:01+01:00")
+            ),
+        }
+        for index, (label, mutation) in enumerate(mutations.items()):
+            previous = self._historical_previous("ready", f"durable-clock-{index}")
+            previous.updated_at = "2026-01-01T00:00:00Z"
+            with patch("dpslab.comparison_models.utc_now", return_value="2026-01-01T00:00:01Z"):
+                candidate = execution_transition_candidate(previous, "blocked", label)
+            mutation(candidate)
+            with self.subTest(case=label):
+                self._assert_logical_rejection(previous, candidate, f"durable-clock-{index}")
+
+        side_cases = (
+            ("ready", "running", "started_at"),
+            ("running", "completed", "finished_at"),
+            ("running", "inconclusive", "finished_at"),
+            ("running", "failed_protocol", "finished_at"),
+        )
+        for index, (initial, final, field_name) in enumerate(side_cases):
+            previous = self._historical_previous(initial, f"durable-side-{index}")
+            previous.updated_at = "2026-01-01T00:00:00Z"
+            with patch("dpslab.comparison_models.utc_now", return_value="2026-01-01T00:00:01Z"):
+                candidate = execution_transition_candidate(previous, final, field_name)
+            setattr(candidate, field_name, "2026-01-01T00:00:02Z")
+            with self.subTest(transition=f"{initial}->{final}", field=field_name):
+                self._assert_logical_rejection(previous, candidate, f"durable-side-{index}")
+
+    def test_offset_normalization_overflow_is_typed_and_nonmutating(self) -> None:
+        previous = self._historical_previous("ready", "offset-overflow")
+        previous.updated_at = "9999-12-31T23:59:59.999999-23:59"
+        snapshot = deepcopy(previous)
+        with patch(
+            "dpslab.comparison_models.utc_now", return_value="2026-01-01T00:00:00Z"
+        ), self.assertRaises(ComparisonResultError):
+            previous.transition_execution("blocked", "offset_overflow")
+        self.assertEqual(previous, snapshot)
 
     def test_all_error_warning_collections_are_strict_prefix_append_only(self) -> None:
         collections = {

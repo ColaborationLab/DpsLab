@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field, fields, replace
 from copy import deepcopy
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable, Literal
 from uuid import uuid4
@@ -16,6 +16,27 @@ class ComparisonResultError(ValueError):
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _parse_aware_timestamp(value: str) -> datetime:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None or parsed.utcoffset() is None:
+            raise ValueError("timestamp without timezone")
+        return parsed.astimezone(timezone.utc)
+    except (AttributeError, TypeError, ValueError, OverflowError) as exc:
+        raise ComparisonResultError("Timestamp durable invalido") from exc
+
+
+def _next_logical_timestamp(previous: str) -> str:
+    sampled = _parse_aware_timestamp(utc_now())
+    previous_time = _parse_aware_timestamp(previous)
+    try:
+        if sampled <= previous_time:
+            sampled = previous_time + timedelta(microseconds=1)
+    except OverflowError as exc:
+        raise ComparisonResultError("Timestamp durable fuera de rango") from exc
+    return sampled.isoformat().replace("+00:00", "Z")
 
 
 @dataclass(frozen=True, slots=True)
@@ -376,15 +397,17 @@ class ComparisonResult:
     advisory_warnings: list[StructuredWarning] = field(default_factory=list)
 
     def add_event(self, entity_type: str, entity_id: str, previous: str | None, new: str, reason: str) -> None:
-        self.events = [*self.events, StateEvent(len(self.events) + 1, uuid4().hex, utc_now(), entity_type, entity_id, previous, new, reason)]
-        self.updated_at = utc_now()
+        timestamp = _next_logical_timestamp(self.updated_at)
+        self.events = [*self.events, StateEvent(len(self.events) + 1, uuid4().hex, timestamp, entity_type, entity_id, previous, new, reason)]
+        self.updated_at = timestamp
 
     def transition_execution(self, new: str, reason: str) -> None:
         transition(self, "comparison_execution", self.comparison_execution_id, new, reason, self)
+        timestamp = self.events[-1].occurred_at
         if new == "running" and self.started_at is None:
-            self.started_at = utc_now()
+            self.started_at = timestamp
         if new in {"completed", "inconclusive", "failed_protocol"}:
-            self.finished_at = utc_now()
+            self.finished_at = timestamp
 
     def to_dict(self) -> dict[str, object]:
         from .comparison_result_io import result_to_document
@@ -408,8 +431,8 @@ def transition(entity: object, entity_type: str, entity_id: str, new: str, reaso
     previous = getattr(entity, "status")
     if new not in tables[entity_type].get(previous, set()):
         raise ComparisonResultError(f"Transicion {entity_type} no valida: {previous} -> {new}")
-    setattr(entity, "status", new)
     result.add_event(entity_type, entity_id, previous, new, reason)
+    setattr(entity, "status", new)
 
 
 def add_attempt(block: ComparisonBlock, attempt: PairAttempt) -> None:
@@ -462,7 +485,8 @@ def append_member_warning(member: ComparisonMember, warning: StructuredWarning) 
 
 
 def start_member(member: ComparisonMember, result: ComparisonResult) -> None:
-    transition(member, "member", member.member_id, "running", "member_started", result); member.started_at = utc_now()
+    transition(member, "member", member.member_id, "running", "member_started", result)
+    member.started_at = result.events[-1].occurred_at
 
 
 def assign_member_result(member: ComparisonMember, run_id: str, dps: MemberDps) -> None:
@@ -487,7 +511,8 @@ def attach_execution_details(
 
 
 def finish_member(member: ComparisonMember, status: str, result: ComparisonResult) -> None:
-    transition(member, "member", member.member_id, status, "member_finished", result); member.finished_at = utc_now()
+    transition(member, "member", member.member_id, status, "member_finished", result)
+    member.finished_at = result.events[-1].occurred_at
 
 
 def set_attempt_pause(attempt: PairAttempt, seconds: float) -> None:
