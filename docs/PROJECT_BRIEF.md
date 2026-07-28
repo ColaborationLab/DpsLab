@@ -28,12 +28,19 @@ byte a byte de las entradas.
 - Escenarios TOML tipados, validados y verificados por SHA-256.
 - Variantes TOML y `effective_profile.simc` construido desde bytes.
 - Auditoría profunda ejecutable mediante `python -m dpslab.deep_audit`.
-- Cobertura automática establecida. La última verificación global documentada
-  presenta una incidencia abierta en `comparison_models`; el estado detallado
-  debe consultarse en `docs/NEXT_TASK.md`.
+- Cobertura automática local y GitHub Automation 0.1 establecidas. La
+  incidencia de prueba en `comparison_models` fue corregida, auditada y
+  publicada sin cambios productivos. La baseline funcional aprobada registró
+  208/208 pruebas y la ejecución remota `29645964849`, sobre Python 3.13.14,
+  concluyó satisfactoriamente en sus tres lanes. Una reproducción local
+  posterior sobre Python 3.12 registró 5 errores temporales de `updated_at`;
+  permanece como observación ambiental separada, no como regresión demostrada.
 - Comparador A/B schema 0.1 implementado para el contrato cerrado de `neck`,
   con transformación de equipo separada de `ProfileVariant`, procedencia por
   bloque/intento/miembro y análisis Welch–delta/emparejado.
+- CI reproducible en GitHub para política/contrato, herramientas y suite
+  funcional, con permisos mínimos, Actions fijadas por SHA y evidencia
+  retenida durante siete días.
 
 ## Entradas y salidas
 

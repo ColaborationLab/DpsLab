@@ -1,11 +1,12 @@
 # Next Task — DpsLab
 
-## Active implementation contract
+## Latest consumed implementation contract
 
 Daniel authorized the closed local implementation of GitHub Automation 0.1.
-This contract permits editing and local verification only. It does not permit
-commit, push, tag, branch, pull request, remote changes, GitHub settings,
-SimulationCraft, or Subblock 2.2.b2.
+The contract below is retained verbatim as historical and machine-readable
+evidence. Its implementation authorization has been consumed: it does not
+authorize additional edits, reruns, commits, pushes, remote changes, GitHub
+settings, SimulationCraft, Subblock 2.2.b2, or a later task.
 
 <!-- DPSLAB_TASK_CONTRACT_BEGIN -->
 ```json
@@ -117,13 +118,16 @@ SimulationCraft, or Subblock 2.2.b2.
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-## Required output state
+## Completed output state
 
-`dpslab_github_automation_0_1_implemented_pending_independent_audit`
+`dpslab_github_automation_0_1_completed_and_operational`
 
-The local audit artifact required by this intervention verifies process and
-integrity evidence. It does not constitute the later independent technical
-audit or authorize publication or the next task.
+The implementation, independent audit, controlled publication, and live
+post-publication verification are complete. Commit
+`bf2db644bfebeb07246f8e967f39101a7aa3e77a` is the synchronized local and
+remote `main`. GitHub Actions run `29645964849` completed successfully in all
+three lanes: Policy and contract, Tools tests, and Functional suite. CI
+evidence does not authorize the next task.
 
 ## Preserved project state
 
@@ -131,4 +135,14 @@ audit or authorize publication or the next task.
 - Subblock 2.2.b1 remains approved (`block_2_2_b1_approved`).
 - The A/B collar comparator has not executed a real comparison.
 - The current functional-suite baseline is 208/208 passing tests.
+- A later local reproduction on Python 3.12, rather than CI's pinned Python
+  3.13.14, ran 208 tests and reported five `updated_at` temporal-validation
+  errors. This is a separate open environment observation, not evidence that
+  the canonical successful run passed locally on that environment.
+- The former `comparison_models` test incident is closed by the deterministic
+  test-only correction published in
+  `6bff15c2d6b03c96a65ed520ca4f800161d53d2c`.
+- GitHub Automation 0.1 is implemented, independently audited, published, and
+  operational (`dpslab_github_automation_0_1_completed_and_operational`).
 - Subblock 2.2.b2 remains future, candidate, and unauthorized.
+- No new implementation contract is active.

@@ -11,10 +11,14 @@
 - [x] Baseline formal canónica.
 - [x] Auditorías comparativa, semántica y profunda.
 - [x] Infraestructura y cobertura automática establecidas.
-- Estado de verificación: la última suite global documentada registró 208
-  pruebas aprobadas, 573 subtests aprobados, 1 prueba fallida y código de
-  salida 1. La incidencia de `comparison_models` permanece abierta y separada
-  de los bloques aprobados.
+- Estado de verificación: la incidencia de prueba de `comparison_models` fue
+  corregida de forma determinista, auditada y publicada sin cambios
+  productivos. La baseline funcional aprobada registró 208/208 pruebas y
+  GitHub Actions run `29645964849`, sobre Python 3.13.14, aprobó sus tres
+  lanes. Una reproducción local posterior sobre Python 3.12 registró 5 errores
+  temporales de `updated_at` y queda como observación ambiental separada.
+- [x] GitHub Automation 0.1 implementada, auditada, publicada y operativa en
+  `bf2db644bfebeb07246f8e967f39101a7aa3e77a`.
 
 ## Comparador A/B de collar — implementado, no ejecutado
 
@@ -27,7 +31,7 @@
 - [x] Subbloque 2.2.b1: alta planificada pura y no persistente de miembros
   (`block_2_2_b1_approved`).
 - [ ] Subbloque 2.2.b2: persistencia transaccional del alta planificada,
-  candidata no autorizada y pendiente de autorización específica.
+  candidata no autorizada y pendiente de un contrato específico futuro.
 - [ ] Ejecución real del experimento, sujeta a autorización independiente.
 
 ## Etapas posteriores no aprobadas

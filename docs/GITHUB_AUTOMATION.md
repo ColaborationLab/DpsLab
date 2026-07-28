@@ -1,5 +1,14 @@
 # GitHub Automation 0.1
 
+## Operational status
+
+GitHub Automation 0.1 is implemented, independently audited, published, and
+operational. Commit `bf2db644bfebeb07246f8e967f39101a7aa3e77a` is synchronized
+across local `main`, `origin/main`, and the live GitHub remote. The
+post-publication run `29645964849` completed successfully in all three evidence
+lanes. This operational status records evidence; it does not authorize a later
+task, SimulationCraft, or Subblock 2.2.b2.
+
 ## Purpose and authority boundary
 
 `.github/workflows/dpslab-ci.yml` supplies reproducible CI evidence for pull

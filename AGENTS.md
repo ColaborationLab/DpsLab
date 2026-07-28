@@ -24,15 +24,18 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
   declarada y procedimental, y registrada en el commit
   `3828c098946f6842885fc520f841ef4fdb4e12af`
   (`automation_foundation_0_1_committed`).
-- Según la evidencia recopilada el 2026-07-17, `main` y `origin/main`
-  apuntaban a `3828c098946f6842885fc520f841ef4fdb4e12af`. El estado remoto
-  acreditado es `github_remote_0_1_published`, no
-  `github_remote_0_1_approved`.
+- La decisión humana posterior aprobó el cierre GitHub inicialmente publicado.
+  GitHub Automation 0.1 fue implementada, auditada y publicada. El `main`
+  local, `origin/main` y el remoto vivo apuntan a
+  `bf2db644bfebeb07246f8e967f39101a7aa3e77a`.
 - Las pruebas focales de 2.2.b1 registraron 20 pruebas aprobadas, 55 subtests
   aprobados y código de salida 0.
-- La suite global recopilada el 2026-07-17 registró 208 pruebas aprobadas,
-  573 subtests aprobados, 1 prueba fallida y código de salida 1. Por tanto,
-  no debe describirse como una suite global limpia.
+- La incidencia de fixture de `comparison_models` fue corregida únicamente en
+  su prueba mediante el commit
+  `6bff15c2d6b03c96a65ed520ca4f800161d53d2c`, auditado y publicado.
+- La baseline funcional aprobada registró 208/208 pruebas. La ejecución viva
+  de GitHub Actions `29645964849`, sobre el Python 3.13.14 fijado, aprobó Policy
+  and contract, Tools tests y Functional suite.
 
 ## Integridad obligatoria
 
@@ -55,21 +58,26 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 ## Verificación
 
 - Ejecutar toda la suite después de cambios de código y reportar por separado
-  pruebas aprobadas, subtests, fallos y código de salida. El último resultado
-  documentado no es limpio: 208 pruebas aprobadas, 573 subtests aprobados,
-  1 prueba fallida y código de salida 1.
+  pruebas aprobadas, subtests, fallos y código de salida. La baseline funcional
+  aprobada es 208/208 y su verificación remota concluyó satisfactoriamente.
+- Una reproducción local posterior en Python 3.12, distinto del Python 3.13.14
+  fijado por la CI, ejecutó 208 pruebas y registró 5 errores de validación
+  temporal de `updated_at`. Es una observación ambiental abierta y separada:
+  no invalida retrospectivamente la ejecución canónica, pero tampoco debe
+  describirse como una suite local limpia.
 - Mantener compatibilidad de lectura con esquemas históricos.
 - Regenerar snapshots o resúmenes existentes solo cuando la tarea lo solicite explícitamente.
 - Informar hashes protegidos y cualquier artefacto ignorado por `.gitignore`.
 
-## Incidencia global abierta
+## Incidencia global cerrada
 
-- Prueba fallida:
+- Prueba anteriormente afectada:
   `tests/test_comparison_models.py::ComparisonModelTests::test_global_frozen_field_matrix_is_individual_and_prephysical`.
-- Fallo observado: `AssertionError: ComparisonResultError not raised`.
-- Esta incidencia no revoca automáticamente `block_2_2_b1_approved`.
-- Su registro no autoriza corregir `comparison_models`, modificar código ni
-  ejecutar una intervención técnica.
+- Causa confirmada: la fixture asignaba `True` incluso cuando el estado
+  original ya era `True`, por lo que no producía una mutación real.
+- Corrección cerrada: matriz determinista `False→True`, `True→False` y
+  `None→False`, limitada al archivo de prueba.
+- El cierre preservó `block_2_2_b1_approved` y no modificó código productivo.
 
 ## Quality gate y autorizaciones
 
@@ -86,5 +94,8 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
   funcional de la tarea.
 - No aprobar ni iniciar automáticamente el bloque siguiente.
 - El Subbloque 2.2.b2 permanece como trabajo futuro candidato y no autorizado.
+- El contrato de GitHub Automation 0.1 está consumido y se conserva en
+  `docs/NEXT_TASK.md` como evidencia histórica legible por la CI; no autoriza
+  nuevas mutaciones.
 - Escalar a Daniel cualquier archivo adicional, eliminación, rename, cambio de
   alcance o excepción no incluida expresamente en el contrato autorizado.
