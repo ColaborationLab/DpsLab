@@ -1,6 +1,135 @@
 # Next Task — DpsLab
 
-## Active implementation authorization — SimulationCraft revision capture 0.1
+## Active implementation authorization — Comparison execution preflight 0.1
+
+Daniel authorized `comparison_execution_preflight_0_1` on 2026-07-28. This
+block adds a read-only, fail-closed boundary that proves the frozen comparison
+inputs and environment are coherent before any process, reservation, durable
+result, or run artifact can be created.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "comparison_execution_preflight_0_1",
+  "title": "Read-only fail-closed comparison execution preflight",
+  "baseline_commit": "6c1ce6c34aab341e3ab26c5ec007c2cc54dc994b",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "comparison_execution_preflight_0_1-20260728-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-28T00:19:50-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/comparison_preflight.py",
+      "desktop-app/tests/test_comparison_preflight.py",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/comparison_execution_preflight_0_1/implementation.json",
+      ".dpslab/quality-gates/comparison_execution_preflight_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/dpslab/__main__.py",
+      "desktop-app/src/dpslab/comparator.py",
+      "desktop-app/src/dpslab/comparison_adapter.py",
+      "desktop-app/src/dpslab/comparison_models.py",
+      "desktop-app/src/dpslab/comparison_result_io.py",
+      "desktop-app/src/dpslab/comparison_spec.py",
+      "desktop-app/src/dpslab/runner.py",
+      "desktop-app/tests/test_comparator.py",
+      "desktop-app/tests/test_comparison_adapter.py",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "comparisons/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tests.test_comparison_preflight",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 220,
+    "minimum_test_count": 230
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "desktop-app/src/dpslab/comparison_spec.py": "2974dc8cbe8480dbe9667ffe61b2758bc5edb95bc997f49af4c45f7cf8f238d4",
+    "desktop-app/src/dpslab/comparison_adapter.py": "0b65f3339e49217d716d7bc637d3fecf4e821ff68503ee850e61e67fbd0d887e",
+    "desktop-app/src/dpslab/comparator.py": "f9d222229a13deb5f46164038f83d45af45ee634c2262313ce881a70ce5ade32",
+    "desktop-app/src/dpslab/runner.py": "92dc7712a5fa2001e816f4dc7025e1af6c81b67b2c98b9fd5f52c3301abacc93"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the three authorized versioned paths in the delta",
+    "preflight accepts an explicit environment record and starts no process",
+    "frozen spec and all referenced assets are rehashed at the preflight boundary",
+    "spec and scenario objects must equal authoritative reloads from their verified bytes",
+    "authoritative scenario equality includes its source precision while execution precision remains frozen by the comparison spec",
+    "scenario, parameters, runs root, and executable source fail closed",
+    "complete SimulationCraft version, revision, and executable hash must match",
+    "CPython, SciPy, and clean DpsLab source identity are verified",
+    "runtime versions and mutually exclusive source identities use strict canonical forms",
+    "source-tree identity is recomputed from a sorted unique portable inventory",
+    "no reservation, comparison_result, run directory, or artifact is created",
+    "focused tests, at least 230 functional tests, and tools tests pass",
+    "protected hashes remain intact",
+    "no SimulationCraft, real comparison, commit, push, or remote mutation"
+  ],
+  "express_exclusions": [
+    "SimulationCraft invocation or identity probe",
+    "real comparison or run artifact creation",
+    "reservation, planning, orchestration, result persistence, or CLI wiring",
+    "profiles, scenarios, variants, comparison specs, results, and local config",
+    "workflow, quality gate, tools, or GitHub settings changes",
+    "commits, pushes, tags, branches, pull requests, and remote changes",
+    "authorization of a comparison execution or any later block"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+## Completed implementation authorization — SimulationCraft revision capture 0.1
 
 Daniel authorized `simulationcraft_revision_capture_0_1` on 2026-07-28. This
 prerequisite captures the root `git_revision` emitted in an already generated
@@ -8,7 +137,17 @@ SimulationCraft JSON report so the typed comparison adapter can validate the
 frozen expected revision. It does not invoke SimulationCraft or authorize a
 comparison.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+Implementation, independent audit, controlled publication, and canonical CI
+verification are complete:
+
+- commit: `6c1ce6c34aab341e3ab26c5ec007c2cc54dc994b`;
+- GitHub Actions run: `30331030751`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+The authorization is consumed. The preserved JSON below is historical evidence
+only and cannot authorize another mutation.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -122,7 +261,7 @@ comparison.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed implementation authorization — Contract lifecycle 0.2
 
