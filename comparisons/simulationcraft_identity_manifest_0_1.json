@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1",
+  "manifest_id": "simulationcraft_identity_manifest_0_1",
+  "authority": {
+    "kind": "explicit_human_attestation",
+    "attested_by": "Daniel",
+    "attested_at": "2026-07-28T02:20:00-05:00",
+    "trust_model": "trust_on_first_use"
+  },
+  "entries": [
+    {
+      "executable_sha256": "710c71129f779376ed17dbcd92f67aa325056e19e27fa8b2b0182fb05db8c7ee",
+      "version": "1205-01",
+      "branch": "midnight",
+      "revision": "a81c39d"
+    }
+  ]
+}

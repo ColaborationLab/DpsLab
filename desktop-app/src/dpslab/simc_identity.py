@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import math
 import os
 import re
@@ -42,10 +43,44 @@ _BUILD_CLAUSE_PATTERN = re.compile(
     r"\bgit build\s+([A-Za-z0-9._/-]{1,64})\s+"
     r"([0-9a-f]{7,40})\b"
 )
+_VERSION_PATTERN = re.compile(r"[0-9]{4}-[0-9]{2}")
+_VERSION_IDENTITY_PATTERN = re.compile(
+    r"\bSimulationCraft\s+([0-9]{4}-[0-9]{2})\b"
+)
+_BRANCH_PATTERN = re.compile(r"[A-Za-z0-9._/-]{1,64}")
+_REVISION_PATTERN = re.compile(r"[0-9a-f]{7,40}")
+_SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 _MAX_CAPTURED_OUTPUT_BYTES = 64 * 1024
 _MAX_PROBE_TIMEOUT_SECONDS = 60.0
 _READ_CHUNK_BYTES = 4096
 _PROCESS_STOP_TIMEOUT_SECONDS = 5.0
+_MANIFEST_RELATIVE_PATH = Path(
+    "comparisons/simulationcraft_identity_manifest_0_1.json"
+)
+_MANIFEST_ROOT_KEYS = {
+    "schema_version",
+    "manifest_id",
+    "authority",
+    "entries",
+}
+_MANIFEST_AUTHORITY_KEYS = {
+    "kind",
+    "attested_by",
+    "attested_at",
+    "trust_model",
+}
+_MANIFEST_ENTRY_KEYS = {
+    "executable_sha256",
+    "version",
+    "branch",
+    "revision",
+}
+_ATTESTED_EXECUTABLE_SHA256 = (
+    "710c71129f779376ed17dbcd92f67aa325056e19e27fa8b2b0182fb05db8c7ee"
+)
+_ATTESTED_VERSION = "1205-01"
+_ATTESTED_BRANCH = "midnight"
+_ATTESTED_REVISION = "a81c39d"
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,6 +89,14 @@ class _ProcessCapture:
     stdout: bytes
     stderr: bytes
     failure: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class _AttestedIdentity:
+    executable_sha256: str
+    version: str
+    branch: str
+    revision: str
 
 
 def _file_sha256(path: Path) -> str | None:
@@ -120,6 +163,130 @@ def _single_identity(stdout: str, stderr: str) -> tuple[str, str, str]:
         )
     version, branch, revision = identities[0]
     return version, branch, revision
+
+
+def _single_version_without_build(
+    stdout: str,
+    stderr: str,
+) -> str:
+    versions = [
+        match.group(1)
+        for stream in (stdout, stderr)
+        for match in _VERSION_IDENTITY_PATTERN.finditer(stream)
+    ]
+    if (
+        len(versions) != 1
+        or _BUILD_CLAUSE_MARKER_PATTERN.search(stdout) is not None
+        or _BUILD_CLAUSE_MARKER_PATTERN.search(stderr) is not None
+    ):
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_missing_or_ambiguous"
+        )
+    return versions[0]
+
+
+def _manifest_path() -> Path:
+    return Path(__file__).resolve().parents[3] / _MANIFEST_RELATIVE_PATH
+
+
+def _manifest_identity(
+    path: Path,
+    *,
+    executable_sha256: str,
+    observed_version: str,
+) -> _AttestedIdentity:
+    try:
+        document = json.loads(path.read_bytes())
+    except (OSError, json.JSONDecodeError):
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_manifest_unavailable"
+        ) from None
+    if (
+        not isinstance(document, dict)
+        or set(document) != _MANIFEST_ROOT_KEYS
+        or document.get("schema_version") != "0.1"
+        or document.get("manifest_id")
+        != "simulationcraft_identity_manifest_0_1"
+    ):
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_manifest_invalid"
+        )
+    authority = document.get("authority")
+    if (
+        not isinstance(authority, dict)
+        or set(authority) != _MANIFEST_AUTHORITY_KEYS
+        or authority.get("kind") != "explicit_human_attestation"
+        or authority.get("attested_by") != "Daniel"
+        or authority.get("trust_model") != "trust_on_first_use"
+        or not isinstance(authority.get("attested_at"), str)
+        or re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}-\d{2}:\d{2}",
+            authority["attested_at"],
+        )
+        is None
+    ):
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_manifest_invalid"
+        )
+    raw_entries = document.get("entries")
+    if not isinstance(raw_entries, list) or len(raw_entries) != 1:
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_manifest_invalid"
+        )
+    entries: list[_AttestedIdentity] = []
+    hashes: set[str] = set()
+    for raw in raw_entries:
+        if not isinstance(raw, dict) or set(raw) != _MANIFEST_ENTRY_KEYS:
+            raise SimulationCraftIdentityProbeError(
+                "simc_identity_manifest_invalid"
+            )
+        values = tuple(raw[key] for key in _MANIFEST_ENTRY_KEYS)
+        if not all(isinstance(value, str) for value in values):
+            raise SimulationCraftIdentityProbeError(
+                "simc_identity_manifest_invalid"
+            )
+        entry = _AttestedIdentity(
+            executable_sha256=raw["executable_sha256"],
+            version=raw["version"],
+            branch=raw["branch"],
+            revision=raw["revision"],
+        )
+        if (
+            _SHA256_PATTERN.fullmatch(entry.executable_sha256) is None
+            or _VERSION_PATTERN.fullmatch(entry.version) is None
+            or _BRANCH_PATTERN.fullmatch(entry.branch) is None
+            or _REVISION_PATTERN.fullmatch(entry.revision) is None
+            or entry.executable_sha256 in hashes
+        ):
+            raise SimulationCraftIdentityProbeError(
+                "simc_identity_manifest_invalid"
+            )
+        hashes.add(entry.executable_sha256)
+        entries.append(entry)
+    matches = [
+        entry
+        for entry in entries
+        if entry.executable_sha256 == executable_sha256
+    ]
+    if len(matches) != 1:
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_executable_unattested"
+        )
+    match = matches[0]
+    if match != _AttestedIdentity(
+        executable_sha256=_ATTESTED_EXECUTABLE_SHA256,
+        version=_ATTESTED_VERSION,
+        branch=_ATTESTED_BRANCH,
+        revision=_ATTESTED_REVISION,
+    ):
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_manifest_invalid"
+        )
+    if match.version != observed_version:
+        raise SimulationCraftIdentityProbeError(
+            "simc_identity_attested_version_mismatch"
+        )
+    return match
 
 
 def _stop_process(process: subprocess.Popen[bytes]) -> bool:
@@ -350,7 +517,17 @@ def capture_simulationcraft_identity(
 
     stdout = captured.stdout.decode("utf-8", errors="replace")
     stderr = captured.stderr.decode("utf-8", errors="replace")
-    version, branch, revision = _single_identity(stdout, stderr)
+    try:
+        version, branch, revision = _single_identity(stdout, stderr)
+    except SimulationCraftIdentityProbeError:
+        version = _single_version_without_build(stdout, stderr)
+        attested = _manifest_identity(
+            _manifest_path(),
+            executable_sha256=digest_before,
+            observed_version=version,
+        )
+        branch = attested.branch
+        revision = attested.revision
     return SimulationCraftIdentityProbe(
         identity=SimulationCraftIdentity(
             version=version,

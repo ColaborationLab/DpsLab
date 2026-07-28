@@ -1,15 +1,148 @@
 # Next Task — DpsLab
 
-## Active implementation authorization — Comparison readiness CLI 0.1
+## Active implementation authorization — SimulationCraft identity manifest 0.1
+
+Daniel explicitly authorized `simulationcraft_identity_manifest_0_1` on
+2026-07-28 after three controlled probes demonstrated that
+`display_build=2` reports version `1205-01` but omits branch and revision.
+This block records Daniel's trust-on-first-use attestation for one exact
+executable SHA-256 and permits a fail-closed manifest fallback. It does not
+authorize another SimulationCraft invocation, comparison, run, or result.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "simulationcraft_identity_manifest_0_1",
+  "title": "Fail-closed attested SimulationCraft identity manifest",
+  "baseline_commit": "ee396a01bc5c48ea8babb3522821fd1624a3c516",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "simulationcraft_identity_manifest_0_1-20260728-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-28T02:20:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "comparisons/simulationcraft_identity_manifest_0_1.json",
+      "desktop-app/src/dpslab/simc_identity.py",
+      "desktop-app/tests/test_simc_identity.py",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/simulationcraft_identity_manifest_0_1/implementation.json",
+      ".dpslab/quality-gates/simulationcraft_identity_manifest_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/dpslab/__main__.py",
+      "desktop-app/src/dpslab/comparison_readiness.py",
+      "desktop-app/src/dpslab/comparison_preflight.py",
+      "desktop-app/src/dpslab/comparison_environment.py",
+      "desktop-app/src/dpslab/comparison_spec.py",
+      "desktop-app/src/dpslab/config.py",
+      "desktop-app/src/dpslab/runner.py",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "comparisons/flasil_neck_50228_vs_249368_v1.toml",
+      "comparisons/evidence/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*identity.py",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 252,
+    "minimum_test_count": 255
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "scenarios/st_lightmovement_300s_v1.toml": "93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "desktop-app/src/dpslab/__main__.py": "82bd59e19029f4435362977f7f38ed3391b6ad5f93f17072c8c69e25491e99a4",
+    "desktop-app/src/dpslab/comparison_readiness.py": "e2a4ce520b88d9df7ba1dda96ff99e5af4c25bdb91c67411931a480f7cf14ab2",
+    "desktop-app/src/dpslab/comparison_preflight.py": "1282997a6190845876283f66ba13d92cd14bb6d79b57f62443608b0111e931a2",
+    "desktop-app/src/dpslab/comparison_spec.py": "2974dc8cbe8480dbe9667ffe61b2758bc5edb95bc997f49af4c45f7cf8f238d4",
+    "desktop-app/src/dpslab/config.py": "a933de29661b8d06b6d6f1d1d89b2dc7d74e17c0b87d2d584891824c67c6b53b"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the four authorized versioned paths in the delta",
+    "the manifest is closed, versioned, portable, and records explicit trust-on-first-use authority",
+    "the exact attested executable hash maps uniquely to version 1205-01, branch midnight, revision a81c39d",
+    "complete process output remains authoritative without manifest repair",
+    "manifest fallback is allowed only for one unambiguous observed version with no git build marker",
+    "unknown hashes, duplicates, malformed manifests, version conflicts, and ambiguous output fail closed",
+    "no binary string-table extraction or historical-output inference is implemented",
+    "focused tests, at least 255 functional tests, and tools tests pass",
+    "protected hashes remain intact",
+    "no real SimulationCraft, comparison, commit, push, or remote mutation occurs during implementation"
+  ],
+  "express_exclusions": [
+    "real SimulationCraft invocation or readiness probe",
+    "real comparison, run reservation, or result creation",
+    "binary string-table inspection or heuristic identity extraction",
+    "profiles, scenarios, variants, frozen comparison spec, evidence, results, and local config",
+    "CLI, readiness bridge, preflight, runner, workflow, tools, or GitHub settings changes",
+    "authorization of comparison execution or any later block"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+## Completed implementation authorization — Comparison readiness CLI 0.1
 
 Daniel authorized autonomous continuation on 2026-07-28. This block exposes
 the audited readiness bridge through a narrow command-line entry point that
 reports only portable, non-sensitive readiness evidence. Tests inject every
-collaborator and forbid process creation. Implementing the command does not
-authorize invoking SimulationCraft; a real probe still requires a separate,
-explicit execution authorization.
+collaborator and forbid process creation. The audited implementation was
+published in `ee396a01bc5c48ea8babb3522821fd1624a3c516`, and GitHub Actions run
+`30337561035` passed all three lanes. The implementation authorization is
+consumed and does not authorize invoking SimulationCraft.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -126,7 +259,7 @@ explicit execution authorization.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed implementation authorization — Comparison readiness bridge 0.1
 
