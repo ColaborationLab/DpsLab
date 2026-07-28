@@ -24,7 +24,7 @@
 - [x] GitHub Automation 0.1 implementada, auditada, publicada y operativa en
   `bf2db644bfebeb07246f8e967f39101a7aa3e77a`.
 
-## Comparador A/B de collar — implementado, no ejecutado
+## Comparador A/B de collar — implementado y primera ejecución completada
 
 - [x] `comparison_spec` y `comparison_result` schema 0.1 cerrados.
 - [x] Evidencia visual versionada y normalización aprobada.
@@ -36,7 +36,9 @@
   (`block_2_2_b1_approved`).
 - [x] Subbloque 2.2.b2: persistencia transaccional del alta planificada,
   auditada, publicada y verificada bajo modelo single-writer.
-- [ ] Ejecución real del experimento, sujeta a autorización independiente.
+- [x] Ejecución real auditada:
+  `cmp-3120334d365b4ba2922cdbb25afe0d7f`, 8/8 bloques, 16/16 runs válidos,
+  sin reintentos; ambos análisis clasifican `winner_b`.
 
 ## Etapas posteriores no aprobadas
 

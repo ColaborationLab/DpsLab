@@ -4,8 +4,8 @@
 
 DpsLab es una aplicación local para convertir perfiles de SimulationCraft en
 datos tipados, ejecutar simulaciones reproducibles y auditables, interpretar
-sus resultados y, en una fase futura, comparar de forma controlada talentos y
-equipo. El proyecto prioriza reproducibilidad, procedencia y conservación
+sus resultados y comparar de forma controlada talentos y equipo. El proyecto
+prioriza reproducibilidad, procedencia y conservación
 byte a byte de las entradas.
 
 ## Arquitectura actual
@@ -43,6 +43,12 @@ byte a byte de las entradas.
 - Comparador A/B schema 0.1 implementado para el contrato cerrado de `neck`,
   con transformación de equipo separada de `ProfileVariant`, procedencia por
   bloque/intento/miembro y análisis Welch–delta/emparejado.
+- Primera comparación real auditada: `cmp-3120334d365b4ba2922cdbb25afe0d7f`.
+  Sus 8/8 bloques y 16/16 runs fueron válidos, sin reintentos. Ambos métodos
+  clasificaron `winner_b`: Eternal Voidsong Chain obtuvo una ventaja estimada
+  de `0.9687020358080112 %` (Welch, IC95 %
+  `[0.925919404270558, 1.0114846673454643]`). Este resultado se limita al
+  perfil, escenario, versiones y dos collares congelados en el contrato.
 - CI reproducible en GitHub para política/contrato, herramientas y suite
   funcional, con permisos mínimos, Actions fijadas por SHA y evidencia
   retenida durante siete días.
@@ -81,9 +87,9 @@ explica el diferencial.
 
 ## Limitaciones conocidas
 
-- El comparador está implementado, pero no existe una ejecución comparativa
-  autorizada ni un `comparison_result` real. La persistencia de altas
-  planificadas ya está disponible, pero no autoriza ni inicia la ejecución.
+- La primera comparación cerrada ya fue ejecutada y auditada. No existe
+  autorización vigente para repetirla, generalizar el resultado a otros
+  personajes o iniciar otra matriz.
 - No se ejecutan matrices ni se generan combinaciones.
 - No existe GUI ni addon de WoW.
 - Las fuentes de daño manuales no pudieron normalizarse completamente porque

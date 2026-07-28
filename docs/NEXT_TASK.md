@@ -1,6 +1,107 @@
 # Next Task — DpsLab
 
-## Active implementation authorization — Comparison execution bridge CI fix 0.1
+## Active design authorization — Comparison result productization 0.1
+
+The completed collar experiment is evidence for one frozen case, not a
+multiclass recommendation engine. The next task is limited to designing how an
+audited comparison result may inform templates, user guidance, and later
+product work without overgeneralizing its scope.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "comparison_result_productization_design_0_1",
+  "title": "Design the governed transition from one audited result to product guidance",
+  "baseline_commit": "7f06e5c12acc1e586a81891f8a1bf16c960eaeb3",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "comparison_result_productization_design_0_1-20260728-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-28T10:34:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/**",
+      "tools/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tools.tests.test_github_automation",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 267,
+    "minimum_test_count": 267
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "scenarios/st_lightmovement_300s_v1.toml": "93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "comparisons/simulationcraft_identity_manifest_0_1.json": "0a305a5991de0d3c1c4aafbb1756351b6643366a663f532877d6e137b69542eb"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "design keeps the result scoped to the frozen character and scenario",
+    "future templates distinguish static fallback data from measured evidence",
+    "no implementation, simulation, comparison, or recommendation is authorized",
+    "the next implementation decision remains human and contract-bound"
+  ],
+  "express_exclusions": [
+    "implementation or code changes",
+    "SimulationCraft invocation or comparison execution",
+    "new runs, results, baselines, or frozen input changes",
+    "universal recommendation claims",
+    "commits, pushes, releases, marketing, or distribution changes"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
 Daniel authorized autonomous continuation on 2026-07-28. GitHub Actions run
 `30370837485` demonstrated one Windows-only test defect: the runner exposes its
@@ -8,7 +109,7 @@ temporary directory through an 8.3 alias while the bridge deliberately resolves
 the root before orchestration. This correction may align only that assertion
 with the production path-normalization contract.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -112,7 +213,24 @@ with the production path-normalization contract.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The correction was independently audited, committed as
+`7f06e5c12acc1e586a81891f8a1bf16c960eaeb3`, published to `main`, and
+verified by GitHub Actions run `30371755873` in all three lanes. Its
+implementation authorization is consumed.
+
+## Completed operational comparison — frozen collar A/B 0.1
+
+Daniel's explicit authorization to cross the execution boundary was consumed
+on 2026-07-28 by exactly one `comparison-execute` invocation. Execution
+`cmp-3120334d365b4ba2922cdbb25afe0d7f` completed all eight blocks without a
+retry. Independent audit returned `comparison_real_execution_audit_approved`.
+The result manifest is `docs/COMPARISON_RESULT_FLASIL_NECK_V1.md`.
+
+No implementation contract is active. A later task must not repeat this
+comparison, change the frozen inputs, promote the winning item into a general
+recommendation, or begin another product block without a new closed contract.
 
 ## Completed implementation authorization — Comparison execution bridge 0.1
 
