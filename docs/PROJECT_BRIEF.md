@@ -32,9 +32,11 @@ byte a byte de las entradas.
   incidencia de prueba en `comparison_models` fue corregida, auditada y
   publicada sin cambios productivos. La baseline funcional aprobada registró
   208/208 pruebas y la ejecución remota `29645964849`, sobre Python 3.13.14,
-  concluyó satisfactoriamente en sus tres lanes. Una reproducción local
-  posterior sobre Python 3.12 registró 5 errores temporales de `updated_at`;
-  permanece como observación ambiental separada, no como regresión demostrada.
+  concluyó satisfactoriamente en sus tres lanes. La observación intermitente
+  posterior de Python 3.12 fue corregida mediante timestamps lógicos
+  estrictamente crecientes y validación durable fail-closed. La verificación
+  local resultante pasó 213/213 y GitHub Actions run `30326263409` aprobó sus
+  tres lanes.
 - Comparador A/B schema 0.1 implementado para el contrato cerrado de `neck`,
   con transformación de equipo separada de `ProfileVariant`, procedencia por
   bloque/intento/miembro y análisis Welch–delta/emparejado.

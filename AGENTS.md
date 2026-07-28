@@ -60,11 +60,12 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - Ejecutar toda la suite después de cambios de código y reportar por separado
   pruebas aprobadas, subtests, fallos y código de salida. La baseline funcional
   aprobada es 208/208 y su verificación remota concluyó satisfactoriamente.
-- Una reproducción local posterior en Python 3.12, distinto del Python 3.13.14
-  fijado por la CI, ejecutó 208 pruebas y registró 5 errores de validación
-  temporal de `updated_at`. Es una observación ambiental abierta y separada:
-  no invalida retrospectivamente la ejecución canónica, pero tampoco debe
-  describirse como una suite local limpia.
+- La observación intermitente de Python 3.12 sobre `updated_at` fue
+  diagnosticada como dependencia incorrecta del avance estricto del reloj de
+  pared. Quedó corregida, auditada y publicada en
+  `b19fb6eae2a44240467cc8684adfd2733e09f0bb`: la verificación local Python
+  3.12.13 pasó 213/213 y GitHub Actions run `30326263409` aprobó sus tres lanes
+  en Python 3.13.14.
 - Mantener compatibilidad de lectura con esquemas históricos.
 - Regenerar snapshots o resúmenes existentes solo cuando la tarea lo solicite explícitamente.
 - Informar hashes protegidos y cualquier artefacto ignorado por `.gitignore`.
@@ -97,5 +98,7 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - El contrato de GitHub Automation 0.1 está consumido y se conserva en
   `docs/NEXT_TASK.md` como evidencia histórica legible por la CI; no autoriza
   nuevas mutaciones.
+- La autorización `comparison_timestamp_monotonicity_0_1` también está
+  consumida; su cierre no autoriza 2.2.b2 ni una ejecución de SimulationCraft.
 - Escalar a Daniel cualquier archivo adicional, eliminación, rename, cambio de
   alcance o excepción no incluida expresamente en el contrato autorizado.

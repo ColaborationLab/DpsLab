@@ -15,8 +15,10 @@
   corregida de forma determinista, auditada y publicada sin cambios
   productivos. La baseline funcional aprobada registró 208/208 pruebas y
   GitHub Actions run `29645964849`, sobre Python 3.13.14, aprobó sus tres
-  lanes. Una reproducción local posterior sobre Python 3.12 registró 5 errores
-  temporales de `updated_at` y queda como observación ambiental separada.
+  lanes. La observación intermitente posterior de Python 3.12 fue corregida,
+  auditada y publicada en `b19fb6eae2a44240467cc8684adfd2733e09f0bb`;
+  la verificación local pasó 213/213 y GitHub Actions run `30326263409`
+  aprobó sus tres lanes.
 - [x] GitHub Automation 0.1 implementada, auditada, publicada y operativa en
   `bf2db644bfebeb07246f8e967f39101a7aa3e77a`.
 

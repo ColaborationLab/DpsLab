@@ -1,10 +1,23 @@
 # Next Task — DpsLab
 
-## Active implementation authorization
+## Completed implementation authorization
 
-Daniel authorized autonomous continuation on 2026-07-27. The active closed
-task is `comparison_timestamp_monotonicity_0_1`, based on the independently
+Daniel authorized autonomous continuation on 2026-07-27. The closed task is
+`comparison_timestamp_monotonicity_0_1`, based on the independently
 reviewed Python 3.12 diagnosis.
+
+This authorization has been consumed. The implementation, independent audit,
+controlled commit and push, and canonical CI verification are complete:
+
+- commit: `b19fb6eae2a44240467cc8684adfd2733e09f0bb`;
+- GitHub Actions run: `30326263409`;
+- Policy and contract: success;
+- Tools tests: success;
+- Functional suite on Python 3.13.14: success;
+- local Python 3.12.13 verification: 213/213 passing tests.
+
+The closed scope below is retained as historical evidence and does not
+authorize further mutation.
 
 Allowed versioned paths:
 
@@ -172,14 +185,14 @@ evidence does not authorize the next task.
 - Subblock 2.2.b1 remains approved (`block_2_2_b1_approved`).
 - The A/B collar comparator has not executed a real comparison.
 - The current functional-suite baseline is 208/208 passing tests.
-- A later local reproduction on Python 3.12, rather than CI's pinned Python
-  3.13.14, ran 208 tests and reported five `updated_at` temporal-validation
-  errors. This is a separate open environment observation, not evidence that
-  the canonical successful run passed locally on that environment.
+- The Python 3.12 `updated_at` observation is closed by
+  `comparison_timestamp_monotonicity_0_1`: logical timestamps now advance
+  strictly, durable boundaries enforce the invariant, and local Python 3.12.13
+  verification passed 213/213 tests.
 - The former `comparison_models` test incident is closed by the deterministic
   test-only correction published in
   `6bff15c2d6b03c96a65ed520ca4f800161d53d2c`.
 - GitHub Automation 0.1 is implemented, independently audited, published, and
   operational (`dpslab_github_automation_0_1_completed_and_operational`).
 - Subblock 2.2.b2 remains future, candidate, and unauthorized.
-- No new implementation contract is active.
+- No new implementation contract is active after this consumed authorization.
