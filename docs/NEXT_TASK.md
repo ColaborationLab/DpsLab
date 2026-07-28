@@ -1,13 +1,147 @@
 # Next Task — DpsLab
 
-## Active implementation authorization — Contract lifecycle 0.2
+## Active implementation authorization — SimulationCraft revision capture 0.1
+
+Daniel authorized `simulationcraft_revision_capture_0_1` on 2026-07-28. This
+prerequisite captures the root `git_revision` emitted in an already generated
+SimulationCraft JSON report so the typed comparison adapter can validate the
+frozen expected revision. It does not invoke SimulationCraft or authorize a
+comparison.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "simulationcraft_revision_capture_0_1",
+  "title": "Capture SimulationCraft git revision from generated JSON",
+  "baseline_commit": "0de971c34ff372efcfb841a19a5f5670b9a7b4f0",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "simulationcraft_revision_capture_0_1-20260728-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-28T00:03:21-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/runner.py",
+      "desktop-app/tests/test_runner.py",
+      "docs/NEXT_TASK.md",
+      "tools/tests/test_github_automation.py"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/simulationcraft_revision_capture_0_1/implementation.json",
+      ".dpslab/quality-gates/simulationcraft_revision_capture_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/dpslab/__main__.py",
+      "desktop-app/src/dpslab/comparator.py",
+      "desktop-app/src/dpslab/comparison_adapter.py",
+      "desktop-app/src/dpslab/comparison_models.py",
+      "desktop-app/src/dpslab/comparison_result_io.py",
+      "desktop-app/src/dpslab/planned_member.py",
+      "desktop-app/tests/test_comparator.py",
+      "desktop-app/tests/test_comparison_adapter.py",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "comparisons/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/quality_gate.py",
+      "tools/tests/test_quality_gate.py"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tests.test_runner",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 219,
+    "minimum_test_count": 220
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "desktop-app/src/dpslab/comparison_adapter.py": "0b65f3339e49217d716d7bc637d3fecf4e821ff68503ee850e61e67fbd0d887e",
+    "desktop-app/src/dpslab/comparator.py": "f9d222229a13deb5f46164038f83d45af45ee634c2262313ce881a70ce5ade32"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the four authorized versioned paths in the delta",
+    "root git_revision is persisted as simc_revision in metadata",
+    "only a nonempty root string is accepted and surrounding whitespace is removed",
+    "missing, blank, non-string, or nested revision remains null without inference",
+    "existing simc_version extraction and runner behavior remain compatible",
+    "contract lifecycle validation remains task-agnostic and rotatable",
+    "focused runner tests, at least 220 functional tests, and tools tests pass",
+    "protected hashes remain intact",
+    "no SimulationCraft, comparison, commit, push, or remote mutation"
+  ],
+  "express_exclusions": [
+    "SimulationCraft invocation or identity probe",
+    "real comparison or run artifact creation",
+    "comparison orchestration, adapter, models, result persistence, or CLI wiring",
+    "profiles, scenarios, variants, comparison specs, results, and local config",
+    "workflow, quality gate, or GitHub settings changes",
+    "commits, pushes, tags, branches, pull requests, and remote changes",
+    "authorization of comparison_execution_preflight_0_1 or any later block"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+## Completed implementation authorization — Contract lifecycle 0.2
 
 Daniel authorized `contract_lifecycle_rotatability_0_2` on 2026-07-27. This
 prerequisite restores machine-checked rotation between a legitimate active
 contract and an append-only historical record without granting any functional
 or execution authority.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+Implementation, independent audit, controlled publication, and canonical CI
+verification are complete:
+
+- commit: `0de971c34ff372efcfb841a19a5f5670b9a7b4f0`;
+- GitHub Actions run: `30330280480`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+The authorization is consumed. The preserved JSON below is historical evidence
+only and cannot authorize another mutation.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -114,7 +248,7 @@ or execution authority.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ## Completed implementation authorization — Subblock 2.2.b2
 

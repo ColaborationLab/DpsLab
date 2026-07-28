@@ -56,7 +56,8 @@ class SimulationRunnerTests(unittest.TestCase):
         json_arg = next(argument for argument in args if argument.startswith("json="))
         json_path = Path(json_arg.removeprefix("json=").split(",", 1)[0])
         json_path.write_text(
-            '{"version":"1100-01","sim":{"players":[{"name":"Tester",'
+            '{"version":"1100-01","git_revision":"test-revision",'
+            '"sim":{"players":[{"name":"Tester",'
             '"collected_data":{"dps":{"mean":1,"count":1}}}]}}',
             encoding="utf-8",
         )
@@ -85,6 +86,7 @@ class SimulationRunnerTests(unittest.TestCase):
         self.assertEqual(metadata["profile"], "profiles/test.simc")
         self.assertFalse(any(str(self.root) in arg for arg in metadata["parameters"]))
         self.assertEqual(metadata["simc_version"], "1100-01")
+        self.assertEqual(metadata["simc_revision"], "test-revision")
 
     @patch("dpslab.runner.subprocess.run")
     def test_each_run_uses_a_new_directory(self, process: object) -> None:
@@ -268,6 +270,45 @@ class SimulationRunnerTests(unittest.TestCase):
         metadata = json.loads(result.artifacts.metadata_file.read_text(encoding="utf-8"))
         self.assertIsNone(result.simc_version)
         self.assertIsNone(metadata["simc_version"])
+        self.assertIsNone(metadata["simc_revision"])
+
+    @patch("dpslab.runner.subprocess.run")
+    def test_simc_revision_requires_nonempty_top_level_string(
+        self, process: object
+    ) -> None:
+        player = {
+            "players": [
+                {
+                    "name": "Tester",
+                    "collected_data": {"dps": {"mean": 1, "count": 1}},
+                }
+            ]
+        }
+        cases = (
+            ("root", {"version": "1100-01", "git_revision": " revision ", "sim": player}, "revision"),
+            ("blank", {"version": "1100-01", "git_revision": " ", "sim": player}, None),
+            ("nested", {"version": "1100-01", "sim": {**player, "git_revision": "nested"}}, None),
+        )
+        for label, document, expected in cases:
+            with self.subTest(label=label):
+                def completed(
+                    args: list[str], **kwargs: object
+                ) -> subprocess.CompletedProcess[str]:
+                    json_arg = next(
+                        argument for argument in args if argument.startswith("json=")
+                    )
+                    json_path = Path(
+                        json_arg.removeprefix("json=").split(",", 1)[0]
+                    )
+                    json_path.write_text(json.dumps(document), encoding="utf-8")
+                    return subprocess.CompletedProcess(args, 0, "", "")
+
+                process.side_effect = completed  # type: ignore[attr-defined]
+                result = run_simulation(self.profile, self._config(), root=self.root)
+                metadata = json.loads(
+                    result.artifacts.metadata_file.read_text(encoding="utf-8")
+                )
+                self.assertEqual(metadata["simc_revision"], expected)
 
     @patch("dpslab.runner.summarize_run")
     @patch("dpslab.runner.subprocess.run")

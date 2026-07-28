@@ -212,6 +212,15 @@ def _simc_version(document: Any, stdout: str, stderr: str) -> str | None:
     return match.group(1) if match else None
 
 
+def _simc_revision(document: Any) -> str | None:
+    if not isinstance(document, dict):
+        return None
+    candidate = document.get("git_revision")
+    if not isinstance(candidate, str) or not candidate.strip():
+        return None
+    return candidate.strip()
+
+
 def _write_metadata(path: Path, metadata: dict[str, Any]) -> None:
     path.write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -385,6 +394,7 @@ def run_simulation(
     status = "failed"
     error_message: str | None = None
     simc_version: str | None = None
+    simc_revision: str | None = None
     output_document: Any = None
     raised_error: SimulationRunError | None = None
 
@@ -418,6 +428,7 @@ def run_simulation(
             if raised_error is None:
                 status = "completed"
                 simc_version = _simc_version(output_document, stdout, stderr)
+                simc_revision = _simc_revision(output_document)
     except subprocess.TimeoutExpired as exc:
         stdout = _text(exc.stdout)
         stderr = _text(exc.stderr)
@@ -493,6 +504,7 @@ def run_simulation(
         "variant_hash_verified": variant_hash_verified,
         "overrides": [item.to_dict() for item in applied_overrides] if config.variant else None,
         "simc_version": simc_version,
+        "simc_revision": simc_revision,
         "parameters": _metadata_parameters(
             profile_for_simc,
             json_file,

@@ -222,7 +222,6 @@ class GitHubAutomationTests(unittest.TestCase):
         active = active_contract(text)
         self.assertIsNotNone(active)
         assert active is not None
-        self.assertEqual(active["task_id"], "contract_lifecycle_rotatability_0_2")
         assert_closed_contract(self, active)
 
         without_active = ACTIVE_PATTERN.sub("", text)
