@@ -101,6 +101,207 @@ product work without overgeneralizing its scope.
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
+## Design output — governed productization boundary
+
+### Product objective
+
+DpsLab must help a player improve damage across WoW characters while
+accounting for class, specialization, race, talents, equipment, encounter
+conditions, game build, and evidence age. The addon and desktop application
+are complementary parts of one solution:
+
+- the addon observes game-exposed state, presents guidance, and exchanges
+  versioned packages;
+- the desktop application validates character data, executes or imports
+  analytical evidence, maintains provenance, and prepares signed content;
+- neither component automates gameplay or silently converts one character's
+  simulation into a general rule.
+
+### Three evidence tiers
+
+Every recommendation candidate must declare exactly one evidence tier.
+
+1. `static_fallback_template`
+   - Ships with the addon and works without the desktop application.
+   - May contain conservative starting priorities for a specific WoW product,
+     build range, class, specialization, race applicability, level range, and
+     supported content context.
+   - Must label unknown or unsupported variables and must never claim to be a
+     personalized simulation.
+2. `imported_analytical_evidence`
+   - Produced by an approved DpsLab desktop workflow or imported through a
+     compatible, verified package.
+   - Must bind character identity, frozen inputs, scenario, software versions,
+     result hashes, statistical method, confidence interval, and expiry
+     policy.
+   - The audited collar result belongs here and remains scoped to Flasil,
+     SimulationCraft `1205-01` revision `a81c39d`, the frozen profile and
+     scenario, and the two compared items.
+3. `character_observation`
+   - Derived only from values exposed by the WoW API and the player's saved
+     local data.
+   - May explain mismatches between current state and an applicable template
+     or imported package.
+   - Missing API data is `unknown` or `not_available`; it is not inferred.
+
+A future presentation layer may combine these tiers for explanation, but it
+must retain each tier's separate provenance and may not raise confidence by
+aggregation.
+
+### Canonical recommendation envelope
+
+The future cross-component schema should use an immutable envelope with these
+families:
+
+- `identity`: package ID, schema version, content version, channel, created
+  time, publisher key ID;
+- `compatibility`: WoW product, branch, expansion/season, interface number,
+  build minimum/maximum, locale independence, addon minimum/maximum, desktop
+  minimum/maximum;
+- `subject`: class, specialization, optional race applicability, level range,
+  role, content context, and optional character-bound fingerprint;
+- `guidance`: ordered and typed statements, prerequisites, mutually exclusive
+  alternatives, explanatory text keys, and explicit unsupported variables;
+- `evidence`: tier, source IDs, hashes, method, sample/run counts, uncertainty,
+  limitations, and age;
+- `safety`: no-automation declaration, required warnings, degradation policy,
+  and invalidation reasons;
+- `integrity`: canonical payload hash, signature algorithm, signature, and
+  signing-key lineage.
+
+The addon must consume only a closed subset of this envelope. Desktop-only
+fields may be ignored only when the schema explicitly marks them optional and
+the remaining addon subset is still valid.
+
+### Applicability and fail-closed selection
+
+Selection must evaluate, in order:
+
+1. package authenticity and byte integrity;
+2. schema compatibility;
+3. exact WoW product and build range;
+4. class and specialization;
+5. level and content context;
+6. race only when the guidance declares a race-sensitive dependency;
+7. required equipment, talents, or character fingerprint;
+8. evidence expiry and invalidation rules.
+
+An unknown build must not silently select the newest known package. The addon
+may fall back from personalized analytical evidence to a compatible static
+template, but the UI must show the downgrade, provenance, age, and reason.
+When no compatible template exists, the correct result is
+`guidance_unavailable`, not a best-effort recommendation.
+
+### Initial-template policy
+
+Initial templates are curated knowledge artifacts, not simulator output. A
+template may provide:
+
+- a conservative starter priority;
+- baseline stat-orientation language with no fabricated exact weights;
+- supported talent/loadout prerequisites;
+- equipment or mechanic checks that can be evaluated from exposed API data;
+- explicit branches for known contexts;
+- links or identifiers for deeper desktop analysis.
+
+A template must not embed copied proprietary simulator logic, undocumented
+third-party data, universal BiS claims, or exact numerical weights without a
+versioned source and review. Race-specific templates should exist only when a
+real applicability difference is documented; otherwise race remains a
+compatibility dimension with shared guidance.
+
+### Desktop and update architecture
+
+Binary releases, knowledge packages, schemas, and metadata are independently
+versioned components. The update client should:
+
+1. fetch a small signed channel manifest;
+2. verify publisher key, signature, hashes, compatibility, and rollback floor;
+3. stage the complete candidate set outside the active location;
+4. validate the candidate as a compatible set;
+5. activate it atomically;
+6. retain the last known-good compatible set for rollback.
+
+`stable` and `beta` remain separate channels. Patch-note ingestion may create
+`pending_review` candidates and invalidate affected knowledge, but patch notes
+alone never publish guidance. Human or separately authorized machine review
+must map source changes to canonical entities, applicability, tests, and a
+signed release.
+
+Offline operation uses the last verified compatible package and displays its
+age. Manual import uses the same signature, integrity, compatibility, and
+rollback checks as network updates. Telemetry, if ever authorized, is
+off-by-default, revocable, minimized, and separated from update eligibility.
+
+### Addon boundary
+
+The addon may:
+
+- read permitted WoW API state;
+- display static or imported guidance with provenance;
+- record local observations in SavedVariables;
+- export/import explicitly initiated payloads;
+- notify the player that verified knowledge is stale or unavailable.
+
+The addon may not:
+
+- run a simulator;
+- control movement, targeting, combat actions, or input;
+- infer inaccessible state;
+- download or execute arbitrary code;
+- hide evidence age, applicability failures, or a fallback downgrade.
+
+### Repository and release boundary
+
+The current design does not decide repository topology. If the addon later
+uses a separate repository, schemas must still have one authoritative source
+and generated copies must carry source commit and content hash. DpsLab and UPL
+remain separate projects: only domain-neutral patterns may be reused, never
+data, credentials, releases, or implied authority.
+
+### Candidate work packages
+
+The following packages are candidates only and are not authorized:
+
+1. `knowledge_envelope_schema_0_1`
+   - closed JSON schema, canonical serialization, compatibility evaluator, and
+     signature-independent hash model;
+2. `static_template_catalog_0_1`
+   - one synthetic specialization fixture plus review states, without claims
+     about live class balance;
+3. `addon_guidance_reader_0_1`
+   - pure Lua reader/validator against synthetic packages, no WoW automation;
+4. `desktop_knowledge_packager_0_1`
+   - local packaging, staging, compatibility checks, and rollback primitives;
+5. `patch_evidence_intake_0_1`
+   - patch-source snapshots and `pending_review` candidate generation only;
+6. `signed_update_channel_0_1`
+   - key policy, manifest format, stable/beta separation, and recovery design;
+7. `specialization_template_program_0_1`
+   - governed research and review workflow for expanding class/spec coverage.
+
+### Recommended next contract
+
+The smallest useful implementation candidate is
+`knowledge_envelope_schema_0_1`. It should begin with synthetic fixtures and
+pure validation only. It must not include live recommendations, class balance
+claims, signing credentials, network updates, addon UI, SimulationCraft, or
+automatic patch-note publication.
+
+Before implementation authorization, human review must decide:
+
+1. whether the canonical envelope belongs initially in the current DpsLab
+   repository;
+2. whether the first implementation covers only
+   `static_fallback_template` or also the structural fields for imported
+   analytical evidence;
+3. the initial supported WoW product (`Retail` only is recommended);
+4. whether signing remains an interface placeholder until a separate key
+   management decision (recommended);
+5. the exact implementation allowlist and protected paths.
+
+Design verdict: `comparison_result_productization_design_ready_for_human_review`.
+
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
 Daniel authorized autonomous continuation on 2026-07-28. GitHub Actions run
