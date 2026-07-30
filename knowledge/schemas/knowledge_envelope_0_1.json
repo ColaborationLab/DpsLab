@@ -1,0 +1,367 @@
+{
+  "$id": "https://dpslab.local/schemas/knowledge-envelope-0.1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "compatibility": {
+      "additionalProperties": false,
+      "properties": {
+        "addon_max": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "addon_min": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "build_max": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "build_min": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "desktop_max": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "desktop_min": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "interface_max": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "interface_min": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "wow_product": {
+          "const": "retail"
+        }
+      },
+      "required": [
+        "wow_product",
+        "build_min",
+        "build_max",
+        "interface_min",
+        "interface_max",
+        "addon_min",
+        "addon_max",
+        "desktop_min",
+        "desktop_max"
+      ],
+      "type": "object"
+    },
+    "evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "confidence_interval_percent": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "expires_at": {
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "run_count": {
+          "minimum": 1,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "source_hashes": {
+          "additionalProperties": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "tier": {
+          "enum": [
+            "static_fallback_template",
+            "imported_analytical_evidence",
+            "character_observation"
+          ]
+        }
+      },
+      "required": [
+        "tier",
+        "source_ids",
+        "source_hashes",
+        "method",
+        "run_count",
+        "confidence_interval_percent",
+        "expires_at",
+        "limitations"
+      ],
+      "type": "object"
+    },
+    "guidance": {
+      "additionalProperties": false,
+      "properties": {
+        "statements": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "alternatives": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "order": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "prerequisites": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "text_key": {
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "priority",
+                  "check",
+                  "explanation",
+                  "alternative"
+                ]
+              }
+            },
+            "required": [
+              "order",
+              "type",
+              "text_key",
+              "prerequisites",
+              "alternatives"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "unsupported_variables": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "statements",
+        "unsupported_variables"
+      ],
+      "type": "object"
+    },
+    "identity": {
+      "additionalProperties": false,
+      "properties": {
+        "channel": {
+          "enum": [
+            "stable",
+            "beta"
+          ]
+        },
+        "content_version": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "package_id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "package_id",
+        "content_version",
+        "channel",
+        "created_at"
+      ],
+      "type": "object"
+    },
+    "integrity": {
+      "additionalProperties": false,
+      "properties": {
+        "payload_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "publisher_key_id": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "null"
+        },
+        "signature_algorithm": {
+          "const": "placeholder-none"
+        }
+      },
+      "required": [
+        "payload_sha256",
+        "signature_algorithm",
+        "signature",
+        "publisher_key_id"
+      ],
+      "type": "object"
+    },
+    "safety": {
+      "additionalProperties": false,
+      "properties": {
+        "degradation_policy": {
+          "const": "fail_closed"
+        },
+        "invalidation_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "no_automation": {
+          "const": true
+        },
+        "required_warnings": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "no_automation",
+        "required_warnings",
+        "degradation_policy",
+        "invalidation_reasons"
+      ],
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "0.1"
+    },
+    "subject": {
+      "additionalProperties": false,
+      "properties": {
+        "character_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "class_id": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "content_contexts": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "level_max": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "level_min": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "race_ids": {
+          "items": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minItems": 1,
+          "type": [
+            "array",
+            "null"
+          ],
+          "uniqueItems": true
+        },
+        "role": {
+          "enum": [
+            "damage",
+            "tank",
+            "healer"
+          ]
+        },
+        "specialization_id": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "class_id",
+        "specialization_id",
+        "race_ids",
+        "level_min",
+        "level_max",
+        "role",
+        "content_contexts",
+        "character_fingerprint"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "identity",
+    "compatibility",
+    "subject",
+    "guidance",
+    "evidence",
+    "safety",
+    "integrity"
+  ],
+  "title": "DpsLab Knowledge Envelope 0.1",
+  "type": "object"
+}

@@ -7,7 +7,7 @@ multiclass recommendation engine. The next task is limited to designing how an
 audited comparison result may inform templates, user guidance, and later
 product work without overgeneralizing its scope.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -99,7 +99,7 @@ product work without overgeneralizing its scope.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 ## Design output — governed productization boundary
 
@@ -301,6 +301,156 @@ Before implementation authorization, human review must decide:
 5. the exact implementation allowlist and protected paths.
 
 Design verdict: `comparison_result_productization_design_ready_for_human_review`.
+
+## Active implementation contract — Knowledge envelope schema 0.1
+
+Daniel approved the closed contract on 2026-07-29. This authorization permits
+implementation and tests only in the six listed paths. It does not authorize
+commit, push, SimulationCraft, addon work, UI, networking, real keys, or live
+recommendations.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "knowledge_envelope_schema_0_1",
+  "title": "Closed Retail knowledge envelope schema and pure validator",
+  "baseline_commit": "0c11f0971c703e740b1d2b4237e685e0cc861f08",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "knowledge_envelope_schema_0_1-20260729-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-29T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/knowledge_envelope.py",
+      "desktop-app/tests/test_knowledge_envelope.py",
+      "knowledge/schemas/knowledge_envelope_0_1.json",
+      "knowledge/fixtures/static_fallback_template_synthetic_0_1.json",
+      "docs/KNOWLEDGE_ENVELOPE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/knowledge_envelope_schema_0_1/implementation.json",
+      ".dpslab/quality-gates/knowledge_envelope_schema_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/dpslab/__main__.py",
+      "desktop-app/src/dpslab/comparison_*.py",
+      "desktop-app/src/dpslab/runner.py",
+      "desktop-app/tests/test_comparison_*.py",
+      "desktop-app/tests/test_runner.py",
+      "tools/**",
+      "addons/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "AGENTS.md",
+      "docs/PROJECT_BRIEF.md",
+      "docs/ROADMAP.md"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_knowledge_envelope.py",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 267,
+    "minimum_test_count": 281
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "scenarios/st_lightmovement_300s_v1.toml": "93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "comparisons/simulationcraft_identity_manifest_0_1.json": "0a305a5991de0d3c1c4aafbb1756351b6643366a663f532877d6e137b69542eb",
+    "docs/COMPARISON_RESULT_FLASIL_NECK_V1.md": "9b8fd4b512e680149e219ab8834563019339bfcdf6b9ef3805ff62594507c229"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "exactly the six authorized versioned paths in the delta",
+    "Retail is the only accepted WoW product in schema 0.1",
+    "the envelope structurally supports static_fallback_template and imported_analytical_evidence while the only fixture is synthetic static fallback data",
+    "character_observation is reserved as an evidence tier but no observation ingestion is implemented",
+    "closed root and nested object families reject unknown fields",
+    "canonical JSON bytes use UTF-8, sorted keys, compact separators, and exactly one trailing LF",
+    "payload_sha256 covers canonical UTF-8 bytes of the envelope after omitting exactly integrity.payload_sha256 and integrity.signature while retaining integrity.signature_algorithm and integrity.publisher_key_id",
+    "focused tests reject hashes calculated by including either omitted integrity field and reject projections that omit signature_algorithm or publisher_key_id",
+    "signature fields are validated placeholders only and no cryptographic signing or key storage is implemented",
+    "compatibility rejects unknown products, reversed or malformed build ranges, incompatible class or specialization, and expired evidence",
+    "an unknown or out-of-range build produces guidance_unavailable and never selects newest",
+    "race applicability is optional and defaults to shared guidance rather than generating race-specific claims",
+    "guidance statements are typed, ordered, prerequisite-bound, and cannot contain executable code",
+    "synthetic fixture contains no live balance claim, proprietary simulator logic, personal path, credential, or real character fingerprint",
+    "at least 14 focused tests, at least 281 total functional tests, and all tools tests pass",
+    "protected hashes remain intact and simulationcraft_invoked remains false"
+  ],
+  "express_exclusions": [
+    "live class, specialization, race, talent, stat-weight, or best-in-slot recommendations",
+    "addon code, Lua, UI, SavedVariables, or WoW API access",
+    "desktop UI, networking, downloads, updater activation, rollback execution, or release channels",
+    "real signatures, key generation, key storage, certificates, secrets, or trust-store changes",
+    "patch-note fetching, parsing, mapping, or publication",
+    "telemetry, analytics, accounts, donations, marketing, distribution, or releases",
+    "SimulationCraft invocation, comparisons, runs, results, baselines, profiles, scenarios, or variants",
+    "new dependencies, pyproject changes, CLI integration, GitHub workflow changes, commits, pushes, tags, branches, or settings"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Recommended human disposition:
+
+- approve the six-path allowlist;
+- keep Retail as the sole product in schema 0.1;
+- include both static and imported evidence structures, but only a synthetic
+  static fixture;
+- keep signature/key handling as validated placeholders;
+- require at least 14 focused tests and 281 total functional tests.
+
+Prepared-contract verdict:
+`knowledge_envelope_schema_0_1_contract_ready_for_human_review`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
