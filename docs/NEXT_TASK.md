@@ -1,6 +1,6 @@
 # Next Task — DpsLab
 
-## Active design authorization — Comparison result productization 0.1
+## Consumed design authorization — Comparison result productization 0.1
 
 The completed collar experiment is evidence for one frozen case, not a
 multiclass recommendation engine. The next task is limited to designing how an
@@ -302,14 +302,17 @@ Before implementation authorization, human review must decide:
 
 Design verdict: `comparison_result_productization_design_ready_for_human_review`.
 
-## Active implementation contract — Knowledge envelope schema 0.1
+## Completed implementation authorization — Knowledge envelope schema 0.1
 
-Daniel approved the closed contract on 2026-07-29. This authorization permits
-implementation and tests only in the six listed paths. It does not authorize
-commit, push, SimulationCraft, addon work, UI, networking, real keys, or live
-recommendations.
+Daniel approved the closed contract on 2026-07-29. The implementation was
+audited, committed as `ee1822aed19f4aa46507f0e09d7b735ae36491ce`, published
+to `main`, and verified by GitHub Actions run `30622148623` on 2026-07-31.
+That run completed successfully in all three lanes. The authorization below is
+consumed historical evidence and cannot authorize another edit, test run,
+commit, push, SimulationCraft invocation, addon change, UI, network operation,
+real key, or live recommendation.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -438,19 +441,429 @@ recommendations.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Closure evidence:
+
+- implementation audit: `knowledge_envelope_schema_0_1_audit_approved`;
+- commit audit: `knowledge_envelope_schema_0_1_commit_audit_approved`;
+- published commit: `ee1822aed19f4aa46507f0e09d7b735ae36491ce`;
+- GitHub Actions: run `30622148623`, success, three lanes;
+- focal tests: 25; functional tests: 292; tools tests: 52;
+- final state: `knowledge_envelope_schema_0_1_published_ci_passed`.
+
+## Active design contract — Static template catalog 0.1
+
+This contract authorizes only the design of a catalog for synthetic static
+fallback templates. It does not authorize catalog implementation, real class
+or balance data, live recommendations, SimulationCraft, addon or UI work,
+networking, packaging, signing, commit, or publication.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "static_template_catalog_0_1",
+  "title": "Design a governed synthetic static fallback template catalog",
+  "baseline_commit": "ee1822aed19f4aa46507f0e09d7b735ae36491ce",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "static_template_catalog_0_1-design-20260731-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/**",
+      "knowledge/**",
+      "tools/**",
+      "addons/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "AGENTS.md",
+      "docs/KNOWLEDGE_ENVELOPE.md",
+      "docs/PROJECT_BRIEF.md",
+      "docs/ROADMAP.md"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tools.tests.test_github_automation",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 292,
+    "minimum_test_count": 292
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "scenarios/st_lightmovement_300s_v1.toml": "93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa",
+    "comparisons/flasil_neck_50228_vs_249368_v1.toml": "68282327263d4f75797181521419f11aa54fdecf16f1634c0b3b1b2ac6fdbe4c",
+    "comparisons/simulationcraft_identity_manifest_0_1.json": "0a305a5991de0d3c1c4aafbb1756351b6643366a663f532877d6e137b69542eb",
+    "docs/COMPARISON_RESULT_FLASIL_NECK_V1.md": "9b8fd4b512e680149e219ab8834563019339bfcdf6b9ef3805ff62594507c229"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "define catalog identity, versioning, lifecycle, review states, provenance, compatibility, invalidation, and rollback boundaries",
+    "exclude databases and simulation-history stores from the canonical architecture",
+    "define current-only activation with stale knowledge failing closed",
+    "define role-aware objective priority for damage, tank, and healer specializations",
+    "use only synthetic examples and one synthetic specialization fixture proposal",
+    "preserve the knowledge envelope 0.1 schema as the authoritative item format",
+    "separate catalog metadata from envelope payloads and from future distribution manifests",
+    "define draft, pending_review, approved, rejected, deprecated, and withdrawn states without treating technical validity as approval",
+    "require explicit human approval before any template becomes eligible for a future release",
+    "keep unknown or incompatible knowledge fail-closed as guidance_unavailable",
+    "produce a closed implementation proposal with exact paths, tests, protected files, and explicit exclusions",
+    "make no live class balance, stat weight, talent, race, equipment, best-in-slot, or rotation claim",
+    "leave implementation and every later block unauthorized"
+  ],
+  "express_exclusions": [
+    "catalog implementation, fixtures, schemas, code, tests, dependencies, or generated artifacts",
+    "databases, warehouses, simulation-history services, retrospective recommendation stores, or server-side catalog state",
+    "real World of Warcraft data, patch-note ingestion, web research, or live recommendations",
+    "SimulationCraft invocation, comparison execution, runs, results, baselines, profiles, scenarios, or variants",
+    "addon code, Lua, UI, SavedVariables, WoW API access, desktop UI, or packaging",
+    "network access, downloads, update channels, signing, keys, secrets, releases, or distribution",
+    "commits, pushes, tags, branches, pull requests, GitHub settings, or workflow changes"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Recommended human disposition:
+Design-entry verdict:
+`static_template_catalog_0_1_design_authorized`.
 
-- approve the six-path allowlist;
-- keep Retail as the sole product in schema 0.1;
-- include both static and imported evidence structures, but only a synthetic
-  static fixture;
-- keep signature/key handling as validated placeholders;
-- require at least 14 focused tests and 281 total functional tests.
+### Design output — catalog boundary
 
-Prepared-contract verdict:
-`knowledge_envelope_schema_0_1_contract_ready_for_human_review`.
+The catalog is a governed index of knowledge envelopes. It does not duplicate
+the envelope schema, contain executable behavior, or decide distribution. Each
+catalog entry points to one immutable canonical envelope by repository-relative
+path and SHA-256. Catalog validity proves structure and integrity only; it does
+not prove that guidance is correct or approved.
+
+The catalog and its entries use independent identities and versions:
+
+- `catalog_id` identifies the catalog lineage;
+- `catalog_version` identifies this catalog schema (`0.1`);
+- `content_version` advances when membership or governance metadata changes;
+- `entry_id` identifies one catalog membership record;
+- `package_id` remains owned by the referenced knowledge envelope;
+- `envelope_sha256` covers the complete canonical envelope bytes, while the
+  envelope's own `payload_sha256` retains its existing projection semantics.
+
+Catalog order is non-semantic. Selection may never depend on array position or
+filesystem discovery order.
+
+### Closed catalog families
+
+The initial catalog document should contain exactly these root families:
+
+- `catalog_version`;
+- `identity`: catalog ID, content version, channel, and creation time;
+- `entries`: a non-empty list of closed membership records;
+- `integrity`: exactly `catalog_sha256` and `hash_algorithm`.
+
+`hash_algorithm` is exactly `sha256`. `catalog_sha256` covers the canonical
+UTF-8 catalog bytes after omitting exactly `integrity.catalog_sha256`; the
+`integrity` object and its `hash_algorithm` member remain present in the hashed
+projection. No other root, nested, review, lifecycle, or entry field may be
+omitted. Focused tests must reject a hash that includes `catalog_sha256` and a
+projection that omits `hash_algorithm` or any additional field.
+
+Each entry should contain exactly:
+
+- `entry_id`;
+- `envelope_path` and `envelope_sha256`;
+- copied indexing keys: WoW product, build and interface bounds, class,
+  specialization, optional race applicability, level bounds, role, and content
+  contexts;
+- `lifecycle_state`;
+- `review`: decision ID, reviewer ID, decision time, and review notes tokens;
+- `supersedes_entry_ids`;
+- `invalidation_reasons`.
+
+Copied indexing keys are search accelerators, not a second authority. They must
+equal the referenced envelope exactly. Any mismatch invalidates the catalog.
+
+### Lifecycle and human authority
+
+The lifecycle is closed to these states:
+
+1. `draft`: incomplete work product; never selectable;
+2. `pending_review`: structurally complete and awaiting human review; never
+   selectable;
+3. `approved`: explicitly approved by a recorded human decision; potentially
+   selectable only after all compatibility and integrity checks pass;
+4. `rejected`: reviewed and refused; never selectable;
+5. `deprecated`: formerly approved but superseded or approaching retirement;
+   never selected for a new context in version 0.1;
+6. `withdrawn`: invalidated after approval; never selectable.
+
+Technical validation cannot create or infer `approved`. Review fields embedded
+in the catalog are descriptive and untrusted for authority purposes. An
+`approved` entry becomes eligible only when the caller injects separately
+verified external approval evidence from a future trusted authority provider.
+That evidence must bind exactly:
+
+- `catalog_id` and catalog `content_version`;
+- `entry_id`, referenced envelope `package_id`, and `envelope_sha256`;
+- decision `approved`, a non-empty decision ID, an authorized reviewer ID, and
+  a UTC decision timestamp.
+
+Every bound value must equal the validated catalog and envelope. Missing,
+untrusted, stale, mismatched, rejected, or differently scoped approval evidence
+returns `guidance_unavailable`. Version 0.1 accepts approval evidence only as an
+injected immutable value; it does not read accounts, files, networks, keys, or
+approval services. The synthetic fixture remains `pending_review`, so the first
+implementation needs only the fail-closed interface and negative evidence
+tests, not real approval evidence.
+
+The materialized `review` family is closed to `decision_id`, `reviewer_id`,
+`decided_at`, `notes`, `prior_approval_decision_id`, and
+`transition_reason`. Its exact state matrix is:
+
+| State | Final decision fields | Prior approval | Transition reason |
+| --- | --- | --- | --- |
+| `draft` | all null | null | null |
+| `pending_review` | all null | null | null |
+| `approved` | decision ID, reviewer ID, UTC time required | null | null |
+| `rejected` | decision ID, reviewer ID, UTC time required | null | required |
+| `deprecated` | new decision ID, reviewer ID, UTC time required | required | required |
+| `withdrawn` | new decision ID, reviewer ID, UTC time required | required | required |
+
+Here “final decision fields” means exactly `decision_id`, `reviewer_id`, and
+`decided_at`. `notes` is always a list of unique tokens and may be empty.
+Required strings are non-empty tokens. No other null/non-null combination is
+valid. `prior_approval_decision_id` is a reference only; external evidence must
+also prove that prior approval before a deprecated or withdrawn record is
+accepted as coherent.
+
+State transitions are append-only governance events in future work. Version
+0.1 validates only the materialized current state and does not implement an
+event log, database, or approval UI.
+
+### Eligibility and collision rules
+
+A catalog entry is eligible only when all of the following are true:
+
+1. the catalog and referenced envelope are canonical and hash-valid;
+2. the entry is `approved` by explicit human evidence;
+3. copied indexing keys equal the referenced envelope;
+4. the envelope tier is `static_fallback_template`;
+5. product, build, interface, class, specialization, level, content context,
+   optional race, expiry, and safety constraints all match;
+6. no catalog or entry invalidation applies.
+
+All other cases produce `guidance_unavailable`. The catalog must reject:
+
+- duplicate `entry_id` or duplicate referenced `package_id`;
+- missing, absolute, traversing, or non-JSON envelope paths;
+- envelope paths outside `knowledge/fixtures/` in the first implementation;
+- overlapping `approved` entries for the same selection dimensions;
+- supersession references that are missing, self-referential, cyclic, or point
+  to a different subject/compatibility lineage;
+- any entry whose state or review evidence is contradictory.
+
+Version 0.1 has no automatic tie-breaker. Newest version, widest build range,
+array order, or channel must never silently resolve an ambiguity.
+
+### Current-only knowledge policy
+
+DpsLab does not use a database, data warehouse, central simulation history, or
+retrospective recommendation store as a canonical or supporting product layer.
+Canonical knowledge remains a versioned set of immutable envelope files plus a
+single current catalog. Local indexes, if a future reader needs them for speed,
+must be ephemeral, fully reconstructible from those files, and disposable.
+
+Only currently applicable knowledge may become eligible for guidance. A
+catalog build must therefore bind every entry to explicit Retail build and
+interface ranges, evidence expiry, source capture time, and source revision.
+When any required source is unknown, stale, superseded, contradictory, or
+outside its supported range, the affected entry becomes ineligible and the
+result is `guidance_unavailable`.
+
+“Current” never means “latest file found.” It means that all mandatory source
+families declared for that specialization and context have been captured,
+validated, reconciled, reviewed, and approved for the same supported game
+range. The system must not claim complete coverage when a mandatory source is
+missing. Historical files may remain in Git solely for audit and recovery, but
+they are never queried to generate present recommendations or to extrapolate
+old simulation results into a new patch.
+
+### Source coverage and freshness
+
+A later `catalog_candidate_pipeline_0_1` should maintain a versioned source
+coverage manifest, not a database. For each specialization and supported
+context it must declare the source families needed to evaluate DPS-affecting
+parameters, including as applicable:
+
+- game build and interface metadata;
+- class, specialization, role, spell, aura, resource, cooldown, and mechanic
+  definitions;
+- talents and loadout constraints;
+- equipment, item effects, set effects, embellishments, trinkets, weapons, and
+  stat rules;
+- race applicability when a documented performance dependency exists;
+- encounter or content-context constraints;
+- corrections, hotfixes, and authoritative patch changes;
+- DpsLab review decisions and explicit limitations.
+
+Each source family needs an authoritative source identifier, captured revision
+or timestamp, content hash, license/use classification, freshness rule,
+applicability range, and last successful review. Automated capture may create
+only `pending_review` candidates and stale/invalidation alerts. It cannot infer
+approval, publish content, or silently fill missing parameters. Manual imports
+enter the same quarantine and validation path.
+
+The project goal is complete declared coverage of every parameter family that
+materially affects supported DPS guidance. Because external information can be
+late, incomplete, or contradictory, completeness is measured against the
+coverage manifest and exposed honestly; it is never asserted as an
+unverifiable universal guarantee.
+
+### Role-aware optimization hierarchy
+
+The product objective is not identical for every specialization. Every future
+template must declare one role policy matching the envelope's `subject.role`.
+Role policy changes applicability and priority, but never authorizes gameplay
+automation.
+
+1. `damage`
+   - Primary objective: improve expected damage for the supported context.
+   - Hard constraints: character safety, encounter obligations, target rules,
+     resource legality, and declared unsupported variables.
+   - Guidance must not trade required mechanics or survival for theoretical
+     damage that cannot be executed safely.
+2. `tank`
+   - Primary objective: remain alive and satisfy mitigation, active-defense,
+     threat, positioning, and encounter obligations.
+   - Secondary objective: improve damage only inside the survivability and
+     mitigation budget validated for the supported context.
+   - When incoming damage, mitigation state, healer support, or encounter risk
+     is unknown, the catalog must not recommend a damage-first alternative.
+3. `healer`
+   - Primary objective: maintain required ally survival, healing coverage,
+     dispels, emergency capacity, and encounter obligations.
+   - Secondary objective: improve damage during safe healing windows.
+   - Damage abilities that directly produce healing or required resources may
+     participate in the healing plan, but their priority is evaluated by their
+     healing contribution first and damage contribution second.
+   - When ally risk, healing demand, or resource safety is unknown, damage
+     guidance must degrade or become unavailable rather than compete with
+     required healing.
+
+The catalog 0.1 implementation may validate the existing closed `role` field,
+role-policy identity, and governance consistency using synthetic data. It does
+not yet have enough live observation inputs to calculate incoming damage,
+mitigation budgets, ally health, healing demand, or safe damage windows. Those
+runtime inputs belong to separately designed addon/desktop observation
+contracts. Until then, no static template may claim that a dynamic tank or
+healer safety condition has been satisfied.
+
+Before any real template program begins, human review must define per-role and
+per-context mandatory source families, safety constraints, unavailable-state
+behavior, and validation evidence. A later schema revision is required if
+these constraints cannot be represented without overloading generic guidance
+tokens; catalog implementation must not silently extend knowledge envelope
+0.1.
+
+### Synthetic specialization proposal
+
+The sole proposed catalog fixture references the existing synthetic envelope
+`static_fallback_template_synthetic_0_1.json`. Its copied subject remains the
+synthetic class/spec tuple already present in that fixture, and its state is
+`pending_review`. Names and guidance tokens remain explicitly synthetic. It is
+not an Arms Warrior recommendation merely because the numeric fixture IDs
+coincide with real game identifiers, and no user-facing class label may be
+derived from them in this block.
+
+The fixture must contain no real balance data, stat weights, talents,
+equipment, rotations, proprietary simulator logic, personal paths, character
+fingerprints, credentials, or claims of game-patch currency.
+
+### Separation from packaging and distribution
+
+This catalog is repository-local versioned content. It does not define:
+
+- update manifests, signatures, keys, downloads, channels, or rollback files;
+- addon serialization or Lua consumption;
+- desktop packaging or installation;
+- patch-note intake or automatic invalidation;
+- recommendation presentation or localization text.
+
+Those remain separate future contracts. A later packager may consume an
+approved catalog, but it must not mutate lifecycle state or reinterpret human
+approval.
+
+### Proposed implementation allowlist
+
+A future implementation contract should be limited to exactly:
+
+1. `desktop-app/src/dpslab/static_template_catalog.py`;
+2. `desktop-app/tests/test_static_template_catalog.py`;
+3. `knowledge/schemas/static_template_catalog_0_1.json`;
+4. `knowledge/catalogs/static_template_catalog_synthetic_0_1.json`;
+5. `docs/STATIC_TEMPLATE_CATALOG.md`;
+6. `docs/NEXT_TASK.md`.
+
+The existing envelope schema, validator, fixture, CI workflow, comparison
+assets, profiles, scenarios, results, addon paths, and project governance
+documents remain protected and read-only.
+
+The future focused suite should contain at least 20 tests covering canonical
+bytes, catalog hash projection, closed fields, path confinement, duplicate
+identities, copied-key equality, every lifecycle state, contradictory review
+evidence, collision rejection, supersession failures, expiry, and fail-closed
+selection. It must additionally reject database or remote-state dependencies,
+stale or incomplete source coverage, role-policy mismatch, damage-first tank
+guidance without satisfied synthetic safety constraints, and healer damage
+guidance without satisfied synthetic healing constraints. The functional floor
+must be at least the then-current 292 tests, and all tools tests must pass.
+SimulationCraft must remain uninvoked.
+
+Implementation-contract proposal verdict:
+`static_template_catalog_0_1_design_ready_for_human_review`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
