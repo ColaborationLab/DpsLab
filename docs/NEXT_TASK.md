@@ -1608,14 +1608,14 @@ The implementation authorization is consumed. The retained contract is
 historical evidence and cannot authorize another mutation, real data
 acquisition, catalog update, recommendation approval, or release.
 
-## Active design contract — First-party patch source adapter 0.1
+## Consumed design contract — First-party patch source adapter 0.1
 
 This design-only block specifies how official, current patch and hotfix
 material may be acquired and converted into the already implemented evidence
 quarantine. It does not fetch a source, store real content, infer balance
 changes from prose, or update a catalog.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -1676,7 +1676,7 @@ changes from prose, or update a catalog.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `first_party_patch_source_adapter_design_0_1_authorized`.
 
@@ -1731,6 +1731,92 @@ Proposed closed implementation paths:
 
 Design verdict:
 `first_party_patch_source_adapter_design_0_1_ready_for_implementation_contract`.
+
+Design publication closure:
+
+- commit: `093756ca7b0944dc22a907cff91a3df43e5feac5`;
+- GitHub Actions run: `30635526891`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- final state: `first_party_patch_source_adapter_design_0_1_published_ci_passed`.
+
+## Active implementation contract — First-party patch source adapter 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "first_party_patch_source_adapter_0_1",
+  "title": "Pure synthetic source registry and injected transport capture",
+  "baseline_commit": "093756ca7b0944dc22a907cff91a3df43e5feac5",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "first_party_patch_source_adapter_0_1-20260731-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/patch_source_adapter.py",
+      "desktop-app/tests/test_patch_source_adapter.py",
+      "knowledge/schemas/patch_source_registry_0_1.json",
+      "knowledge/registries/patch_source_registry_synthetic_0_1.json",
+      "docs/PATCH_SOURCE_ADAPTER.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/first_party_patch_source_adapter_0_1/implementation.json",
+      ".dpslab/quality-gates/first_party_patch_source_adapter_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_patch_source_adapter", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 376,
+    "minimum_test_count": 406
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/patch_evidence.py": "d2f3562e44b2ff92f6319305136887f97465e5b42c1d154f5a547e1de09b9fcf",
+    "knowledge/snapshots/patch_evidence_synthetic_0_1.json": "f3d58b536a853975e92d9359a5e3a8104bb1fa460431d7dbf9a294655cfc56a4"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "exactly six allowlisted paths and no deletion or rename",
+    "closed canonical registry with deterministic SHA-256",
+    "only injected response objects and synthetic source identities",
+    "redirect, status, completeness, media and size policies fail closed",
+    "not-modified reuse requires previously verified validators and hash",
+    "duplicates are deterministic and do not replace known-good evidence",
+    "handoff can produce only patch_evidence quarantine outcomes",
+    "at least 30 focused tests, 406 functional tests, and all tools tests pass",
+    "protected hashes remain intact and SimulationCraft is not invoked"
+  ],
+  "express_exclusions": [
+    "HTTP client, DNS, browser, scraping, real URL, or real patch content",
+    "HTML or natural-language interpretation",
+    "catalog mutation, approval, signing, release, addon, UI, SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict:
+`first_party_patch_source_adapter_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
