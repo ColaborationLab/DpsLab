@@ -1326,14 +1326,14 @@ Publication closure:
 - Policy and contract, Tools tests, and Functional suite: success;
 - final state: `source_coverage_manifest_0_1_published_ci_passed`.
 
-## Active design contract — Patch evidence intake 0.1
+## Consumed design contract — Patch evidence intake 0.1
 
 This contract authorizes documentation-only design for converting injected
 patch and hotfix evidence into sanitized, reviewable change candidates. It does
 not authorize network access, source retrieval, real patch data, implementation,
 catalog mutation, approval, or publication.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -1416,7 +1416,7 @@ catalog mutation, approval, or publication.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict:
 `patch_evidence_intake_design_0_1_authorized`.
@@ -1505,6 +1505,96 @@ catalog mutation. The functional floor is 371 tests and all tools tests pass.
 
 Design verdict:
 `patch_evidence_intake_design_0_1_ready_for_implementation_contract`.
+
+Design publication closure:
+
+- commit: `3d0b783fb6364eaadb66b3e7aa24f5437e68ab75`;
+- local and live remote `main`: synchronized;
+- GitHub Actions lookup through the expired local API session returned 404,
+  so canonical CI evidence remains an explicit publication observation rather
+  than an inferred success.
+
+## Active implementation contract — Patch evidence intake 0.1
+
+Daniel's expanded technical authorization permits this closed synthetic
+implementation. It does not authorize live acquisition, real patch data,
+catalog mutation, recommendation approval, or network activity.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "patch_evidence_intake_0_1",
+  "title": "Pure fail-closed intake of injected patch evidence",
+  "baseline_commit": "3d0b783fb6364eaadb66b3e7aa24f5437e68ab75",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "patch_evidence_intake_0_1-20260731-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/patch_evidence.py",
+      "desktop-app/tests/test_patch_evidence.py",
+      "knowledge/schemas/patch_evidence_record_0_1.json",
+      "knowledge/schemas/patch_change_candidate_0_1.json",
+      "knowledge/snapshots/patch_evidence_synthetic_0_1.json",
+      "docs/PATCH_EVIDENCE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/patch_evidence_intake_0_1/implementation.json",
+      ".dpslab/quality-gates/patch_evidence_intake_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_patch_evidence", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 343,
+    "minimum_test_count": 371
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "knowledge/schemas/source_coverage_manifest_0_1.json": "99bac38dbc4bbdeda035b722df427a6c0aa441e58759ddbb73712745616528e6",
+    "knowledge/manifests/source_coverage_synthetic_0_1.json": "519a165dc7bbb4a663a8086076fc35e2b249d1720df8aafdd77019e29623e573",
+    "knowledge/snapshots/source_capture_synthetic_0_1.json": "34439c8b4e541d03225eac97d20ec9526f1de8c4035f64b3be867de12dc9f07f"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "exactly seven allowlisted paths and no deletion or rename",
+    "closed canonical evidence with deterministic SHA-256",
+    "only review, invalidation, no-change, or unavailable outcomes",
+    "historical evidence cannot generate a current candidate",
+    "ambiguous, incompatible, conflicting, or unknown evidence fails closed",
+    "at least 28 focused tests, 371 functional tests, and all tools tests pass",
+    "protected hashes remain intact"
+  ],
+  "express_exclusions": [
+    "network acquisition, scraping, prose parsing, or real patch data",
+    "database, catalog mutation, recommendation approval, signing, or release",
+    "SimulationCraft, comparisons, addon, UI, commit, or push"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `patch_evidence_intake_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
