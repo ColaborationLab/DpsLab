@@ -1829,9 +1829,9 @@ Implementation-entry verdict:
 The implementation authorization is consumed and retained only as historical
 evidence.
 
-## Active design contract — Structured patch format adapter 0.1
+## Consumed design contract — Structured patch format adapter 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -1891,7 +1891,7 @@ evidence.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict:
 `structured_patch_format_adapter_design_0_1_authorized`.
@@ -1931,6 +1931,89 @@ Proposed implementation paths:
 
 Design verdict:
 `structured_patch_format_adapter_design_0_1_ready_for_implementation_contract`.
+
+Design publication closure:
+
+- commit: `fa1adde903b2c47425067b34c76cfbfe31a87315`;
+- GitHub Actions run: `30638015330`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+## Active implementation contract — Structured patch format adapter 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "structured_patch_format_adapter_0_1",
+  "title": "Pure conversion of synthetic structured patch input to quarantine evidence",
+  "baseline_commit": "fa1adde903b2c47425067b34c76cfbfe31a87315",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "structured_patch_format_adapter_0_1-20260731-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/patch_format_adapter.py",
+      "desktop-app/tests/test_patch_format_adapter.py",
+      "knowledge/schemas/structured_patch_input_0_1.json",
+      "knowledge/snapshots/structured_patch_input_synthetic_0_1.json",
+      "docs/PATCH_FORMAT_ADAPTER.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/structured_patch_format_adapter_0_1/implementation.json",
+      ".dpslab/quality-gates/structured_patch_format_adapter_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_patch_format_adapter", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 414,
+    "minimum_test_count": 444
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/patch_source_adapter.py": "14c826d7f1b40467602949c2958f71b0343fac72c9561eb2625bd0bfa494bbee",
+    "knowledge/registries/patch_source_registry_synthetic_0_1.json": "7c91df0ab7eda6846f85e3d1c27dc867213d6e791ce51cc5c493af6470fab3f0"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "exactly six allowlisted paths and no deletion or rename",
+    "closed canonical input with deterministic SHA-256",
+    "caller-supplied closed semantic mapping controls all output families",
+    "unknown, ambiguous, duplicate, conflicting, or ineffective changes fail closed",
+    "output validates under patch_evidence and remains pending review",
+    "at least 30 focused tests, 444 functional tests, and all tools tests pass",
+    "protected hashes remain intact and SimulationCraft is not invoked"
+  ],
+  "express_exclusions": [
+    "HTML, Markdown, prose, heuristic, AI, or natural-language parsing",
+    "real source content, network, URL, credential, or telemetry",
+    "catalog mutation, approval, release, addon, UI, or SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict:
+`structured_patch_format_adapter_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
