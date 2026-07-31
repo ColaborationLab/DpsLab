@@ -1172,13 +1172,13 @@ SimulationCraft, addon/UI behavior, credentials, signing, or publication.
 Design verdict:
 `catalog_candidate_pipeline_design_0_1_ready_for_implementation_contract`.
 
-## Active implementation contract — Source coverage manifest 0.1
+## Completed implementation authorization — Source coverage manifest 0.1
 
 Daniel's expanded technical authorization permits this closed synthetic
 implementation. It validates current coverage and explicitly labeled
 historical evidence without fetching sources or using real WoW data.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -1294,7 +1294,7 @@ historical evidence without fetching sources or using real WoW data.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict:
 `source_coverage_manifest_0_1_implementation_authorized`.
@@ -1318,6 +1318,193 @@ available only through explicitly labeled historical comparison.
 Local verdict: `source_coverage_manifest_0_1_audit_passed_ready_for_approval`.
 The implementation authorization is consumed for further edits and test runs;
 technical closure may proceed under Daniel's expanded authorization.
+
+Publication closure:
+
+- commit: `61fb6359cd22193b9fc1a8278ff6289b88d018eb`;
+- GitHub Actions run: `30633565923`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- final state: `source_coverage_manifest_0_1_published_ci_passed`.
+
+## Active design contract — Patch evidence intake 0.1
+
+This contract authorizes documentation-only design for converting injected
+patch and hotfix evidence into sanitized, reviewable change candidates. It does
+not authorize network access, source retrieval, real patch data, implementation,
+catalog mutation, approval, or publication.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "patch_evidence_intake_design_0_1",
+  "title": "Design governed patch and hotfix evidence intake",
+  "baseline_commit": "61fb6359cd22193b9fc1a8278ff6289b88d018eb",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "patch_evidence_intake_design_0_1-20260731-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/**",
+      "knowledge/**",
+      "tools/**",
+      "addons/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "AGENTS.md",
+      "docs/SOURCE_COVERAGE.md",
+      "docs/STATIC_TEMPLATE_CATALOG.md",
+      "docs/PROJECT_BRIEF.md",
+      "docs/ROADMAP.md"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "tools.tests.test_github_automation", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 343,
+    "minimum_test_count": 343
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/source_coverage.py": "85bfddadfd8fc5d6704d8bba9df223db27e6123a09e835629d3b8765afab63a7",
+    "knowledge/schemas/source_coverage_manifest_0_1.json": "99bac38dbc4bbdeda035b722df427a6c0aa441e58759ddbb73712745616528e6",
+    "knowledge/manifests/source_coverage_synthetic_0_1.json": "519a165dc7bbb4a663a8086076fc35e2b249d1720df8aafdd77019e29623e573",
+    "knowledge/snapshots/source_capture_synthetic_0_1.json": "34439c8b4e541d03225eac97d20ec9526f1de8c4035f64b3be867de12dc9f07f"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "define a source-neutral injected evidence record with canonical bytes and hashes",
+    "separate source capture from semantic interpretation and from approval",
+    "map changes only to canonical parameter-family identifiers and explicit supported ranges",
+    "retain superseded evidence for labeled historical comparison and rollback",
+    "produce only pending_review change candidates and invalidation alerts",
+    "reject ambiguous, duplicate, unsigned where required, stale, unsupported, or license-incompatible evidence",
+    "define source-specific adapters as later separately authorized boundaries",
+    "preserve current guidance until an exact replacement is reviewed and approved",
+    "produce a closed synthetic implementation proposal and leave it unauthorized"
+  ],
+  "express_exclusions": [
+    "implementation, code, schemas, fixtures, tests, dependencies, or generated artifacts",
+    "URLs, HTTP clients, APIs, scraping, downloads, browsers, or network access",
+    "real patch notes, hotfixes, game data, balance data, or live recommendations",
+    "automatic semantic inference, approval, catalog mutation, signing, packaging, release, or distribution",
+    "databases, credentials, secrets, SimulationCraft, addon, UI, commits, pushes, or later blocks"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict:
+`patch_evidence_intake_design_0_1_authorized`.
+
+### Design output — patch evidence quarantine
+
+The intake boundary receives evidence records as injected immutable values. It
+does not connect to a website, API, launcher, game client, or account. A future
+source adapter is responsible only for obtaining exact bytes under a separately
+approved source-specific policy; this core validates and classifies the injected
+record without trusting its prose.
+
+#### Three separated layers
+
+1. `source_capture`
+   - exact source identity, revision, publication and capture times, media type,
+     content hash, acquisition class, license classification, authenticity
+     evidence, and supported product/build range;
+2. `change_assertion`
+   - source-provided subject identifiers, operation kind, old/new tokens when
+     explicitly present, citations into the captured bytes, and uncertainty;
+3. `review_candidate`
+   - canonical parameter-family mapping, affected coverage families, possible
+     invalidations, required reviewers, and static limitations.
+
+No layer may infer human approval. Free-form patch prose is evidence, not an
+executable instruction and not authoritative structured data merely because it
+came from an official-looking source.
+
+#### Source policy
+
+Each adapter must declare one stable source owner and source family. Its policy
+defines permitted acquisition, authenticity requirements, rate/usage limits,
+license and redistribution treatment, locale normalization, revision identity,
+and failure behavior. Redirected ownership, missing revisions, mutable bytes
+under the same revision, or an incompatible license fails closed.
+
+Official first-party sources are preferred for facts they publish. Community
+or analytical sources may later supplement gaps only with distinct provenance,
+license review, and lower authority; they never overwrite first-party facts.
+Conflicts remain explicit review blockers.
+
+#### Candidate and invalidation behavior
+
+Intake may emit either:
+
+- `no_relevant_change`, with the inspected source hash and supported mapping
+  version;
+- `pending_review`, containing one or more deterministic change candidates;
+- `coverage_invalidated`, identifying current coverage families that can no
+  longer be treated as current;
+- `evidence_unavailable`, with a static sanitized reason.
+
+An invalidation alert may immediately prevent affected guidance from being
+treated as current, but it cannot create replacement guidance. The last known
+good package remains available only when its compatibility and invalidation
+rules still allow it; otherwise the user sees `guidance_unavailable`.
+
+#### Historical retention
+
+Captured source evidence and candidate decisions are content-addressed and
+append-only. Superseded records remain usable for explicit build-to-build
+comparison, parser regression, audit, rollback, and explanation. Historical
+assertions cannot fill missing current coverage or be remapped silently after a
+mapping-schema change.
+
+#### Proposed synthetic implementation
+
+The first implementation should parse no prose and perform no network access.
+It should validate injected synthetic structured assertions and generate pure
+candidate or invalidation results in exactly these seven paths:
+
+1. `desktop-app/src/dpslab/patch_evidence.py`;
+2. `desktop-app/tests/test_patch_evidence.py`;
+3. `knowledge/schemas/patch_evidence_record_0_1.json`;
+4. `knowledge/schemas/patch_change_candidate_0_1.json`;
+5. `knowledge/snapshots/patch_evidence_synthetic_0_1.json`;
+6. `docs/PATCH_EVIDENCE.md`;
+7. `docs/NEXT_TASK.md`.
+
+At least 28 focused tests should cover canonical hashing, closed fields, source
+identity, authenticity classification, license policy, build applicability,
+duplicate and conflicting assertions, deterministic ordering, invalidation,
+historical isolation, sanitized errors, and the impossibility of approval or
+catalog mutation. The functional floor is 371 tests and all tools tests pass.
+
+Design verdict:
+`patch_evidence_intake_design_0_1_ready_for_implementation_contract`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
