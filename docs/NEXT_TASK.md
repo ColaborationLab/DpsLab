@@ -901,14 +901,14 @@ SimulationCraft must remain uninvoked.
 Implementation-contract proposal verdict:
 `static_template_catalog_0_1_design_ready_for_human_review`.
 
-## Active design contract — Current knowledge candidate pipeline 0.1
+## Consumed design authorization — Current knowledge candidate pipeline 0.1
 
 This contract authorizes documentation-only design for determining whether the
 source coverage required by a specialization and context is current, complete,
 and reviewable. It does not authorize source capture, web access, real WoW
 data, catalog mutation, approval, publication, or implementation.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -1017,10 +1017,17 @@ data, catalog mutation, approval, publication, or implementation.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict:
 `catalog_candidate_pipeline_design_0_1_authorized`.
+
+Design publication closure:
+
+- commit: `ce33cf0f5016fc38371f8ece3e4cb3bbe4f48c48`;
+- GitHub Actions run: `30632412176`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- final state: `catalog_candidate_pipeline_design_0_1_published_ci_passed`.
 
 ### Design output — current activation and historical evidence boundary
 
@@ -1164,6 +1171,153 @@ SimulationCraft, addon/UI behavior, credentials, signing, or publication.
 
 Design verdict:
 `catalog_candidate_pipeline_design_0_1_ready_for_implementation_contract`.
+
+## Active implementation contract — Source coverage manifest 0.1
+
+Daniel's expanded technical authorization permits this closed synthetic
+implementation. It validates current coverage and explicitly labeled
+historical evidence without fetching sources or using real WoW data.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "source_coverage_manifest_0_1",
+  "title": "Implement synthetic current coverage and historical evidence validation",
+  "baseline_commit": "ce33cf0f5016fc38371f8ece3e4cb3bbe4f48c48",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "source_coverage_manifest_0_1-20260731-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/source_coverage.py",
+      "desktop-app/tests/test_source_coverage.py",
+      "knowledge/schemas/source_coverage_manifest_0_1.json",
+      "knowledge/manifests/source_coverage_synthetic_0_1.json",
+      "knowledge/snapshots/source_capture_synthetic_0_1.json",
+      "docs/SOURCE_COVERAGE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/dpslab/knowledge_envelope.py",
+      "desktop-app/src/dpslab/static_template_catalog.py",
+      "desktop-app/tests/test_knowledge_envelope.py",
+      "desktop-app/tests/test_static_template_catalog.py",
+      "knowledge/schemas/knowledge_envelope_0_1.json",
+      "knowledge/schemas/static_template_catalog_0_1.json",
+      "knowledge/fixtures/**",
+      "knowledge/catalogs/**",
+      "tools/**",
+      "addons/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "AGENTS.md"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tests.test_source_coverage",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 316,
+    "minimum_test_count": 340
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/static_template_catalog.py": "47654521f1b80173c64eb1887502c5dabd4ecdaa14f1d9c1e872ba546e8b4307",
+    "knowledge/schemas/static_template_catalog_0_1.json": "826f974ca2a2165544795063ee4231644ac6d9579666416f4d4d427cee583d71",
+    "knowledge/catalogs/static_template_catalog_synthetic_0_1.json": "9f0dbf2066444ec0753980ffb074a0ba081d9e5a7327079ef8503dcd838dfba0",
+    "knowledge/fixtures/static_fallback_template_synthetic_0_1.json": "0aa67412ee12876998a9ae2bb49c5698463aaac332a2c17ce6169dcf9125d8aa"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "implement exactly the seven authorized versioned paths without new dependencies",
+    "validate canonical manifest and capture archive bytes with closed SHA-256 projections",
+    "assess current coverage only from compatible nonhistorical captures",
+    "retain historical captures for explicit labeled comparison without filling current gaps",
+    "reject missing, duplicate, stale, invalidated, contradictory, license-incompatible, or unknown-build evidence",
+    "enforce role-specific mandatory source families and fail closed for missing tank or healer safety coverage",
+    "produce at most pending_review and never infer approval or mutate a catalog",
+    "use only synthetic identifiers and content",
+    "pass at least 24 focused tests, at least 340 functional tests, and all tools tests",
+    "preserve all protected hashes and avoid SimulationCraft, network access, databases, commits during implementation, and later blocks"
+  ],
+  "express_exclusions": [
+    "source fetching, URLs, HTTP clients, APIs, scraping, downloads, or network access",
+    "real patch notes, classes, specializations, races, stats, talents, equipment, rotations, or balance data",
+    "databases, warehouses, remote catalog state, credentials, secrets, or personal paths",
+    "catalog or envelope writes, approval, signing, packaging, release, or distribution",
+    "SimulationCraft, comparisons, runs, results, baselines, addon, Lua, WoW API access, or UI",
+    "changes outside the seven-path allowlist, commits during implementation, pushes, or later blocks"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict:
+`source_coverage_manifest_0_1_implementation_authorized`.
+
+### Local implementation and procedural audit result
+
+The implementation remained within the seven authorized paths. The synthetic
+manifest and capture archive are canonical and hash-bound. Current coverage
+uses only fresh compatible `current` captures, while retained captures are
+available only through explicitly labeled historical comparison.
+
+- focused source-coverage tests: 27/27 passed;
+- functional suite: 343/343 passed, exit code 0;
+- tools suite: 52/52 passed, exit code 0;
+- all protected hashes remained unchanged;
+- no source retrieval, real data, database, SimulationCraft, catalog mutation,
+  addon, UI, network, signing, packaging, or later block was used;
+- audit separation is procedural and declared, not cryptographic identity
+  separation.
+
+Local verdict: `source_coverage_manifest_0_1_audit_passed_ready_for_approval`.
+The implementation authorization is consumed for further edits and test runs;
+technical closure may proceed under Daniel's expanded authorization.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
