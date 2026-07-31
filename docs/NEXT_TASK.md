@@ -452,35 +452,42 @@ Closure evidence:
 - focal tests: 25; functional tests: 292; tools tests: 52;
 - final state: `knowledge_envelope_schema_0_1_published_ci_passed`.
 
-## Active design contract — Static template catalog 0.1
+## Active implementation contract — Static template catalog 0.1
 
-This contract authorizes only the design of a catalog for synthetic static
-fallback templates. It does not authorize catalog implementation, real class
-or balance data, live recommendations, SimulationCraft, addon or UI work,
-networking, packaging, signing, commit, or publication.
+Daniel approved the completed design and authorized only the closed synthetic
+catalog implementation below. It does not authorize real class or balance
+data, live recommendations, SimulationCraft, addon or UI work, networking,
+packaging, signing, commit, publication, or a later block.
 
 <!-- DPSLAB_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
   "task_id": "static_template_catalog_0_1",
-  "title": "Design a governed synthetic static fallback template catalog",
-  "baseline_commit": "ee1822aed19f4aa46507f0e09d7b735ae36491ce",
+  "title": "Implement a governed synthetic static fallback template catalog",
+  "baseline_commit": "020239c4a3138b68a2c9983b3a443f660f60b878",
   "authorization": {
-    "status": "design_only",
-    "authorization_id": "static_template_catalog_0_1-design-20260731-daniel",
+    "status": "authorized_for_implementation",
+    "authorization_id": "static_template_catalog_0_1-implementation-20260731-daniel",
     "authorized_by": "Daniel",
     "authorized_at": "2026-07-31T00:00:00-05:00"
   },
   "scope": {
     "allowed_paths": [
+      "desktop-app/src/dpslab/static_template_catalog.py",
+      "desktop-app/tests/test_static_template_catalog.py",
+      "knowledge/schemas/static_template_catalog_0_1.json",
+      "knowledge/catalogs/static_template_catalog_synthetic_0_1.json",
+      "docs/STATIC_TEMPLATE_CATALOG.md",
       "docs/NEXT_TASK.md"
     ],
     "generated_paths": [],
     "forbidden_paths": [
       ".github/**",
-      "desktop-app/**",
-      "knowledge/**",
+      "desktop-app/src/dpslab/knowledge_envelope.py",
+      "desktop-app/tests/test_knowledge_envelope.py",
+      "knowledge/schemas/knowledge_envelope_0_1.json",
+      "knowledge/fixtures/static_fallback_template_synthetic_0_1.json",
       "tools/**",
       "addons/**",
       "comparisons/**",
@@ -500,12 +507,12 @@ networking, packaging, signing, commit, or publication.
   },
   "tests": {
     "focused": {
-      "working_directory": ".",
+      "working_directory": "desktop-app",
       "argv": [
         "python",
         "-m",
         "unittest",
-        "tools.tests.test_github_automation",
+        "tests.test_static_template_catalog",
         "-v"
       ],
       "environment": {
@@ -529,7 +536,7 @@ networking, packaging, signing, commit, or publication.
       }
     },
     "baseline_test_count": 292,
-    "minimum_test_count": 292
+    "minimum_test_count": 312
   },
   "protected_files": {
     "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
@@ -554,25 +561,45 @@ networking, packaging, signing, commit, or publication.
     "define draft, pending_review, approved, rejected, deprecated, and withdrawn states without treating technical validity as approval",
     "require explicit human approval before any template becomes eligible for a future release",
     "keep unknown or incompatible knowledge fail-closed as guidance_unavailable",
-    "produce a closed implementation proposal with exact paths, tests, protected files, and explicit exclusions",
+    "implement exactly the six authorized paths with no new dependency or generated state",
     "make no live class balance, stat weight, talent, race, equipment, best-in-slot, or rotation claim",
-    "leave implementation and every later block unauthorized"
+    "pass at least 20 focused catalog tests, at least 312 functional tests, and all tools tests",
+    "leave commit, publication, real data, and every later block unauthorized"
   ],
   "express_exclusions": [
-    "catalog implementation, fixtures, schemas, code, tests, dependencies, or generated artifacts",
+    "files outside the six-path implementation allowlist or new dependencies",
     "databases, warehouses, simulation-history services, retrospective recommendation stores, or server-side catalog state",
     "real World of Warcraft data, patch-note ingestion, web research, or live recommendations",
     "SimulationCraft invocation, comparison execution, runs, results, baselines, profiles, scenarios, or variants",
     "addon code, Lua, UI, SavedVariables, WoW API access, desktop UI, or packaging",
     "network access, downloads, update channels, signing, keys, secrets, releases, or distribution",
-    "commits, pushes, tags, branches, pull requests, GitHub settings, or workflow changes"
+    "commits, pushes, tags, branches, pull requests, GitHub settings, workflow changes, or later blocks"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design-entry verdict:
-`static_template_catalog_0_1_design_authorized`.
+Implementation-entry verdict:
+`static_template_catalog_0_1_implementation_authorized`.
+
+### Local implementation and procedural audit result
+
+Implementation remained limited to the six authorized versioned paths. The
+catalog fixture is canonical, synthetic, `pending_review`, incomplete by
+design, and therefore unavailable for guidance. No approval was inferred.
+
+- focused catalog tests: 24/24 passed;
+- functional suite: 316/316 passed, exit code 0;
+- tools suite: 52/52 passed, exit code 0;
+- all six protected hashes matched the contract;
+- no SimulationCraft, comparison, real data, database, addon, UI, network,
+  commit, push, or later block was used;
+- audit separation is procedural and declared, not cryptographic identity
+  separation.
+
+Local verdict: `static_template_catalog_0_1_audit_passed_ready_for_approval`.
+The implementation authorization is now consumed for further edits or test
+runs. A commit requires a separate explicit human decision.
 
 ### Design output — catalog boundary
 

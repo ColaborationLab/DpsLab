@@ -1,0 +1,90 @@
+{
+  "$id": "https://dpslab.local/schemas/static-template-catalog-0.1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalog_version": {"const": "0.1"},
+    "identity": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog_id": {"type": "string"},
+        "content_version": {"type": "string"},
+        "channel": {"enum": ["stable", "beta"]},
+        "created_at": {"type": "string"}
+      },
+      "required": ["catalog_id", "content_version", "channel", "created_at"],
+      "type": "object"
+    },
+    "entries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "entry_id": {"type": "string"},
+          "envelope_path": {"pattern": "^knowledge/fixtures/[^/]+\\.json$", "type": "string"},
+          "envelope_sha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+          "index": {
+            "additionalProperties": false,
+            "properties": {
+              "wow_product": {"const": "retail"},
+              "build_min": {"minimum": 1, "type": "integer"},
+              "build_max": {"minimum": 1, "type": "integer"},
+              "interface_min": {"minimum": 1, "type": "integer"},
+              "interface_max": {"minimum": 1, "type": "integer"},
+              "class_id": {"minimum": 1, "type": "integer"},
+              "specialization_id": {"minimum": 1, "type": "integer"},
+              "race_ids": {"items": {"minimum": 1, "type": "integer"}, "minItems": 1, "type": ["array", "null"], "uniqueItems": true},
+              "level_min": {"minimum": 1, "type": "integer"},
+              "level_max": {"minimum": 1, "type": "integer"},
+              "role": {"enum": ["damage", "tank", "healer"]},
+              "content_contexts": {"items": {"type": "string"}, "minItems": 1, "type": "array", "uniqueItems": true}
+            },
+            "required": ["wow_product", "build_min", "build_max", "interface_min", "interface_max", "class_id", "specialization_id", "race_ids", "level_min", "level_max", "role", "content_contexts"],
+            "type": "object"
+          },
+          "lifecycle_state": {"enum": ["draft", "pending_review", "approved", "rejected", "deprecated", "withdrawn"]},
+          "review": {
+            "additionalProperties": false,
+            "properties": {
+              "decision_id": {"type": ["string", "null"]},
+              "reviewer_id": {"type": ["string", "null"]},
+              "decided_at": {"type": ["string", "null"]},
+              "notes": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+              "prior_approval_decision_id": {"type": ["string", "null"]},
+              "transition_reason": {"type": ["string", "null"]}
+            },
+            "required": ["decision_id", "reviewer_id", "decided_at", "notes", "prior_approval_decision_id", "transition_reason"],
+            "type": "object"
+          },
+          "supersedes_entry_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+          "invalidation_reasons": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+          "source_coverage_complete": {"type": "boolean"},
+          "role_policy": {
+            "additionalProperties": false,
+            "properties": {
+              "policy_id": {"enum": ["damage.safety_first.0_1", "tank.safety_first.0_1", "healer.safety_first.0_1"]},
+              "dynamic_safety_satisfied": {"type": "boolean"}
+            },
+            "required": ["policy_id", "dynamic_safety_satisfied"],
+            "type": "object"
+          }
+        },
+        "required": ["entry_id", "envelope_path", "envelope_sha256", "index", "lifecycle_state", "review", "supersedes_entry_ids", "invalidation_reasons", "source_coverage_complete", "role_policy"],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "integrity": {
+      "additionalProperties": false,
+      "properties": {
+        "catalog_sha256": {"pattern": "^[0-9a-f]{64}$", "type": "string"},
+        "hash_algorithm": {"const": "sha256"}
+      },
+      "required": ["catalog_sha256", "hash_algorithm"],
+      "type": "object"
+    }
+  },
+  "required": ["catalog_version", "identity", "entries", "integrity"],
+  "title": "DpsLab Static Template Catalog 0.1",
+  "type": "object"
+}
