@@ -452,14 +452,14 @@ Closure evidence:
 - focal tests: 25; functional tests: 292; tools tests: 52;
 - final state: `knowledge_envelope_schema_0_1_published_ci_passed`.
 
-## Active implementation contract — Static template catalog 0.1
+## Completed implementation authorization — Static template catalog 0.1
 
 Daniel approved the completed design and authorized only the closed synthetic
 catalog implementation below. It does not authorize real class or balance
 data, live recommendations, SimulationCraft, addon or UI work, networking,
 packaging, signing, commit, publication, or a later block.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -577,7 +577,7 @@ packaging, signing, commit, publication, or a later block.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict:
 `static_template_catalog_0_1_implementation_authorized`.
@@ -600,6 +600,13 @@ design, and therefore unavailable for guidance. No approval was inferred.
 Local verdict: `static_template_catalog_0_1_audit_passed_ready_for_approval`.
 The implementation authorization is now consumed for further edits or test
 runs. A commit requires a separate explicit human decision.
+
+Publication closure:
+
+- commit: `18315a99297d75d47da8e9dff082e3d4d3c6b2fe`;
+- GitHub Actions run: `30631876146`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- final state: `static_template_catalog_0_1_published_ci_passed`.
 
 ### Design output — catalog boundary
 
@@ -735,13 +742,13 @@ All other cases produce `guidance_unavailable`. The catalog must reject:
 Version 0.1 has no automatic tie-breaker. Newest version, widest build range,
 array order, or channel must never silently resolve an ambiguity.
 
-### Current-only knowledge policy
+### Current activation and historical evidence policy
 
-DpsLab does not use a database, data warehouse, central simulation history, or
-retrospective recommendation store as a canonical or supporting product layer.
-Canonical knowledge remains a versioned set of immutable envelope files plus a
-single current catalog. Local indexes, if a future reader needs them for speed,
-must be ephemeral, fully reconstructible from those files, and disposable.
+DpsLab does not require a database, data warehouse, or opaque retrospective
+recommendation store as a canonical product layer. Canonical knowledge remains
+a versioned set of immutable envelope and evidence files plus a single active
+catalog. Local indexes, if a future reader needs them for speed, must be fully
+reconstructible from those files and disposable.
 
 Only currently applicable knowledge may become eligible for guidance. A
 catalog build must therefore bind every entry to explicit Retail build and
@@ -754,9 +761,11 @@ result is `guidance_unavailable`.
 families declared for that specialization and context have been captured,
 validated, reconciled, reviewed, and approved for the same supported game
 range. The system must not claim complete coverage when a mandatory source is
-missing. Historical files may remain in Git solely for audit and recovery, but
-they are never queried to generate present recommendations or to extrapolate
-old simulation results into a new patch.
+missing. Historical evidence is retained when useful for audit, regression
+analysis, explicit before/after comparison, explanation of changes, rollback,
+or recovery. It may be queried only through an explicitly historical analysis
+mode that labels the compared builds and provenance. Historical evidence never
+silently becomes current guidance and is never extrapolated into a new patch.
 
 ### Source coverage and freshness
 
@@ -891,6 +900,270 @@ SimulationCraft must remain uninvoked.
 
 Implementation-contract proposal verdict:
 `static_template_catalog_0_1_design_ready_for_human_review`.
+
+## Active design contract — Current knowledge candidate pipeline 0.1
+
+This contract authorizes documentation-only design for determining whether the
+source coverage required by a specialization and context is current, complete,
+and reviewable. It does not authorize source capture, web access, real WoW
+data, catalog mutation, approval, publication, or implementation.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "catalog_candidate_pipeline_design_0_1",
+  "title": "Design current activation, historical evidence, and pending-review candidates",
+  "baseline_commit": "18315a99297d75d47da8e9dff082e3d4d3c6b2fe",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "catalog_candidate_pipeline_design_0_1-20260731-daniel",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/**",
+      "knowledge/**",
+      "tools/**",
+      "addons/**",
+      "comparisons/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "AGENTS.md",
+      "docs/STATIC_TEMPLATE_CATALOG.md",
+      "docs/KNOWLEDGE_ENVELOPE.md",
+      "docs/PROJECT_BRIEF.md",
+      "docs/ROADMAP.md"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "tools.tests.test_github_automation",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "environment": {
+        "PYTHONPATH": "src",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    },
+    "baseline_test_count": 316,
+    "minimum_test_count": 316
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/static_template_catalog.py": "47654521f1b80173c64eb1887502c5dabd4ecdaa14f1d9c1e872ba546e8b4307",
+    "knowledge/schemas/static_template_catalog_0_1.json": "826f974ca2a2165544795063ee4231644ac6d9579666416f4d4d427cee583d71",
+    "knowledge/catalogs/static_template_catalog_synthetic_0_1.json": "9f0dbf2066444ec0753980ffb074a0ba081d9e5a7327079ef8503dcd838dfba0",
+    "knowledge/fixtures/static_fallback_template_synthetic_0_1.json": "0aa67412ee12876998a9ae2bb49c5698463aaac332a2c17ce6169dcf9125d8aa"
+  },
+  "audit": {
+    "required": true,
+    "independence": "declared_and_procedural"
+  },
+  "acceptance_criteria": [
+    "design a versioned source coverage manifest rather than a database",
+    "define mandatory source families by role and supported content context",
+    "bind every capture to source identity, revision, time, hash, license classification, applicability, and freshness policy",
+    "treat automated and manual intake identically as quarantined pending_review candidates",
+    "make missing, stale, conflicting, incomplete, or unsupported coverage fail closed",
+    "preserve human approval as an external authority that automation cannot infer",
+    "define current-only activation without selecting the newest file by guess",
+    "retain content-addressed historical evidence for explicit audit, comparison, regression, rollback, and recovery uses",
+    "keep historical analysis clearly labeled and unable to become current guidance implicitly",
+    "produce a closed synthetic implementation proposal and leave it unauthorized",
+    "use no real game data, source download, network access, or live recommendation"
+  ],
+  "express_exclusions": [
+    "implementation, schemas, fixtures, code, tests, dependencies, or generated artifacts",
+    "databases, warehouses, retrospective recommendation stores, or remote catalog state",
+    "web research, patch-note retrieval, APIs, downloads, scraping, or network access",
+    "real classes, specializations, races, stats, talents, equipment, rotations, or balance claims",
+    "catalog or envelope mutation, approval, signing, packaging, release, or distribution",
+    "SimulationCraft, comparisons, runs, results, baselines, profiles, scenarios, or variants",
+    "addon, Lua, WoW API access, desktop UI, commits, pushes, or later blocks"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict:
+`catalog_candidate_pipeline_design_0_1_authorized`.
+
+### Design output — current activation and historical evidence boundary
+
+The candidate pipeline is a deterministic quarantine and coverage-checking
+boundary. It does not fetch sources, decide truth, approve guidance, or publish
+a catalog. Its output is only a synthetic candidate report whose maximum
+lifecycle state is `pending_review`. The initial implementation uses immutable
+files; a future storage optimization is allowed only if it preserves identical
+content hashes, provenance, exportability, and fail-closed behavior.
+
+#### Versioned source coverage manifest
+
+Each supported specialization and content context must declare a closed list of
+mandatory source families. A family declaration contains:
+
+- `family_id` and schema version;
+- supported Retail build and interface ranges;
+- applicable class, specialization, role, race dependency, level, and context;
+- authoritative source owner and stable source identifier;
+- capture method classification: manual, first-party API, signed artifact, or
+  reviewed document snapshot;
+- license/use classification and permitted derived use;
+- required revision identifier, capture time, content SHA-256, and media type;
+- freshness maximum age and explicit invalidation triggers;
+- required reviewer capability and evidence requirements.
+
+The manifest is immutable and repository-versioned. It declares what complete
+coverage means; it does not contain live guidance. One active manifest is
+selected explicitly by compatibility and human release policy, never by
+filename order or modification time.
+
+#### Historical evidence archive
+
+Validated source captures are content-addressed and append-only. Superseded
+captures may be retained with their source identity, revision, captured time,
+hash, license classification, applicability range, invalidation reason, and
+successor reference. Retention enables:
+
+- auditing why guidance changed;
+- comparing mechanics or parameters between named game builds;
+- detecting regressions in parsers, mappings, and candidate generation;
+- reproducing a prior release decision;
+- rollback and disaster recovery;
+- evaluating whether a previously observed rule remains stable.
+
+Historical access is an explicit analytical operation. Every result labels the
+source builds, capture ages, hashes, and limitations. It cannot feed the active
+catalog, fill missing current coverage, or produce recommendations unless the
+same evidence is separately revalidated and approved for the current build.
+Retention policy may compact redundant raw bytes later, but canonical metadata,
+hashes, decisions, and required reproducibility evidence must remain portable.
+
+#### Quarantine model
+
+Every captured source enters the same quarantine regardless of whether capture
+was automated or manual. Validation proceeds in this order:
+
+1. source identity and allowed acquisition classification;
+2. exact bytes, media type, and SHA-256;
+3. captured revision and UTC time;
+4. license/use compatibility;
+5. Retail build, interface, subject, role, and context applicability;
+6. freshness and invalidation policy;
+7. completeness against all mandatory families;
+8. contradiction detection across sources covering the same fact family;
+9. deterministic candidate construction.
+
+Failure at any stage produces a static reason code and no candidate. A valid
+result produces only `pending_review`; it cannot modify the current catalog or
+an envelope. Raw source bytes, personal paths, credentials, tokens, and private
+account information are never embedded in candidate metadata.
+
+#### Currentness and invalidation
+
+`current` means every mandatory family is present, hash-valid, license-usable,
+applicable to the exact supported build range, within its declared freshness
+window, mutually coherent, and reviewed for that same range. Any missing,
+unknown, stale, superseded, withdrawn, or contradictory family makes coverage
+incomplete.
+
+Patch notes or hotfix notices may later invalidate affected families and create
+review alerts. They cannot generate new guidance or reapprove an old template.
+An unknown game build returns `coverage_unavailable`; it never falls back to
+the numerically newest known build.
+
+#### Role-aware mandatory families
+
+All roles require game-build metadata, specialization mechanics, talents,
+equipment effects, stat rules, encounter constraints, corrections, and review
+decisions. Additional mandatory families are role-specific:
+
+- damage: target model, resource constraints, damage windows, and required
+  encounter obligations;
+- tank: incoming-damage model, mitigation and active-defense rules, threat,
+  positioning obligations, and explicit survival constraints;
+- healer: ally-risk model, healing coverage, dispels, emergency capacity,
+  resource safety, and the healing contribution of damaging abilities.
+
+Missing tank or healer safety families prevents damage-oriented candidates.
+Static coverage cannot claim that a dynamic safety condition is satisfied.
+
+#### Automation boundary
+
+A future capture adapter may be scheduled to notice source revisions, but each
+adapter must be separately authorized for one named source family and must
+store only a content-addressed snapshot plus sanitized metadata. Network
+credentials, rate limits, robots/licensing terms, and redistribution rights are
+source-specific decisions and are outside this block.
+
+Automation may create alerts and `pending_review` candidates. Only a verified
+human authority may approve a candidate, build a knowledge envelope, add it to
+the catalog, sign a release, or distribute it. Approval remains bound to exact
+hashes and supported ranges.
+
+#### Proposed synthetic implementation
+
+The smallest implementation should validate a synthetic coverage manifest and
+produce a pure coverage assessment from injected synthetic current and prior
+capture records. It should use exactly these seven versioned paths:
+
+1. `desktop-app/src/dpslab/source_coverage.py`;
+2. `desktop-app/tests/test_source_coverage.py`;
+3. `knowledge/schemas/source_coverage_manifest_0_1.json`;
+4. `knowledge/manifests/source_coverage_synthetic_0_1.json`;
+5. `knowledge/snapshots/source_capture_synthetic_0_1.json`;
+6. `docs/SOURCE_COVERAGE.md`;
+7. `docs/NEXT_TASK.md`.
+
+The first fixture should describe a synthetic damage specialization and remain
+incomplete or `pending_review`. At least 24 focused tests should cover closed
+fields, canonical bytes, hashes, duplicate families, current versus historical
+capture isolation, explicit historical comparison labeling, build and subject
+compatibility, missing coverage, expiry, contradictions, license rejection,
+unknown builds, role-policy completeness, deterministic ordering, sanitized
+errors, and the prohibition on approval or catalog mutation. The functional
+floor is 340 tests and all tools tests must pass.
+
+It must not include source fetching, URL handling, HTTP libraries, real patch
+notes, real WoW identifiers or balance data, databases, catalog writes,
+SimulationCraft, addon/UI behavior, credentials, signing, or publication.
+
+Design verdict:
+`catalog_candidate_pipeline_design_0_1_ready_for_implementation_contract`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
