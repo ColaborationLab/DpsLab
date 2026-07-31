@@ -1739,9 +1739,9 @@ Design publication closure:
 - Policy and contract, Tools tests, and Functional suite: success;
 - final state: `first_party_patch_source_adapter_design_0_1_published_ci_passed`.
 
-## Active implementation contract — First-party patch source adapter 0.1
+## Completed implementation contract — First-party patch source adapter 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -1813,10 +1813,124 @@ Design publication closure:
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict:
 `first_party_patch_source_adapter_0_1_authorized`.
+
+### Publication closure
+
+- audited commit: `b3c4995c7944dcacf7f05f6811760c6c0a13590b`;
+- GitHub Actions run: `30636187755`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- local `main`, `origin/main`, and live remote synchronized;
+- final state: `first_party_patch_source_adapter_0_1_published_ci_passed`.
+
+The implementation authorization is consumed and retained only as historical
+evidence.
+
+## Active design contract — Structured patch format adapter 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "structured_patch_format_adapter_design_0_1",
+  "title": "Design deterministic conversion of recognized structured patch fields",
+  "baseline_commit": "b3c4995c7944dcacf7f05f6811760c6c0a13590b",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "structured_patch_format_adapter_design_0_1-20260731-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "tools.tests.test_github_automation", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 414,
+    "minimum_test_count": 414
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/patch_source_adapter.py": "14c826d7f1b40467602949c2958f71b0343fac72c9561eb2625bd0bfa494bbee",
+    "knowledge/registries/patch_source_registry_synthetic_0_1.json": "7c91df0ab7eda6846f85e3d1c27dc867213d6e791ce51cc5c493af6470fab3f0"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "input format is closed, versioned, canonical, and synthetic",
+    "only explicitly mapped parameter families and operations are accepted",
+    "unstructured prose and unknown fields fail closed",
+    "build, source, citation, and subject lineage are preserved",
+    "output is a valid patch_evidence record with pending-review semantics",
+    "no catalog mutation, recommendation, network, or real data occurs"
+  ],
+  "express_exclusions": [
+    "HTML, Markdown, natural-language or heuristic parsing",
+    "real sources, URLs, credentials, network, or telemetry",
+    "catalog mutation, approval, release, addon, UI, or SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict:
+`structured_patch_format_adapter_design_0_1_authorized`.
+
+### Design output — closed structured conversion
+
+The first format adapter accepts only one synthetic JSON dialect with an exact
+schema version. Its root binds source evidence ID, source revision, Retail
+build/interface range, publication and capture timestamps, lifecycle, and a
+list of typed change records. It does not accept free-form descriptions.
+
+Each change record must carry an external change ID, an allowlisted semantic
+kind, canonical subject tokens, a closed operation, old/new typed tokens,
+source-local citation, certainty, and explicit invalidation families. A
+versioned mapping table converts semantic kinds to canonical parameter-family
+IDs. The mapping is data supplied by the caller and cannot be expanded from
+the input document.
+
+Conversion is deterministic: source order is irrelevant, assertion IDs and
+candidate order are canonical, duplicate IDs and duplicate semantic targets
+are rejected, and the generated evidence record receives the existing
+canonical SHA-256. Unknown kinds, unsupported operations, missing build ranges,
+ambiguous certainty, and ineffective changes fail closed before handoff.
+
+The adapter may produce a structurally valid `patch_evidence` record but cannot
+change its lifecycle, approve it, select a template, or write a catalog. The
+existing `patch_evidence` validator remains authoritative for quarantine.
+
+Proposed implementation paths:
+
+- `desktop-app/src/dpslab/patch_format_adapter.py`;
+- `desktop-app/tests/test_patch_format_adapter.py`;
+- `knowledge/schemas/structured_patch_input_0_1.json`;
+- `knowledge/snapshots/structured_patch_input_synthetic_0_1.json`;
+- `docs/PATCH_FORMAT_ADAPTER.md`;
+- `docs/NEXT_TASK.md`.
+
+Design verdict:
+`structured_patch_format_adapter_design_0_1_ready_for_implementation_contract`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
