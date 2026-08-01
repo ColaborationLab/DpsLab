@@ -2874,7 +2874,7 @@ for every bundle member. It must remain unsigned with an explicit
 `signature_pending` state. A later signing/publication transaction must bind the
 exact manifest hash and use separately managed credentials.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2942,9 +2942,79 @@ exact manifest hash and use separately managed credentials.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Closure verdict: `candidate_knowledge_release_bundle_0_1_published_ci_passed`.
+
+Implementation closure:
+
+- commit: `d5469b381bfbed838b3283ba455b79275ec264bc`;
+- focused tests: 32/32;
+- full functional suite: 647/647;
+- GitHub Actions run: `30698418367`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+## Design-only contract — Release signing policy 0.1
+
+The recommended release-signing boundary uses Ed25519 over the exact canonical
+release-manifest bytes. The private key must never enter Git, source fixtures,
+test artifacts, logs, addon files, desktop configuration, or GitHub Actions
+artifacts. Only a versioned public-key registry, key identifiers, validity
+windows, rotation relationships, and revocation records may be committed.
+
+Signing is an explicit operator action over one manifest already validated as
+`signature_pending`. The signer returns a detached signature and key ID; it
+cannot modify bundle members. Verification recomputes every member hash,
+validates the manifest, resolves exactly one currently trusted public key, and
+fails closed on unknown, expired, revoked, ambiguous, or algorithm-mismatched
+keys. A valid signature changes only release eligibility; publication remains a
+separate transaction.
+
+Tests may use deterministic synthetic keys clearly marked non-production.
+Production key generation and storage require a later human choice among an
+OS-protected local key, hardware-backed key, or managed signing service. CI may
+verify signatures with public keys but must never receive the production
+private key during this phase.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "release_signing_policy_0_1",
+  "title": "Ed25519 release signing, trust registry, rotation, and revocation design",
+  "baseline_commit": "d5469b381bfbed838b3283ba455b79275ec264bc",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "release_signing_policy_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "Ed25519 signature covers exact canonical release-manifest bytes",
+    "private key is external to repository, artifacts, logs, addon, and desktop configuration",
+    "public-key registry supports validity windows, rotation, and fail-closed revocation",
+    "CI verifies only with public keys and synthetic tests never resemble production credentials",
+    "valid signature grants eligibility only and cannot publish or activate a release"
+  ],
+  "express_exclusions": [
+    "cryptographic dependency installation, production key generation, secret storage, signing, publication, or distribution"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `candidate_knowledge_release_bundle_0_1_authorized`.
+Design verdict: `release_signing_policy_0_1_design_ready_for_key_storage_decision`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
