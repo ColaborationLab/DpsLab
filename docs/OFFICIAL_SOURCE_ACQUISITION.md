@@ -141,3 +141,15 @@ non-increasing capture times fail closed.
 An optional copy-on-write history is bounded to 32 receipts. It is an audit aid,
 not a database or source of current guidance. Historical receipts never satisfy
 coverage, and no comparison parses or retains response bodies.
+
+## Scheduling policy
+
+The pure schedule boundary defaults to a six-hour check interval, a 24-hour
+freshness limit, and bounded exponential failure backoff from five minutes to
+four hours. It returns `not_due`, `due`, or `backoff` with an exact UTC time and
+static reason.
+
+The policy uses an injected clock, validates the last receipt, and rejects
+clock regression, naive datetimes, invalid ranges, and booleans supplied as
+integers. It never sleeps, retries, registers a system task, or invokes the
+network; an operational scheduler requires a separate authorization.

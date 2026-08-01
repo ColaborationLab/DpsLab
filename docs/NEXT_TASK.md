@@ -6414,7 +6414,7 @@ minimum receipt metadata needed for audit and classifies a source as first
 seen, unchanged, or changed pending review. Historical metadata cannot satisfy
 current source coverage and no content body is accepted.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6475,6 +6475,77 @@ current source coverage and no content body is accepted.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_source_receipt_change_detection_0_1_authorized_for_implementation`.
+
+## Active implementation — Official source schedule policy 0.1
+
+This block decides when a public official source check is due. It is a pure
+policy boundary with an injected UTC clock; it neither sleeps nor performs,
+schedules, or retries network operations.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_schedule_policy_0_1",
+  "title": "Implement bounded scheduling and backoff policy for official-source checks",
+  "baseline_commit": "099a001465a6cd0016d2101761c851cf0120a541",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_source_schedule_policy_0_1-20260801-daniel-forward",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T15:24:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_schedule.py",
+      "desktop-app/tests/test_official_source_schedule.py",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_schedule_policy_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_schedule_policy_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "knowledge/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_official_source_schedule", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 884,
+    "minimum_test_count": 896
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_change.py": "d07f1a1c8d59264122bf9e20fa9a70ffd4503c5854dea8d2aec98410eed33982",
+    "desktop-app/src/dpslab/official_source_receipt.py": "cae5e9a03780b8e3b13bb9be44ef3a2eab6c0d5ef99562ac9e3b1a4206fe9186",
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "no prior receipt is due for an initial check",
+    "a fresh receipt is not_due and returns its exact next due time",
+    "elapsed interval or expired freshness is due",
+    "failures use bounded exponential backoff and never loop or sleep",
+    "naive clocks, clock regression, booleans as integers, and invalid policy ranges fail closed",
+    "receipt validation remains mandatory",
+    "no network, scheduler registration, persistence, parser, recommendation, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "Windows Task Scheduler, cron, background service, or automatic retry",
+    "real request, credential, receipt persistence, content parsing, and catalog mutation",
+    "signing, distribution, addon, UI, SimulationCraft, and comparisons",
+    "changes outside the four authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_source_schedule_policy_0_1_authorized_for_implementation`.
