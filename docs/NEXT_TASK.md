@@ -2421,9 +2421,9 @@ Implementation-entry verdict: `proposal_review_decision_0_1_authorized`.
 The implementation authorization is consumed and retained only as historical
 evidence.
 
-## Active design contract — Candidate knowledge-set application 0.1
+## Consumed design contract — Candidate knowledge-set application 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2482,7 +2482,7 @@ evidence.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `candidate_knowledge_set_application_design_0_1_authorized`.
 
@@ -2537,6 +2537,88 @@ Proposed implementation paths:
 
 Design verdict:
 `candidate_knowledge_set_application_design_0_1_ready_for_implementation_contract`.
+
+Design publication closure:
+
+- commit: `5d8dfa9cee05f45f435f4524f9c94484c1613a63`;
+- GitHub Actions run: `30685645926`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+## Active implementation contract — Candidate knowledge-set application 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "candidate_knowledge_set_application_0_1",
+  "title": "Pure synthetic candidate envelope, catalog, and receipt construction",
+  "baseline_commit": "5d8dfa9cee05f45f435f4524f9c94484c1613a63",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "candidate_knowledge_set_application_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/candidate_knowledge_set.py",
+      "desktop-app/tests/test_candidate_knowledge_set.py",
+      "knowledge/schemas/candidate_knowledge_set_receipt_0_1.json",
+      "knowledge/candidates/candidate_knowledge_set_synthetic_0_1.json",
+      "docs/CANDIDATE_KNOWLEDGE_SET.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/candidate_knowledge_set_application_0_1/implementation.json",
+      ".dpslab/quality-gates/candidate_knowledge_set_application_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_candidate_knowledge_set", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 522,
+    "minimum_test_count": 552
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/proposal_review.py": "5c261e5972bc313f3395ea55904c65423a1dbd31d4c72757bd57efc3f3ff56bd",
+    "knowledge/reviews/proposal_review_decision_synthetic_0_1.json": "e795b08346e5b051b63456ba763ab3115bc2f68f6f46640e9c4687d14a1f7c52"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "exactly six allowlisted paths and no deletion or rename",
+    "pure construction returns envelope, catalog, and receipt without filesystem access",
+    "closed physical mapping controls every permitted transformation",
+    "source values remain byte-equivalent and candidate values validate independently",
+    "candidate catalog keeps source entry and adds pending-review successor",
+    "receipt binds source, proposal, decision, and candidate hashes",
+    "at least 30 focused tests, 552 functional tests, and all tools tests pass",
+    "protected hashes remain intact and SimulationCraft is not invoked"
+  ],
+  "express_exclusions": [
+    "filesystem writes, durable consumption, atomic replacement, signing, or publication",
+    "real guidance, live data, network, credentials, addon, UI, or SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `candidate_knowledge_set_application_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
