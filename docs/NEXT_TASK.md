@@ -2669,7 +2669,7 @@ Proposed implementation paths:
 - `docs/CANDIDATE_KNOWLEDGE_SET.md`;
 - `docs/NEXT_TASK.md`.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2738,9 +2738,80 @@ Proposed implementation paths:
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Closure verdict: `candidate_knowledge_set_persistence_0_1_published_ci_passed`.
+
+Implementation closure:
+
+- commit: `3feafc7137beaa9ab1c006a33bc283e47f52f1ea`;
+- focused tests: 28/28, with one Windows symlink capability skip;
+- full functional suite: 584/584;
+- GitHub Actions run: `30697245606`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+## Design-only contract — Candidate knowledge-set review 0.1
+
+The next boundary is an explicit human review of one exact durable candidate
+generation. It receives the canonical visibility marker, commit manifest,
+candidate envelope, candidate catalog, receipt, source evidence, and reviewer
+context. It must bind their byte hashes and reject any mismatch, stale source,
+incomplete source coverage, unsupported build, unsigned reviewer decision, or
+role-safety gap.
+
+The decision record is immutable and closed. It may conclude `approved` or
+`rejected`, but approval means only that the exact candidate generation is
+eligible for a later publication transaction. It does not modify the candidate
+files, current marker, repository catalog, addon payload, or desktop guidance.
+Publication, signing keys, distribution, and activation remain separate future
+contracts.
+
+Tank review must affirm survival-first constraints under incoming damage.
+Healer review must affirm ally-healing priority and safe damage opportunities.
+Damage-specialization review must still preserve no-automation and contextual
+applicability. Every role fails closed when current patch/build evidence or
+source coverage is missing.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "candidate_knowledge_set_review_0_1",
+  "title": "Human review record for one exact durable candidate generation",
+  "baseline_commit": "3feafc7137beaa9ab1c006a33bc283e47f52f1ea",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "candidate_knowledge_set_review_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "review decision binds the exact marker, commit, envelope, catalog, receipt, and source hashes",
+    "freshness, applicability, source coverage, and role safety are explicit fail-closed inputs",
+    "approved and rejected are immutable review outcomes, never self-declared by the candidate",
+    "approval only establishes eligibility for a later separately authorized publication",
+    "no candidate mutation, activation, signing, distribution, real guidance, network, or SimulationCraft"
+  ],
+  "express_exclusions": [
+    "implementation or mutation outside this design document",
+    "automatic approval, catalog activation, signing, addon packaging, or publication"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `candidate_knowledge_set_persistence_0_1_authorized`.
+Design verdict: `candidate_knowledge_set_review_0_1_design_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
