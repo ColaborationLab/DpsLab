@@ -3349,7 +3349,7 @@ historical evidence. No production key or real protected container exists.
 This task may prepare an exact attended checklist and recovery evidence format.
 It may not execute any ceremony step or generate any key.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3387,9 +3387,64 @@ It may not execute any ceremony step or generate any key.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `production_release_key_ceremony_design_0_1_ready`.
+
+Design outcome: the four checkpoints, recovery verification, non-secret
+evidence record, and fail-closed abort conditions are canonicalized in
+`docs/RELEASE_KEY_CUSTODY.md`. Key identifier
+`dpslab.release.ed25519.001` and a one-year validity window remain proposals
+until Daniel confirms them during the future attended transaction.
+
+Design verdict: `production_release_key_ceremony_design_0_1_complete`.
+
+## Active design task — Ceremony dry-run tooling 0.1
+
+The next task may design a machine-checkable ceremony plan and synthetic dry
+run. It may not generate or protect any real key.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "release_key_ceremony_dry_run_design_0_1",
+  "title": "Design a fail-closed production key ceremony plan and synthetic dry run",
+  "baseline_commit": "c1bb1c54ebb5923e79b003f3520e1f04672635e4",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "release_key_ceremony_dry_run_design_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md", "docs/RELEASE_KEY_CUSTODY.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "define a closed plan schema with four independently confirmed checkpoints",
+    "validate resolved paths, repository state, identity, time, and collision preconditions",
+    "produce only non-secret synthetic evidence during dry runs",
+    "make production mode structurally unavailable in the dry-run implementation"
+  ],
+  "express_exclusions": [
+    "key generation, protection, recovery, backup, registry mutation, or signing",
+    "real filesystem destinations, removable media, DPAPI, or secrets",
+    "release publication, activation, or distribution",
+    "code, CI, addon, SimulationCraft, commit, or push implementation"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `release_key_ceremony_dry_run_design_0_1_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
