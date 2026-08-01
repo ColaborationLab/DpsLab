@@ -6776,29 +6776,40 @@ structured evidence pending review.
 {
   "contract_version": "0.1",
   "task_id": "blizzard_patch_notes_html_extractor_0_1",
-  "title": "Design fail-closed extraction of cited Blizzard patch-note assertions",
-  "baseline_commit": "0e3658d2cf6e36483484c0234cc606214000d7e1",
+  "title": "Implement fail-closed extraction of cited Blizzard patch-note assertions",
+  "baseline_commit": "1d1a76b5037f812de3ad83a52c7b2f8acaa02aaf",
   "authorization": {
-    "status": "design_only",
-    "authorization_id": "blizzard_patch_notes_html_extractor_0_1-20260801-daniel-next-blocks",
+    "status": "authorized_for_implementation",
+    "authorization_id": "blizzard_patch_notes_html_extractor_0_1-20260801-daniel-continue-implementation",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T15:58:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_EXTRACTOR.md", "docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/blizzard_patch_notes_extractor.py",
+      "desktop-app/tests/test_blizzard_patch_notes_extractor.py",
+      "knowledge/schemas/blizzard_patch_notes_extraction_0_1.json",
+      "knowledge/fixtures/blizzard_patch_notes_synthetic_0_1.html",
+      "knowledge/snapshots/blizzard_patch_notes_extraction_synthetic_0_1.json",
+      "docs/BLIZZARD_PATCH_NOTES_EXTRACTOR.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/blizzard_patch_notes_html_extractor_0_1/implementation.json",
+      ".dpslab/quality-gates/blizzard_patch_notes_html_extractor_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**", "scenarios/**",
+      ".github/**", "profiles/**", "scenarios/**",
       "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
     ],
     "allow_deletions": false,
     "allow_renames": false
   },
   "tests": {
-    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "baseline_test_count": 52,
-    "minimum_test_count": 52
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_blizzard_patch_notes_extractor", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 936,
+    "minimum_test_count": 954
   },
   "protected_files": {
     "desktop-app/src/dpslab/official_source_operator.py": "14e6598525850400f58d4c968c2ee5a47b27a40ff750ca5f8a120631cd024edb",
@@ -6814,16 +6825,16 @@ structured evidence pending review.
     "unknown layout, ambiguous subjects, omitted units, duplicate citations, or unsupported prose fail closed",
     "output remains pending_review and never mutates coverage, catalogs, templates, or recommendations",
     "implementation proposal uses synthetic HTML only and contains no copied Blizzard page body",
-    "no implementation, live request, persistence, SimulationCraft, commit, or push"
+    "no live request, persistence, SimulationCraft, commit, or push"
   ],
   "express_exclusions": [
     "general-purpose scraping or parsing of community sites",
     "natural-language inference, AI extraction, inferred coefficients, or automatic subject mapping",
     "real HTML fixtures, source-body redistribution, facts, approval, catalog mutation, signing, addon, or UI",
-    "changes outside the two documentary paths"
+    "changes outside the seven authorized paths"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `blizzard_patch_notes_html_extractor_0_1_design_ready`.
+Implementation-entry verdict: `blizzard_patch_notes_html_extractor_0_1_authorized_for_implementation`.
