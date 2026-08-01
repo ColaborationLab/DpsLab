@@ -1,6 +1,6 @@
 import tempfile,unittest
 from pathlib import Path
-from dpslab.release_key_ceremony_cli import CeremonyLauncherError,LauncherConfig,LauncherDependencies,calculate_launcher_plan_sha256,confirmation_phrase,run_attended_launcher
+from dpslab.release_key_ceremony_cli import CeremonyLauncherError,LauncherConfig,LauncherDependencies,calculate_launcher_plan_sha256,confirmation_phrase,read_masked_secret,run_attended_launcher
 class Protector:
     def protect(self,v):return b"p:"+v
     def unprotect(self,v):return v.removeprefix(b"p:")
@@ -35,3 +35,8 @@ class LauncherTests(unittest.TestCase):
     def test_20_no_generation_before_confirmations(self):
         called=[];d=self.deps(answers=["no"]);d.generate_key=lambda:(called.append(True),bytes(32))[1];self.assertRaises(CeremonyLauncherError,run_attended_launcher,self.cfg,d);self.assertEqual(called,[])
     def test_21_surrounding_whitespace_is_ignored(self):self.assertEqual(run_attended_launcher(self.cfg,self.deps(answers=[f"  {value}  " for value in self.answers])).status,"key_material_created_pending_registry_review")
+    def test_22_masked_input_returns_text(self):chars=iter("secret phrase\r");out=[];self.assertEqual(read_masked_secret("P: ",lambda:next(chars),out.append),"secret phrase")
+    def test_23_masked_input_shows_only_stars(self):chars=iter("secret\r");out=[];read_masked_secret("P: ",lambda:next(chars),out.append);self.assertNotIn("secret","".join(out));self.assertEqual("".join(out).count("*"),6)
+    def test_24_masked_backspace_corrects(self):chars=iter("abx\bc\r");out=[];self.assertEqual(read_masked_secret("P: ",lambda:next(chars),out.append),"abc")
+    def test_25_masked_special_key_ignored(self):chars=iter(["a","\xe0","K","b","\r"]);out=[];self.assertEqual(read_masked_secret("P: ",lambda:next(chars),out.append),"ab")
+    def test_26_masked_ctrl_c_aborts(self):chars=iter(["a","\x03"]);self.assertRaises(KeyboardInterrupt,read_masked_secret,"P: ",lambda:next(chars),lambda _:None)
