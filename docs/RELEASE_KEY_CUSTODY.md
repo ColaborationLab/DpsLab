@@ -96,3 +96,12 @@ The ceremony record may contain only:
 
 It must not contain private bytes, recovery ciphertext, passphrases, DPAPI
 blobs, optional entropy, environment values, or filesystem contents.
+
+## Synthetic dry run
+
+`release_key_ceremony` evaluates the ceremony contract without effects. It
+accepts only synthetic identifiers and `synthetic://` destinations, requires
+all seven readiness observations and four ordered confirmations, and returns a
+content-hashed non-secret evidence record. Production mode is structurally
+unavailable. The evaluator performs no filesystem, media, DPAPI, key,
+registry, signing, network, publication, or activation operation.

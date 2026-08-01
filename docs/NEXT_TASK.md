@@ -3404,7 +3404,7 @@ Design verdict: `production_release_key_ceremony_design_0_1_complete`.
 The next task may design a machine-checkable ceremony plan and synthetic dry
 run. It may not generate or protect any real key.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3442,9 +3442,92 @@ run. It may not generate or protect any real key.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `release_key_ceremony_dry_run_design_0_1_ready`.
+
+Design output: the dry run is a pure evaluator over a closed plan,
+observations, and four explicit checkpoint confirmations. Version 0.1 accepts
+only `synthetic_dry_run`, `synthetic://` destinations, placeholder media
+identifiers, and non-secret hashes. It performs no filesystem, DPAPI, key,
+registry, signing, network, or publication operation.
+
+Design verdict: `release_key_ceremony_dry_run_design_0_1_complete`.
+
+## Active implementation — Ceremony synthetic dry run 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "release_key_ceremony_dry_run_0_1",
+  "title": "Implement the pure synthetic release-key ceremony evaluator",
+  "baseline_commit": "40faa9e2370f3cb47d7f0449ecca5f225b729e98",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "release_key_ceremony_dry_run_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/release_key_ceremony.py",
+      "desktop-app/tests/test_release_key_ceremony.py",
+      "knowledge/schemas/release_key_ceremony_plan_0_1.json",
+      "docs/RELEASE_KEY_CUSTODY.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/release_key_ceremony_dry_run_0_1/implementation.json",
+      ".dpslab/quality-gates/release_key_ceremony_dry_run_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/pyproject.toml", "knowledge/trust/**",
+      "knowledge/releases/**", "tools/**", "profiles/**", "scenarios/**",
+      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_release_key_ceremony", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 703,
+    "minimum_test_count": 727
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/windows_key_protection.py": "27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b",
+    "desktop-app/src/dpslab/windows_release_signer.py": "066b26990b40afb2ac79afe11c320af686f22031a088450ac46ed56bfa406070"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "closed plan, observation, confirmation, and evidence structures",
+    "exactly four ordered and independently confirmed checkpoints",
+    "only synthetic URI destinations and non-secret placeholder identities",
+    "fail-closed result with one stable abort reason and no partial authorization",
+    "pure evaluation with no filesystem, DPAPI, key, registry, signing, or network effect"
+  ],
+  "express_exclusions": [
+    "production mode or production key material",
+    "filesystem, removable-media, DPAPI, registry, signing, or network operations",
+    "release publication, activation, or distribution",
+    "CI changes, addon, SimulationCraft, production commit or secret artifact"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `release_key_ceremony_dry_run_0_1_authorized_for_synthetic_implementation`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
