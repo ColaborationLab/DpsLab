@@ -2982,24 +2982,58 @@ private key during this phase.
   "contract_version": "0.1",
   "task_id": "release_signing_policy_0_1",
   "title": "Ed25519 release signing, trust registry, rotation, and revocation design",
-  "baseline_commit": "d5469b381bfbed838b3283ba455b79275ec264bc",
+  "baseline_commit": "d6932d1397d9250a8cef339ecb75e1f7e40ada68",
   "authorization": {
-    "status": "design_only",
+    "status": "authorized_for_implementation",
     "authorization_id": "release_signing_policy_0_1-20260801-daniel-expanded",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T00:00:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/pyproject.toml",
+      "desktop-app/src/dpslab/release_signing.py",
+      "desktop-app/tests/test_release_signing.py",
+      "knowledge/schemas/release_trust_registry_0_1.json",
+      "knowledge/trust/release_trust_registry_synthetic_0_1.json",
+      "docs/CANDIDATE_KNOWLEDGE_SET.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/release_signing_policy_0_1/implementation.json",
+      ".dpslab/quality-gates/release_signing_policy_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      ".github/**", "tools/**", "knowledge/catalogs/**", "knowledge/fixtures/**",
+      "knowledge/candidates/**", "knowledge/proposals/**", "knowledge/reviews/**",
+      "knowledge/releases/**",
       "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
       "results/**", "config/**", "flasil.simc"
     ],
     "allow_deletions": false,
     "allow_renames": false
   },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_release_signing", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 647,
+    "minimum_test_count": 675
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/candidate_release_bundle.py": "906f06f86db80f3d328284da47b0e459902250155081d5037de321f233939bde",
+    "knowledge/releases/candidate_knowledge_release_bundle_synthetic_0_1.json": "f3ab281dfb8d2a17d13ff254e988b131a2ca026a72e0132526670d95a3b774a3"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
   "acceptance_criteria": [
     "Ed25519 signature covers exact canonical release-manifest bytes",
     "private key is external to repository, artifacts, logs, addon, and desktop configuration",
@@ -3008,13 +3042,13 @@ private key during this phase.
     "valid signature grants eligibility only and cannot publish or activate a release"
   ],
   "express_exclusions": [
-    "cryptographic dependency installation, production key generation, secret storage, signing, publication, or distribution"
+    "production key generation, production secret storage, production signing, publication, or distribution"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `release_signing_policy_0_1_design_ready_for_key_storage_decision`.
+Implementation-entry verdict: `release_signing_policy_0_1_authorized_for_synthetic_verification_only`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

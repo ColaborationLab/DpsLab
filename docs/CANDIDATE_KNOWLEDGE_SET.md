@@ -56,3 +56,15 @@ The bundle remains `signature_pending` and the envelope remains unsigned. It
 is not an active catalog, distributable addon payload, desktop update, or
 published recommendation. Signing and publication require later transactions
 that bind the exact manifest hash and separately managed credentials.
+
+## Detached release-signature verification
+
+`release_signing` signs the exact canonical manifest bytes through an external
+signer callback and verifies detached Ed25519 signatures against a public-key
+trust registry. The registry is closed, content-hashed, time-bounded, and
+fail-closed for unknown, revoked, malformed, or incorrectly rotated keys.
+
+The repository contains only a clearly identified synthetic public key for
+tests. It contains no private key and provides no production-key storage.
+A valid signature makes the exact candidate release eligible for a later
+publication decision; it does not publish, activate, distribute, or select it.
