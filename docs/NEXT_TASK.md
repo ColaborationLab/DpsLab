@@ -3456,7 +3456,7 @@ Design verdict: `release_key_ceremony_dry_run_design_0_1_complete`.
 
 ## Active implementation — Ceremony synthetic dry run 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3525,9 +3525,72 @@ Design verdict: `release_key_ceremony_dry_run_design_0_1_complete`.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `release_key_ceremony_dry_run_0_1_authorized_for_synthetic_implementation`.
+
+Published outcome: commit `7b9a00a1e5bdde54e7f408a358d76b3a54e6e2db`
+is synchronized with `origin/main`. GitHub Actions run `30701094461` completed
+successfully across policy, tools, and functional lanes. The quality gate
+recorded 24 focused tests and 727 global tests with one existing skip.
+
+An in-memory acceptance dry run returned `synthetic_dry_run_ready`; all four
+checkpoints were true, plan SHA-256 was
+`60627176d5670b964b908d8192cb4219ba92f8d576a2cbb37188ead9a9fb1d18`,
+and evidence SHA-256 was
+`73eec3b207c6877e644a5a5a28863693e878b9e6e80afddb0095d786af4c24ec`.
+No evidence file, key, DPAPI blob, registry entry, or production artifact was
+created.
+
+Closure verdict: `release_key_ceremony_dry_run_0_1_published_ci_approved`.
+
+## Active design task — Production ceremony execution preflight 0.1
+
+This task may inspect only non-secret readiness state and prepare the exact
+attended prompt. It may not generate or protect a key, select destinations for
+Daniel, or access removable media.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "production_key_ceremony_execution_preflight_0_1",
+  "title": "Prepare the non-secret preflight for the first attended production key ceremony",
+  "baseline_commit": "7b9a00a1e5bdde54e7f408a358d76b3a54e6e2db",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "production_key_ceremony_execution_preflight_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md", "docs/RELEASE_KEY_CUSTODY.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "identify the exact non-secret repository and environment checks",
+    "prepare a human-readable confirmation containing proposed key identity and validity",
+    "request Daniel to select three destinations without exposing passphrases or contents",
+    "stop before any key, DPAPI, media, registry, signing, or publication operation"
+  ],
+  "express_exclusions": [
+    "key generation, protection, backup, recovery, registry mutation, or signing",
+    "secret collection or removable-media writes",
+    "release publication, activation, or distribution",
+    "code, CI, addon, SimulationCraft, commit, or push implementation"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `production_key_ceremony_execution_preflight_0_1_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
