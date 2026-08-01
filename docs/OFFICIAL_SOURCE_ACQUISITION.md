@@ -115,3 +115,17 @@ The initial live diagnostic observed HTTP 200 from the exact official host,
 `fbf289f3068d3bb14f04709f0f735db9ee09183cc90968d5e34384fad657f1e6`.
 The response body was not stored and the observation does not establish source
 coverage or authorize another request.
+
+## Metadata-only capture receipts
+
+A future capture receipt should make change detection auditable without
+retaining source content. The canonical receipt binds source ID, capture time,
+transport and capture status, final host, media type, completeness, byte count,
+content SHA-256, and sanitized ETag or Last-Modified values when present.
+
+Receipts contain no response body, extracted prose, cookies, credentials,
+personal paths, semantic facts, or recommendations. Their maximum state is
+`captured_pending_review`; identical content hashes are recorded as duplicates
+and never interpreted as current coverage. Initial implementation should use
+only synthetic responses and an injected clock. Real receipt persistence and
+retention policy require a later, separate authorization.

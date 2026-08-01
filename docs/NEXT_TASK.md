@@ -6263,7 +6263,7 @@ surface. They remain lower-authority evidence and cannot silently replace,
 override, or approve first-party facts. No named site is allowlisted by this
 design.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6329,6 +6329,70 @@ design.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design verdict: `secondary_source_policy_0_1_design_ready`.
+
+## Active design task — Official source capture receipt 0.1
+
+Two controlled memory-only requests returned the same 274005-byte SHA-256 for
+the exact Blizzard Content Update Notes endpoint. The published client,
+transport, and registry now produce `captured_pending_review`. This block
+designs a content-free receipt so freshness and change detection can be audited
+without storing or redistributing the page body.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_capture_receipt_0_1",
+  "title": "Design canonical metadata-only receipts for quarantined official captures",
+  "baseline_commit": "5d743c5bcf3c5087126b0cba6542786ae3c239ee",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "official_source_capture_receipt_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T14:38:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/OFFICIAL_SOURCE_ACQUISITION.md", "docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**", "scenarios/**",
+      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    "desktop-app/src/dpslab/patch_source_adapter.py": "985feae6cdb28080d73922ae4b28bda711aef86b4b1984b78444dd60d4b26802",
+    "knowledge/sources/official_patch_source_registry_0_1.json": "665ac715a7ba66b51e5a21886a14177cf39164d9422dd10f441161a147439d7e",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "receipt contains source identity, capture time, status, final host, media type, byte count, content SHA-256, completeness, and sanitized validators",
+    "receipt contains no response body, extracted prose, cookies, credentials, personal path, or recommendation",
+    "canonical hashing binds the receipt and duplicate hashes remain explicit",
+    "receipt status cannot exceed captured_pending_review",
+    "implementation proposal uses synthetic fixtures and injected clocks only",
+    "no additional live request, persistence, parser, catalog change, recommendation, commit, or push"
+  ],
+  "express_exclusions": [
+    "storage or redistribution of Blizzard page contents",
+    "HTML parsing, semantic extraction, facts, coverage approval, and recommendations",
+    "secondary-source acquisition, authenticated APIs, credentials, signing, distribution, addon, UI, SimulationCraft, and comparisons",
+    "implementation under this design-only authorization"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design verdict: `official_source_capture_receipt_0_1_design_ready`.
