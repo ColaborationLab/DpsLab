@@ -6158,7 +6158,7 @@ exact Blizzard Content Update Notes endpoint. This block may add HTML to the
 closed media-type vocabulary and register only that exact first-party source.
 It does not repeat the request or store the observed response.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6231,7 +6231,7 @@ It does not repeat the request or store the observed response.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_html_source_registry_0_1_authorized_for_implementation`.
 
@@ -6254,3 +6254,81 @@ audited delta remains a separate traceable operation and does not approve the
 source content, parsing, recommendations, or another network request.
 
 Implementation verdict: `official_html_source_registry_0_1_approved_for_commit`.
+
+## Active design task — Secondary source policy 0.1
+
+Community and analytical sources can help discover omissions, explain
+mechanics, and corroborate facts that Blizzard does not expose in a structured
+surface. They remain lower-authority evidence and cannot silently replace,
+override, or approve first-party facts. No named site is allowlisted by this
+design.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "secondary_source_policy_0_1",
+  "title": "Design governed use of community and analytical WoW sources",
+  "baseline_commit": "1f3f6e230f236e32b51220a24e9d89320ac008a0",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "secondary_source_policy_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T14:31:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "docs/SECONDARY_SOURCE_POLICY.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/patch_source_adapter.py": "985feae6cdb28080d73922ae4b28bda711aef86b4b1984b78444dd60d4b26802",
+    "desktop-app/src/dpslab/source_coverage.py": "85bfddadfd8fc5d6704d8bba9df223db27e6123a09e835629d3b8765afab63a7",
+    "knowledge/trust/release_trust_registry_0_1.json": "26b5da31d34fa1f5c1115438aee7ebe75b71b25f8c44706a6c91164ea2064f0c",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "first-party Blizzard evidence always retains higher authority for facts it publishes",
+    "secondary sources are used only for discovery, corroboration, explanation, or explicit first-party coverage gaps",
+    "every candidate source requires separate identity, ownership, license and terms review, freshness, applicability, and acquisition policy",
+    "conflicts with first-party evidence or between secondary sources remain explicit review blockers",
+    "absence of first-party structured data never converts one community assertion into an approved fact",
+    "stored evidence is minimized and content bodies are not retained or redistributed without explicit permission",
+    "no site allowlisting, network access, scraping, parsing, real capture, recommendation, commit, or push"
+  ],
+  "express_exclusions": [
+    "approval or allowlisting of Wowhead or any other named site",
+    "legal conclusion about licenses, terms of use, robots policy, or redistribution rights",
+    "HTTP clients, browser automation, scraping, APIs, downloads, credentials, or persistence",
+    "catalog mutation, recommendations, signing, distribution, addon, UI, SimulationCraft, and comparisons",
+    "implementation outside the two documentary paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design verdict: `secondary_source_policy_0_1_design_ready`.
