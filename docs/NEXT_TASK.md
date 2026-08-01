@@ -3261,7 +3261,7 @@ a simulated protector and deterministic synthetic Ed25519 keys. They may test
 the Windows-call wrapper structurally but may not invoke DPAPI with real secret
 material or write outside temporary test directories.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3331,9 +3331,65 @@ material or write outside temporary test directories.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `windows_protected_signing_adapter_0_1_authorized_for_synthetic_implementation`.
+
+Published outcome: commit `10ba0a8d0de26a78626efde48ea3600340acb7d1`
+is synchronized with `origin/main`. GitHub Actions run `30700240783` completed
+successfully across policy, tools, and functional lanes. The quality gate
+recorded 26 focused tests and 703 global tests with one existing skip.
+
+Closure verdict: `windows_protected_signing_adapter_0_1_published_ci_approved`.
+The implementation authorization is consumed and retained verbatim above as
+historical evidence. No production key or real protected container exists.
+
+## Active design task — Production key ceremony 0.1
+
+This task may prepare an exact attended checklist and recovery evidence format.
+It may not execute any ceremony step or generate any key.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "production_release_key_ceremony_design_0_1",
+  "title": "Design the attended production release-key ceremony and recovery evidence",
+  "baseline_commit": "10ba0a8d0de26a78626efde48ea3600340acb7d1",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "production_release_key_ceremony_design_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md", "docs/RELEASE_KEY_CUSTODY.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "define attended preconditions, confirmations, evidence, and abort conditions",
+    "define encrypted offline recovery-copy verification without exposing secret material",
+    "define initial validity, fingerprint, registry, rotation, and revocation records",
+    "identify the exact point requiring Daniel's explicit authorization and presence"
+  ],
+  "express_exclusions": [
+    "key generation, DPAPI protection, backup creation, recovery, or signing",
+    "secret, removable-media, or production-container access",
+    "release publication, activation, or distribution",
+    "code, CI, addon, SimulationCraft, commit, or push implementation"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `production_release_key_ceremony_design_0_1_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
