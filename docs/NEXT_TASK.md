@@ -3071,7 +3071,7 @@ This task may compare custody choices and prepare an operational recovery and
 rotation plan. It may not generate, import, store, expose, or use a production
 private key.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3109,9 +3109,125 @@ private key.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `production_release_key_custody_design_0_1_ready`.
+
+### Custody design decision
+
+Three models were evaluated for the first production signing key:
+
+| Model | Initial fit | Main strength | Main limitation |
+| --- | --- | --- | --- |
+| Windows user-scoped OS protection | Recommended | Low operating cost and no plaintext key at rest | Signing is tied to one controlled Windows operator profile |
+| Hardware-backed key | Later upgrade | Strong isolation and explicit physical presence | Added cost, device support, backup, and replacement complexity |
+| Managed signing service | Scale upgrade | Central policy, audit, and multi-operator automation | Recurring cost, network dependency, and expanded service trust |
+
+Decision: start with one Ed25519 key encrypted at rest through Windows
+user-scoped OS protection. The desktop application may request a signature
+through a narrow local adapter, but it must never log, return, serialize, or
+place the decrypted private key in project configuration. CI and the addon
+receive only the public registry and detached signatures.
+
+### Operator and transaction boundaries
+
+- Daniel is the initial key owner and the only person who may authorize key
+  creation, recovery, rotation, revocation, or a production signature.
+- Generation and recovery are separate, attended operations. Neither may run
+  from CI, an addon, a background updater, or a general development command.
+- Every signing request must display the exact manifest SHA-256, channel,
+  content version, build range, and public key identifier before confirmation.
+- A successful signature grants release eligibility only. Publication and
+  activation remain distinct, audited transactions.
+- The protected key container, recovery copy, public registry, and release
+  artifacts must use separate locations and permissions.
+
+### Backup and recovery
+
+The first key requires one encrypted offline recovery copy on user-controlled
+removable storage, plus a second separately stored record containing only the
+public key identifier, fingerprint, creation date, and recovery procedure. The
+recovery copy must never enter Git, cloud synchronization, chat, CI artifacts,
+logs, or the addon package.
+
+Recovery is fail-closed: restore into a controlled Windows profile, derive the
+public key, and require an exact fingerprint match with the trusted registry
+before any signing operation. A mismatch triggers revocation review rather
+than registry replacement.
+
+### Rotation and revocation
+
+- Planned rotation: annually, or 30 days before the key validity window ends,
+  whichever occurs first.
+- Immediate revocation: suspected disclosure, lost recovery media, Windows
+  profile compromise, unexplained signature, fingerprint mismatch, or loss of
+  exclusive operator control.
+- Rotation creates a new key identifier and a registry entry linked through
+  `rotated_from_key_id`; it never overwrites the prior public entry.
+- Revocation records UTC time and reason. Previously signed releases remain
+  historical evidence, but no new release may validate through a revoked key.
+- Emergency response order: stop signing, preserve evidence, revoke publicly,
+  generate a replacement through a separately authorized ceremony, then
+  republish the trust registry before resuming releases.
+
+### Migration triggers
+
+Move to hardware-backed custody when releases become revenue-bearing, a second
+trusted operator is required, or compromise impact materially increases. Move
+to a managed signing service only when unattended release automation or a
+multi-operator approval policy becomes necessary. Neither migration is implied
+by this design.
+
+Design verdict: `production_release_key_custody_design_0_1_complete`.
+
+## Active design task — Windows production signing adapter 0.1
+
+The next task is limited to specifying a closed implementation contract for a
+Windows user-scoped signing adapter and an attended key ceremony. It cannot
+create, import, recover, or use a production key.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "windows_production_signing_adapter_design_0_1",
+  "title": "Design the Windows-protected production signing adapter and attended ceremony",
+  "baseline_commit": "d26546f8e410257bce7c6315e42dc069ac2e6e90",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "windows_production_signing_adapter_design_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "define a narrow signer interface with no private-key return path",
+    "define Windows user-scoped protection and explicit filesystem boundaries",
+    "define attended generation, backup, recovery, rotation, and revocation ceremonies",
+    "define tests using synthetic keys and simulated OS-protection calls only",
+    "separate adapter implementation from production key creation and signing"
+  ],
+  "express_exclusions": [
+    "production key generation, import, recovery, storage, or signing",
+    "real secret or recovery-media access",
+    "release publication, activation, or distribution",
+    "code, CI, addon, desktop, SimulationCraft, commit, or push implementation"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `windows_production_signing_adapter_design_0_1_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
