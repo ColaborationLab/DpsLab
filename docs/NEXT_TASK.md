@@ -5692,7 +5692,7 @@ Recommended decisions:
    verification, publication decision, and distribution remain separate
    transactions.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -5764,7 +5764,7 @@ Recommended decisions:
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Design verdict: `production_release_candidate_readiness_0_1_design_ready`.
 
@@ -5788,3 +5788,94 @@ passed. No signer was constructed and no DPAPI, private key, recovery,
 signature, release, network, or SimulationCraft operation occurred.
 
 Implementation verdict: `production_release_candidate_readiness_0_1_implemented_pending_final_audit`.
+
+## Active design task — Official source acquisition 0.1
+
+The first production candidate requires current first-party evidence. The
+official World of Warcraft Content Update Notes index is the canonical change
+discovery surface, while the Battle.net World of Warcraft Game Data APIs are
+the preferred structured first-party data surface where an applicable endpoint
+exists. Neither surface is itself a recommendation source: captured changes
+remain quarantined until structured extraction, source coverage, role safety,
+and human review all pass.
+
+The desktop application must not transform live patch notes into immediate
+user guidance. The maintenance pipeline detects official-source changes,
+prepares and reviews a candidate knowledge package, signs its exact manifest
+through an attended operation, and publishes it separately. Desktop clients
+then verify and consume signed DpsLab packages. This preserves automatic
+updates without distributing Blizzard API secrets or allowing unreviewed
+network content to alter recommendations.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_acquisition_0_1",
+  "title": "Design first-party source discovery and quarantined acquisition",
+  "baseline_commit": "1d9665052146ba6dd7ee97b56e512dd5a78dbb51",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "official_source_acquisition_0_1-20260801-daniel-expanded-design",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T11:58:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_acquisition_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_acquisition_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/patch_source_adapter.py": "14c826d7f1b40467602949c2958f71b0343fac72c9561eb2625bd0bfa494bbee",
+    "desktop-app/src/dpslab/source_coverage.py": "85bfddadfd8fc5d6704d8bba9df223db27e6123a09e835629d3b8765afab63a7",
+    "knowledge/trust/release_trust_registry_0_1.json": "26b5da31d34fa1f5c1115438aee7ebe75b71b25f8c44706a6c91164ea2064f0c",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "only first-party Blizzard sources are authoritative for automatic discovery",
+    "official patch notes and Game Data APIs have separate discovery and structured-data roles",
+    "network responses enter quarantine and never become recommendations directly",
+    "desktop automatic updates consume only reviewed signed DpsLab packages",
+    "OAuth credentials and API secrets are never embedded in addon, desktop binaries, catalogs, logs, or repository",
+    "source snapshots are content-addressed and prior captures remain historical-only",
+    "no network implementation, live capture, secret, signing, publication, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "implementation under this design-only authorization",
+    "live HTTP requests or storage of Blizzard page contents",
+    "credentials, OAuth registration, scraping, parsing, recommendations, or real catalogs",
+    "signing, release activation, distribution, addon, UI, SimulationCraft, and comparisons",
+    "commits and pushes except separate publication of this design document"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design verdict: `official_source_acquisition_0_1_design_ready`.
