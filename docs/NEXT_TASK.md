@@ -2976,7 +2976,7 @@ OS-protected local key, hardware-backed key, or managed signing service. CI may
 verify signatures with public keys but must never receive the production
 private key during this phase.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3046,9 +3046,72 @@ private key during this phase.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Published outcome: commit `af4eb398a522a9e07b8d708ceb11a4bb905a9db6`
+is synchronized with `origin/main`. GitHub Actions run `30699358693` completed
+successfully across policy, tools, and functional lanes. The gate recorded 30
+focused tests and 677 global tests with one existing skip.
+
+Closure verdict: `release_signing_policy_0_1_published_ci_approved`.
+
+The authorization above is consumed by the published commit and is retained
+verbatim only as historical evidence.
+
+The implementation contains only a synthetic public trust fixture and a test
+private key constructed in memory. Production key generation remains blocked
+until Daniel chooses and separately authorizes a custody model. The recommended
+initial option is a Windows OS-protected local Ed25519 key with an encrypted
+offline recovery copy; hardware-backed or managed signing remains a future
+upgrade when operational scale justifies it.
+
+## Active design task — Production release-key custody 0.1
+
+This task may compare custody choices and prepare an operational recovery and
+rotation plan. It may not generate, import, store, expose, or use a production
+private key.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "production_release_key_custody_design_0_1",
+  "title": "Design production Ed25519 key custody, recovery, and rotation",
+  "baseline_commit": "af4eb398a522a9e07b8d708ceb11a4bb905a9db6",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "production_release_key_custody_design_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "compare Windows OS-protected, hardware-backed, and managed custody",
+    "define backup, recovery, rotation, revocation, and operator boundaries",
+    "recommend one initial model with explicit migration triggers",
+    "keep all production key operations subject to later human authorization"
+  ],
+  "express_exclusions": [
+    "production or test key generation",
+    "secret import, storage, export, signing, or recovery execution",
+    "release publication, activation, or distribution",
+    "code, CI, addon, desktop, SimulationCraft, commit, or push implementation"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `release_signing_policy_0_1_authorized_for_synthetic_verification_only`.
+Design-entry verdict: `production_release_key_custody_design_0_1_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
