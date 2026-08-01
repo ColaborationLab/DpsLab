@@ -6346,29 +6346,39 @@ without storing or redistributing the page body.
 {
   "contract_version": "0.1",
   "task_id": "official_source_capture_receipt_0_1",
-  "title": "Design canonical metadata-only receipts for quarantined official captures",
-  "baseline_commit": "5d743c5bcf3c5087126b0cba6542786ae3c239ee",
+  "title": "Implement canonical metadata-only receipts for quarantined official captures",
+  "baseline_commit": "ff7f8b6f63cae46292278d821b42fbe269f2cfc4",
   "authorization": {
-    "status": "design_only",
-    "authorization_id": "official_source_capture_receipt_0_1-20260801-daniel-continue",
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_source_capture_receipt_0_1-20260801-daniel-continue-implementation",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T14:38:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/OFFICIAL_SOURCE_ACQUISITION.md", "docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_receipt.py",
+      "desktop-app/tests/test_official_source_receipt.py",
+      "knowledge/schemas/official_source_capture_receipt_0_1.json",
+      "knowledge/snapshots/official_source_capture_receipt_synthetic_0_1.json",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_capture_receipt_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_capture_receipt_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**", "scenarios/**",
+      ".github/**", "profiles/**", "scenarios/**",
       "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
     ],
     "allow_deletions": false,
     "allow_renames": false
   },
   "tests": {
-    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "baseline_test_count": 52,
-    "minimum_test_count": 52
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_official_source_receipt", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 860,
+    "minimum_test_count": 872
   },
   "protected_files": {
     "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
@@ -6382,17 +6392,17 @@ without storing or redistributing the page body.
     "receipt contains no response body, extracted prose, cookies, credentials, personal path, or recommendation",
     "canonical hashing binds the receipt and duplicate hashes remain explicit",
     "receipt status cannot exceed captured_pending_review",
-    "implementation proposal uses synthetic fixtures and injected clocks only",
+    "implementation uses synthetic fixtures and injected clocks only",
     "no additional live request, persistence, parser, catalog change, recommendation, commit, or push"
   ],
   "express_exclusions": [
     "storage or redistribution of Blizzard page contents",
     "HTML parsing, semantic extraction, facts, coverage approval, and recommendations",
     "secondary-source acquisition, authenticated APIs, credentials, signing, distribution, addon, UI, SimulationCraft, and comparisons",
-    "implementation under this design-only authorization"
+    "changes outside the six authorized paths"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `official_source_capture_receipt_0_1_design_ready`.
+Implementation-entry verdict: `official_source_capture_receipt_0_1_authorized_for_implementation`.
