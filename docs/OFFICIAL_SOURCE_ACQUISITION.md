@@ -72,3 +72,16 @@ accept or emit one. Conditional ETag and Last-Modified values are bounded and
 reject control characters. The eventual transport must independently enforce
 the same host, redirect, size, media-type, completeness, and credential rules
 before handing bytes to quarantine.
+
+## Injected transport boundary
+
+`official_source_transport` accepts an immutable request plan and an injected
+sender. The module contains no HTTP client, socket, DNS, credential, or file
+operation. It validates the simulated or externally obtained response and
+hands accepted bytes to the existing `InjectedResponse` quarantine boundary.
+
+Only exact HTTPS targets, accepted media types, complete bounded byte bodies,
+sanitized cache validators, and status 200 or a structurally valid 304 pass.
+Transport errors are reduced to typed public reasons. Plans requiring an
+external bearer credential return `credential_required` without invoking the
+sender; authenticated transport remains a later block.

@@ -5886,7 +5886,7 @@ This implementation is limited to constructing inert HTTPS request plans for
 an injected transport. It cannot open sockets, resolve DNS, follow redirects,
 read credentials, persist responses, parse patch facts, or approve evidence.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -5958,7 +5958,7 @@ read credentials, persist responses, parse patch facts, or approve evidence.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_source_request_planning_0_1_authorized_for_implementation`.
 
@@ -5971,3 +5971,97 @@ Focused tests passed 10/10 and the functional suite passed 837/837 with one
 pre-existing skip. No network or credential operation occurred.
 
 Implementation verdict: `official_source_request_planning_0_1_implemented_pending_final_audit`.
+
+## Active implementation — Injected official-source transport 0.1
+
+The transport boundary executes no built-in networking. It accepts an injected
+sender, validates the complete response against the immutable request plan,
+and returns only a quarantined `InjectedResponse`. Credentialed API plans stop
+before sender invocation in this block.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_injected_transport_0_1",
+  "title": "Implement simulated and injected official-source transport validation",
+  "baseline_commit": "ee6de2ba34ea673389e845bc09c5163e09c24596",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_source_injected_transport_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T14:02:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_transport.py",
+      "desktop-app/tests/test_official_source_transport.py",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_injected_transport_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_injected_transport_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/src/dpslab/official_source_request.py",
+      "desktop-app/src/dpslab/patch_source_adapter.py", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_official_source_transport", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 837,
+    "minimum_test_count": 847
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_request.py": "4a62f047d71316872198b85c99ff16182d9f543cae36dd41c4535b405ddd2501",
+    "desktop-app/src/dpslab/patch_source_adapter.py": "14c826d7f1b40467602949c2958f71b0343fac72c9561eb2625bd0bfa494bbee",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5",
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "the sender is injected and tests use simulated responses only",
+    "credentialed plans stop as credential_required before sender invocation",
+    "only status 200 and structurally valid 304 responses reach quarantine",
+    "final HTTPS host and path remain confined to the original plan and explicit redirect policy",
+    "media type, byte count, completeness, timeout, ETag, and Last-Modified fail closed",
+    "transport exceptions become typed unavailable outcomes without exception text or secrets",
+    "successful output is an InjectedResponse pending the existing capture and review boundaries",
+    "no built-in HTTP client, DNS, live network, OAuth, credential, persistence, parsing, approval, signing, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "urllib, requests, sockets, or any other built-in transport implementation",
+    "live requests and first production capture",
+    "OAuth, bearer tokens, client identifiers, secrets, or Authorization headers",
+    "response storage, parsing, fact extraction, catalogs, and recommendations",
+    "changes outside the four authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_source_injected_transport_0_1_authorized_for_implementation`.
+
+## Injected official-source transport 0.1 — implemented
+
+The injected boundary now validates simulated responses and returns only
+quarantined evidence. Credentialed plans stop before sender invocation.
+Focused tests passed 10/10 and the functional suite passed 847/847 with one
+pre-existing skip. No live network, credential, persistence, or parsing
+operation occurred.
+
+Implementation verdict: `official_source_injected_transport_0_1_implemented_pending_final_audit`.
