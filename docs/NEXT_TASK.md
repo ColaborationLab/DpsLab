@@ -3681,7 +3681,7 @@ production ceremony or access `F:` or any removable medium.
   "contract_version": "0.1",
   "task_id": "production_release_key_ceremony_executor_0_1",
   "title": "Implement the attended production key ceremony executor without executing it",
-  "baseline_commit": "040c4cbf20237b07d63513ef792ced70516f3dd3",
+  "baseline_commit": "2aaafc8f7b22e66b9d3b521c183fbc3a5bfa3d69",
   "authorization": {
     "status": "authorized_for_implementation",
     "authorization_id": "production_release_key_ceremony_executor_0_1-20260801-daniel-expanded",
@@ -3749,6 +3749,12 @@ production ceremony or access `F:` or any removable medium.
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `production_release_key_ceremony_executor_0_1_authorized_for_synthetic_implementation_only`.
+
+Human destination decision: Daniel selected
+`F:\DpsLab Release Key Recovery` for the encrypted recovery artifact. The
+directory was created and verified empty. The protected container remains on
+`C:` under current-user local application data; the public non-secret record
+remains governed on `D:` and GitHub. No key or artifact was created.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

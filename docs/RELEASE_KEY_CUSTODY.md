@@ -121,5 +121,23 @@ context. These are expected fail-closed results, not errors to bypass.
 
 A later unrestricted read-only preflight confirmed `DANIELPC\dpcs9` as the
 native identity and found `F:` (`Black 3Tb`) healthy and available. Daniel
-attests that it is external and controlled by him. A second external medium
-must be connected and identified before the production ceremony can advance.
+attests that it is external and controlled by him.
+
+Daniel selected `F:\DpsLab Release Key Recovery` as the dedicated encrypted
+recovery location. The directory was created and verified empty without
+generating or writing any key artifact. The protected operational container
+will remain under the current-user local application-data root on `C:`, while
+the public, non-secret ceremony and trust records remain in the governed
+project on `D:` and GitHub. This three-location arrangement supersedes the
+earlier proposal for a second removable medium; it does not weaken the rule
+that the recovery passphrase must be retained separately from all three.
+
+## Ceremony executor boundary
+
+`release_key_ceremony_executor` coordinates the four attended checkpoints
+through injected generation, protection, recovery encryption, verification,
+and all-or-none artifact transaction boundaries. It rejects surrogate operator
+identities, stale or reordered confirmations, existing destinations, and any
+artifact destination inside a repository. Its returned evidence contains
+public fingerprints and artifact hashes only. Tests use temporary directories
+and synthetic material; the production executor has not run.
