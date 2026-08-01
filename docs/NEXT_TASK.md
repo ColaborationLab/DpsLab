@@ -2140,9 +2140,9 @@ Design publication closure:
 - GitHub Actions run: `30684540522`;
 - Policy and contract, Tools tests, and Functional suite: success.
 
-## Active implementation contract — Catalog change proposal 0.1
+## Completed implementation contract — Catalog change proposal 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2212,9 +2212,121 @@ Design publication closure:
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `catalog_change_proposal_0_1_authorized`.
+
+### Publication closure
+
+- audited commit: `bcae8e36ff7ccc9184e4f244a36543b9af1c7598`;
+- GitHub Actions run: `30684833738`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- local `main`, `origin/main`, and live remote synchronized;
+- final state: `catalog_change_proposal_0_1_published_ci_passed`.
+
+The implementation authorization is consumed and retained only as historical
+evidence.
+
+## Active design contract — Proposal review decision 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "proposal_review_decision_design_0_1",
+  "title": "Design exact human review decisions bound to proposal hashes",
+  "baseline_commit": "bcae8e36ff7ccc9184e4f244a36543b9af1c7598",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "proposal_review_decision_design_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "tools.tests.test_github_automation", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 490,
+    "minimum_test_count": 490
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/catalog_change_proposal.py": "824f06db37caca9191e0add6e48eb6c2e4603169088d515f228facc8ac6ec20a",
+    "knowledge/proposals/catalog_change_proposal_synthetic_0_1.json": "bfbe624d2b37572f9512447acaf6be0ebe6c97ebf590bc74339b732c29f11c39"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "decision binds exact proposal ID, proposal SHA-256, catalog SHA-256, and evidence SHA-256",
+    "reviewer identity, authority reference, UTC time, decision, and reason codes are mandatory",
+    "approval is rejected after proposal expiry or before proposal creation",
+    "a decision cannot alter proposal operations, bindings, subject, or expiry",
+    "approval does not authorize or perform catalog application or publication",
+    "conflicting or replayed decisions fail closed"
+  ],
+  "express_exclusions": [
+    "catalog mutation, application, signing keys, publication, or recommendation selection",
+    "real content, network, credentials, telemetry, addon, UI, or SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `proposal_review_decision_design_0_1_authorized`.
+
+### Design output — decision evidence, not mutation authority
+
+A review decision is a separate immutable document. It binds the exact
+proposal ID and SHA-256, the proposal's catalog and evidence hashes, reviewer
+ID, authority reference, decision time, decision (`approved` or `rejected`),
+closed reason codes, limitations acknowledged, and its own canonical SHA-256.
+
+Approval is valid only when the decision time is UTC, is not earlier than the
+proposal creation time, and is not later than its expiry. The proposal must
+still validate byte-for-byte and remain `pending_review`. Rejection follows the
+same binding rules and cannot be converted to approval by editing the decision;
+a new decision document with a distinct ID is required and conflicts remain
+fail-closed.
+
+Replay protection is expressed through a caller-supplied set of consumed
+decision IDs and proposal hashes. The pure validator reports
+`decision_eligible`, `decision_rejected`, or `decision_unavailable`; it never
+stores consumption state. Durable single-use recording belongs to the later
+application transaction.
+
+Even `decision_eligible` does not mutate the catalog. A future application
+block must revalidate proposal, decision, current catalog hash, expiry, and
+single-use status at one durable boundary, produce a candidate catalog copy,
+and require a separate publication step.
+
+Proposed implementation paths:
+
+- `desktop-app/src/dpslab/proposal_review.py`;
+- `desktop-app/tests/test_proposal_review.py`;
+- `knowledge/schemas/proposal_review_decision_0_1.json`;
+- `knowledge/reviews/proposal_review_decision_synthetic_0_1.json`;
+- `docs/PROPOSAL_REVIEW.md`;
+- `docs/NEXT_TASK.md`.
+
+Design verdict: `proposal_review_decision_design_0_1_ready_for_implementation_contract`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
