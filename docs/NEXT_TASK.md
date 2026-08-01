@@ -3855,10 +3855,10 @@ Closure verdict: `release_key_recovery_transaction_0_1_published_ci_approved`.
   "contract_version": "0.1",
   "task_id": "native_release_key_ceremony_launcher_0_1",
   "title": "Implement the native attended production key ceremony launcher without running it",
-  "baseline_commit": "411c422dff947c4bf63d874bee8724b579f11672",
+  "baseline_commit": "fcb8776de0a8240978b1666f18c241363ef4ce8e",
   "authorization": {
     "status": "authorized_for_implementation",
-    "authorization_id": "native_release_key_ceremony_launcher_0_1-20260801-daniel-expanded",
+    "authorization_id": "native_release_key_ceremony_launcher_0_1-20260801-daniel-ux-correction",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T00:00:00-05:00"
   },
@@ -3922,6 +3922,11 @@ Closure verdict: `release_key_recovery_transaction_0_1_published_ci_approved`.
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `native_release_key_ceremony_launcher_0_1_authorized_for_simulated_testing_only`.
+
+Usability correction: after two safe pre-generation aborts, Daniel authorized
+continuation. The launcher may ignore surrounding whitespace in checkpoint
+phrases and convert expected operator-input errors into concise safe-cancel
+messages. This does not relax phrase content or any security checkpoint.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

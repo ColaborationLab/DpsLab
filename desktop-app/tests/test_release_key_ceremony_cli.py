@@ -34,3 +34,4 @@ class LauncherTests(unittest.TestCase):
     def test_19_recovery_is_encrypted_json(self):run_attended_launcher(self.cfg,self.deps());self.assertIn(b"aes-256-gcm",self.tx.a[self.cfg.recovery_path])
     def test_20_no_generation_before_confirmations(self):
         called=[];d=self.deps(answers=["no"]);d.generate_key=lambda:(called.append(True),bytes(32))[1];self.assertRaises(CeremonyLauncherError,run_attended_launcher,self.cfg,d);self.assertEqual(called,[])
+    def test_21_surrounding_whitespace_is_ignored(self):self.assertEqual(run_attended_launcher(self.cfg,self.deps(answers=[f"  {value}  " for value in self.answers])).status,"key_material_created_pending_registry_review")

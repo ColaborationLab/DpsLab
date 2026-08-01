@@ -34,7 +34,7 @@ def run_attended_launcher(config:LauncherConfig,deps:LauncherDependencies)->Cere
     confirmations=[]
     for step in ("readiness","generation","recovery","registry"):
         expected=confirmation_phrase(step,plan_sha)
-        if deps.read_text(f"Escriba exactamente: {expected}\n> ")!=expected:raise CeremonyLauncherError(f"checkpoint_{step}_not_confirmed")
+        if deps.read_text(f"Escriba exactamente: {expected}\n> ").strip()!=expected:raise CeremonyLauncherError(f"checkpoint_{step}_not_confirmed")
         confirmations.append(CeremonyConfirmation(step,plan_sha,actual,deps.timestamp()))
     first=deps.read_secret("Contrasena de recuperacion: ");second=deps.read_secret("Repita la contrasena: ")
     if first!=second:raise CeremonyLauncherError("passphrase_mismatch")
@@ -53,5 +53,7 @@ def main()->int:
     now=datetime.now(timezone.utc).replace(microsecond=0);key_id="dpslab.release.ed25519.001";local=Path(os.environ["LOCALAPPDATA"])/"DpsLab"/"signing";recovery=Path(r"F:\DpsLab Release Key Recovery");records=Path(r"D:\DpsLab Release Key Records")
     config=LauncherConfig("dpslab.release.ceremony.001",key_id,r"DANIELPC\dpcs9",now.isoformat().replace("+00:00","Z"),(now+timedelta(days=365)).isoformat().replace("+00:00","Z"),local/f"{key_id}.dpskey",recovery/f"{key_id}.recovery.json",records/f"{key_id}.ceremony.json",(Path(r"D:\Proyectos\DpsLab"),))
     deps=LauncherDependencies(_native_identity,input,getpass.getpass,print,lambda:datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),_generate_ed25519,WindowsDataProtector(),NewArtifactTransaction())
-    outcome=run_attended_launcher(config,deps);print(f"Resultado: {outcome.status}");print(f"Huella publica: {outcome.evidence['public_key_sha256']}");return 0
+    try:outcome=run_attended_launcher(config,deps)
+    except CeremonyLauncherError as exc:print(f"Ceremonia cancelada de forma segura: {exc}");return 2
+    print(f"Resultado: {outcome.status}");print(f"Huella publica: {outcome.evidence['public_key_sha256']}");return 0
 if __name__=="__main__":raise SystemExit(main())
