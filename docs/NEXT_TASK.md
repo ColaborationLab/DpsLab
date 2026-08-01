@@ -2772,7 +2772,7 @@ Damage-specialization review must still preserve no-automation and contextual
 applicability. Every role fails closed when current patch/build evidence or
 source coverage is missing.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2840,9 +2840,80 @@ source coverage is missing.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Closure verdict: `candidate_knowledge_set_review_0_1_published_ci_passed`.
+
+Implementation closure:
+
+- commit: `c290af6f089fcb823daf5ffee86edca22eae1b49`;
+- focused tests: 31/31;
+- full functional suite: 615/615;
+- GitHub Actions run: `30697867678`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+## Design-only contract — Candidate knowledge release bundle 0.1
+
+The next boundary constructs, in memory, a release-candidate bundle from one
+exact durable generation and one eligible human review decision. The bundle
+must bind all prior hashes, carry only current and applicable synthetic
+guidance, and contain a candidate envelope, candidate catalog transition, human
+review, and closed release manifest. It remains an internal release candidate:
+construction is not signing, publication, distribution, or activation.
+
+Promotion logic is explicit. The reviewed pending entry may become `approved`
+only in the release-candidate copy; review identity and time must be copied from
+the bound decision, source coverage becomes complete only from the approved
+assessment, and role safety must remain satisfied. The prior source entry is
+preserved. Deprecation or withdrawal of that source requires a later distinct
+decision and is not inferred from supersession.
+
+The manifest must declare target channel, supported build/interface bounds,
+content version, review decision hash, candidate commit hash, and byte hashes
+for every bundle member. It must remain unsigned with an explicit
+`signature_pending` state. A later signing/publication transaction must bind the
+exact manifest hash and use separately managed credentials.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "candidate_knowledge_release_bundle_0_1",
+  "title": "Pure reviewed candidate release-bundle construction",
+  "baseline_commit": "c290af6f089fcb823daf5ffee86edca22eae1b49",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "candidate_knowledge_release_bundle_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "bundle binds the exact durable generation and eligible human review decision",
+    "promotion occurs only in an immutable release-candidate copy",
+    "source entry remains preserved and is not automatically deprecated or withdrawn",
+    "manifest binds every member hash, compatibility range, channel, and content version",
+    "bundle remains signature_pending and cannot be selected or distributed"
+  ],
+  "express_exclusions": [
+    "implementation or mutation outside this design document",
+    "credentials, cryptographic signing, active catalog replacement, addon packaging, distribution, or publication"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `candidate_knowledge_set_review_0_1_authorized`.
+Design verdict: `candidate_knowledge_release_bundle_0_1_design_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
