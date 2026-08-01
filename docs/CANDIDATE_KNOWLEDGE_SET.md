@@ -43,3 +43,16 @@ An approved review makes only that exact generation eligible for a later
 publication transaction. Rejection is also immutable. Neither outcome edits
 the candidate generation, changes the visible marker, activates catalog
 content, packages the addon, or distributes guidance.
+
+## Unsigned release bundle
+
+`candidate_release_bundle` builds an internal release-candidate copy from one
+eligible human review. Only the reviewed pending entry is promoted in that
+copy; its source entry is preserved without inferred deprecation. The manifest
+binds the durable generation, review, compatibility bounds, envelope, and
+catalog bytes.
+
+The bundle remains `signature_pending` and the envelope remains unsigned. It
+is not an active catalog, distributable addon payload, desktop update, or
+published recommendation. Signing and publication require later transactions
+that bind the exact manifest hash and separately managed credentials.

@@ -2880,24 +2880,56 @@ exact manifest hash and use separately managed credentials.
   "contract_version": "0.1",
   "task_id": "candidate_knowledge_release_bundle_0_1",
   "title": "Pure reviewed candidate release-bundle construction",
-  "baseline_commit": "c290af6f089fcb823daf5ffee86edca22eae1b49",
+  "baseline_commit": "bace9039795fb63b17549a4a961a0f2e53d21e50",
   "authorization": {
-    "status": "design_only",
+    "status": "authorized_for_implementation",
     "authorization_id": "candidate_knowledge_release_bundle_0_1-20260801-daniel-expanded",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T00:00:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/candidate_release_bundle.py",
+      "desktop-app/tests/test_candidate_release_bundle.py",
+      "knowledge/schemas/candidate_release_manifest_0_1.json",
+      "knowledge/releases/candidate_knowledge_release_bundle_synthetic_0_1.json",
+      "docs/CANDIDATE_KNOWLEDGE_SET.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/candidate_knowledge_release_bundle_0_1/implementation.json",
+      ".dpslab/quality-gates/candidate_knowledge_release_bundle_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      ".github/**", "tools/**", "knowledge/catalogs/**", "knowledge/fixtures/**",
+      "knowledge/candidates/**", "knowledge/proposals/**", "knowledge/reviews/**",
       "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
       "results/**", "config/**", "flasil.simc"
     ],
     "allow_deletions": false,
     "allow_renames": false
   },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_candidate_release_bundle", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 615,
+    "minimum_test_count": 645
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/candidate_knowledge_review.py": "43bfd9a066a23ff99b8be526127c79db2b797ca105dd4866316c3c258e98b826",
+    "knowledge/reviews/candidate_knowledge_review_decision_synthetic_0_1.json": "2851131b250879862f7bb9ae6e0044f73608cb4d10a08228363d74c88bfaa2f7"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
   "acceptance_criteria": [
     "bundle binds the exact durable generation and eligible human review decision",
     "promotion occurs only in an immutable release-candidate copy",
@@ -2906,14 +2938,13 @@ exact manifest hash and use separately managed credentials.
     "bundle remains signature_pending and cannot be selected or distributed"
   ],
   "express_exclusions": [
-    "implementation or mutation outside this design document",
     "credentials, cryptographic signing, active catalog replacement, addon packaging, distribution, or publication"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `candidate_knowledge_release_bundle_0_1_design_ready`.
+Implementation-entry verdict: `candidate_knowledge_release_bundle_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
