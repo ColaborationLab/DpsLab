@@ -3186,7 +3186,7 @@ The next task is limited to specifying a closed implementation contract for a
 Windows user-scoped signing adapter and an attended key ceremony. It cannot
 create, import, recover, or use a production key.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3225,9 +3225,115 @@ create, import, recover, or use a production key.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `windows_production_signing_adapter_design_0_1_ready`.
+
+### Adapter design output
+
+The adapter has three closed layers. `WindowsDataProtector` is the only layer
+allowed to call Windows DPAPI and must use current-user scope with user
+interface disabled; machine-wide scope is forbidden. `ProtectedKeyContainer`
+stores only versioned metadata, the public-key fingerprint, and DPAPI-protected
+ciphertext. `WindowsReleaseSigner` accepts canonical manifest bytes and returns
+only a 64-byte detached Ed25519 signature.
+
+No public API returns decrypted key bytes. Unprotected bytes remain local to
+one signing call and are discarded immediately afterward; Python cannot
+guarantee perfect memory zeroization, so the design does not claim it. The
+container path is outside the repository under the current user's local
+application-data directory. Repository paths, arbitrary caller-selected paths,
+machine scope, UI prompts, network calls, logs, and environment-variable
+secrets fail closed.
+
+The attended ceremony remains a separate future operation. It must verify that
+an encrypted offline recovery copy exists before the first production key is
+accepted. This is required because Windows user-scoped DPAPI normally binds
+recovery to the same credentials and machine, and administrative password
+reset can make protected material unavailable.
+
+Design verdict: `windows_production_signing_adapter_design_0_1_complete`.
+
+## Active implementation — Windows protected signing adapter 0.1
+
+This implementation may add the adapter and synthetic tests. Tests must inject
+a simulated protector and deterministic synthetic Ed25519 keys. They may test
+the Windows-call wrapper structurally but may not invoke DPAPI with real secret
+material or write outside temporary test directories.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "windows_protected_signing_adapter_0_1",
+  "title": "Implement a Windows user-scoped release signer with synthetic verification",
+  "baseline_commit": "df24c3ca83fdea6b037ca75fb8cb76e33b42aac2",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "windows_protected_signing_adapter_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/windows_key_protection.py",
+      "desktop-app/src/dpslab/windows_release_signer.py",
+      "desktop-app/tests/test_windows_key_protection.py",
+      "desktop-app/tests/test_windows_release_signer.py",
+      "docs/RELEASE_KEY_CUSTODY.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/windows_protected_signing_adapter_0_1/implementation.json",
+      ".dpslab/quality-gates/windows_protected_signing_adapter_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/pyproject.toml", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_windows_key_protection", "tests.test_windows_release_signer", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 677,
+    "minimum_test_count": 701
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/release_signing.py": "50b38b6875b317b58bba1b0b32dc9beceb1dec89c4b92e12a06770e4e58c8604",
+    "knowledge/trust/release_trust_registry_synthetic_0_1.json": "99819f2111d78852df8e4627033c9070b441fae10f8f0f536320b3cb8283989b"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "machine-wide DPAPI scope and UI prompts are impossible through the adapter",
+    "protected containers are closed, versioned, fingerprint-bound, and path-confined",
+    "the signer returns only a detached signature over exact caller bytes",
+    "private material is neither logged nor returned by public APIs",
+    "tests use deterministic synthetic keys and simulated protection only"
+  ],
+  "express_exclusions": [
+    "production key generation, import, recovery, backup, or signing",
+    "real DPAPI invocation with secret material",
+    "release publication, activation, or distribution",
+    "CI changes, addon, SimulationCraft, commit or push of production artifacts"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `windows_protected_signing_adapter_0_1_authorized_for_synthetic_implementation`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
