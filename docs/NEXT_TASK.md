@@ -5979,7 +5979,7 @@ sender, validates the complete response against the immutable request plan,
 and returns only a quarantined `InjectedResponse`. Credentialed API plans stop
 before sender invocation in this block.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6052,7 +6052,7 @@ before sender invocation in this block.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_source_injected_transport_0_1_authorized_for_implementation`.
 
@@ -6065,3 +6065,88 @@ pre-existing skip. No live network, credential, persistence, or parsing
 operation occurred.
 
 Implementation verdict: `official_source_injected_transport_0_1_implemented_pending_final_audit`.
+
+## Active implementation — Public HTTPS client 0.1
+
+This block adds a concrete standard-library HTTPS client for credential-free
+plans only. It denies redirects before following them, reads one bounded
+response into memory, and delegates all semantic acceptance to the injected
+transport validator. Tests inject a fake opener; no live request belongs to
+the implementation task.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_public_https_client_0_1",
+  "title": "Implement bounded credential-free HTTPS retrieval for official public sources",
+  "baseline_commit": "ce9029b7830697bdb6080cb688878ca60064d61c",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_public_https_client_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T14:15:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_http.py",
+      "desktop-app/tests/test_official_source_http.py",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_public_https_client_0_1/implementation.json",
+      ".dpslab/quality-gates/official_public_https_client_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/src/dpslab/official_source_request.py",
+      "desktop-app/src/dpslab/official_source_transport.py", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_official_source_http", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 847,
+    "minimum_test_count": 857
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_request.py": "4a62f047d71316872198b85c99ff16182d9f543cae36dd41c4535b405ddd2501",
+    "desktop-app/src/dpslab/official_source_transport.py": "9276c80830341ac3a00b1306822592ae3c221c56db26bf0e857ed9c06b47b221",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5",
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "only OfficialRequestPlan values with credential_mode none are sent",
+    "the request uses GET, the exact plan URL and headers, and a bounded timeout",
+    "redirects are denied before a second request is made",
+    "response reads are bounded to max_bytes plus one and oversized content fails closed",
+    "Content-Length disagreement, malformed length, transport exceptions, and HTTP errors are sanitized",
+    "the concrete client delegates final URL, media, status, completeness, and validator checks to official_source_transport",
+    "tests inject fake openers and prove zero live network dependency",
+    "no live request, OAuth, credential, persistence, parsing, approval, signing, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "first live official-source request",
+    "authenticated Game Data API transport",
+    "OAuth, tokens, client identifiers, secrets, or Authorization headers",
+    "response persistence, parsing, fact extraction, catalogs, and recommendations",
+    "changes outside the four authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_public_https_client_0_1_authorized_for_implementation`.

@@ -85,3 +85,14 @@ sanitized cache validators, and status 200 or a structurally valid 304 pass.
 Transport errors are reduced to typed public reasons. Plans requiring an
 external bearer credential return `credential_required` without invoking the
 sender; authenticated transport remains a later block.
+
+## Public HTTPS client
+
+`official_source_http` is the concrete credential-free transport for public
+plans. It uses the Python standard-library HTTPS stack, denies redirects before
+following them, forwards only plan headers, applies a bounded timeout, and
+reads at most `max_bytes + 1`. Content-Length disagreement and every network
+or HTTP exception fail closed without exposing exception details.
+
+The result remains quarantined in memory. The client does not persist or parse
+responses, approve coverage, update guidance, or accept authenticated plans.
