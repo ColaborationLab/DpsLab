@@ -165,3 +165,14 @@ Transport exceptions and invalid responses become sanitized
 resets that count. Conditional validators come only from a validated previous
 receipt. The coordinator has no concrete HTTP dependency, retry loop,
 filesystem operation, background thread, parser, or approval capability.
+
+## Atomic receipt ledger
+
+Receipt persistence uses one canonical, SHA-256-bound JSON ledger per validated
+source and retains at most 32 metadata-only receipts. The destination root must
+already exist, be absolute, and not be a symlink.
+
+Updates rebuild the bounded history, write a same-directory temporary file,
+flush and fsync it, then atomically replace the ledger. A failed replacement
+preserves the previous ledger and removes temporary residue. This is not a
+database or content archive; response bodies and extracted facts are forbidden.

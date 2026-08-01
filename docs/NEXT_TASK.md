@@ -6556,7 +6556,7 @@ The coordinator composes the published pure boundaries into one injected,
 single-attempt transaction. It cannot create a network client, persist state,
 retry, parse content, or approve a source.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6617,6 +6617,78 @@ retry, parse content, or approve a source.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_source_cycle_coordinator_0_1_authorized_for_implementation`.
+
+## Active implementation — Official receipt atomic store 0.1
+
+This block persists only canonical receipt metadata in one bounded JSON ledger
+per source. It is a recoverable local file boundary, not a database or content
+archive.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_receipt_atomic_store_0_1",
+  "title": "Persist bounded official-source receipt metadata atomically",
+  "baseline_commit": "c11599ab215452aed7fd141bdf5bf2b6ba6e14e9",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_source_receipt_atomic_store_0_1-20260801-daniel-next-blocks",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T15:42:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_store.py",
+      "desktop-app/tests/test_official_source_store.py",
+      "knowledge/schemas/official_source_receipt_ledger_0_1.json",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_receipt_atomic_store_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_receipt_atomic_store_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "knowledge/snapshots/**", "knowledge/catalogs/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**", "config/**",
+      "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_official_source_store", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 910,
+    "minimum_test_count": 924
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_cycle.py": "d60211431519454511ff11678d8deec1725dc85844776e2122fd45f490c5e04e",
+    "desktop-app/src/dpslab/official_source_change.py": "d07f1a1c8d59264122bf9e20fa9a70ffd4503c5854dea8d2aec98410eed33982",
+    "desktop-app/src/dpslab/official_source_receipt.py": "cae5e9a03780b8e3b13bb9be44ef3a2eab6c0d5ef99562ac9e3b1a4206fe9186",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "one canonical hash-bound ledger stores at most 32 metadata-only receipts per source",
+    "source identity and strictly increasing receipt history remain enforced",
+    "write uses a same-directory temporary file, flush, fsync, and atomic replace",
+    "replace failure preserves the prior ledger and removes temporary residue",
+    "root must be an existing absolute non-symlink directory and the filename is derived only from a validated source token",
+    "no response body, database, network, parser, recommendation, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "real production receipt creation or source request",
+    "HTML storage, extracted facts, catalog mutation, signing, distribution, addon, or UI",
+    "background service, scheduler registration, queue, or automatic retry",
+    "changes outside the five authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_source_receipt_atomic_store_0_1_authorized_for_implementation`.
