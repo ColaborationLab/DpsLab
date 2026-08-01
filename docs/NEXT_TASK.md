@@ -2334,9 +2334,9 @@ Design publication closure:
 - GitHub Actions run: `30684980499`;
 - Policy and contract, Tools tests, and Functional suite: success.
 
-## Active implementation contract — Proposal review decision 0.1
+## Completed implementation contract — Proposal review decision 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2406,9 +2406,137 @@ Design publication closure:
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `proposal_review_decision_0_1_authorized`.
+
+### Publication closure
+
+- audited commit: `83d6eb56dd3913a016e852e1136f9a59beef82bd`;
+- GitHub Actions run: `30685261169`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- local `main`, `origin/main`, and live remote synchronized;
+- final state: `proposal_review_decision_0_1_published_ci_passed`.
+
+The implementation authorization is consumed and retained only as historical
+evidence.
+
+## Active design contract — Candidate knowledge-set application 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "candidate_knowledge_set_application_design_0_1",
+  "title": "Design pure application to a candidate envelope and catalog set",
+  "baseline_commit": "83d6eb56dd3913a016e852e1136f9a59beef82bd",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "candidate_knowledge_set_application_design_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "tools.tests.test_github_automation", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 522,
+    "minimum_test_count": 522
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/proposal_review.py": "5c261e5972bc313f3395ea55904c65423a1dbd31d4c72757bd57efc3f3ff56bd",
+    "knowledge/reviews/proposal_review_decision_synthetic_0_1.json": "e795b08346e5b051b63456ba763ab3115bc2f68f6f46640e9c4687d14a1f7c52"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "design corrects the catalog-only assumption without changing product architecture",
+    "candidate set contains an envelope, catalog, and single-use receipt bound together",
+    "physical field mapping is closed and external to proposal evidence",
+    "source envelope, source catalog, proposal, and decision remain unchanged",
+    "candidate envelope and catalog validate independently and cross-reference exact hashes",
+    "output remains unpublished, unsigned, and in pending-review state"
+  ],
+  "express_exclusions": [
+    "filesystem writes, atomic replacement, durable consumption, signing, or publication",
+    "real guidance, live data, network, credentials, addon, UI, or SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `candidate_knowledge_set_application_design_0_1_authorized`.
+
+### Design output — candidate set, not catalog-only mutation
+
+Structural review confirmed that `static_template_catalog` is an index whose
+entries reference immutable knowledge envelopes. Guidance statements and
+evidence metadata live in the envelope, not in the catalog. Therefore a
+proposal targeting guidance cannot be correctly applied by editing only the
+catalog. The application unit must be a candidate knowledge set.
+
+The pure application boundary receives exact validated values for source
+envelope, source catalog, proposal, eligible review decision, and a closed
+physical mapping policy. The policy maps proposal `catalog_field` tokens to
+specific permitted envelope transformations. Unknown fields or transformations
+fail closed; proposal data cannot invent a physical path.
+
+Application creates three new values in memory:
+
+1. a candidate envelope with a new package ID and content version, updated
+   guidance/evidence fields, complete provenance, null signature, and a new
+   payload SHA-256;
+2. a candidate catalog with a new content version and pending-review entry
+   pointing to the candidate envelope's future portable path and byte hash;
+3. a consumption receipt binding source hashes, proposal hash, decision hash,
+   candidate hashes, decision ID, and application time.
+
+The source entry remains preserved as historical evidence. The candidate entry
+may declare `supersedes_entry_ids`, but its lifecycle is `pending_review`, its
+review fields are empty, source coverage is false until separately verified,
+and it cannot be selected as guidance. The source entry is not deprecated or
+withdrawn during pure candidate construction.
+
+Tank and healer safety constraints are revalidated at both proposal and
+candidate-envelope boundaries. Physical mapping may update only allowlisted
+synthetic guidance statement tokens and provenance fields in 0.1; it cannot
+change subject, role, compatibility, automation safety, signatures, or channel.
+
+Durable application is explicitly deferred. A later transactional block must
+confirm current on-disk hashes, write envelope and catalog through atomic
+replacement under the declared single-writer model, and atomically record the
+receipt. Publication and signature remain later separate steps.
+
+Proposed implementation paths:
+
+- `desktop-app/src/dpslab/candidate_knowledge_set.py`;
+- `desktop-app/tests/test_candidate_knowledge_set.py`;
+- `knowledge/schemas/candidate_knowledge_set_receipt_0_1.json`;
+- `knowledge/candidates/candidate_knowledge_set_synthetic_0_1.json`;
+- `docs/CANDIDATE_KNOWLEDGE_SET.md`;
+- `docs/NEXT_TASK.md`.
+
+Design verdict:
+`candidate_knowledge_set_application_design_0_1_ready_for_implementation_contract`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
