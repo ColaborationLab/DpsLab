@@ -6699,7 +6699,7 @@ This adapter joins the published coordinator, public HTTPS client, and atomic
 ledger behind an exact attended confirmation. Tests inject transport and use
 temporary roots; no live request belongs to this implementation block.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6760,6 +6760,70 @@ temporary roots; no live request belongs to this implementation block.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `attended_official_source_operator_0_1_authorized_for_implementation`.
+
+## Active design task — Blizzard patch-note HTML extractor 0.1
+
+The first attended integrated operation persisted one metadata-only receipt as
+`first_seen_pending_review`. Extraction remains a separate pure boundary: it
+receives injected bytes bound to that receipt and may emit only cited
+structured evidence pending review.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "blizzard_patch_notes_html_extractor_0_1",
+  "title": "Design fail-closed extraction of cited Blizzard patch-note assertions",
+  "baseline_commit": "0e3658d2cf6e36483484c0234cc606214000d7e1",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "blizzard_patch_notes_html_extractor_0_1-20260801-daniel-next-blocks",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T15:58:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_EXTRACTOR.md", "docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**", "scenarios/**",
+      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_operator.py": "14e6598525850400f58d4c968c2ee5a47b27a40ff750ca5f8a120631cd024edb",
+    "desktop-app/src/dpslab/official_source_cycle.py": "d60211431519454511ff11678d8deec1725dc85844776e2122fd45f490c5e04e",
+    "desktop-app/src/dpslab/patch_evidence.py": "d2f3562e44b2ff92f6319305136887f97465e5b42c1d154f5a547e1de09b9fcf",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "input bytes must match a validated captured_pending_review receipt hash and byte count",
+    "parser is source-specific, pure, deterministic, bounded, and uses no browser, JavaScript, CSS selector engine, or network",
+    "only explicit headings, nested lists, literal old/new values, and stable citations may become assertions",
+    "unknown layout, ambiguous subjects, omitted units, duplicate citations, or unsupported prose fail closed",
+    "output remains pending_review and never mutates coverage, catalogs, templates, or recommendations",
+    "implementation proposal uses synthetic HTML only and contains no copied Blizzard page body",
+    "no implementation, live request, persistence, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "general-purpose scraping or parsing of community sites",
+    "natural-language inference, AI extraction, inferred coefficients, or automatic subject mapping",
+    "real HTML fixtures, source-body redistribution, facts, approval, catalog mutation, signing, addon, or UI",
+    "changes outside the two documentary paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design verdict: `blizzard_patch_notes_html_extractor_0_1_design_ready`.
