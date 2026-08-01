@@ -2675,23 +2675,55 @@ Proposed implementation paths:
   "contract_version": "0.1",
   "task_id": "candidate_knowledge_set_persistence_0_1",
   "title": "Crash-consistent synthetic candidate knowledge-set persistence",
-  "baseline_commit": "76f155c1dff63954dc60549f42724c571a89634a",
+  "baseline_commit": "d1037abc0440a6c7003c04b2fd412d279db4efc7",
   "authorization": {
-    "status": "design_only",
+    "status": "authorized_for_implementation",
     "authorization_id": "candidate_knowledge_set_persistence_0_1-20260801-daniel-expanded",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T00:00:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/candidate_knowledge_store.py",
+      "desktop-app/tests/test_candidate_knowledge_store.py",
+      "knowledge/schemas/candidate_knowledge_set_commit_0_1.json",
+      "docs/CANDIDATE_KNOWLEDGE_SET.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/candidate_knowledge_set_persistence_0_1/implementation.json",
+      ".dpslab/quality-gates/candidate_knowledge_set_persistence_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/src/**", "desktop-app/tests/**",
-      "knowledge/**", "profiles/**", "scenarios/**", "variants/**",
+      ".github/**", "knowledge/catalogs/**", "knowledge/fixtures/**",
+      "knowledge/candidates/**", "knowledge/proposals/**", "knowledge/reviews/**",
+      "profiles/**", "scenarios/**", "variants/**",
       "comparisons/**", "results/**", "config/**", "flasil.simc"
     ],
     "allow_deletions": false,
     "allow_renames": false
   },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_candidate_knowledge_store", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 556,
+    "minimum_test_count": 580
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/candidate_knowledge_set.py": "eb12d5f812bbb592df185e9ca7e21fb0a9d858317789265a059421278de7e628",
+    "knowledge/candidates/candidate_knowledge_set_synthetic_0_1.json": "3c97b650a2654eb666dbb0693f474ddee8ab94b29c0e5bc10838ab473309aa1a"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
   "acceptance_criteria": [
     "one atomic marker is the sole visibility boundary for an immutable generation",
     "all source and candidate bindings are revalidated immediately before staging",
@@ -2701,7 +2733,6 @@ Proposed implementation paths:
     "no approval, signature, publication, selection, network, real data, or SimulationCraft"
   ],
   "express_exclusions": [
-    "implementation or filesystem mutation beyond this design document",
     "multi-writer or distributed locking guarantees",
     "active catalog replacement, addon or UI consumption, signing, or publication"
   ]
@@ -2709,7 +2740,7 @@ Proposed implementation paths:
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `candidate_knowledge_set_persistence_0_1_design_ready`.
+Implementation-entry verdict: `candidate_knowledge_set_persistence_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

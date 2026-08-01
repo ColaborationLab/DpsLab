@@ -15,3 +15,17 @@ marking consumption as pending a later durable transaction.
 
 This output is not durable application, approval, signature, publication, or
 recommendation selection.
+
+## Transactional persistence
+
+`candidate_knowledge_store` can persist an already validated candidate set as
+one immutable generation under the declared single-writer model. Envelope,
+catalog, receipt, and commit manifest are staged and rehashed before an atomic
+`current.json` marker makes the generation visible. The commit manifest, not a
+mutation of the original receipt, records durable single-use consumption.
+
+Readers accept only canonical files whose hashes agree with both the commit
+manifest and visibility marker. Exact replay is idempotent; divergent reuse of
+the proposal or decision fails closed. An interrupted staging operation cannot
+replace the previously visible generation. This boundary still does not
+approve, sign, publish, select, or distribute guidance.
