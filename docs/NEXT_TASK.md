@@ -1938,9 +1938,9 @@ Design publication closure:
 - GitHub Actions run: `30638015330`;
 - Policy and contract, Tools tests, and Functional suite: success.
 
-## Active implementation contract — Structured patch format adapter 0.1
+## Completed implementation contract — Structured patch format adapter 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2010,10 +2010,129 @@ Design publication closure:
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict:
 `structured_patch_format_adapter_0_1_authorized`.
+
+### Publication closure
+
+- audited commit: `784bf682fa8b2765263f35db0b0e0159c07757e2`;
+- GitHub Actions run: `30638676119`;
+- Policy and contract, Tools tests, and Functional suite: success;
+- local `main`, `origin/main`, and live remote synchronized;
+- final state: `structured_patch_format_adapter_0_1_published_ci_passed`.
+
+The implementation authorization is consumed and retained only as historical
+evidence.
+
+## Active design contract — Catalog change proposal 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "catalog_change_proposal_design_0_1",
+  "title": "Design reviewable proposals from quarantined evidence without catalog mutation",
+  "baseline_commit": "784bf682fa8b2765263f35db0b0e0159c07757e2",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "catalog_change_proposal_design_0_1-20260731-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-07-31T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "tools.tests.test_github_automation", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 453,
+    "minimum_test_count": 453
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/patch_format_adapter.py": "701a8e1732fdfcbf998056c76ae305bbc5b1ff851865ab191f3bcd1fc8d454a6",
+    "knowledge/snapshots/structured_patch_input_synthetic_0_1.json": "f53eb1ec777cf72c4c0468a746768dbb20a386600e8c4f53ef344c0338706270"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "only validated current pending-review evidence may enter proposal construction",
+    "proposal binds exact catalog and evidence hashes plus build and subject",
+    "operations are explicit additions, replacements, removals, or invalidations",
+    "role safety policy is preserved for tanks and healers",
+    "proposal cannot represent approval, publication, or direct catalog mutation",
+    "conflicts, stale inputs, unknown families, and historical evidence fail closed"
+  ],
+  "express_exclusions": [
+    "catalog writes, approvals, signing, publication, or automatic recommendations",
+    "real sources, network, credentials, telemetry, addon, UI, or SimulationCraft",
+    "live class balance claims or specialization content"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `catalog_change_proposal_design_0_1_authorized`.
+
+### Design output — immutable proposal, separate approval
+
+The proposal builder receives three already validated inputs: one current
+`patch_evidence` record whose intake result is `pending_review` or
+`coverage_invalidated`, one exact catalog snapshot, and one closed policy
+mapping from parameter families to permitted catalog fields. It never opens or
+writes a catalog path.
+
+Every proposal binds the evidence SHA-256, catalog SHA-256, source revision,
+Retail build/interface range, subject tokens, role, content contexts, creation
+time, and expiry. Each proposed operation includes before and after tokens,
+the originating assertion and citation, limitations, and an explicit review
+state fixed initially to `pending_review`.
+
+The builder rejects historical evidence, ambiguous assertions, catalog hash
+mismatches, unknown parameter families, overlapping operations, ineffective
+replacements, missing citations, unsupported build ranges, and expired source
+evidence. An invalidation creates a proposal to suspend affected guidance; it
+does not silently delete or replace content.
+
+Role safety is non-negotiable. A tank proposal may adjust damage guidance only
+while preserving declared survival constraints and required damage-intake
+context. A healer proposal may adjust damage guidance only while preserving
+healing-coverage constraints and ally-health context. Missing safety evidence
+produces `proposal_unavailable`, never a damage-only fallback.
+
+The output is content-addressed and can be reviewed, rejected, superseded, or
+expired. A later approval transaction must bind the exact proposal hash and
+reviewer identity; even then, catalog application and publication remain
+separate transactions.
+
+Proposed implementation paths:
+
+- `desktop-app/src/dpslab/catalog_change_proposal.py`;
+- `desktop-app/tests/test_catalog_change_proposal.py`;
+- `knowledge/schemas/catalog_change_proposal_0_1.json`;
+- `knowledge/proposals/catalog_change_proposal_synthetic_0_1.json`;
+- `docs/CATALOG_CHANGE_PROPOSAL.md`;
+- `docs/NEXT_TASK.md`.
+
+Design verdict: `catalog_change_proposal_design_0_1_ready_for_implementation_contract`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
