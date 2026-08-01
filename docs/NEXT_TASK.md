@@ -6074,7 +6074,7 @@ response into memory, and delegates all semantic acceptance to the injected
 transport validator. Tests inject a fake opener; no live request belongs to
 the implementation task.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6147,6 +6147,110 @@ the implementation task.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_public_https_client_0_1_authorized_for_implementation`.
+
+## Active implementation — Official HTML source registry 0.1
+
+The first live public diagnostic returned a complete HTML response from the
+exact Blizzard Content Update Notes endpoint. This block may add HTML to the
+closed media-type vocabulary and register only that exact first-party source.
+It does not repeat the request or store the observed response.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_html_source_registry_0_1",
+  "title": "Register Blizzard Content Update Notes as an explicit HTML source",
+  "baseline_commit": "aec1a4031f7422057c29007c70006db5b9d6c15c",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_html_source_registry_0_1-20260801-daniel-approved-adjustment",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T14:28:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/patch_source_adapter.py",
+      "desktop-app/tests/test_patch_source_adapter.py",
+      "knowledge/sources/official_patch_source_registry_0_1.json",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_html_source_registry_0_1/implementation.json",
+      ".dpslab/quality-gates/official_html_source_registry_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/src/dpslab/official_source_http.py",
+      "desktop-app/src/dpslab/official_source_request.py",
+      "desktop-app/src/dpslab/official_source_transport.py", "knowledge/snapshots/**",
+      "knowledge/catalogs/**", "knowledge/fixtures/**", "profiles/**", "scenarios/**",
+      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_patch_source_adapter", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 857,
+    "minimum_test_count": 860
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    "desktop-app/src/dpslab/official_source_request.py": "4a62f047d71316872198b85c99ff16182d9f543cae36dd41c4535b405ddd2501",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5",
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "text/html is accepted only when explicitly listed by a validated source",
+    "the canonical production registry contains exactly the Blizzard Content Update Notes source",
+    "the exact host, no redirects, en_us_canonical locale, one-megabyte bound, and maintainer review remain closed",
+    "the registry is canonical and its SHA-256 projection validates",
+    "HTML supplied to a JSON-only source still fails closed",
+    "a valid official-shaped HTML response remains captured_pending_review only",
+    "no live request, response storage, parsing, recommendation, credential, signing, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "repeat of the live diagnostic or persistence of its bytes",
+    "HTML parsing, fact extraction, source approval, catalog generation, and recommendations",
+    "authenticated APIs, OAuth, tokens, secrets, signing, activation, and distribution",
+    "changes outside the five authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_html_source_registry_0_1_authorized_for_implementation`.
+
+## Implementation result — Official HTML source registry 0.1
+
+The authorized implementation changed only the five allowlisted paths. It
+extended the closed adapter vocabulary with `text/html`, added one canonical
+registry entry for Blizzard Content Update Notes, and preserved per-source
+media enforcement and `captured_pending_review` quarantine semantics.
+
+The focused adapter module passed 41/41 tests. The complete functional suite
+passed 860/860 tests with one existing skip and exit code 0. Protected hashes
+matched the contract, SimulationCraft was not invoked, and no live request or
+response persistence occurred. The procedural independent audit recorded no
+findings and status `audit_recorded_not_automatically_approved`.
+
+Daniel's approval of the adjustment and instruction to continue consumes the
+implementation authorization for further edits. Publication of the exact
+audited delta remains a separate traceable operation and does not approve the
+source content, parsing, recommendations, or another network request.
+
+Implementation verdict: `official_html_source_registry_0_1_approved_for_commit`.

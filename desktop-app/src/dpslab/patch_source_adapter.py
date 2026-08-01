@@ -127,7 +127,7 @@ def validate_source_registry(document: Mapping[str, Any]) -> dict[str, Any]:
         if not isinstance(source["media_types"], list) or not source["media_types"]:
             _fail("media_types_invalid")
         for media in source["media_types"]:
-            if media not in {"application/json", "text/plain"}:
+            if media not in {"application/json", "text/plain", "text/html"}:
                 _fail("media_type_invalid")
         if len(source["media_types"]) != len(set(source["media_types"])):
             _fail("media_types_invalid")

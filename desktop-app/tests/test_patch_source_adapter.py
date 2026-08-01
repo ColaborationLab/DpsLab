@@ -12,6 +12,7 @@ from dpslab.patch_source_adapter import (InjectedResponse, PatchSourceError,
 
 ROOT = Path(__file__).parents[2]
 REGISTRY = ROOT / "knowledge/registries/patch_source_registry_synthetic_0_1.json"
+OFFICIAL_REGISTRY = ROOT / "knowledge/sources/official_patch_source_registry_0_1.json"
 EVIDENCE = ROOT / "knowledge/snapshots/patch_evidence_synthetic_0_1.json"
 
 def rehash(value):
@@ -64,7 +65,17 @@ class PatchSourceAdapterTests(unittest.TestCase):
     def test_canonical_redirect_rejected(self):
         with self.assertRaises(PatchSourceError): validate_source_registry(self.mutate(["sources",0,"redirect_hosts"], ["patches.synthetic.invalid"]))
     def test_unknown_media_policy_rejected(self):
-        with self.assertRaises(PatchSourceError): validate_source_registry(self.mutate(["sources",0,"media_types"], ["text/html"]))
+        with self.assertRaises(PatchSourceError): validate_source_registry(self.mutate(["sources",0,"media_types"], ["application/xml"]))
+    def test_official_html_registry_is_canonical_and_valid(self):
+        registry = json.loads(OFFICIAL_REGISTRY.read_text(encoding="utf-8"))
+        self.assertEqual(OFFICIAL_REGISTRY.read_bytes(), canonical_registry_bytes(validate_source_registry(registry)))
+    def test_official_html_capture_is_pending_review(self):
+        registry = json.loads(OFFICIAL_REGISTRY.read_text(encoding="utf-8"))
+        response = InjectedResponse(200, "worldofwarcraft.blizzard.com", "text/html", b"<html>official</html>", True, '"revision"', None)
+        self.assertEqual("captured_pending_review", capture_injected_response(registry, "blizzard.wow.content_update_notes", response).status)
+    def test_html_remains_rejected_for_json_only_source(self):
+        response = InjectedResponse(**{**self.response.__dict__, "media_type":"text/html"})
+        self.assertEqual("media_type_invalid", capture_injected_response(self.registry, "synthetic.official.patch", response).reason)
     def test_invalid_size_policy_rejected(self):
         for content in (True, 0, 1_048_577):
             with self.assertRaises(PatchSourceError): validate_source_registry(self.mutate(["sources",0,"max_bytes"], content))

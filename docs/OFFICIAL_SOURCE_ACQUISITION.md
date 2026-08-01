@@ -96,3 +96,22 @@ or HTTP exception fail closed without exposing exception details.
 
 The result remains quarantined in memory. The client does not persist or parse
 responses, approve coverage, update guidance, or accept authenticated plans.
+
+## Canonical public HTML source
+
+`knowledge/sources/official_patch_source_registry_0_1.json` registers exactly
+the Blizzard Content Update Notes source on
+`worldofwarcraft.blizzard.com`. Its policy permits `text/html`, denies redirect
+hosts, fixes the canonical `en_US` locale, limits responses to one mebibyte,
+and assigns review to the DpsLab maintainer.
+
+HTML belongs to the adapter's closed media-type vocabulary only so an explicit
+source policy can allow it. JSON-only sources still reject HTML. A valid HTML
+capture remains `captured_pending_review`; registry membership never approves,
+parses, persists, signs, publishes, or converts the response into guidance.
+
+The initial live diagnostic observed HTTP 200 from the exact official host,
+`text/html`, a complete 274005-byte body, and SHA-256
+`fbf289f3068d3bb14f04709f0f735db9ee09183cc90968d5e34384fad657f1e6`.
+The response body was not stored and the observation does not establish source
+coverage or authorize another request.
