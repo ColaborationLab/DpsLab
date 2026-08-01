@@ -3613,7 +3613,7 @@ It may not launch the production ceremony, collect a passphrase, or generate a
 key without Daniel present and explicitly confirming the native identity and
 destinations.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3652,9 +3652,103 @@ destinations.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `native_production_key_ceremony_handoff_design_0_1_ready`.
+
+Native read-only outcome:
+
+- an unrestricted read-only check ran as `DANIELPC\dpcs9`, the intended
+  interactive operator identity;
+- `F:` was visible as healthy NTFS storage labeled `Black 3Tb`, with
+  approximately 576 GB free; Windows reports it as `Fixed` even though Daniel
+  attests that it is external and under his control;
+- no second external volume was visible during the check;
+- no key, DPAPI, file write, media write, registry change, or secret input
+  occurred.
+
+Design verdict: `native_production_key_ceremony_handoff_design_0_1_complete_second_media_not_connected`.
+
+## Active implementation — Production ceremony executor 0.1
+
+This block may implement and test the attended executor with synthetic
+protectors, temporary paths, and injected passphrases. It may not execute the
+production ceremony or access `F:` or any removable medium.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "production_release_key_ceremony_executor_0_1",
+  "title": "Implement the attended production key ceremony executor without executing it",
+  "baseline_commit": "040c4cbf20237b07d63513ef792ced70516f3dd3",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "production_release_key_ceremony_executor_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/release_key_ceremony_executor.py",
+      "desktop-app/tests/test_release_key_ceremony_executor.py",
+      "knowledge/schemas/release_key_ceremony_evidence_0_1.json",
+      "docs/RELEASE_KEY_CUSTODY.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/production_release_key_ceremony_executor_0_1/implementation.json",
+      ".dpslab/quality-gates/production_release_key_ceremony_executor_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/pyproject.toml", "knowledge/trust/**",
+      "knowledge/releases/**", "tools/**", "profiles/**", "scenarios/**",
+      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_release_key_ceremony_executor", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 727,
+    "minimum_test_count": 755
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/release_key_ceremony.py": "dc66f8109174a516fab600838cc86f021a4bb2e424199bde76b7088fe982c080",
+    "desktop-app/src/dpslab/windows_key_protection.py": "27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b",
+    "desktop-app/src/dpslab/windows_release_signer.py": "066b26990b40afb2ac79afe11c320af686f22031a088450ac46ed56bfa406070"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "four explicit checkpoint tokens are single-use, ordered, and bound to the exact plan",
+    "key generation, protection, recovery encryption, verification, and evidence writes are injected boundaries",
+    "all three destinations are resolved, distinct, absent, and outside repositories before generation",
+    "recovery verification derives and matches the public fingerprint before registry eligibility",
+    "evidence excludes private bytes, passphrases, DPAPI ciphertext, and recovery ciphertext",
+    "tests use synthetic keys, protectors, passphrases, and temporary directories only"
+  ],
+  "express_exclusions": [
+    "production ceremony execution or real key generation",
+    "access to F:, removable media, DPAPI, operator passphrase, or native prompts",
+    "trust-registry mutation, release signing, publication, activation, or distribution",
+    "CI changes, addon, SimulationCraft, production artifact commit or push"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `production_release_key_ceremony_executor_0_1_authorized_for_synthetic_implementation_only`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

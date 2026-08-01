@@ -118,3 +118,8 @@ The current Codex execution identity was observed as
 `DANIELPC\CodexSandboxOffline`; therefore it is explicitly ineligible for the
 production ceremony. Removable-volume enumeration was also denied in that
 context. These are expected fail-closed results, not errors to bypass.
+
+A later unrestricted read-only preflight confirmed `DANIELPC\dpcs9` as the
+native identity and found `F:` (`Black 3Tb`) healthy and available. Daniel
+attests that it is external and controlled by him. A second external medium
+must be connected and identified before the production ceremony can advance.
