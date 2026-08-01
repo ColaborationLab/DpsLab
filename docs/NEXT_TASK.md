@@ -2756,7 +2756,7 @@ The next boundary is an explicit human review of one exact durable candidate
 generation. It receives the canonical visibility marker, commit manifest,
 candidate envelope, candidate catalog, receipt, source evidence, and reviewer
 context. It must bind their byte hashes and reject any mismatch, stale source,
-incomplete source coverage, unsupported build, unsigned reviewer decision, or
+incomplete source coverage, unsupported build, missing human attestation, or
 role-safety gap.
 
 The decision record is immutable and closed. It may conclude `approved` or
@@ -2778,24 +2778,56 @@ source coverage is missing.
   "contract_version": "0.1",
   "task_id": "candidate_knowledge_set_review_0_1",
   "title": "Human review record for one exact durable candidate generation",
-  "baseline_commit": "3feafc7137beaa9ab1c006a33bc283e47f52f1ea",
+  "baseline_commit": "caf45e41ae8e9abc30fc7fdd920fe2da0e4d857d",
   "authorization": {
-    "status": "design_only",
+    "status": "authorized_for_implementation",
     "authorization_id": "candidate_knowledge_set_review_0_1-20260801-daniel-expanded",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T00:00:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/candidate_knowledge_review.py",
+      "desktop-app/tests/test_candidate_knowledge_review.py",
+      "knowledge/schemas/candidate_knowledge_review_decision_0_1.json",
+      "knowledge/reviews/candidate_knowledge_review_decision_synthetic_0_1.json",
+      "docs/CANDIDATE_KNOWLEDGE_SET.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/candidate_knowledge_set_review_0_1/implementation.json",
+      ".dpslab/quality-gates/candidate_knowledge_set_review_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      ".github/**", "tools/**", "knowledge/catalogs/**", "knowledge/fixtures/**",
+      "knowledge/candidates/**", "knowledge/proposals/**",
       "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
       "results/**", "config/**", "flasil.simc"
     ],
     "allow_deletions": false,
     "allow_renames": false
   },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_candidate_knowledge_review", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 584,
+    "minimum_test_count": 610
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/candidate_knowledge_store.py": "8af1c763e652dbe3127eaa3cf61cdd81df11dd4cb13fad5ee476c9497cb1b19f",
+    "knowledge/candidates/candidate_knowledge_set_synthetic_0_1.json": "3c97b650a2654eb666dbb0693f474ddee8ab94b29c0e5bc10838ab473309aa1a"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
   "acceptance_criteria": [
     "review decision binds the exact marker, commit, envelope, catalog, receipt, and source hashes",
     "freshness, applicability, source coverage, and role safety are explicit fail-closed inputs",
@@ -2804,14 +2836,13 @@ source coverage is missing.
     "no candidate mutation, activation, signing, distribution, real guidance, network, or SimulationCraft"
   ],
   "express_exclusions": [
-    "implementation or mutation outside this design document",
     "automatic approval, catalog activation, signing, addon packaging, or publication"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `candidate_knowledge_set_review_0_1_design_ready`.
+Implementation-entry verdict: `candidate_knowledge_set_review_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
