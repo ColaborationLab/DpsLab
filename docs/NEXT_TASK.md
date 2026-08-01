@@ -2544,9 +2544,19 @@ Design publication closure:
 - GitHub Actions run: `30685645926`;
 - Policy and contract, Tools tests, and Functional suite: success.
 
-## Active implementation contract — Candidate knowledge-set application 0.1
+## Completed implementation contract — Candidate knowledge-set application 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+The authorization below is consumed. The pure candidate constructor was
+implemented, audited, committed, published, and verified without making the
+candidate selectable or durable:
+
+- commit: `76f155c1dff63954dc60549f42724c571a89634a`;
+- focused tests: 34/34;
+- full functional suite: 556/556;
+- GitHub Actions run: `30686106447`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2616,9 +2626,90 @@ Design publication closure:
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Closure verdict: `candidate_knowledge_set_application_0_1_published_ci_passed`.
+
+## Design-only contract — Candidate knowledge-set persistence 0.1
+
+The next boundary may make an already validated synthetic candidate set
+durable, but must not approve, sign, publish, or select it. Directly replacing
+an envelope, catalog, and receipt as three independent files is not an atomic
+transaction: a process interruption could expose a mixed generation. The
+design therefore uses immutable generation directories plus one small atomic
+commit marker as the only visibility boundary.
+
+The writer operates under the existing single-writer model. It must re-read
+and revalidate the source envelope, source catalog, proposal, decision, and
+candidate set immediately before staging; compare every bound byte hash; reject
+symlinks, path escapes, an existing generation ID, or prior consumption of the
+decision/proposal; and write only beneath a caller-provided confined store
+root. Staged files use canonical bytes, are flushed before visibility, and are
+re-read and rehashed before the commit marker is atomically installed.
+
+The committed generation contains immutable candidate envelope, candidate
+catalog, receipt, and a closed manifest binding their relative paths and
+hashes. The receipt records durable single-use consumption only inside the
+committed generation. A reader trusts a generation solely when the atomic
+marker and manifest agree. Abandoned staging remains invisible and may be
+reported for later controlled cleanup; the transaction must not silently
+delete evidence. Exact replay returns the already committed generation without
+rewriting it; any divergent replay fails closed.
+
+This block does not alter the repository's current catalog, does not activate
+guidance, and does not create a history warehouse. It establishes only the
+crash-consistent handoff required for a later, separate human review and
+publication decision.
+
+Proposed implementation paths:
+
+- `desktop-app/src/dpslab/candidate_knowledge_store.py`;
+- `desktop-app/tests/test_candidate_knowledge_store.py`;
+- `knowledge/schemas/candidate_knowledge_set_commit_0_1.json`;
+- `docs/CANDIDATE_KNOWLEDGE_SET.md`;
+- `docs/NEXT_TASK.md`.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "candidate_knowledge_set_persistence_0_1",
+  "title": "Crash-consistent synthetic candidate knowledge-set persistence",
+  "baseline_commit": "76f155c1dff63954dc60549f42724c571a89634a",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "candidate_knowledge_set_persistence_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/src/**", "desktop-app/tests/**",
+      "knowledge/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "one atomic marker is the sole visibility boundary for an immutable generation",
+    "all source and candidate bindings are revalidated immediately before staging",
+    "durable single-use consumption becomes visible only with the committed generation",
+    "exact replay is idempotent and divergent replay fails closed",
+    "staging failures preserve the prior visible generation and expose no partial candidate",
+    "no approval, signature, publication, selection, network, real data, or SimulationCraft"
+  ],
+  "express_exclusions": [
+    "implementation or filesystem mutation beyond this design document",
+    "multi-writer or distributed locking guarantees",
+    "active catalog replacement, addon or UI consumption, signing, or publication"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `candidate_knowledge_set_application_0_1_authorized`.
+Design verdict: `candidate_knowledge_set_persistence_0_1_design_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
