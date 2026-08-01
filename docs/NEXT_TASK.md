@@ -6341,7 +6341,7 @@ transport, and registry now produce `captured_pending_review`. This block
 designs a content-free receipt so freshness and change detection can be audited
 without storing or redistributing the page body.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6403,6 +6403,78 @@ without storing or redistributing the page body.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_source_capture_receipt_0_1_authorized_for_implementation`.
+
+## Active implementation — Official receipt change detection 0.1
+
+This block compares canonical metadata-only receipts. It retains only the
+minimum receipt metadata needed for audit and classifies a source as first
+seen, unchanged, or changed pending review. Historical metadata cannot satisfy
+current source coverage and no content body is accepted.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_receipt_change_detection_0_1",
+  "title": "Classify changes across canonical official-source receipts",
+  "baseline_commit": "66f31c4084f5747b3cbe1ae1de50227ab8e9d4ce",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_source_receipt_change_detection_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T15:18:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_change.py",
+      "desktop-app/tests/test_official_source_change.py",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_receipt_change_detection_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_receipt_change_detection_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "knowledge/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_official_source_change", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 872,
+    "minimum_test_count": 884
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_receipt.py": "cae5e9a03780b8e3b13bb9be44ef3a2eab6c0d5ef99562ac9e3b1a4206fe9186",
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    "knowledge/sources/official_patch_source_registry_0_1.json": "665ac715a7ba66b51e5a21886a14177cf39164d9422dd10f441161a147439d7e",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "first receipt is first_seen_pending_review",
+    "equal source and content hashes are unchanged",
+    "a different content hash is changed_pending_review",
+    "source, host, or media mismatch fails closed",
+    "receipt IDs are unique and capture times strictly increase",
+    "history is immutable metadata only and cannot establish current coverage",
+    "no network, response body, parser, catalog mutation, recommendation, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "database or unbounded historical warehouse",
+    "real receipt persistence and scheduled acquisition",
+    "HTML storage, parsing, facts, approval, signing, distribution, addon, or UI",
+    "changes outside the four authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_source_receipt_change_detection_0_1_authorized_for_implementation`.

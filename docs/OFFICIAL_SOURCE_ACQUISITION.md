@@ -129,3 +129,15 @@ personal paths, semantic facts, or recommendations. Their maximum state is
 and never interpreted as current coverage. Initial implementation should use
 only synthetic responses and an injected clock. Real receipt persistence and
 retention policy require a later, separate authorization.
+
+## Receipt change detection
+
+Receipt comparison is pure and metadata-only. The first valid receipt is
+`first_seen_pending_review`; an equal content hash for the same source, host,
+and media type is `unchanged`; a different hash is
+`changed_pending_review`. Source identity drift, duplicate IDs, or
+non-increasing capture times fail closed.
+
+An optional copy-on-write history is bounded to 32 receipts. It is an audit aid,
+not a database or source of current guidance. Historical receipts never satisfy
+coverage, and no comparison parses or retains response bodies.
