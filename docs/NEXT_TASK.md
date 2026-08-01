@@ -6485,7 +6485,7 @@ This block decides when a public official source check is due. It is a pure
 policy boundary with an injected UTC clock; it neither sleeps nor performs,
 schedules, or retries network operations.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6546,6 +6546,77 @@ schedules, or retries network operations.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_source_schedule_policy_0_1_authorized_for_implementation`.
+
+## Active implementation — Official source cycle coordinator 0.1
+
+The coordinator composes the published pure boundaries into one injected,
+single-attempt transaction. It cannot create a network client, persist state,
+retry, parse content, or approve a source.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_cycle_coordinator_0_1",
+  "title": "Coordinate one scheduled official-source capture transaction with injected transport",
+  "baseline_commit": "42ec1954a5b2409cc55022085e92d828682a3d2b",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_source_cycle_coordinator_0_1-20260801-daniel-all-necessary",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T15:31:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_cycle.py",
+      "desktop-app/tests/test_official_source_cycle.py",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_cycle_coordinator_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_cycle_coordinator_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "knowledge/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_official_source_cycle", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 896,
+    "minimum_test_count": 910
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_schedule.py": "30beb7e09c14d0c2f4c50927f31fd22971c5c15c6720d6b51dc22fb8ce79f982",
+    "desktop-app/src/dpslab/official_source_change.py": "d07f1a1c8d59264122bf9e20fa9a70ffd4503c5854dea8d2aec98410eed33982",
+    "desktop-app/src/dpslab/official_source_receipt.py": "cae5e9a03780b8e3b13bb9be44ef3a2eab6c0d5ef99562ac9e3b1a4206fe9186",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "not_due and backoff decisions never invoke the injected fetcher",
+    "a due cycle performs at most one injected fetch",
+    "conditional validators are taken only from a validated previous receipt",
+    "transport and capture failures produce sanitized evidence_unavailable without a receipt",
+    "successful 200 and 304 outcomes produce canonical metadata-only receipts",
+    "change classification remains first_seen_pending_review, unchanged, or changed_pending_review",
+    "no network implementation, persistence, automatic retry, body retention, parsing, recommendation, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "concrete HTTPS client invocation and real source request",
+    "scheduler service, filesystem writes, databases, queues, or background threads",
+    "HTML parsing, facts, coverage approval, catalogs, signing, distribution, addon, or UI",
+    "changes outside the four authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_source_cycle_coordinator_0_1_authorized_for_implementation`.

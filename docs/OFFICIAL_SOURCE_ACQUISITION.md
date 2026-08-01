@@ -153,3 +153,15 @@ The policy uses an injected clock, validates the last receipt, and rejects
 clock regression, naive datetimes, invalid ranges, and booleans supplied as
 integers. It never sleeps, retries, registers a system task, or invokes the
 network; an operational scheduler requires a separate authorization.
+
+## Injected cycle coordinator
+
+The coordinator composes one schedule decision, one inert request plan, at most
+one injected fetch, capture quarantine, metadata-only receipt construction, and
+change classification. `not_due` and `backoff` never invoke the fetcher.
+
+Transport exceptions and invalid responses become sanitized
+`evidence_unavailable` results and increment a bounded failure count. A success
+resets that count. Conditional validators come only from a validated previous
+receipt. The coordinator has no concrete HTTP dependency, retry loop,
+filesystem operation, background thread, parser, or approval capability.
