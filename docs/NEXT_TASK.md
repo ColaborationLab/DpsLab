@@ -2227,9 +2227,9 @@ Implementation-entry verdict: `catalog_change_proposal_0_1_authorized`.
 The implementation authorization is consumed and retained only as historical
 evidence.
 
-## Active design contract — Proposal review decision 0.1
+## Consumed design contract — Proposal review decision 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -2288,7 +2288,7 @@ evidence.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `proposal_review_decision_design_0_1_authorized`.
 
@@ -2327,6 +2327,88 @@ Proposed implementation paths:
 - `docs/NEXT_TASK.md`.
 
 Design verdict: `proposal_review_decision_design_0_1_ready_for_implementation_contract`.
+
+Design publication closure:
+
+- commit: `231263caa904e4b3af3e3b0ad5035b145aa00e91`;
+- GitHub Actions run: `30684980499`;
+- Policy and contract, Tools tests, and Functional suite: success.
+
+## Active implementation contract — Proposal review decision 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "proposal_review_decision_0_1",
+  "title": "Pure hash-bound proposal review decision validation",
+  "baseline_commit": "231263caa904e4b3af3e3b0ad5035b145aa00e91",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "proposal_review_decision_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/proposal_review.py",
+      "desktop-app/tests/test_proposal_review.py",
+      "knowledge/schemas/proposal_review_decision_0_1.json",
+      "knowledge/reviews/proposal_review_decision_synthetic_0_1.json",
+      "docs/PROPOSAL_REVIEW.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/proposal_review_decision_0_1/implementation.json",
+      ".dpslab/quality-gates/proposal_review_decision_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_proposal_review", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 490,
+    "minimum_test_count": 520
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/catalog_change_proposal.py": "824f06db37caca9191e0add6e48eb6c2e4603169088d515f228facc8ac6ec20a",
+    "knowledge/proposals/catalog_change_proposal_synthetic_0_1.json": "bfbe624d2b37572f9512447acaf6be0ebe6c97ebf590bc74339b732c29f11c39"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "exactly six allowlisted paths and no deletion or rename",
+    "decision binds exact proposal, catalog, and evidence hashes",
+    "reviewer, authority, UTC time, outcome, reasons, and limitations are mandatory",
+    "decisions outside the proposal validity window fail closed",
+    "consumed decision IDs or proposal hashes cannot be replayed",
+    "decision validation never mutates catalog or proposal",
+    "at least 30 focused tests, 520 functional tests, and all tools tests pass",
+    "protected hashes remain intact and SimulationCraft is not invoked"
+  ],
+  "express_exclusions": [
+    "catalog application, mutation, signing keys, publication, or recommendation selection",
+    "real content, network, credentials, telemetry, addon, UI, or SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `proposal_review_decision_0_1_authorized`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
