@@ -3855,10 +3855,10 @@ Closure verdict: `release_key_recovery_transaction_0_1_published_ci_approved`.
   "contract_version": "0.1",
   "task_id": "native_release_key_ceremony_launcher_0_1",
   "title": "Implement the native attended production key ceremony launcher without running it",
-  "baseline_commit": "8e65e72d64b23081a88dab44971714f35033685f",
+  "baseline_commit": "22c2ba3bbf1f039d345c1dde82ba647f537eaf59",
   "authorization": {
     "status": "authorized_for_implementation",
-    "authorization_id": "native_release_key_ceremony_launcher_0_1-20260801-daniel-masked-input",
+    "authorization_id": "native_release_key_ceremony_launcher_0_1-20260801-daniel-passphrase-retry",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T00:00:00-05:00"
   },
@@ -3932,6 +3932,11 @@ Masked-input correction: after a safe `passphrase_mismatch` abort, Daniel
 requested visible length feedback on his local computer. The launcher may show
 one `*` per entered character and support Backspace while never echoing the
 actual character. The two full secret values must still match exactly.
+
+Retry correction: Daniel requested direct password retry without repeating the
+four ceremony checkpoints. The launcher may allow at most three local attempts
+for mismatch or insufficient length, still before key generation. Exhaustion
+aborts safely; messages reveal neither password value.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

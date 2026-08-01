@@ -50,10 +50,17 @@ def run_attended_launcher(config:LauncherConfig,deps:LauncherDependencies)->Cere
         expected=confirmation_phrase(step,plan_sha)
         if deps.read_text(f"Escriba exactamente: {expected}\n> ").strip()!=expected:raise CeremonyLauncherError(f"checkpoint_{step}_not_confirmed")
         confirmations.append(CeremonyConfirmation(step,plan_sha,actual,deps.timestamp()))
-    first=deps.read_secret("Contrasena de recuperacion: ");second=deps.read_secret("Repita la contrasena: ")
-    if first!=second:raise CeremonyLauncherError("passphrase_mismatch")
-    password=bytearray(first.encode("utf-8"));first=second=""
-    if len(password)<16:raise CeremonyLauncherError("passphrase_too_short")
+    password=None
+    for attempt in range(1,4):
+        first=deps.read_secret(f"Contrasena de recuperacion (intento {attempt}/3): ");second=deps.read_secret("Repita la contrasena: ")
+        if first!=second:deps.write("Las contrasenas no coinciden. Intente nuevamente.");first=second="";continue
+        candidate=bytearray(first.encode("utf-8"));first=second=""
+        if len(candidate)<16:
+            deps.write("La contrasena debe tener al menos 16 caracteres. Intente nuevamente.")
+            for index in range(len(candidate)):candidate[index]=0
+            continue
+        password=candidate;break
+    if password is None:raise CeremonyLauncherError("passphrase_attempts_exhausted")
     try:
         plan=CeremonyExecutionPlan(config.ceremony_id,config.key_id,actual,config.valid_from,config.valid_until,plan_sha,config.container_path,config.recovery_path,config.evidence_path,config.repository_roots)
         def encrypt(private:bytes)->bytes:return canonical_json_bytes(encrypt_recovery_bundle(private,bytes(password),config.key_id))
