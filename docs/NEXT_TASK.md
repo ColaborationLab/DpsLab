@@ -5476,7 +5476,7 @@ key. This task may publish only its public identity and non-secret ceremony
 binding. It may not read plaintext private material, decrypt the recovery
 copy, sign a release, or activate distribution.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -5557,7 +5557,7 @@ copy, sign a release, or activate distribution.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `production_release_trust_registry_0_1_authorized_for_implementation`.
 
@@ -5578,3 +5578,83 @@ approval does not authorize release signing, activation, distribution,
 private-key access, recovery decryption, SimulationCraft, or a later block.
 
 Approval verdict: `production_release_trust_registry_0_1_approved_pending_commit`.
+
+## Production release trust registry 0.1 — publication closure
+
+Commit `33405fab73704dbaaa079cafbd712012458a198c` published the exact audited
+four-path delta to `main`. Local `HEAD`, `origin/main`, and the live remote
+branch matched that commit. GitHub Actions run `30706440486` passed Policy and
+contract, Tools tests, and Functional suite. The production public registry is
+therefore published and CI-verified. This state makes the key discoverable for
+future separately authorized signing operations; it does not sign, publish,
+activate, or distribute any release.
+
+Closure verdict: `production_release_trust_registry_0_1_published_ci_approved`.
+
+## Active documentation task — Production trust registry closure 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "production_release_trust_registry_closure_0_1",
+  "title": "Record publication and CI closure of the production public trust registry",
+  "baseline_commit": "33405fab73704dbaaa079cafbd712012458a198c",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "production_release_trust_registry_closure_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T10:42:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md"],
+    "generated_paths": [
+      ".dpslab/quality-gates/production_release_trust_registry_closure_0_1/implementation.json",
+      ".dpslab/quality-gates/production_release_trust_registry_closure_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": ".",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"],
+      "environment": {"PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "knowledge/trust/release_trust_registry_0_1.json": "26b5da31d34fa1f5c1115438aee7ebe75b71b25f8c44706a6c91164ea2064f0c",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5",
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "docs/NEXT_TASK.md is the only versioned path in the delta",
+    "the exact commit and GitHub Actions run are recorded",
+    "published and CI-verified do not imply release signing or activation",
+    "tools tests and protected hashes pass",
+    "no code, registry, secret, release, SimulationCraft, commit, or push beyond this closure"
+  ],
+  "express_exclusions": [
+    "all code, tests, workflows, registries, schemas, profiles, and results",
+    "private-key access, recovery decryption, release signing, activation, and distribution",
+    "SimulationCraft and real comparisons",
+    "tags, branches, pull requests, settings, and unrelated remote changes"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Closure-document verdict: `production_release_trust_registry_closure_0_1_approved_pending_commit`.
