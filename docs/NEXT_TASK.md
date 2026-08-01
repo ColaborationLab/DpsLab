@@ -6777,10 +6777,10 @@ structured evidence pending review.
   "contract_version": "0.1",
   "task_id": "blizzard_patch_notes_html_extractor_0_1",
   "title": "Implement fail-closed extraction of cited Blizzard patch-note assertions",
-  "baseline_commit": "1d1a76b5037f812de3ad83a52c7b2f8acaa02aaf",
+  "baseline_commit": "fe6ac364e90c82f09d45bc0bd4756959f70419fa",
   "authorization": {
     "status": "authorized_for_implementation",
-    "authorization_id": "blizzard_patch_notes_html_extractor_0_1-20260801-daniel-continue-implementation",
+    "authorization_id": "blizzard_patch_notes_html_extractor_0_1-20260801-ci-eol-remediation",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T15:58:00-05:00"
   },
@@ -6792,7 +6792,9 @@ structured evidence pending review.
       "knowledge/fixtures/blizzard_patch_notes_synthetic_0_1.html",
       "knowledge/snapshots/blizzard_patch_notes_extraction_synthetic_0_1.json",
       "docs/BLIZZARD_PATCH_NOTES_EXTRACTOR.md",
-      "docs/NEXT_TASK.md"
+      "docs/NEXT_TASK.md",
+      ".gitattributes",
+      "tools/tests/test_github_automation.py"
     ],
     "generated_paths": [
       ".dpslab/quality-gates/blizzard_patch_notes_html_extractor_0_1/implementation.json",
@@ -6800,7 +6802,7 @@ structured evidence pending review.
     ],
     "forbidden_paths": [
       ".github/**", "profiles/**", "scenarios/**",
-      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc"
     ],
     "allow_deletions": false,
     "allow_renames": false
@@ -6825,13 +6827,14 @@ structured evidence pending review.
     "unknown layout, ambiguous subjects, omitted units, duplicate citations, or unsupported prose fail closed",
     "output remains pending_review and never mutates coverage, catalogs, templates, or recommendations",
     "implementation proposal uses synthetic HTML only and contains no copied Blizzard page body",
+    "contractual HTML fixtures are checked out as LF on Windows and CI so byte-bound snapshots are portable",
     "no live request, persistence, SimulationCraft, commit, or push"
   ],
   "express_exclusions": [
     "general-purpose scraping or parsing of community sites",
     "natural-language inference, AI extraction, inferred coefficients, or automatic subject mapping",
     "real HTML fixtures, source-body redistribution, facts, approval, catalog mutation, signing, addon, or UI",
-    "changes outside the seven authorized paths"
+    "changes outside the nine authorized paths"
   ]
 }
 ```
