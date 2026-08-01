@@ -58,3 +58,17 @@ unknown build/interface, stale capture, incomplete role coverage, licensing
 uncertainty, authentication failure, or parser ambiguity. No condition may be
 resolved by selecting the newest-looking result or reusing historical evidence
 as current.
+
+## Inert request planning
+
+`official_source_request` constructs immutable request plans without importing
+or invoking an HTTP client. Content-update discovery is fixed to HTTPS, the
+exact first-party host, the canonical `en-us` path, and HTML. Game Data plans
+are fixed to the official US API host, `/data/wow/` paths, an explicit static
+or dynamic namespace, `en_US`, and JSON.
+
+API plans state that an external bearer credential is required but never
+accept or emit one. Conditional ETag and Last-Modified values are bounded and
+reject control characters. The eventual transport must independently enforce
+the same host, redirect, size, media-type, completeness, and credential rules
+before handing bytes to quarantine.

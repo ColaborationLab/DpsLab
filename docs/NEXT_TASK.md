@@ -5807,7 +5807,7 @@ then verify and consume signed DpsLab packages. This preserves automatic
 updates without distributing Blizzard API secrets or allowing unreviewed
 network content to alter recommendations.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -5815,7 +5815,7 @@ network content to alter recommendations.
   "title": "Design first-party source discovery and quarantined acquisition",
   "baseline_commit": "1d9665052146ba6dd7ee97b56e512dd5a78dbb51",
   "authorization": {
-    "status": "design_only",
+    "status": "authorized_for_implementation",
     "authorization_id": "official_source_acquisition_0_1-20260801-daniel-expanded-design",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T11:58:00-05:00"
@@ -5876,6 +5876,98 @@ network content to alter recommendations.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Design verdict: `official_source_acquisition_0_1_design_ready`.
+
+## Active implementation — Official request planning 0.1
+
+This implementation is limited to constructing inert HTTPS request plans for
+an injected transport. It cannot open sockets, resolve DNS, follow redirects,
+read credentials, persist responses, parse patch facts, or approve evidence.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "official_source_request_planning_0_1",
+  "title": "Implement pure fail-closed official-source request planning",
+  "baseline_commit": "2355fedcd58779a14b9a29d87c694840048b1c57",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "official_source_request_planning_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T12:05:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_request.py",
+      "desktop-app/tests/test_official_source_request.py",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/official_source_request_planning_0_1/implementation.json",
+      ".dpslab/quality-gates/official_source_request_planning_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/src/dpslab/patch_source_adapter.py",
+      "desktop-app/src/dpslab/source_coverage.py", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_official_source_request", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 827,
+    "minimum_test_count": 837
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/patch_source_adapter.py": "14c826d7f1b40467602949c2958f71b0343fac72c9561eb2625bd0bfa494bbee",
+    "desktop-app/src/dpslab/source_coverage.py": "85bfddadfd8fc5d6704d8bba9df223db27e6123a09e835629d3b8765afab63a7",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5",
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "plans are immutable inert values with GET, exact HTTPS URL, bounded headers, redirect hosts, media types, and maximum bytes",
+    "patch-note discovery is confined to the exact Blizzard host and en-us path",
+    "Game Data API plans are confined to the official API host, /data/wow paths, namespace, and en_US locale",
+    "credentials are represented only as an external requirement and never accepted as input or emitted as a header",
+    "userinfo, fragments, traversal, control characters, arbitrary query keys, and non-HTTPS URLs fail closed",
+    "conditional validators are sanitized and bounded",
+    "no network, DNS, credential, persistence, parsing, approval, signing, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "HTTP transport and live requests",
+    "OAuth token acquisition, client identifiers, secrets, or Authorization headers",
+    "response persistence, HTML parsing, fact extraction, catalogs, and recommendations",
+    "signing, release activation, distribution, addon, UI, SimulationCraft, and comparisons",
+    "changes outside the four authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `official_source_request_planning_0_1_authorized_for_implementation`.
+
+## Official request planning 0.1 — implemented
+
+The planner now creates immutable inert plans for the exact content-update
+notes endpoint and bounded Game Data API paths. It rejects unsafe paths,
+namespaces, locales, validators, credentials, redirects, and query expansion.
+Focused tests passed 10/10 and the functional suite passed 837/837 with one
+pre-existing skip. No network or credential operation occurred.
+
+Implementation verdict: `official_source_request_planning_0_1_implemented_pending_final_audit`.
