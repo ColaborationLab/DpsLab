@@ -5593,7 +5593,7 @@ Closure verdict: `production_release_trust_registry_0_1_published_ci_approved`.
 
 ## Active documentation task — Production trust registry closure 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -5655,6 +5655,117 @@ Closure verdict: `production_release_trust_registry_0_1_published_ci_approved`.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Closure-document verdict: `production_release_trust_registry_closure_0_1_approved_pending_commit`.
+
+## Active design task — First production release candidate readiness 0.1
+
+The production public key is published and CI-verified, but no production
+knowledge release candidate exists. The repository contains only
+`candidate_knowledge_release_bundle_synthetic_0_1.json`, whose identifiers,
+evidence limitations, source claims, review authority, and publisher identity
+are explicitly synthetic. It is test evidence and must never be relabeled or
+signed as a production release.
+
+The next implementation block must introduce a fail-closed production
+readiness boundary before any private-key operation. It must accept only an
+exact durable candidate generation with current source coverage, an exact
+human review decision, role-specific safety, current build/interface bounds,
+an unsigned canonical manifest, and the published production key identity.
+Synthetic, placeholder, expired, incomplete, stale, ambiguous, or already
+signed input must be rejected before a signer can be constructed.
+
+Recommended decisions:
+
+1. The first candidate remains internal and unpublished until its exact
+   content and compatibility bounds receive human review; `stable` is not
+   inferred from a synthetic fixture.
+2. Production readiness must be a pure read-only assessment with no DPAPI,
+   signing, filesystem mutation, network, activation, or distribution effect.
+3. Currentness is proven from governed source captures and explicit UTC/build
+   applicability, never from filename, newest-known fallback, or chat history.
+4. Damage, tank, and healer guidance retain their distinct safety policies;
+   incomplete role coverage is reported explicitly and never filled by a
+   generic DPS template.
+5. Candidate construction, human approval, attended signing, signature
+   verification, publication decision, and distribution remain separate
+   transactions.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "production_release_candidate_readiness_0_1",
+  "title": "Design the fail-closed readiness boundary for the first production release candidate",
+  "baseline_commit": "8289aa40c7736f3f9bd05d00dac9710ab571fea2",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "production_release_candidate_readiness_0_1-20260801-daniel-expanded-design",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T10:48:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/production_release_readiness.py",
+      "desktop-app/tests/test_production_release_readiness.py",
+      "docs/CANDIDATE_KNOWLEDGE_SET.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/production_release_candidate_readiness_0_1/implementation.json",
+      ".dpslab/quality-gates/production_release_candidate_readiness_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/src/dpslab/windows_release_signer.py",
+      "desktop-app/src/dpslab/windows_key_protection.py", "knowledge/releases/**",
+      "knowledge/trust/**", "knowledge/catalogs/**", "knowledge/fixtures/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_production_release_readiness", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 819,
+    "minimum_test_count": 827
+  },
+  "protected_files": {
+    "knowledge/trust/release_trust_registry_0_1.json": "26b5da31d34fa1f5c1115438aee7ebe75b71b25f8c44706a6c91164ea2064f0c",
+    "knowledge/releases/candidate_knowledge_release_bundle_synthetic_0_1.json": "f3ab281dfb8d2a17d13ff254e988b131a2ca026a72e0132526670d95a3b774a3",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5",
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "a pure typed assessment returns ready or explicit fail-closed reasons",
+    "synthetic and placeholder material is rejected before signer construction",
+    "current source coverage, exact human review, role safety, compatibility, expiry, and production key identity are required",
+    "already signed or noncanonical input is rejected",
+    "tests use synthetic in-memory mutations and no production private material",
+    "no signing, DPAPI, recovery, publication, activation, distribution, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "implementation under this design-only authorization",
+    "creation or modification of any real knowledge candidate",
+    "private-key access, signing, recovery decryption, activation, and distribution",
+    "network capture, live recommendations, addon, UI, SimulationCraft, and real comparisons",
+    "commits and pushes except a separately audited publication of this design document"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design verdict: `production_release_candidate_readiness_0_1_design_ready`.
+
+Current release verdict: `additional_evidence_required_no_production_candidate`.
