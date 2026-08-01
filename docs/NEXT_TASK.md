@@ -3849,7 +3849,7 @@ Closure verdict: `release_key_recovery_transaction_0_1_published_ci_approved`.
 
 ## Active implementation — Native attended ceremony launcher 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3919,7 +3919,7 @@ Closure verdict: `release_key_recovery_transaction_0_1_published_ci_approved`.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `native_release_key_ceremony_launcher_0_1_authorized_for_simulated_testing_only`.
 
@@ -5468,3 +5468,113 @@ evidence does not authorize the next task.
   `d8bc2406b6b9ea2acc46bf16e5b4811d01573243`.
 - `planned_member_transactional_commit_0_1` is consumed; no implementation
   contract is active and no real comparison is authorized.
+
+## Active implementation — Production release trust registry 0.1
+
+The attended ceremony created and internally verified one production Ed25519
+key. This task may publish only its public identity and non-secret ceremony
+binding. It may not read plaintext private material, decrypt the recovery
+copy, sign a release, or activate distribution.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "production_release_trust_registry_0_1",
+  "title": "Register the first production release public key",
+  "baseline_commit": "8aec71d05212caf8590ae39e2391c19af9510bb2",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "production_release_trust_registry_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T10:31:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "knowledge/trust/release_trust_registry_0_1.json",
+      "desktop-app/tests/test_production_release_trust_registry.py",
+      "docs/RELEASE_KEY_CUSTODY.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/production_release_trust_registry_0_1/implementation.json",
+      ".dpslab/quality-gates/production_release_trust_registry_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**",
+      "desktop-app/src/**",
+      "knowledge/releases/**",
+      "knowledge/trust/release_trust_registry_synthetic_0_1.json",
+      "knowledge/schemas/**",
+      "profiles/**",
+      "scenarios/**",
+      "variants/**",
+      "comparisons/**",
+      "results/**",
+      "config/**",
+      "flasil.simc",
+      "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_production_release_trust_registry", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 814,
+    "minimum_test_count": 819
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/release_signing.py": "50b38b6875b317b58bba1b0b32dc9beceb1dec89c4b92e12a06770e4e58c8604",
+    "knowledge/schemas/release_trust_registry_0_1.json": "e0c5538a58dcb733a315690b30c868d9324f5030455a2a583c1c6da582a60e11"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "exactly the four authorized versioned paths in the delta",
+    "the production registry validates canonically and its content hash matches",
+    "the sole public key decodes to exactly 32 bytes and its SHA-256 matches the ceremony evidence",
+    "key identity and validity exactly match the verified ceremony evidence",
+    "the registry contains no private, protected-container, recovery, passphrase, or personal-path material",
+    "focused tests, full functional suite, tools tests, and protected hashes pass",
+    "no release signing, activation, distribution, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "private-key access or DPAPI unprotection",
+    "recovery decryption or passphrase handling",
+    "release signing, publication, activation, or distribution",
+    "production code, schemas, workflows, GitHub settings, addon, UI, and SimulationCraft",
+    "commits, pushes, tags, branches, pull requests, and remote changes"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `production_release_trust_registry_0_1_authorized_for_implementation`.
+
+## Production release trust registry 0.1 — approved implementation
+
+The four-path implementation was reviewed against the verified non-secret
+ceremony evidence. The production registry contains only the public Ed25519
+key and its time-bounded trust metadata. Its canonical registry hash is
+`4948b246303c99c7f7ead0f550baef75bd095ae375aa82e431caf96162c880d8`;
+the decoded public key fingerprint is
+`dbcca6f6baf6ceb5e883971ad8727de2a7a858e1669a86d8bcc04d49ba9a4af3`.
+
+Focused tests passed 5/5, the functional suite passed 819/819 with one
+pre-existing skip, and tools tests passed 52/52. The declared and procedural
+audit recorded no findings. The implementation authorization is consumed by
+this approved delta; publication and CI verification remain pending. This
+approval does not authorize release signing, activation, distribution,
+private-key access, recovery decryption, SimulationCraft, or a later block.
+
+Approval verdict: `production_release_trust_registry_0_1_approved_pending_commit`.

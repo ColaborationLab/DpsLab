@@ -13,6 +13,17 @@ publication, and activation are separate attended operations. The implemented
 tests use deterministic synthetic keys and simulated protection; they do not
 invoke Windows protection with real secret material.
 
+The first attended production ceremony completed on 2026-08-01. It created
+`dpslab.release.ed25519.001` with public-key SHA-256
+`dbcca6f6baf6ceb5e883971ad8727de2a7a858e1669a86d8bcc04d49ba9a4af3`
+and validity from `2026-08-01T15:25:53Z` through
+`2027-08-01T15:25:53Z`. The ceremony evidence hash is
+`757f2512e3bd0e9b6847ee913646a18b926b425e8df14c77a3c1c15f4c0b1055`.
+The protected container and encrypted recovery bundle remain outside the
+repository. The public registry is
+`knowledge/trust/release_trust_registry_0_1.json`; registry publication does
+not itself authorize signing, release publication, activation, or distribution.
+
 Before a future production ceremony, Daniel must approve the storage location,
 offline encrypted recovery media, recovery verification procedure, validity
 window, and public registry entry. A valid signature grants release eligibility
