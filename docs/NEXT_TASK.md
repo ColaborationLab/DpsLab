@@ -6627,7 +6627,7 @@ This block persists only canonical receipt metadata in one bounded JSON ledger
 per source. It is a recoverable local file boundary, not a database or content
 archive.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6689,6 +6689,77 @@ archive.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `official_source_receipt_atomic_store_0_1_authorized_for_implementation`.
+
+## Active implementation — Attended official source operator 0.1
+
+This adapter joins the published coordinator, public HTTPS client, and atomic
+ledger behind an exact attended confirmation. Tests inject transport and use
+temporary roots; no live request belongs to this implementation block.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "attended_official_source_operator_0_1",
+  "title": "Implement attended one-shot official-source operation with atomic receipt persistence",
+  "baseline_commit": "26a465628519d99eeee0b1deab17794b44ebdc29",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "attended_official_source_operator_0_1-20260801-daniel-next-blocks",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T15:51:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/official_source_operator.py",
+      "desktop-app/tests/test_official_source_operator.py",
+      "docs/OFFICIAL_SOURCE_ACQUISITION.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/attended_official_source_operator_0_1/implementation.json",
+      ".dpslab/quality-gates/attended_official_source_operator_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "knowledge/**", "profiles/**", "scenarios/**", "variants/**",
+      "comparisons/**", "results/**", "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_official_source_operator", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 924,
+    "minimum_test_count": 936
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/official_source_cycle.py": "d60211431519454511ff11678d8deec1725dc85844776e2122fd45f490c5e04e",
+    "desktop-app/src/dpslab/official_source_store.py": "f70d2b923d28005533d5746075153d0c99826fe50c798cdfe810a875de32c9d2",
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "operation requires an exact source- and receipt-bound confirmation token",
+    "the latest validated ledger receipt is the only previous state",
+    "at most one injected or concrete fetch is delegated to the coordinator",
+    "only a successful metadata receipt is appended atomically",
+    "not_due, backoff, and evidence_unavailable never mutate the ledger",
+    "return value exposes status and receipt count without response content or secrets",
+    "tests use injected fetchers and temporary roots with zero live network dependency"
+  ],
+  "express_exclusions": [
+    "live source request or production receipt creation during implementation",
+    "background operation, automatic confirmation, retry loop, scheduler registration, or database",
+    "HTML parsing, facts, coverage approval, catalogs, signing, distribution, addon, UI, or SimulationCraft",
+    "changes outside the four authorized paths"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `attended_official_source_operator_0_1_authorized_for_implementation`.

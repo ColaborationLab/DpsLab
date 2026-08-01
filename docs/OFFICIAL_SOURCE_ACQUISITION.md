@@ -176,3 +176,15 @@ Updates rebuild the bounded history, write a same-directory temporary file,
 flush and fsync it, then atomically replace the ledger. A failed replacement
 preserves the previous ledger and removes temporary residue. This is not a
 database or content archive; response bodies and extracted facts are forbidden.
+
+## Attended operator
+
+The attended adapter requires the exact phrase `CONFIRM OFFICIAL SOURCE CHECK`
+followed by the fixed source ID and proposed receipt ID. It loads only the
+latest validated ledger receipt, delegates one cycle, and atomically appends
+only when that cycle returns a canonical receipt.
+
+Denied confirmation, `not_due`, `backoff`, and `evidence_unavailable` do not
+mutate the ledger. Tests inject transport and temporary roots. Although the
+adapter can call the published public HTTPS client, each real operation remains
+a separately attended execution decision.
