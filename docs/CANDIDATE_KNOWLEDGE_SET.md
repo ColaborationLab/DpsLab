@@ -68,3 +68,16 @@ The repository contains only a clearly identified synthetic public key for
 tests. It contains no private key and provides no production-key storage.
 A valid signature makes the exact candidate release eligible for a later
 publication decision; it does not publish, activate, distribute, or select it.
+
+## Production readiness boundary
+
+`production_release_readiness` is the pure boundary immediately before an
+attended signing review. It validates the exact candidate bundle and public
+trust registry, then requires an exact current build and interface, matching
+human review assessment, unexpired evidence, the requested channel, and the
+published production key identity. It rejects synthetic or placeholder
+material before any signer can be constructed.
+
+A successful outcome means only that the candidate may be presented for a
+separate attended signing decision. It does not access DPAPI, decrypt a key,
+sign, publish, activate, distribute, read the network, or modify a file.

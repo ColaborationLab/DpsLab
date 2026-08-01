@@ -5700,8 +5700,8 @@ Recommended decisions:
   "title": "Design the fail-closed readiness boundary for the first production release candidate",
   "baseline_commit": "8289aa40c7736f3f9bd05d00dac9710ab571fea2",
   "authorization": {
-    "status": "design_only",
-    "authorization_id": "production_release_candidate_readiness_0_1-20260801-daniel-expanded-design",
+    "status": "authorized_for_implementation",
+    "authorization_id": "production_release_candidate_readiness_0_1-20260801-daniel-continue",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T10:48:00-05:00"
   },
@@ -5756,7 +5756,7 @@ Recommended decisions:
     "no signing, DPAPI, recovery, publication, activation, distribution, SimulationCraft, commit, or push"
   ],
   "express_exclusions": [
-    "implementation under this design-only authorization",
+    "changes outside the four authorized implementation paths",
     "creation or modification of any real knowledge candidate",
     "private-key access, signing, recovery decryption, activation, and distribution",
     "network capture, live recommendations, addon, UI, SimulationCraft, and real comparisons",
@@ -5769,3 +5769,22 @@ Recommended decisions:
 Design verdict: `production_release_candidate_readiness_0_1_design_ready`.
 
 Current release verdict: `additional_evidence_required_no_production_candidate`.
+
+Implementation-entry verdict: `production_release_candidate_readiness_0_1_authorized_for_implementation`.
+
+## Production release candidate readiness 0.1 — implemented
+
+The pure readiness boundary now rejects invalid candidate or registry input,
+synthetic and placeholder material, stale evidence, mismatched channel,
+build/interface drift, review drift, publisher-key mismatch, and a missing or
+out-of-window production trust key. Success returns only eligibility for a
+later attended signing review.
+
+Focused tests passed 8/8 and the functional suite passed 827/827 with one
+pre-existing skip. One initial full-suite attempt encountered the known
+Windows temporary-directory cleanup error (`WinError 145`); the diagnostic
+run identified that environmental cause and the single formal repetition
+passed. No signer was constructed and no DPAPI, private key, recovery,
+signature, release, network, or SimulationCraft operation occurred.
+
+Implementation verdict: `production_release_candidate_readiness_0_1_implemented_pending_final_audit`.
