@@ -3550,7 +3550,7 @@ This task may inspect only non-secret readiness state and prepare the exact
 attended prompt. It may not generate or protect a key, select destinations for
 Daniel, or access removable media.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3588,9 +3588,73 @@ Daniel, or access removable media.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design-entry verdict: `production_key_ceremony_execution_preflight_0_1_ready`.
+
+Preflight outcome:
+
+- repository HEAD and `origin/main` matched at
+  `b8a4aaf7ec15d79cc02c73642485c7237a45cc1e` with no versioned delta;
+- the default user-local root resolved to
+  `C:\Users\dpcs9\AppData\Local`;
+- the effective process identity was `DANIELPC\CodexSandboxOffline`, which is
+  not Daniel's interactive operator identity;
+- removable-volume enumeration was denied in this context;
+- no key, DPAPI call, destination write, media access, or secret collection
+  occurred.
+
+Verdict: `production_key_ceremony_execution_preflight_0_1_blocked_wrong_operator_context`.
+
+## Active design task — Native ceremony handoff 0.1
+
+This task may prepare a visible native-session launcher and human checklist.
+It may not launch the production ceremony, collect a passphrase, or generate a
+key without Daniel present and explicitly confirming the native identity and
+destinations.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "native_production_key_ceremony_handoff_design_0_1",
+  "title": "Design the visible native-session handoff for the production key ceremony",
+  "baseline_commit": "b8a4aaf7ec15d79cc02c73642485c7237a45cc1e",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "native_production_key_ceremony_handoff_design_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/NEXT_TASK.md", "docs/RELEASE_KEY_CUSTODY.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "acceptance_criteria": [
+    "require a visible terminal in Daniel's interactive Windows session",
+    "display and confirm the effective identity before all other checks",
+    "collect only destination selections before the final generation checkpoint",
+    "keep passphrase entry local and invisible to Codex, logs, and chat",
+    "define a hard stop before the first irreversible secret operation"
+  ],
+  "express_exclusions": [
+    "starting the ceremony or generating, protecting, backing up, recovering, or signing with a key",
+    "passphrase, clipboard, removable-media content, or secret access",
+    "release publication, activation, or distribution",
+    "code, CI, addon, SimulationCraft, commit, or push implementation"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design-entry verdict: `native_production_key_ceremony_handoff_design_0_1_ready`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

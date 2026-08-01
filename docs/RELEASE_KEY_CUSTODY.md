@@ -105,3 +105,16 @@ all seven readiness observations and four ordered confirmations, and returns a
 content-hashed non-secret evidence record. Production mode is structurally
 unavailable. The evaluator performs no filesystem, media, DPAPI, key,
 registry, signing, network, publication, or activation operation.
+
+## Native-session requirement
+
+The first production ceremony must run under Daniel's normal interactive
+Windows identity. It must refuse Codex sandbox, service, CI, elevated helper,
+or other surrogate identities because current-user DPAPI would bind the key to
+the wrong account. The ceremony must show the effective Windows identity and
+wait for Daniel to confirm it before checking destinations.
+
+The current Codex execution identity was observed as
+`DANIELPC\CodexSandboxOffline`; therefore it is explicitly ineligible for the
+production ceremony. Removable-volume enumeration was also denied in that
+context. These are expected fail-closed results, not errors to bypass.
