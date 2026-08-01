@@ -3675,7 +3675,7 @@ This block may implement and test the attended executor with synthetic
 protectors, temporary paths, and injected passphrases. It may not execute the
 production ceremony or access `F:` or any removable medium.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3746,7 +3746,7 @@ production ceremony or access `F:` or any removable medium.
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `production_release_key_ceremony_executor_0_1_authorized_for_synthetic_implementation_only`.
 
@@ -3755,6 +3755,90 @@ Human destination decision: Daniel selected
 directory was created and verified empty. The protected container remains on
 `C:` under current-user local application data; the public non-secret record
 remains governed on `D:` and GitHub. No key or artifact was created.
+
+Published outcome: commit `1694437db4403d57128fdc782962400a1510c425`
+is synchronized with `origin/main`. GitHub Actions run `30703402102` completed
+successfully. The quality gate recorded 28 focused tests and 755 global tests
+with one existing skip. The authorization above is consumed.
+
+Closure verdict: `production_release_key_ceremony_executor_0_1_published_ci_approved`.
+
+## Active implementation — Recovery encryption and artifact transaction 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "release_key_recovery_transaction_0_1",
+  "title": "Implement passphrase recovery encryption and compensating new-artifact transaction",
+  "baseline_commit": "1694437db4403d57128fdc782962400a1510c425",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "release_key_recovery_transaction_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/release_key_recovery.py",
+      "desktop-app/src/dpslab/new_artifact_transaction.py",
+      "desktop-app/tests/test_release_key_recovery.py",
+      "desktop-app/tests/test_new_artifact_transaction.py",
+      "knowledge/schemas/release_key_recovery_bundle_0_1.json",
+      "docs/RELEASE_KEY_CUSTODY.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/release_key_recovery_transaction_0_1/implementation.json",
+      ".dpslab/quality-gates/release_key_recovery_transaction_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/pyproject.toml", "knowledge/trust/**",
+      "knowledge/releases/**", "tools/**", "profiles/**", "scenarios/**",
+      "variants/**", "comparisons/**", "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_release_key_recovery", "tests.test_new_artifact_transaction", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 755,
+    "minimum_test_count": 785
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/release_key_ceremony_executor.py": "04dd2e4edf50edb82364d80c86615a129ae89ade36582e95ecdd84dc4bb1984b",
+    "desktop-app/src/dpslab/windows_key_protection.py": "27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "Scrypt-derived AES-256-GCM recovery bundle binds key identity and public fingerprint",
+    "wrong passphrase, tampering, malformed parameters, and fingerprint mismatch fail closed",
+    "passphrase is supplied transiently and never returned, logged, serialized, or stored",
+    "new-artifact transaction refuses existing targets, stages beside each target, fsyncs, and rolls back its own outputs on failure",
+    "cross-volume behavior is documented as compensating rollback, not impossible atomicity",
+    "tests use synthetic key bytes, passphrases, and temporary directories only"
+  ],
+  "express_exclusions": [
+    "production ceremony, real passphrase, key, DPAPI, F: write, or removable-media access",
+    "trust-registry mutation, release signing, publication, activation, or distribution",
+    "CI changes, addon, SimulationCraft, production artifact commit or push"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `release_key_recovery_transaction_0_1_authorized_for_synthetic_implementation_only`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 

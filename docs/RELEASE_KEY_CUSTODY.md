@@ -141,3 +141,17 @@ identities, stale or reordered confirmations, existing destinations, and any
 artifact destination inside a repository. Its returned evidence contains
 public fingerprints and artifact hashes only. Tests use temporary directories
 and synthetic material; the production executor has not run.
+
+## Recovery encryption and artifact commit
+
+Recovery bundles use Scrypt (`N=32768`, `r=8`, `p=1`) to derive an AES-256-GCM
+key from a transient passphrase. The authenticated data binds the key identity
+and public fingerprint. Wrong passphrases, altered metadata, ciphertext
+tampering, and recovered-key mismatch fail closed.
+
+`NewArtifactTransaction` refuses existing targets, stages and flushes each new
+artifact beside its destination, then renames it into place. Because Windows
+cannot provide one atomic rename transaction across `C:`, `D:`, and `F:`, a
+mid-commit failure triggers compensating removal of only the new outputs made
+by that transaction. This is rollback behavior, not a claim of cross-volume
+atomicity. Tests use synthetic passphrases and temporary directories only.
