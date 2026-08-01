@@ -155,3 +155,13 @@ cannot provide one atomic rename transaction across `C:`, `D:`, and `F:`, a
 mid-commit failure triggers compensating removal of only the new outputs made
 by that transaction. This is rollback behavior, not a claim of cross-volume
 atomicity. Tests use synthetic passphrases and temporary directories only.
+
+## Native attended launcher
+
+`release_key_ceremony_cli` displays the native operator identity, proposed key
+identifier and validity, plan hash, and all three resolved destinations. It
+requires four exact plan-bound phrases in order, then reads the recovery
+passphrase twice through hidden local input. Only after every check passes does
+it connect native current-user DPAPI, Ed25519 generation, encrypted recovery,
+verification, and the new-artifact transaction. Importing or testing the module
+cannot start the ceremony. The production launcher has not been executed.

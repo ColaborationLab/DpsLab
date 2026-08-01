@@ -3765,7 +3765,7 @@ Closure verdict: `production_release_key_ceremony_executor_0_1_published_ci_appr
 
 ## Active implementation — Recovery encryption and artifact transaction 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -3836,9 +3836,92 @@ Closure verdict: `production_release_key_ceremony_executor_0_1_published_ci_appr
   ]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Implementation-entry verdict: `release_key_recovery_transaction_0_1_authorized_for_synthetic_implementation_only`.
+
+Published outcome: commit `411c422dff947c4bf63d874bee8724b579f11672`
+is synchronized with `origin/main`; GitHub Actions run `30703694495` completed
+successfully. The quality gate recorded 30 focused tests and 785 global tests
+with one existing skip. The authorization above is consumed.
+
+Closure verdict: `release_key_recovery_transaction_0_1_published_ci_approved`.
+
+## Active implementation — Native attended ceremony launcher 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "native_release_key_ceremony_launcher_0_1",
+  "title": "Implement the native attended production key ceremony launcher without running it",
+  "baseline_commit": "411c422dff947c4bf63d874bee8724b579f11672",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "native_release_key_ceremony_launcher_0_1-20260801-daniel-expanded",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T00:00:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/release_key_ceremony_cli.py",
+      "desktop-app/tests/test_release_key_ceremony_cli.py",
+      "docs/RELEASE_KEY_CUSTODY.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/native_release_key_ceremony_launcher_0_1/implementation.json",
+      ".dpslab/quality-gates/native_release_key_ceremony_launcher_0_1/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/pyproject.toml", "knowledge/**", "tools/**",
+      "profiles/**", "scenarios/**", "variants/**", "comparisons/**",
+      "results/**", "config/**", "flasil.simc"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "tests.test_release_key_ceremony_cli", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "full": {
+      "working_directory": "desktop-app",
+      "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"],
+      "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}
+    },
+    "baseline_test_count": 785,
+    "minimum_test_count": 805
+  },
+  "protected_files": {
+    "profiles/flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "flasil.simc": "f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738",
+    "desktop-app/src/dpslab/release_key_ceremony_executor.py": "04dd2e4edf50edb82364d80c86615a129ae89ade36582e95ecdd84dc4bb1984b",
+    "desktop-app/src/dpslab/release_key_recovery.py": "3e07388cb4062dad53da0322c8dddbbb1521b1655a10048a2568d52f76ceeeb0",
+    "desktop-app/src/dpslab/new_artifact_transaction.py": "ecdd9a6061b99d82252aea1ebad5e0e123a98ac7a30d60a47902bd1dbf14ff8a",
+    "desktop-app/src/dpslab/windows_key_protection.py": "27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "launcher displays exact identity, key, validity, plan hash, and three destinations",
+    "four exact plan-bound confirmation phrases are entered in order",
+    "passphrase is read twice through hidden local input and never echoed or returned",
+    "native DPAPI, recovery encryption, verification, and transaction are wired only after final confirmation",
+    "surrogate identity, path drift, existing output, password mismatch, or noninteractive input aborts before generation",
+    "tests inject all I/O, secret, key, protector, and transaction boundaries"
+  ],
+  "express_exclusions": [
+    "running the production ceremony or creating any real key artifact",
+    "real passphrase, DPAPI invocation, C:/D:/F: writes, registry mutation, or signing",
+    "release publication, activation, distribution, CI changes, addon, or SimulationCraft"
+  ]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Implementation-entry verdict: `native_release_key_ceremony_launcher_0_1_authorized_for_simulated_testing_only`.
 
 ## Completed implementation authorization — Comparison execution bridge CI fix 0.1
 
