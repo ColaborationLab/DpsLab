@@ -7,6 +7,8 @@ import tempfile
 import unittest
 from hashlib import sha256
 from pathlib import Path
+
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from unittest.mock import patch
 
 from dpslab.result_parser import ResultSummaryError, summarize_run
@@ -26,7 +28,7 @@ class ResultParserTests(unittest.TestCase):
         (self.run_dir / "stderr.txt").write_text("", encoding="utf-8")
 
     def tearDown(self) -> None:
-        self.temporary.cleanup()
+        strict_temporary_cleanup(self.temporary, self.root)
 
     def _metadata(self) -> dict[str, object]:
         return json.loads((self.run_dir / "metadata.json").read_text(encoding="utf-8"))

@@ -7271,17 +7271,17 @@ authorized.
 {
   "contract_version":"0.1",
   "task_id":"patch_note_structural_slots_0_1",
-  "title":"Design neutral structural slots for the three observed article text paths",
-  "baseline_commit":"dcc41d070e312e676df342f1f3c0be1fa715f831",
-  "authorization":{"status":"design_only","authorization_id":"patch_note_structural_slots_0_1-20260801-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-01T20:45:00-05:00"},
-  "scope":{"allowed_paths":["docs/PATCH_NOTE_STRUCTURAL_SLOTS.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
-  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":52},
+  "title":"Implement neutral structural slots and stabilize strict Windows temporary cleanup",
+  "baseline_commit":"a8281faccb1927702d90b2bb5c9e25fc7b320c42",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"patch_note_structural_slots_0_1-20260801-daniel-continue-implementation","authorized_by":"Daniel","authorized_at":"2026-08-01T20:45:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/patch_note_structural_slots.py","desktop-app/tests/strict_temporary_cleanup.py","desktop-app/tests/test_patch_note_structural_slots.py","desktop-app/tests/test_result_parser.py","desktop-app/tests/test_runner.py","knowledge/schemas/patch_note_structural_slots_0_1.json","knowledge/snapshots/patch_note_structural_slots_synthetic_0_1.json","docs/PATCH_NOTE_STRUCTURAL_SLOTS.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/patch_note_structural_slots_0_1/implementation.json",".dpslab/quality-gates/patch_note_structural_slots_0_1/audit.json"],"forbidden_paths":[".github/**","knowledge/catalogs/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_patch_note_structural_slots","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1044,"minimum_test_count":1062},
   "protected_files":{"desktop-app/src/dpslab/blizzard_patch_notes_text_topology_probe.py":"304aef3925da27f57155d46aeeb64bbccf83ab5545253cbf255e81e616d67435","desktop-app/src/dpslab/blizzard_patch_notes_semantic_anchor_probe.py":"a7b68893a251c24b3ec02004e5eddf4f202b0187bf7da2adf941a7a7c6c41515",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
   "audit":{"required":true,"independence":"declared_and_procedural"},
-  "acceptance_criteria":["exactly three neutral slot identifiers bind the three observed tag paths","slot names encode no semantic meaning","input and output remain pending review and contain no text","missing additional duplicate or inconsistent paths fail closed","future tests use synthetic reports only"],
-  "express_exclusions":["live request","text capture","semantic labels","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","commit","push","changes outside two documentary paths"]
+  "acceptance_criteria":["exactly three neutral slot identifiers bind the three observed tag paths","slot names encode no semantic meaning","input and output remain pending review and contain no text","missing additional duplicate or inconsistent paths fail closed","future tests use synthetic reports only","Windows temporary cleanup retries only directory-not-empty error 145 and preserves fail-closed behavior for every other error"],
+  "express_exclusions":["live request","text capture","semantic labels","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","changes outside the nine allowlisted paths"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `patch_note_structural_slots_0_1_design_ready`.
+Implementation-entry verdict: `patch_note_structural_slots_0_1_authorized_for_implementation`.

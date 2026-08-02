@@ -6,7 +6,9 @@ import tempfile
 import unittest
 from hashlib import sha256
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
+
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
 
 from dpslab.config import SimulationConfig
 from dpslab.runner import (
@@ -28,6 +30,33 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 REAL_PROFILE = REPOSITORY_ROOT / "profiles" / "flasil.simc"
 
 
+class TemporaryCleanupTests(unittest.TestCase):
+    @staticmethod
+    def _directory_not_empty_error() -> OSError:
+        error = OSError("directory not empty")
+        error.winerror = 145  # type: ignore[attr-defined]
+        return error
+
+    @patch("tests.strict_temporary_cleanup.time.sleep")
+    @patch("tests.strict_temporary_cleanup.shutil.rmtree")
+    def test_directory_not_empty_is_retried_strictly(self, remove: Mock, sleep: Mock) -> None:
+        temporary = Mock()
+        temporary.cleanup.side_effect = self._directory_not_empty_error()
+        remove.side_effect = [self._directory_not_empty_error(), None]
+
+        strict_temporary_cleanup(temporary, Path("temporary-root"))
+
+        self.assertEqual(remove.call_count, 2)
+        sleep.assert_called_once_with(0.05)
+
+    def test_other_cleanup_errors_are_not_suppressed(self) -> None:
+        temporary = Mock()
+        temporary.cleanup.side_effect = OSError("unexpected cleanup failure")
+
+        with self.assertRaisesRegex(OSError, "unexpected cleanup failure"):
+            strict_temporary_cleanup(temporary, Path("temporary-root"))
+
+
 class SimulationRunnerTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
@@ -40,7 +69,7 @@ class SimulationRunnerTests(unittest.TestCase):
         self.runs_dir = self.root / "results" / "runs"
 
     def tearDown(self) -> None:
-        self.temporary.cleanup()
+        strict_temporary_cleanup(self.temporary, self.root)
 
     def _config(self, *, html: bool = False, timeout: float = 600) -> SimulationConfig:
         return SimulationConfig(
