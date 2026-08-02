@@ -6862,19 +6862,30 @@ page before any production parser revision is proposed.
 {
   "contract_version": "0.1",
   "task_id": "blizzard_patch_notes_layout_probe_0_1",
-  "title": "Design a receipt-bound metadata-only probe for official patch-note layout",
-  "baseline_commit": "8578e60dedd7454474e4c7a2da7106dd54672647",
+  "title": "Implement a receipt-bound metadata-only probe for official patch-note layout",
+  "baseline_commit": "8a703c4cbd2a1d8fa372a7f7c2900d8e4da4ccea",
   "authorization": {
-    "status": "design_only",
-    "authorization_id": "blizzard_patch_notes_layout_probe_0_1-20260801-daniel-continue",
+    "status": "authorized_for_implementation",
+    "authorization_id": "blizzard_patch_notes_layout_probe_0_1-20260801-daniel-continued-implementation",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T18:15:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_LAYOUT_PROBE.md", "docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/blizzard_patch_notes_layout_probe.py",
+      "desktop-app/tests/test_blizzard_patch_notes_layout_probe.py",
+      "knowledge/schemas/blizzard_patch_notes_layout_report_0_1.json",
+      "knowledge/fixtures/blizzard_patch_notes_layout_synthetic_0_1.html",
+      "knowledge/snapshots/blizzard_patch_notes_layout_synthetic_0_1.json",
+      "docs/BLIZZARD_PATCH_NOTES_LAYOUT_PROBE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/blizzard_patch_notes_layout_probe_0_1/implementation.json",
+      ".dpslab/quality-gates/blizzard_patch_notes_layout_probe_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      ".github/**", "profiles/**",
       "scenarios/**", "variants/**", "comparisons/**", "results/**",
       "config/**", "flasil.simc", "tools/**"
     ],
@@ -6882,10 +6893,10 @@ page before any production parser revision is proposed.
     "allow_renames": false
   },
   "tests": {
-    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "baseline_test_count": 52,
-    "minimum_test_count": 52
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_blizzard_patch_notes_layout_probe", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 956,
+    "minimum_test_count": 974
   },
   "protected_files": {
     "desktop-app/src/dpslab/blizzard_patch_notes_extractor.py": "1fa7c384fa2224a583340d4e896f73925b6843687837f588f7693256e10ff511",
@@ -6906,10 +6917,10 @@ page before any production parser revision is proposed.
     "live source request, real HTML fixture, browser, JavaScript execution, CSS evaluation, or page-body persistence",
     "balance-fact extraction, natural-language inference, subject mapping, evidence approval, catalog mutation, addon, UI, or SimulationCraft",
     "automatic scheduling, retry, database, signing, distribution, commit, or push",
-    "changes outside the two documentary paths"
+    "changes outside the seven authorized paths"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `blizzard_patch_notes_layout_probe_0_1_design_ready`.
+Implementation-entry verdict: `blizzard_patch_notes_layout_probe_0_1_authorized_for_implementation`.
