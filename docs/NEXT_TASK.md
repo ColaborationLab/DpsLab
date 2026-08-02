@@ -7261,12 +7261,12 @@ Evidence:
 - 36 visible nodes across 12 articles and three exact paths; 10 excluded nodes;
 - no characters, words, attributes, HTML, report, or receipt were persisted.
 
-## Active design task — Patch-note structural slots 0.1
+## Published implementation — Patch-note structural slots 0.1
 
 Three exact paths may receive neutral slot identifiers. No semantic label is
 authorized.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7282,6 +7282,44 @@ authorized.
   "express_exclusions":["live request","text capture","semantic labels","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","changes outside the nine allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `patch_note_structural_slots_0_1_published_with_ci_passed`.
+
+Evidence:
+
+- commit `88a65162f81ccf62585ef24eb0a1e0ee33a8ef8c` is local `HEAD`,
+  `origin/main`, and live `refs/heads/main`;
+- 19 focused and 1065 functional tests passed, with one expected skip;
+- GitHub Actions run `30731508777` passed Policy and contract, Tools tests,
+  and Functional suite;
+- audit recorded no findings; protected hashes remained unchanged;
+- the Windows cleanup correction retries only directory-not-empty error 145
+  in the two affected test fixtures and suppresses no other error;
+- no live request, retained text, semantic assignment, catalog mutation, or
+  SimulationCraft execution occurred.
+
+## Active design task — Patch-note semantic slot review 0.1
+
+This task designs human semantic review of neutral slots. It does not assign a
+meaning to any observed path and cannot extract facts.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"patch_note_semantic_slot_review_0_1",
+  "title":"Design fail-closed human semantic review for neutral patch-note slots",
+  "baseline_commit":"88a65162f81ccf62585ef24eb0a1e0ee33a8ef8c",
+  "authorization":{"status":"design_only","authorization_id":"patch_note_semantic_slot_review_0_1-20260801-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-01T22:59:00-05:00"},
+  "scope":{"allowed_paths":["docs/PATCH_NOTE_SEMANTIC_SLOT_REVIEW.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":52},
+  "protected_files":{"desktop-app/src/dpslab/patch_note_structural_slots.py":"cd60d08e269c9aa4fdaee5fd974440708fe944827575d3b5c2f101e38c1d24bd","desktop-app/src/dpslab/blizzard_patch_notes_text_topology_probe.py":"304aef3925da27f57155d46aeeb64bbccf83ab5545253cbf255e81e616d67435",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
+  "audit":{"required":false,"independence":"not_applicable_design_only"},
+  "acceptance_criteria":["no role is inferred from path metrics order or conversation","closed structural-role vocabulary includes unknown and rejected","human attestation binds reviewer time receipt and slot-report hashes","conflicts incomplete coverage altered bindings and stale observations fail closed","semantic review cannot approve selectors facts catalogs or recommendations"],
+  "express_exclusions":["implementation","live request","text or HTML retention","semantic assignment to observed slots","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","commit of non-documentary paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `patch_note_structural_slots_0_1_authorized_for_implementation`.
+Design verdict: `patch_note_semantic_slot_review_0_1_design_ready`.
