@@ -6851,13 +6851,13 @@ Publication evidence:
 - authorization consumed; no live source body, evidence approval, catalog
   mutation, recommendation, SimulationCraft, or comparison occurred.
 
-## Active design task — Blizzard patch-note layout probe 0.1
+## Published implementation — Blizzard patch-note layout probe 0.1
 
 The published extractor intentionally accepts only a closed synthetic dialect.
 A separate metadata-only probe must establish the shape of the real official
 page before any production parser revision is proposed.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6921,6 +6921,86 @@ page before any production parser revision is proposed.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `blizzard_patch_notes_layout_probe_0_1_published_with_ci_passed`.
+
+Publication and attended-observation evidence:
+
+- implementation commit: `3737e3e820dda876fe6fb41b8490331f42f61046`;
+- local verification: 22 focused and 978 functional tests passed;
+- GitHub Actions run `30724769699`: policy, tools, and functional lanes passed;
+- one attended request produced report
+  `blizzard.layout-report.20260802t002930z` with status
+  `layout_observed_pending_review`;
+- content: 274005 bytes, SHA-256
+  `fbf289f3068d3bb14f04709f0f735db9ee09183cc90968d5e34384fad657f1e6`;
+- report SHA-256:
+  `85a2ae9b0d241414a557be25af05453feadc36ee74cac1236e5a6a34b390a0ac`;
+- 410 nodes, 26 tag names, maximum depth 25, 12 `article` elements,
+  and 12 `div` elements with `data-props` were observed;
+- the response body and report were not persisted; no retry, fact extraction,
+  catalog mutation, recommendation, SimulationCraft, or comparison occurred.
+
+## Active design task — Blizzard patch-note semantic anchor probe 0.1
+
+The layout report identifies a repeated structural anchor but does not reveal
+its meaning. The next boundary may describe only the JSON key/type shape of
+allowlisted `data-props` attributes and must erase all values.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "blizzard_patch_notes_semantic_anchor_probe_0_1",
+  "title": "Design a value-erasing semantic shape probe for official patch-note anchors",
+  "baseline_commit": "3737e3e820dda876fe6fb41b8490331f42f61046",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "blizzard_patch_notes_semantic_anchor_probe_0_1-20260801-daniel-proceed",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T19:35:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_SEMANTIC_ANCHOR_PROBE.md", "docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/blizzard_patch_notes_layout_probe.py": "45f1981b35c3b5105cf5a8608a2e2a97d504b820214acd7b602163533005dadf",
+    "desktop-app/src/dpslab/blizzard_patch_notes_extractor.py": "1fa7c384fa2224a583340d4e896f73925b6843687837f588f7693256e10ff511",
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "design inspects only data-props on div elements that are direct children of article",
+    "report retains JSON key paths, JSON types, counts, and bounded cardinalities but no JSON values",
+    "duplicate keys, invalid JSON, conflicting path types, empty matches, and every resource-limit breach fail closed",
+    "input remains bound to a validated captured_pending_review receipt",
+    "output remains semantic_shape_observed_pending_review and cannot approve mappings or mutate evidence, coverage, catalogs, templates, or recommendations",
+    "future implementation and tests contain synthetic HTML and invented JSON keys only"
+  ],
+  "express_exclusions": [
+    "live request, real page fixture, copied source wording, JSON values, HTML persistence, browser, JavaScript execution, or CSS evaluation",
+    "fact extraction, semantic inference, selector approval, catalog mutation, addon, UI, SimulationCraft, signing, or distribution",
+    "automatic scheduling, retry, database, commit, or push",
+    "changes outside the two documentary paths"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `blizzard_patch_notes_layout_probe_0_1_authorized_for_implementation`.
+Design verdict: `blizzard_patch_notes_semantic_anchor_probe_0_1_design_ready`.
