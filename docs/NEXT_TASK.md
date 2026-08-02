@@ -7116,13 +7116,13 @@ Publication and attended-observation evidence:
 - no values, HTML, text, report, or receipt were persisted; no retry, fact
   extraction, catalog mutation, SimulationCraft, or comparison occurred.
 
-## Active implementation — Semantic anchor exact-path policy 0.2
+## Published implementation — Semantic anchor exact-path policy 0.2
 
 This corrective revision replaces the disproved direct-child requirement with
 the one exact ancestry signature observed across all twelve carriers. It does
 not change JSON shape semantics or approve any key mapping.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -7184,6 +7184,69 @@ not change JSON shape semantics or approve any key mapping.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `semantic_anchor_exact_path_policy_0_2_published_with_ci_passed`.
+
+Evidence:
+
+- commit `ad9279b14b6ada493f34ceb168ec6cfdd0045b19`;
+- 26 focused and 1025 functional tests passed;
+- GitHub Actions run `30726824643` passed all lanes;
+- one attended observation found only `iso8601` string and `relative` boolean,
+  each 12 times, report SHA-256
+  `b01b99ae0578af1faaa96b3614cc55fc9303af30f3f5048535a576e061a234dc`;
+- these keys remain unapproved and no value, body, report, or receipt persisted.
+
+## Active implementation — Blizzard patch-note text topology probe 0.1
+
+This boundary identifies only which tag paths beneath `article` contain
+visible text and their aggregate lengths. It retains no characters.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "blizzard_patch_notes_text_topology_probe_0_1",
+  "title": "Implement a character-erasing text topology probe for patch-note articles",
+  "baseline_commit": "ad9279b14b6ada493f34ceb168ec6cfdd0045b19",
+  "authorization": {"status":"authorized_for_implementation","authorization_id":"blizzard_patch_notes_text_topology_probe_0_1-20260801-daniel-corrective","authorized_by":"Daniel","authorized_at":"2026-08-01T20:30:00-05:00"},
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/blizzard_patch_notes_text_topology_probe.py",
+      "desktop-app/tests/test_blizzard_patch_notes_text_topology_probe.py",
+      "knowledge/fixtures/blizzard_patch_notes_text_topology_synthetic_0_1.html",
+      "knowledge/snapshots/blizzard_patch_notes_text_topology_synthetic_0_1.json",
+      "docs/BLIZZARD_PATCH_NOTES_TEXT_TOPOLOGY_PROBE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths":[".dpslab/quality-gates/blizzard_patch_notes_text_topology_probe_0_1/implementation.json",".dpslab/quality-gates/blizzard_patch_notes_text_topology_probe_0_1/audit.json"],
+    "forbidden_paths":[".github/**","knowledge/catalogs/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],
+    "allow_deletions":false,"allow_renames":false
+  },
+  "tests": {
+    "focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_blizzard_patch_notes_text_topology_probe","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},
+    "full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},
+    "baseline_test_count":1025,"minimum_test_count":1043
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/blizzard_patch_notes_semantic_anchor_probe.py":"a7b68893a251c24b3ec02004e5eddf4f202b0187bf7da2adf941a7a7c6c41515",
+    "desktop-app/src/dpslab/blizzard_patch_notes_anchor_path_probe.py":"1cab61ca1a5ef474fb772a59937950a3b6a8cbcde9f5ff865619ccda387fa6ad",
+    "desktop-app/src/dpslab/official_source_http.py":"423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    ".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":[
+    "report retains only article-relative tag paths and aggregate text-node lengths",
+    "text characters, hashes, attributes, URLs, HTML, scripts, styles, and semantic labels are absent",
+    "script, style, noscript, and template text is excluded and only exclusion count remains",
+    "receipt binding, nesting, empty visible topology, and resource limits fail closed",
+    "output remains text_topology_observed_pending_review",
+    "fixtures are synthetic and no live request occurs"
+  ],
+  "express_exclusions":["fact extraction","selector approval","catalog mutation","SimulationCraft","addon","UI","signing","distribution","commit","push","changes outside six paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `semantic_anchor_exact_path_policy_0_2_authorized_for_implementation`.
+Implementation-entry verdict: `blizzard_patch_notes_text_topology_probe_0_1_authorized_for_implementation`.
