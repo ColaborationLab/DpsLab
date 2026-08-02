@@ -7038,19 +7038,30 @@ carry an attribute named `data-props`. It never reads the attribute value.
 {
   "contract_version": "0.1",
   "task_id": "blizzard_patch_notes_anchor_path_probe_0_1",
-  "title": "Design a value-blind ancestry probe for patch-note data-props anchors",
-  "baseline_commit": "f933f00ab29286c4ff6b4c9570fed0433b661b0e",
+  "title": "Implement a value-blind ancestry probe for patch-note data-props anchors",
+  "baseline_commit": "2d3e98ab71c55a58ac659fb7a36a7a3d8d8abe0c",
   "authorization": {
-    "status": "design_only",
-    "authorization_id": "blizzard_patch_notes_anchor_path_probe_0_1-20260801-daniel-continue",
+    "status": "authorized_for_implementation",
+    "authorization_id": "blizzard_patch_notes_anchor_path_probe_0_1-20260801-daniel-continue-implementation",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T19:52:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_ANCHOR_PATH_PROBE.md", "docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/blizzard_patch_notes_anchor_path_probe.py",
+      "desktop-app/tests/test_blizzard_patch_notes_anchor_path_probe.py",
+      "knowledge/schemas/blizzard_patch_notes_anchor_path_report_0_1.json",
+      "knowledge/fixtures/blizzard_patch_notes_anchor_path_synthetic_0_1.html",
+      "knowledge/snapshots/blizzard_patch_notes_anchor_path_synthetic_0_1.json",
+      "docs/BLIZZARD_PATCH_NOTES_ANCHOR_PATH_PROBE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/blizzard_patch_notes_anchor_path_probe_0_1/implementation.json",
+      ".dpslab/quality-gates/blizzard_patch_notes_anchor_path_probe_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      ".github/**", "profiles/**",
       "scenarios/**", "variants/**", "comparisons/**", "results/**",
       "config/**", "flasil.simc", "tools/**"
     ],
@@ -7058,10 +7069,10 @@ carry an attribute named `data-props`. It never reads the attribute value.
     "allow_renames": false
   },
   "tests": {
-    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "baseline_test_count": 52,
-    "minimum_test_count": 52
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_blizzard_patch_notes_anchor_path_probe", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 1002,
+    "minimum_test_count": 1020
   },
   "protected_files": {
     "desktop-app/src/dpslab/blizzard_patch_notes_layout_probe.py": "45f1981b35c3b5105cf5a8608a2e2a97d504b820214acd7b602163533005dadf",
@@ -7082,10 +7093,10 @@ carry an attribute named `data-props`. It never reads the attribute value.
     "live request, real fixture, attribute values, JSON, text, classes, identifiers, URLs, HTML persistence, browser, JavaScript, or CSS",
     "semantic inference, selector approval, fact extraction, catalog mutation, addon, UI, SimulationCraft, signing, or distribution",
     "automatic scheduling, retry, database, commit, or push",
-    "changes outside the two documentary paths"
+    "changes outside the seven authorized paths"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `blizzard_patch_notes_anchor_path_probe_0_1_design_ready`.
+Implementation-entry verdict: `blizzard_patch_notes_anchor_path_probe_0_1_authorized_for_implementation`.
