@@ -7309,17 +7309,17 @@ meaning to any observed path and cannot extract facts.
 {
   "contract_version":"0.1",
   "task_id":"patch_note_semantic_slot_review_0_1",
-  "title":"Design fail-closed human semantic review for neutral patch-note slots",
-  "baseline_commit":"88a65162f81ccf62585ef24eb0a1e0ee33a8ef8c",
-  "authorization":{"status":"design_only","authorization_id":"patch_note_semantic_slot_review_0_1-20260801-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-01T22:59:00-05:00"},
-  "scope":{"allowed_paths":["docs/PATCH_NOTE_SEMANTIC_SLOT_REVIEW.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
-  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":52},
+  "title":"Implement fail-closed human semantic review for neutral patch-note slots",
+  "baseline_commit":"e25d5b7287ee63dfe197992cec7fe38eee28a738",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"patch_note_semantic_slot_review_0_1-20260801-daniel-continue-implementation","authorized_by":"Daniel","authorized_at":"2026-08-01T23:08:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/patch_note_semantic_slot_review.py","desktop-app/tests/test_patch_note_semantic_slot_review.py","knowledge/schemas/patch_note_semantic_slot_review_0_1.json","knowledge/snapshots/patch_note_semantic_slot_review_synthetic_0_1.json","docs/PATCH_NOTE_SEMANTIC_SLOT_REVIEW.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/patch_note_semantic_slot_review_0_1/implementation.json",".dpslab/quality-gates/patch_note_semantic_slot_review_0_1/audit.json"],"forbidden_paths":[".github/**","knowledge/catalogs/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_patch_note_semantic_slot_review","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1065,"minimum_test_count":1082},
   "protected_files":{"desktop-app/src/dpslab/patch_note_structural_slots.py":"cd60d08e269c9aa4fdaee5fd974440708fe944827575d3b5c2f101e38c1d24bd","desktop-app/src/dpslab/blizzard_patch_notes_text_topology_probe.py":"304aef3925da27f57155d46aeeb64bbccf83ab5545253cbf255e81e616d67435",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
-  "audit":{"required":false,"independence":"not_applicable_design_only"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["no role is inferred from path metrics order or conversation","closed structural-role vocabulary includes unknown and rejected","human attestation binds reviewer time receipt and slot-report hashes","conflicts incomplete coverage altered bindings and stale observations fail closed","semantic review cannot approve selectors facts catalogs or recommendations"],
-  "express_exclusions":["implementation","live request","text or HTML retention","semantic assignment to observed slots","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","commit of non-documentary paths"]
+  "express_exclusions":["live request","text or HTML retention","semantic assignment to observed slots","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","changes outside six allowlisted paths"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `patch_note_semantic_slot_review_0_1_design_ready`.
+Implementation-entry verdict: `patch_note_semantic_slot_review_0_1_authorized_for_implementation`.
