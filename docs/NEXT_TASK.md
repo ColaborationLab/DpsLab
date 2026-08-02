@@ -7198,12 +7198,12 @@ Evidence:
   `b01b99ae0578af1faaa96b3614cc55fc9303af30f3f5048535a576e061a234dc`;
 - these keys remain unapproved and no value, body, report, or receipt persisted.
 
-## Active implementation — Blizzard patch-note text topology probe 0.1
+## Published implementation — Blizzard patch-note text topology probe 0.1
 
 This boundary identifies only which tag paths beneath `article` contain
 visible text and their aggregate lengths. It retains no characters.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -7247,6 +7247,41 @@ visible text and their aggregate lengths. It retains no characters.
   "express_exclusions":["fact extraction","selector approval","catalog mutation","SimulationCraft","addon","UI","signing","distribution","commit","push","changes outside six paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `blizzard_patch_notes_text_topology_probe_0_1_published_with_ci_passed`.
+
+Evidence:
+
+- commit `dcc41d070e312e676df342f1f3c0be1fa715f831`;
+- 19 focused and 1044 functional tests passed;
+- GitHub Actions run `30727184989` passed all lanes;
+- attended report `blizzard.text-topology-report.20260802t013748z`, SHA-256
+  `dc400b08b806fec21515559010c4bf5fd1e7db8dc5f7513fb6143d5475725bc4`;
+- 36 visible nodes across 12 articles and three exact paths; 10 excluded nodes;
+- no characters, words, attributes, HTML, report, or receipt were persisted.
+
+## Active design task — Patch-note structural slots 0.1
+
+Three exact paths may receive neutral slot identifiers. No semantic label is
+authorized.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"patch_note_structural_slots_0_1",
+  "title":"Design neutral structural slots for the three observed article text paths",
+  "baseline_commit":"dcc41d070e312e676df342f1f3c0be1fa715f831",
+  "authorization":{"status":"design_only","authorization_id":"patch_note_structural_slots_0_1-20260801-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-01T20:45:00-05:00"},
+  "scope":{"allowed_paths":["docs/PATCH_NOTE_STRUCTURAL_SLOTS.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":52},
+  "protected_files":{"desktop-app/src/dpslab/blizzard_patch_notes_text_topology_probe.py":"304aef3925da27f57155d46aeeb64bbccf83ab5545253cbf255e81e616d67435","desktop-app/src/dpslab/blizzard_patch_notes_semantic_anchor_probe.py":"a7b68893a251c24b3ec02004e5eddf4f202b0187bf7da2adf941a7a7c6c41515",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["exactly three neutral slot identifiers bind the three observed tag paths","slot names encode no semantic meaning","input and output remain pending review and contain no text","missing additional duplicate or inconsistent paths fail closed","future tests use synthetic reports only"],
+  "express_exclusions":["live request","text capture","semantic labels","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","commit","push","changes outside two documentary paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `blizzard_patch_notes_text_topology_probe_0_1_authorized_for_implementation`.
+Design verdict: `patch_note_structural_slots_0_1_design_ready`.
