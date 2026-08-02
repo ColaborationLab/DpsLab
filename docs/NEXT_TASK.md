@@ -6953,19 +6953,30 @@ allowlisted `data-props` attributes and must erase all values.
 {
   "contract_version": "0.1",
   "task_id": "blizzard_patch_notes_semantic_anchor_probe_0_1",
-  "title": "Design a value-erasing semantic shape probe for official patch-note anchors",
-  "baseline_commit": "3737e3e820dda876fe6fb41b8490331f42f61046",
+  "title": "Implement a value-erasing semantic shape probe for official patch-note anchors",
+  "baseline_commit": "e746853496e4410a68e4d42b1110264ab2b3284d",
   "authorization": {
-    "status": "design_only",
-    "authorization_id": "blizzard_patch_notes_semantic_anchor_probe_0_1-20260801-daniel-proceed",
+    "status": "authorized_for_implementation",
+    "authorization_id": "blizzard_patch_notes_semantic_anchor_probe_0_1-20260801-daniel-proceed-implementation",
     "authorized_by": "Daniel",
     "authorized_at": "2026-08-01T19:35:00-05:00"
   },
   "scope": {
-    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_SEMANTIC_ANCHOR_PROBE.md", "docs/NEXT_TASK.md"],
-    "generated_paths": [],
+    "allowed_paths": [
+      "desktop-app/src/dpslab/blizzard_patch_notes_semantic_anchor_probe.py",
+      "desktop-app/tests/test_blizzard_patch_notes_semantic_anchor_probe.py",
+      "knowledge/schemas/blizzard_patch_notes_semantic_shape_0_1.json",
+      "knowledge/fixtures/blizzard_patch_notes_semantic_anchor_synthetic_0_1.html",
+      "knowledge/snapshots/blizzard_patch_notes_semantic_shape_synthetic_0_1.json",
+      "docs/BLIZZARD_PATCH_NOTES_SEMANTIC_ANCHOR_PROBE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/blizzard_patch_notes_semantic_anchor_probe_0_1/implementation.json",
+      ".dpslab/quality-gates/blizzard_patch_notes_semantic_anchor_probe_0_1/audit.json"
+    ],
     "forbidden_paths": [
-      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      ".github/**", "profiles/**",
       "scenarios/**", "variants/**", "comparisons/**", "results/**",
       "config/**", "flasil.simc", "tools/**"
     ],
@@ -6973,10 +6984,10 @@ allowlisted `data-props` attributes and must erase all values.
     "allow_renames": false
   },
   "tests": {
-    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
-    "baseline_test_count": 52,
-    "minimum_test_count": 52
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_blizzard_patch_notes_semantic_anchor_probe", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 978,
+    "minimum_test_count": 996
   },
   "protected_files": {
     "desktop-app/src/dpslab/blizzard_patch_notes_layout_probe.py": "45f1981b35c3b5105cf5a8608a2e2a97d504b820214acd7b602163533005dadf",
@@ -6997,10 +7008,10 @@ allowlisted `data-props` attributes and must erase all values.
     "live request, real page fixture, copied source wording, JSON values, HTML persistence, browser, JavaScript execution, or CSS evaluation",
     "fact extraction, semantic inference, selector approval, catalog mutation, addon, UI, SimulationCraft, signing, or distribution",
     "automatic scheduling, retry, database, commit, or push",
-    "changes outside the two documentary paths"
+    "changes outside the seven authorized paths"
   ]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `blizzard_patch_notes_semantic_anchor_probe_0_1_design_ready`.
+Implementation-entry verdict: `blizzard_patch_notes_semantic_anchor_probe_0_1_authorized_for_implementation`.
