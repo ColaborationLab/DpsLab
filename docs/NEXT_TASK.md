@@ -7299,12 +7299,12 @@ Evidence:
 - no live request, retained text, semantic assignment, catalog mutation, or
   SimulationCraft execution occurred.
 
-## Active design task — Patch-note semantic slot review 0.1
+## Published implementation — Patch-note semantic slot review 0.1
 
 This task designs human semantic review of neutral slots. It does not assign a
 meaning to any observed path and cannot extract facts.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7320,6 +7320,41 @@ meaning to any observed path and cannot extract facts.
   "express_exclusions":["live request","text or HTML retention","semantic assignment to observed slots","selector approval","fact extraction","catalog mutation","SimulationCraft","addon","UI","signing","distribution","changes outside six allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `patch_note_semantic_slot_review_0_1_published_with_ci_passed`.
+
+Evidence:
+
+- commit `b7a119a9cb6725996360d1a1366b0655140c945c` is synchronized across
+  local `HEAD`, `origin/main`, and live `refs/heads/main`;
+- 19 focused and 1084 functional tests passed, with one expected skip;
+- audit recorded no findings and protected hashes remained unchanged;
+- GitHub Actions run `30732037545` passed all three lanes;
+- only synthetic slot decisions were used; no real semantic assignment, live
+  request, retained content, fact extraction, or catalog mutation occurred.
+
+## Active design task — Patch-note semantic review ceremony 0.1
+
+This task designs a visible, attended, single-use human review ceremony. It
+does not authorize displaying real content.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"patch_note_semantic_review_ceremony_0_1",
+  "title":"Design attended transient semantic review ceremony",
+  "baseline_commit":"b7a119a9cb6725996360d1a1366b0655140c945c",
+  "authorization":{"status":"design_only","authorization_id":"patch_note_semantic_review_ceremony_0_1-20260801-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-01T23:18:00-05:00"},
+  "scope":{"allowed_paths":["docs/PATCH_NOTE_SEMANTIC_REVIEW_CEREMONY.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":52},
+  "protected_files":{"desktop-app/src/dpslab/patch_note_semantic_slot_review.py":"c129466a5b8b3a936b05dd8131867c720e865f8a8516e1058477398fd47f0aa1","desktop-app/src/dpslab/patch_note_structural_slots.py":"cd60d08e269c9aa4fdaee5fd974440708fe944827575d3b5c2f101e38c1d24bd",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
+  "audit":{"required":false,"independence":"not_applicable_design_only"},
+  "acceptance_criteria":["pre-display binding verifies receipt content and slot-report hashes","one slot is displayed at a time and content is memory-only","no role suggestion uses order length markup or prior decision","unknown rejected close timeout and source drift fail closed","durable output contains decisions identifiers hashes reviewer timestamp status and no content","real display requires immediate later human confirmation"],
+  "express_exclusions":["implementation","real display","live request","content persistence","screenshots","clipboard","logging source content","fact extraction","selector approval","catalog mutation","SimulationCraft","addon","distribution","changes outside two documentary paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `patch_note_semantic_slot_review_0_1_authorized_for_implementation`.
+Design verdict: `patch_note_semantic_review_ceremony_0_1_design_ready`.
