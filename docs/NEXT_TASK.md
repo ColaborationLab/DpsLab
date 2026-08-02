@@ -6764,14 +6764,14 @@ temporary roots; no live request belongs to this implementation block.
 
 Implementation-entry verdict: `attended_official_source_operator_0_1_authorized_for_implementation`.
 
-## Active design task — Blizzard patch-note HTML extractor 0.1
+## Published implementation — Blizzard patch-note HTML extractor 0.1
 
 The first attended integrated operation persisted one metadata-only receipt as
 `first_seen_pending_review`. Extraction remains a separate pure boundary: it
 receives injected bytes bound to that receipt and may emit only cited
 structured evidence pending review.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -6838,6 +6838,78 @@ structured evidence pending review.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `blizzard_patch_notes_html_extractor_0_1_published_with_ci_passed`.
+
+Publication evidence:
+
+- implementation commit: `fe6ac364e90c82f09d45bc0bd4756959f70419fa`;
+- LF portability correction: `8578e60dedd7454474e4c7a2da7106dd54672647`;
+- local verification: 20 focused and 956 functional tests passed;
+- GitHub Actions run `30722814835`: policy, tools, and functional lanes passed;
+- authorization consumed; no live source body, evidence approval, catalog
+  mutation, recommendation, SimulationCraft, or comparison occurred.
+
+## Active design task — Blizzard patch-note layout probe 0.1
+
+The published extractor intentionally accepts only a closed synthetic dialect.
+A separate metadata-only probe must establish the shape of the real official
+page before any production parser revision is proposed.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "blizzard_patch_notes_layout_probe_0_1",
+  "title": "Design a receipt-bound metadata-only probe for official patch-note layout",
+  "baseline_commit": "8578e60dedd7454474e4c7a2da7106dd54672647",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "blizzard_patch_notes_layout_probe_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T18:15:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_LAYOUT_PROBE.md", "docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/blizzard_patch_notes_extractor.py": "1fa7c384fa2224a583340d4e896f73925b6843687837f588f7693256e10ff511",
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    "knowledge/sources/official_patch_source_registry_0_1.json": "665ac715a7ba66b51e5a21886a14177cf39164d9422dd10f441161a147439d7e",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "design binds injected UTF-8 bytes to one validated captured_pending_review receipt",
+    "report contains tag names, parent-child edges, attribute names, bounded counts, and boolean hazard indicators only",
+    "text, attribute values, URLs, selectors, HTML fragments, headers, cookies, credentials, and source prose are never retained",
+    "node, depth, attribute, input, and output cardinality limits fail closed",
+    "report remains layout_observed_pending_review and cannot mutate the extractor, evidence, coverage, catalogs, templates, or recommendations",
+    "future implementation and tests use synthetic HTML only"
+  ],
+  "express_exclusions": [
+    "live source request, real HTML fixture, browser, JavaScript execution, CSS evaluation, or page-body persistence",
+    "balance-fact extraction, natural-language inference, subject mapping, evidence approval, catalog mutation, addon, UI, or SimulationCraft",
+    "automatic scheduling, retry, database, signing, distribution, commit, or push",
+    "changes outside the two documentary paths"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `blizzard_patch_notes_html_extractor_0_1_authorized_for_implementation`.
+Design verdict: `blizzard_patch_notes_layout_probe_0_1_design_ready`.
