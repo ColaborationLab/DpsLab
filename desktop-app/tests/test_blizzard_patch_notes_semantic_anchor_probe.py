@@ -7,7 +7,8 @@ ROOT=Path(__file__).parents[2];HTML=ROOT/"knowledge/fixtures/blizzard_patch_note
 def receipt_for(body,status="captured_pending_review"):
  value={"schema_version":"0.1","identity":{"receipt_id":"synthetic.semantic.receipt.001","captured_at":"2026-08-02T00:30:00Z"},"source":{"source_id":"blizzard.wow.content_update_notes","final_host":"worldofwarcraft.blizzard.com","media_type":"text/html"},"capture":{"transport_status":"response_quarantined_pending_capture_validation","capture_status":status,"complete":True,"byte_count":len(body),"content_sha256":hashlib.sha256(body).hexdigest(),"etag":'"semantic-1"',"last_modified":None,"reused_previous":status!="captured_pending_review"},"integrity":{"hash_algorithm":"sha256","receipt_sha256":""}}
  value["integrity"]["receipt_sha256"]=calculate_receipt_sha256(value);return value
-def anchor(payload):return f'<html><body><article><div data-props="{payload}"></div></article></body></html>'.encode()
+def carrier(payload):return '<article>'+'<div>'*7+f'<div data-props="{payload}"></div>'+'</div>'*7+'</article>'
+def anchor(payload):return f'<html><body>{carrier(payload)}</body></html>'.encode()
 class SemanticAnchorProbeTests(unittest.TestCase):
  def setUp(self):self.body=HTML.read_bytes();self.receipt=receipt_for(self.body)
  def probe(self,body=None,receipt=None):return probe_semantic_anchor_shape(self.body if body is None else body,self.receipt if receipt is None else receipt,"synthetic.semantic.report.001")
@@ -31,9 +32,9 @@ class SemanticAnchorProbeTests(unittest.TestCase):
  def test_empty_match_rejected(self):
   body=b"<html><body><article></article></body></html>"
   with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"semantic_anchor_unavailable"):self.probe(body,receipt_for(body))
- def test_anchor_must_be_direct_child(self):
+ def test_direct_child_path_rejected(self):
   body=b'<article><section><div data-props="{&quot;x&quot;:1}"></div></section></article>'
-  with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"semantic_anchor_unavailable"):self.probe(body,receipt_for(body))
+  with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"anchor_path_not_allowed"):self.probe(body,receipt_for(body))
  def test_invalid_json_rejected(self):
   body=anchor("not-json")
   with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"anchor_json_invalid"):self.probe(body,receipt_for(body))
@@ -44,7 +45,7 @@ class SemanticAnchorProbeTests(unittest.TestCase):
   body=anchor("[1,2]")
   with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"anchor_root_invalid"):self.probe(body,receipt_for(body))
  def test_conflicting_types_rejected(self):
-  body=b'<article><div data-props="{&quot;x&quot;:1}"></div></article><article><div data-props="{&quot;x&quot;:&quot;a&quot;}"></div></article>'
+  body=(carrier("{&quot;x&quot;:1}")+carrier("{&quot;x&quot;:&quot;a&quot;}")).encode()
   with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"json_type_conflict"):self.probe(body,receipt_for(body))
  def test_nonfinite_number_rejected(self):
   body=anchor("{&quot;x&quot;:NaN}")
@@ -61,8 +62,15 @@ class SemanticAnchorProbeTests(unittest.TestCase):
   body=anchor(value.replace('"','&quot;'))
   with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"json_limit_exceeded"):self.probe(body,receipt_for(body))
  def test_html_nesting_rejected(self):
-  body=b'<article><div data-props="{&quot;x&quot;:1}"></article></div>'
+  body=('<article>'+'<div>'*7+'<div data-props="{&quot;x&quot;:1}"></article>'+'</div>'*8).encode()
   with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"html_nesting_invalid"):self.probe(body,receipt_for(body))
+ def test_shorter_and_longer_paths_rejected(self):
+  for count in (7,9):
+   body=('<article>'+'<div>'*(count-1)+'<div data-props="{&quot;x&quot;:1}"></div>'+'</div>'*(count-1)+'</article>').encode()
+   with self.subTest(count=count),self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"anchor_path_not_allowed"):self.probe(body,receipt_for(body))
+ def test_mixed_exact_and_invalid_paths_fail_closed(self):
+  body=(carrier("{&quot;x&quot;:1}")+'<article><div data-props="{&quot;x&quot;:1}"></div></article>').encode()
+  with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"anchor_path_not_allowed"):self.probe(body,receipt_for(body))
  def test_closed_report_rejects_extra_field(self):
   report=self.probe();report["shape"]["values"]=[]
   with self.assertRaisesRegex(BlizzardPatchNotesSemanticAnchorProbeError,"shape_invalid"):validate_semantic_shape(report)

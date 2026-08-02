@@ -50,6 +50,17 @@ source-free synthetic tests, and an independent review.
 No live request belongs to implementation. A future real observation requires
 one new attended authorization and must discard the response body immediately.
 
+## Approved ancestry candidate for revision 0.2
+
+The attended anchor-path observation on unchanged source bytes found exactly
+twelve carriers. All twelve shared one normalized nearest-article path:
+`article` followed by eight `div` elements. No unanchored carrier was present.
+
+Revision 0.2 may therefore accept only that exact path. It must reject a direct
+child, any shorter or longer chain, any intervening non-`div` element, a carrier
+outside `article`, or mixed path populations. This structural policy does not
+approve the meaning of `data-props` or any JSON key.
+
 ## Proposed implementation paths
 
 1. `desktop-app/src/dpslab/blizzard_patch_notes_semantic_anchor_probe.py`;

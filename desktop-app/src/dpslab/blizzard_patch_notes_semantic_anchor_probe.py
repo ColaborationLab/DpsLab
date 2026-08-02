@@ -9,6 +9,7 @@ from .official_source_receipt import validate_capture_receipt
 class BlizzardPatchNotesSemanticAnchorProbeError(ValueError):pass
 _TOKEN=re.compile(r"^[a-z0-9][a-z0-9._-]{0,127}$");_KEY=re.compile(r"^[A-Za-z][A-Za-z0-9_-]{0,63}$");_PATH=re.compile(r"^[A-Za-z][A-Za-z0-9_-]{0,63}(?:\[\]|\.[A-Za-z][A-Za-z0-9_-]{0,63})*$");_SHA=re.compile(r"^[0-9a-f]{64}$")
 _ROOT={"schema_version","identity","source","shape","integrity"};_IDENTITY={"report_id","probe_revision","status"};_SOURCE={"receipt_id","receipt_sha256","content_sha256","byte_count"};_SHAPE={"anchor_count","paths"};_PATH_FIELDS={"path","json_type","occurrences","max_array_length","max_object_keys"};_INTEGRITY={"hash_algorithm","report_sha256"};_TYPES={"object","array","string","number","boolean","null"};_VOID={"area","base","br","col","embed","hr","img","input","link","meta","param","source","track","wbr"}
+_EXPECTED_ANCHOR_PATH=("article",)+("div",)*8
 def _fail(reason:str)->None:raise BlizzardPatchNotesSemanticAnchorProbeError(reason)
 def canonical_semantic_shape_bytes(document:Mapping[str,Any])->bytes:return (json.dumps(document,ensure_ascii=False,sort_keys=True,separators=(",",":"))+"\n").encode("utf-8")
 def calculate_semantic_shape_sha256(document:Mapping[str,Any])->str:
@@ -31,7 +32,9 @@ class _AnchorParser(HTMLParser):
   if self.nodes>4096 or len(self.stack)>=64 or len(attrs)>32:_fail("html_limit_exceeded")
   names=[name.lower() for name,value in attrs]
   if len(names)!=len(set(names)):_fail("html_attribute_duplicate")
-  if tag=="div" and self.stack and self.stack[-1]=="article" and "data-props" in names:
+  if tag=="div" and "data-props" in names:
+   articles=[index for index,value in enumerate(self.stack) if value=="article"]
+   if not articles or tuple(self.stack[articles[-1]:]+[tag])!=_EXPECTED_ANCHOR_PATH:_fail("anchor_path_not_allowed")
    if len(self.values)>=64:_fail("anchor_limit_exceeded")
    value=next(value for name,value in attrs if name.lower()=="data-props")
    if not isinstance(value,str) or not value or len(value.encode("utf-8"))>65536:_fail("anchor_value_invalid")

@@ -7028,12 +7028,12 @@ Publication and attended-observation evidence:
 - no response, JSON value, report, or new receipt was persisted; no retry,
   facts, selector approval, catalog mutation, SimulationCraft, or comparison.
 
-## Active design task — Blizzard patch-note anchor path probe 0.1
+## Published implementation — Blizzard patch-note anchor path probe 0.1
 
 The corrective boundary observes only the tag-name ancestry of elements that
 carry an attribute named `data-props`. It never reads the attribute value.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -7097,6 +7097,93 @@ carry an attribute named `data-props`. It never reads the attribute value.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `blizzard_patch_notes_anchor_path_probe_0_1_published_with_ci_passed`.
+
+Publication and attended-observation evidence:
+
+- implementation commit: `a102a7c9ca4cf3195167baefe305c800b9563d2e`;
+- local verification: 21 focused and 1023 functional tests passed;
+- GitHub Actions run `30726308267`: policy, tools, and functional lanes passed;
+- one attended request on content SHA-256
+  `fbf289f3068d3bb14f04709f0f735db9ee09183cc90968d5e34384fad657f1e6`
+  found 12 carriers, all anchored and none unanchored;
+- the sole signature, observed 12 times, was `article` followed by eight
+  `div` elements, depth 9;
+- report SHA-256:
+  `46bb57d9e80d919f19f32903b52a96020baab596b270b0a2adc1682718e95726`;
+- no values, HTML, text, report, or receipt were persisted; no retry, fact
+  extraction, catalog mutation, SimulationCraft, or comparison occurred.
+
+## Active implementation — Semantic anchor exact-path policy 0.2
+
+This corrective revision replaces the disproved direct-child requirement with
+the one exact ancestry signature observed across all twelve carriers. It does
+not change JSON shape semantics or approve any key mapping.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "semantic_anchor_exact_path_policy_0_2",
+  "title": "Require the observed exact article-to-data-props ancestry in semantic shape probing",
+  "baseline_commit": "a102a7c9ca4cf3195167baefe305c800b9563d2e",
+  "authorization": {
+    "status": "authorized_for_implementation",
+    "authorization_id": "semantic_anchor_exact_path_policy_0_2-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T20:12:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": [
+      "desktop-app/src/dpslab/blizzard_patch_notes_semantic_anchor_probe.py",
+      "desktop-app/tests/test_blizzard_patch_notes_semantic_anchor_probe.py",
+      "knowledge/fixtures/blizzard_patch_notes_semantic_anchor_synthetic_0_1.html",
+      "knowledge/snapshots/blizzard_patch_notes_semantic_shape_synthetic_0_1.json",
+      "docs/BLIZZARD_PATCH_NOTES_SEMANTIC_ANCHOR_PROBE.md",
+      "docs/NEXT_TASK.md"
+    ],
+    "generated_paths": [
+      ".dpslab/quality-gates/semantic_anchor_exact_path_policy_0_2/implementation.json",
+      ".dpslab/quality-gates/semantic_anchor_exact_path_policy_0_2/audit.json"
+    ],
+    "forbidden_paths": [
+      ".github/**", "knowledge/catalogs/**", "profiles/**", "scenarios/**",
+      "variants/**", "comparisons/**", "results/**", "config/**",
+      "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "tests.test_blizzard_patch_notes_semantic_anchor_probe", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": "desktop-app", "argv": ["python", "-m", "unittest", "discover", "-s", "tests", "-v"], "environment": {"PYTHONPATH": "src", "PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 1023,
+    "minimum_test_count": 1025
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/blizzard_patch_notes_anchor_path_probe.py": "1cab61ca1a5ef474fb772a59937950a3b6a8cbcde9f5ff865619ccda387fa6ad",
+    "desktop-app/src/dpslab/blizzard_patch_notes_layout_probe.py": "45f1981b35c3b5105cf5a8608a2e2a97d504b820214acd7b602163533005dadf",
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "only article followed by exactly eight div elements may carry data-props into JSON shape analysis",
+    "direct, shorter, longer, non-div, outside-article, or mixed carrier paths fail closed",
+    "attribute values remain unavailable until the exact path is validated",
+    "existing duplicate-key, value erasure, receipt binding, JSON limits, and pending-review controls remain intact",
+    "fixture and tests are synthetic and contain no real keys or source text",
+    "no live request, fact extraction, selector approval, catalog mutation, SimulationCraft, commit, or push"
+  ],
+  "express_exclusions": [
+    "changes to layout or anchor-path probes, HTTP, source registry, evidence, catalogs, addon, UI, signing, or distribution",
+    "semantic approval of data-props or any JSON key",
+    "changes outside the six authorized paths"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `blizzard_patch_notes_anchor_path_probe_0_1_authorized_for_implementation`.
+Implementation-entry verdict: `semantic_anchor_exact_path_policy_0_2_authorized_for_implementation`.
