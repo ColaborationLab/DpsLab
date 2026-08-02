@@ -6942,13 +6942,13 @@ Publication and attended-observation evidence:
 - the response body and report were not persisted; no retry, fact extraction,
   catalog mutation, recommendation, SimulationCraft, or comparison occurred.
 
-## Active design task — Blizzard patch-note semantic anchor probe 0.1
+## Published implementation — Blizzard patch-note semantic anchor probe 0.1
 
 The layout report identifies a repeated structural anchor but does not reveal
 its meaning. The next boundary may describe only the JSON key/type shape of
 allowlisted `data-props` attributes and must erase all values.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -7012,6 +7012,80 @@ allowlisted `data-props` attributes and must erase all values.
   ]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `blizzard_patch_notes_semantic_anchor_probe_0_1_published_with_ci_passed`.
+
+Publication and attended-observation evidence:
+
+- implementation commit: `f933f00ab29286c4ff6b4c9570fed0433b661b0e`;
+- local verification: 24 focused and 1002 functional tests passed;
+- GitHub Actions run `30725617503`: policy, tools, and functional lanes passed;
+- one attended request used unchanged content SHA-256
+  `fbf289f3068d3bb14f04709f0f735db9ee09183cc90968d5e34384fad657f1e6`;
+- the observation rejected fail-closed as `semantic_anchor_unavailable`, proving
+  that direct-child ancestry was not established;
+- no response, JSON value, report, or new receipt was persisted; no retry,
+  facts, selector approval, catalog mutation, SimulationCraft, or comparison.
+
+## Active design task — Blizzard patch-note anchor path probe 0.1
+
+The corrective boundary observes only the tag-name ancestry of elements that
+carry an attribute named `data-props`. It never reads the attribute value.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version": "0.1",
+  "task_id": "blizzard_patch_notes_anchor_path_probe_0_1",
+  "title": "Design a value-blind ancestry probe for patch-note data-props anchors",
+  "baseline_commit": "f933f00ab29286c4ff6b4c9570fed0433b661b0e",
+  "authorization": {
+    "status": "design_only",
+    "authorization_id": "blizzard_patch_notes_anchor_path_probe_0_1-20260801-daniel-continue",
+    "authorized_by": "Daniel",
+    "authorized_at": "2026-08-01T19:52:00-05:00"
+  },
+  "scope": {
+    "allowed_paths": ["docs/BLIZZARD_PATCH_NOTES_ANCHOR_PATH_PROBE.md", "docs/NEXT_TASK.md"],
+    "generated_paths": [],
+    "forbidden_paths": [
+      ".github/**", "desktop-app/**", "knowledge/**", "profiles/**",
+      "scenarios/**", "variants/**", "comparisons/**", "results/**",
+      "config/**", "flasil.simc", "tools/**"
+    ],
+    "allow_deletions": false,
+    "allow_renames": false
+  },
+  "tests": {
+    "focused": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "full": {"working_directory": ".", "argv": ["python", "-m", "unittest", "discover", "-s", "tools/tests", "-v"], "environment": {"PYTHONDONTWRITEBYTECODE": "1"}},
+    "baseline_test_count": 52,
+    "minimum_test_count": 52
+  },
+  "protected_files": {
+    "desktop-app/src/dpslab/blizzard_patch_notes_layout_probe.py": "45f1981b35c3b5105cf5a8608a2e2a97d504b820214acd7b602163533005dadf",
+    "desktop-app/src/dpslab/blizzard_patch_notes_semantic_anchor_probe.py": "5ab86448c658d701c956a0f58bfdba0345899a91e67198151379acc4e88e987c",
+    "desktop-app/src/dpslab/official_source_http.py": "423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9",
+    ".github/workflows/dpslab-ci.yml": "3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"
+  },
+  "audit": {"required": true, "independence": "declared_and_procedural"},
+  "acceptance_criteria": [
+    "design detects attribute name data-props without reading or retaining its value",
+    "report contains only normalized ancestry tag paths, counts, depths, and unanchored carrier count",
+    "nearest article ancestry is explicit and no direct-child relation is inferred",
+    "receipt binding, malformed nesting, empty matches, and all resource limits fail closed",
+    "output remains anchor_path_observed_pending_review and cannot modify semantic probing policy or downstream evidence",
+    "future implementation and tests use invented HTML only"
+  ],
+  "express_exclusions": [
+    "live request, real fixture, attribute values, JSON, text, classes, identifiers, URLs, HTML persistence, browser, JavaScript, or CSS",
+    "semantic inference, selector approval, fact extraction, catalog mutation, addon, UI, SimulationCraft, signing, or distribution",
+    "automatic scheduling, retry, database, commit, or push",
+    "changes outside the two documentary paths"
+  ]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `blizzard_patch_notes_semantic_anchor_probe_0_1_authorized_for_implementation`.
+Design verdict: `blizzard_patch_notes_anchor_path_probe_0_1_design_ready`.
