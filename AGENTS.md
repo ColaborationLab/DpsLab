@@ -52,6 +52,25 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - No guardar rutas personales absolutas en archivos versionados.
 - No ejecutar `simc.exe` sin autorización explícita para esa ejecución concreta.
 
+## Seguridad transversal obligatoria
+
+- Aplicar `security/security_baseline_0_1.json` y
+  `docs/SECURITY_ARCHITECTURE.md` a todo diseño, implementación, prueba,
+  publicación y operación futura.
+- Tratar red, perfiles importados, SavedVariables, procesos externos, paquetes
+  de conocimiento y rutas elegidas por el usuario como entradas no confiables.
+- Los datos nunca pueden convertirse en código, comandos, módulos o Lua
+  ejecutable. Denegar por defecto ante ambigüedad, incompatibilidad, exceso de
+  recursos, procedencia insuficiente o vigencia desconocida.
+- Todo contrato debe declarar límites de confianza, privilegios, secretos,
+  persistencia, red, datos personales, degradación segura y pruebas negativas.
+- Ninguna clave privada, contraseña, token o credencial de producción puede
+  entrar al repositorio, CI, addon, logs, artefactos o configuración distribuida.
+- Una beta externa requiere cerrar las puertas enumeradas en la baseline de
+  seguridad; CI verde y firma criptográfica no sustituyen esa revisión.
+- Los hallazgos de seguridad se diagnostican, corrigen, auditan, publican y
+  activan mediante decisiones separadas. No divulgar secretos en Issues.
+
 ## Restricciones de alcance
 
 - No iniciar comparaciones de equipo o talentos sin una tarea expresamente aprobada.

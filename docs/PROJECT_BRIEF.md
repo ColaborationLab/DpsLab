@@ -97,6 +97,22 @@ explica el diferencial.
 - Algunos artefactos históricos conservan esquema 0.2 y no se regeneran automáticamente.
 - La configuración local y `results/runs/` están excluidos del control de versiones.
 
+## Eje transversal de seguridad
+
+DpsLab adopta seguridad por diseño y denegación por defecto. Datos externos,
+archivos locales, salida de procesos, paquetes de conocimiento y el futuro
+intercambio con el addon cruzan límites de confianza y deben validarse con
+esquemas cerrados, límites de recursos, procedencia e integridad antes de uso.
+
+Los datos nunca son código. La distribución futura requiere actualización
+firmada y atómica, protección contra retroceso, privacidad por defecto,
+dependencias reproducibles, inventario SBOM, análisis de vulnerabilidades,
+secretos y código, pruebas adversariales, respuesta a incidentes y revisión
+independiente. Estos requisitos están definidos en `SECURITY.md`,
+`docs/SECURITY_ARCHITECTURE.md` y
+`security/security_baseline_0_1.json`. No se declarará preparación para beta
+externa hasta que todas las puertas obligatorias tengan evidencia vigente.
+
 ## Visión multiclase futura
 
 La arquitectura busca admitir múltiples clases mediante modelos comunes,

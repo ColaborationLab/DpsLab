@@ -312,7 +312,7 @@ consumed historical evidence and cannot authorize another edit, test run,
 commit, push, SimulationCraft invocation, addon change, UI, network operation,
 real key, or live recommendation.
 
-<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version": "0.1",
@@ -441,7 +441,7 @@ real key, or live recommendation.
   ]
 }
 ```
-<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Closure evidence:
 
@@ -7407,12 +7407,12 @@ Evidence:
 - no official-source connection, real content, real review, catalog mutation,
   or SimulationCraft execution occurred.
 
-## Active design task — Attended semantic review execution 0.1
+## Deferred design task — Attended semantic review execution 0.1
 
 This task designs the final readiness and authorization boundary before one
 real human-attended semantic review. It does not authorize that execution.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7428,6 +7428,36 @@ real human-attended semantic review. It does not authorize that execution.
   "express_exclusions":["implementation","real execution","live request","content persistence","fact extraction","selector approval","catalog mutation","SimulationCraft","addon","distribution","changes outside two documentary paths"]
 }
 ```
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
+
+Design verdict: `attended_semantic_review_execution_0_1_design_ready_deferred_by_security_foundation`.
+
+The design remains valid evidence but is not an active implementation or real
+execution authority. Security foundation work is a prerequisite before this
+boundary can be reconsidered.
+
+## Active implementation task — Security foundation 0.1
+
+This block makes security a cross-cutting, machine-checkable prerequisite for
+future design and implementation. It does not claim production certification
+or enable any network, addon, update, signing, or SimulationCraft operation.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"security_foundation_0_1",
+  "title":"Establish the cross-cutting security philosophy, trust boundaries, beta gates, and machine-checkable baseline",
+  "baseline_commit":"f3aac70b5968dd7ff5fb61555d4023af597376dd",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"security_foundation_0_1-20260826-daniel-adjust-and-continue","authorized_by":"Daniel","authorized_at":"2026-08-26T00:00:00-05:00"},
+  "scope":{"allowed_paths":["AGENTS.md","SECURITY.md","docs/NEXT_TASK.md","docs/PROJECT_BRIEF.md","docs/ROADMAP.md","docs/SECURITY_ARCHITECTURE.md","security/security_baseline_0_1.json","tools/tests/test_security_baseline.py"],"generated_paths":[".dpslab/quality-gates/security_foundation_0_1/implementation.json",".dpslab/quality-gates/security_foundation_0_1/audit.json"],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_security_baseline","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":57},
+  "protected_files":{"profiles/flasil.simc":"f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738","flasil.simc":"f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738","scenarios/st_lightmovement_300s_v1.toml":"93187338a61d1cfc330f5262abb0b9183acb727d310099eca7917138207c09aa",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5","desktop-app/src/dpslab/windows_key_protection.py":"27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b","desktop-app/src/dpslab/official_source_http.py":"423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9","desktop-app/src/dpslab/runner.py":"92dc7712a5fa2001e816f4dc7025e1af6c81b67b2c98b9fd5f52c3301abacc93"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["security is a required input to every future design implementation publication and operation contract","data never becomes executable code and unknown or unsafe input fails closed","desktop addon network CI knowledge update and release-key trust boundaries are explicit","production secrets remain forbidden from repository CI addon logs artifacts and distributed configuration","external beta gates include reproducible dependencies SBOM dependency and secret scanning static analysis adversarial tests signed updates privacy incident response and independent review","the baseline is closed versioned sorted and verified by focused tests","existing CI least-privilege controls and protected runtime files remain unchanged","the deferred semantic-review design is preserved without real execution authority"],
+  "express_exclusions":["network calls or live-source observation","addon Lua UI updater packaging distribution or release activation","key generation signing recovery or secret access","SimulationCraft comparison runs results or baseline mutation","dependency installation GitHub settings workflow changes commit push or later blocks","changes outside the eight allowlisted paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design verdict: `attended_semantic_review_execution_0_1_design_ready`.
+Implementation status: `security_foundation_0_1_implemented_pending_verification_and_audit`.

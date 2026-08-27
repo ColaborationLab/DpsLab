@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1",
+  "policy_id": "dpslab.security-baseline.0.1",
+  "principles": [
+    "data_never_code",
+    "deny_by_default",
+    "least_privilege",
+    "privacy_by_default",
+    "separate_security_decisions",
+    "signed_atomic_updates"
+  ],
+  "trust_boundaries": [
+    "addon_runtime",
+    "desktop_filesystem",
+    "external_processes",
+    "github_ci",
+    "knowledge_packages",
+    "network_sources",
+    "release_keys",
+    "update_channel"
+  ],
+  "secret_forbidden_locations": [
+    "addon",
+    "artifacts",
+    "ci",
+    "desktop_configuration",
+    "logs",
+    "repository"
+  ],
+  "external_beta_required_gates": [
+    "adversarial_tests",
+    "dependency_audit",
+    "incident_response",
+    "independent_security_review",
+    "privacy_review",
+    "reproducible_dependencies_and_sbom",
+    "secret_scanning",
+    "signed_update_verification",
+    "static_analysis"
+  ],
+  "unsafe_patterns": [
+    "dynamic_code_from_data",
+    "embedded_production_secret",
+    "silent_best_effort_guidance",
+    "telemetry_without_opt_in",
+    "tls_only_update_trust",
+    "unbounded_untrusted_input"
+  ]
+}
+

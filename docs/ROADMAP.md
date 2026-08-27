@@ -48,3 +48,26 @@
 - Arquitectura multiclase.
 - Entrenador o analizador de combate.
 - Weekly Reward Choices, currencies, high watermarks y achievements.
+
+## Seguridad transversal
+
+- [x] Filosofía de denegación por defecto, datos nunca ejecutables, privilegio
+  mínimo, privacidad por defecto y decisiones de seguridad separadas.
+- [x] Límites de confianza iniciales para aplicación, addon, fuentes, CI,
+  paquetes, actualización y claves.
+- [x] Política de reporte responsable y baseline legible por pruebas.
+- [ ] Modelo de amenazas revisado para el primer alcance distribuible.
+- [ ] Dependencias reproducibles, SBOM y auditoría automática de vulnerabilidades.
+- [ ] Análisis estático y escaneo de secretos en CI.
+- [ ] Canal de actualización firmado con protección contra repetición,
+  degradación y rollback malicioso.
+- [ ] Contrato y pruebas adversariales del intercambio aplicación–addon.
+- [ ] Política de privacidad y procedimiento de respuesta, revocación y
+  recuperación ejercitado.
+- [ ] Revisión de seguridad independiente antes de beta externa.
+- [ ] Firma de confianza de Windows para ejecutable e instalador, o aceptación
+  humana explícita y documentada del riesgo residual.
+
+Los elementos pendientes son puertas de distribución; no impiden desarrollar
+componentes internos bajo contratos seguros, pero sí impiden declarar el
+producto listo para usuarios externos.
