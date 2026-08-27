@@ -7475,12 +7475,12 @@ Evidence:
 - no SimulationCraft, network observation, addon, updater, signing, secret,
   release activation, or product distribution occurred.
 
-## Active implementation task — Security threat model 0.1
+## Published implementation — Security threat model 0.1
 
 This block identifies concrete threats, affected assets, current mitigations
 and unresolved beta gates. It does not claim that an open threat is resolved.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7496,6 +7496,44 @@ and unresolved beta gates. It does not claim that an open threat is resolved.
   "express_exclusions":["implementing any mitigation updater addon or release mechanism","dependency installation workflow or GitHub settings changes","network calls live sources SimulationCraft comparisons or results","secret key recovery signing publication activation or distribution","commit push or later security gates","changes outside five allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `security_threat_model_0_1_published_with_ci_passed`.
+
+Evidence:
+
+- commit `37f695a43d543b06ecacfa444118fcebacf9c6c8` is synchronized across
+  local `HEAD`, `origin/main`, and live `refs/heads/main`;
+- 5 focused and 62 tools tests passed;
+- quality gate and procedural audit passed with no findings;
+- GitHub Actions run `33033883517` passed all three lanes;
+- twelve threats are explicit and unresolved `open_beta_gate` states remain
+  blockers rather than inferred approvals;
+- no mitigation implementation, network, addon, updater, key operation,
+  SimulationCraft, release activation, or distribution occurred.
+
+## Active implementation task — Reproducible dependency inventory 0.1
+
+This block fixes the exact Windows CPython 3.13 dependency bytes installed by
+CI and publishes a matching SPDX inventory. Vulnerability and license review
+remain separate open gates.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"reproducible_dependency_inventory_0_1",
+  "title":"Pin hashed Windows Python 3.13 dependencies, publish an SPDX SBOM, and remove silent CI resolution",
+  "baseline_commit":"37f695a43d543b06ecacfa444118fcebacf9c6c8",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"reproducible_dependency_inventory_0_1-20260826-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-26T00:00:00-05:00"},
+  "scope":{"allowed_paths":[".gitattributes",".github/workflows/dpslab-ci.yml","desktop-app/pyproject.toml","desktop-app/requirements-ci-win-py313.lock","docs/DEPENDENCY_SECURITY.md","docs/NEXT_TASK.md","security/sbom-runtime-win-py313.spdx.json","tools/tests/test_dependency_supply_chain.py","tools/tests/test_github_automation.py"],"generated_paths":[".dpslab/quality-gates/reproducible_dependency_inventory_0_1/implementation.json",".dpslab/quality-gates/reproducible_dependency_inventory_0_1/audit.json"],"forbidden_paths":["desktop-app/src/**","desktop-app/tests/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/SECURITY_ARCHITECTURE.md","docs/THREAT_MODEL.md","security/security_baseline_0_1.json","security/threat_model_0_1.json"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_dependency_supply_chain","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":62,"minimum_test_count":67},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","docs/SECURITY_ARCHITECTURE.md":"ebe0dd5624e7149807275dfab891fd52e598f27e7c7afedfec2bd4fbc15fdde5","docs/THREAT_MODEL.md":"4784525ec7e8af6073fd2b934f855f5ac8ee2a639cb3ff1200c1811883f8400f","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","security/threat_model_0_1.json":"59fdb8dc84e6f0722605a63b5bb627b02e2f0db1e3d5c27e41e1e98391686131","desktop-app/src/dpslab/runner.py":"92dc7712a5fa2001e816f4dc7025e1af6c81b67b2c98b9fd5f52c3301abacc93"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["CI dependency resolution is exact wheel-only and SHA-256 required for every direct transitive and build dependency","setuptools build backend is fixed to the locked version","project installation performs no dependency resolution and no isolated build download","SPDX 2.3 SBOM matches every locked package version hash and dependency relationship","unknown licenses remain NOASSERTION rather than inferred","lock scope is explicitly Windows x86-64 CPython 3.13 and does not claim portability","dependency_audit license review pip provenance and other platform locks remain open gates","existing runtime source threat model and security baseline remain unchanged"],
+  "express_exclusions":["vulnerability or license approval claims","installing dependencies on the user workstation","runtime product code tests addon updater or packaging changes","secret scanning static analysis GitHub settings or new external Actions","network activity beyond the completed temporary PyPI wheel resolution","SimulationCraft comparisons results keys signing release activation or distribution","commit push or later security gates","changes outside nine allowlisted paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation status: `security_threat_model_0_1_implemented_pending_verification_and_audit`.
+Implementation status: `reproducible_dependency_inventory_0_1_implemented_pending_verification_and_audit`.

@@ -144,11 +144,17 @@ class GitHubAutomationTests(unittest.TestCase):
     def test_functional_suite_installs_authoritative_project_first(self) -> None:
         functional = self.workflow.split("\n  functional-suite:\n", 1)[1]
         setup = functional.index(f"actions/setup-python@{SETUP_PYTHON_SHA}")
-        install = functional.index("python -m pip install ./desktop-app")
+        locked = functional.index(
+            "python -m pip install --require-hashes -r ./desktop-app/requirements-ci-win-py313.lock"
+        )
+        install = functional.index(
+            "python -m pip install --no-deps --no-build-isolation ./desktop-app"
+        )
         suite = functional.index("python -m unittest discover -s tests -v")
-        self.assertLess(setup, install)
+        self.assertLess(setup, locked)
+        self.assertLess(locked, install)
         self.assertLess(install, suite)
-        self.assertEqual(self.workflow.count("python -m pip install ./desktop-app"), 1)
+        self.assertNotIn("python -m pip install ./desktop-app", self.workflow)
 
     def test_contractual_text_types_have_canonical_lf_git_attributes(self) -> None:
         self.assertEqual(
@@ -157,7 +163,8 @@ class GitHubAutomationTests(unittest.TestCase):
             b"*.toml text eol=lf\n"
             b".gitattributes text eol=lf\n"
             b"*.json text eol=lf\n"
-            b"*.html text eol=lf\n",
+            b"*.html text eol=lf\n"
+            b"*.lock text eol=lf\n",
         )
 
         eol = subprocess.run(

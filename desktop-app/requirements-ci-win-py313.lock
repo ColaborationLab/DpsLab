@@ -1,0 +1,10 @@
+# DpsLab CI dependency lock for CPython 3.13 on Windows x86-64.
+# Regeneration requires a reviewed supply-chain task and new wheel hashes.
+--only-binary=:all:
+
+cffi==2.1.1 --hash=sha256:1aa5645c30469b09530c4ebca77ebf8f17618293c58f8549cb1a543a50236e7d
+cryptography==49.0.0 --hash=sha256:e5dfc1e64de5677cec922ffa8da89c546d0415bf6efdf081842e5d44c84e1f0e
+numpy==2.5.2 --hash=sha256:85aaccb24182c25df891ad0ec333585967e115269d5f1b17f2c9ae005bc96657
+pycparser==3.0 --hash=sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992
+scipy==1.18.1 --hash=sha256:559ed65f60c1af5a03f3912605a1b5114f522c7c32fb23c3376ae8f03219fe28
+setuptools==84.0.0 --hash=sha256:51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670

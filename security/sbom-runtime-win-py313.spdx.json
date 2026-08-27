@@ -1,0 +1,30 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "creationInfo": {
+    "created": "2026-08-27T02:45:00Z",
+    "creators": ["Tool: DpsLab governed dependency inventory 0.1"]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentDescribes": ["SPDXRef-Package-DpsLab"],
+  "documentNamespace": "https://dpslab.local/spdx/runtime-win-py313/0.1",
+  "name": "DpsLab runtime and build dependencies for Windows CPython 3.13",
+  "packages": [
+    {"SPDXID":"SPDXRef-Package-DpsLab","downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/dpslab@0.1.0","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"dpslab","versionInfo":"0.1.0"},
+    {"SPDXID":"SPDXRef-Package-cffi","checksums":[{"algorithm":"SHA256","checksumValue":"1aa5645c30469b09530c4ebca77ebf8f17618293c58f8549cb1a543a50236e7d"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/cffi@2.1.1","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"cffi","versionInfo":"2.1.1"},
+    {"SPDXID":"SPDXRef-Package-cryptography","checksums":[{"algorithm":"SHA256","checksumValue":"e5dfc1e64de5677cec922ffa8da89c546d0415bf6efdf081842e5d44c84e1f0e"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/cryptography@49.0.0","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"cryptography","versionInfo":"49.0.0"},
+    {"SPDXID":"SPDXRef-Package-numpy","checksums":[{"algorithm":"SHA256","checksumValue":"85aaccb24182c25df891ad0ec333585967e115269d5f1b17f2c9ae005bc96657"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/numpy@2.5.2","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"numpy","versionInfo":"2.5.2"},
+    {"SPDXID":"SPDXRef-Package-pycparser","checksums":[{"algorithm":"SHA256","checksumValue":"b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/pycparser@3.0","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"pycparser","versionInfo":"3.0"},
+    {"SPDXID":"SPDXRef-Package-scipy","checksums":[{"algorithm":"SHA256","checksumValue":"559ed65f60c1af5a03f3912605a1b5114f522c7c32fb23c3376ae8f03219fe28"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/scipy@1.18.1","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"scipy","versionInfo":"1.18.1"},
+    {"SPDXID":"SPDXRef-Package-setuptools","checksums":[{"algorithm":"SHA256","checksumValue":"51a52592b3b99e102b609654876bd65f19f999935166d1352678931132b0c670"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/setuptools@84.0.0","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"setuptools","versionInfo":"84.0.0"}
+  ],
+  "relationships": [
+    {"relatedSpdxElement":"SPDXRef-Package-cffi","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-cryptography"},
+    {"relatedSpdxElement":"SPDXRef-Package-cryptography","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-DpsLab"},
+    {"relatedSpdxElement":"SPDXRef-Package-numpy","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-scipy"},
+    {"relatedSpdxElement":"SPDXRef-Package-pycparser","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-cffi"},
+    {"relatedSpdxElement":"SPDXRef-Package-scipy","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-DpsLab"},
+    {"relatedSpdxElement":"SPDXRef-Package-setuptools","relationshipType":"BUILD_DEPENDENCY_OF","spdxElementId":"SPDXRef-Package-DpsLab"}
+  ],
+  "spdxVersion": "SPDX-2.3"
+}
+
