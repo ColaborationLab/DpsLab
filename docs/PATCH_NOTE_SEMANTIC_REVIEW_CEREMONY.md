@@ -36,3 +36,11 @@ appear in it.
 One real attended execution requires a later explicit confirmation immediately
 before display. Implementation, synthetic tests, commit, and publication do not
 authorize that execution.
+
+## Synthetic window boundary
+
+The first visible adapter is restricted to synthetic content. Its title and
+body must identify synthetic mode prominently. It presents one slot, requires
+an explicit role and reason selection, and returns no decision on close or
+cancel. Automated tests validate its presentation contract without starting a
+native window; native usability remains a separate human confirmation.

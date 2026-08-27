@@ -7334,12 +7334,12 @@ Evidence:
 - only synthetic slot decisions were used; no real semantic assignment, live
   request, retained content, fact extraction, or catalog mutation occurred.
 
-## Active design task — Patch-note semantic review ceremony 0.1
+## Published implementation — Patch-note semantic review ceremony 0.1
 
 This task designs a visible, attended, single-use human review ceremony. It
 does not authorize displaying real content.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7355,6 +7355,41 @@ does not authorize displaying real content.
   "express_exclusions":["real display","live request","content persistence","screenshots","clipboard","logging source content","fact extraction","selector approval","catalog mutation","SimulationCraft","addon","distribution","changes outside four allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `patch_note_semantic_review_ceremony_0_1_published_with_ci_passed`.
+
+Evidence:
+
+- commit `8a0201e50cb10f6bf7871bba8f1bee2dfcdff7e4` is synchronized across
+  local `HEAD`, `origin/main`, and the previously verified live remote;
+- 16 focused and 1100 functional tests passed, with one expected skip;
+- audit recorded no findings; GitHub Actions run `31008582887` passed all
+  three lanes;
+- the implementation used callbacks and synthetic mutable buffers only;
+- no visible window, real content, live request, or real review occurred.
+
+## Active implementation task — Synthetic semantic review window 0.1
+
+This task adds a local visible adapter for synthetic usability review. It does
+not connect the window to an official source or authorize a real ceremony.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"patch_note_semantic_review_window_0_1",
+  "title":"Implement a synthetic local window for attended semantic review",
+  "baseline_commit":"8a0201e50cb10f6bf7871bba8f1bee2dfcdff7e4",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"patch_note_semantic_review_window_0_1-20260826-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-26T00:00:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/patch_note_semantic_review_window.py","desktop-app/tests/test_patch_note_semantic_review_window.py","docs/PATCH_NOTE_SEMANTIC_REVIEW_CEREMONY.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/patch_note_semantic_review_window_0_1/implementation.json",".dpslab/quality-gates/patch_note_semantic_review_window_0_1/audit.json"],"forbidden_paths":[".github/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_patch_note_semantic_review_window","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1100,"minimum_test_count":1115},
+  "protected_files":{"desktop-app/src/dpslab/patch_note_semantic_review_ceremony.py":"0eb1285c65036481ddf23eb33a6ce6232e118f35ac909deb199fb23b72427a59","desktop-app/src/dpslab/patch_note_semantic_slot_review.py":"c129466a5b8b3a936b05dd8131867c720e865f8a8516e1058477398fd47f0aa1",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["window identifies synthetic mode prominently","one slot and one content buffer are visible at a time","role and reason choices are closed and initially unselected","continue is disabled until both choices are explicit","close and cancel return no decision","display text is not copied logged or persisted","headless tests use fake view ports and no real source","native visual verification remains a separate human gate"],
+  "express_exclusions":["official-source connection","real content","real ceremony","network","content persistence","clipboard","screenshots as project artifacts","fact extraction","catalog mutation","SimulationCraft","addon","distribution","changes outside four allowlisted paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `patch_note_semantic_review_ceremony_0_1_authorized_for_implementation`.
+Implementation-entry verdict: `patch_note_semantic_review_window_0_1_authorized_for_implementation`.
