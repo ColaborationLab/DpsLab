@@ -7369,12 +7369,12 @@ Evidence:
 - the implementation used callbacks and synthetic mutable buffers only;
 - no visible window, real content, live request, or real review occurred.
 
-## Active implementation task — Synthetic semantic review window 0.1
+## Published implementation — Synthetic semantic review window 0.1
 
 This task adds a local visible adapter for synthetic usability review. It does
 not connect the window to an official source or authorize a real ceremony.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7390,6 +7390,44 @@ not connect the window to an official source or authorize a real ceremony.
   "express_exclusions":["official-source connection","real content","real ceremony","network","content persistence","clipboard","screenshots as project artifacts","fact extraction","catalog mutation","SimulationCraft","addon","distribution","changes outside four allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `patch_note_semantic_review_window_0_1_published_with_ci_and_human_visual_approval`.
+
+Evidence:
+
+- commit `7fdb6c35605819eba40a65c2118a835cdf22c699` is synchronized across
+  local `HEAD`, `origin/main`, and live `refs/heads/main`;
+- 16 focused and 1116 functional tests passed, with one expected skip;
+- audit recorded no findings and protected hashes remained unchanged;
+- GitHub Actions run `33030375509` completed with `Success`; Policy and
+  contract, Tools tests, and Functional suite all passed;
+- Daniel confirmed on 2026-08-26 that the visible synthetic window is legible
+  and appropriate for the design phase;
+- no official-source connection, real content, real review, catalog mutation,
+  or SimulationCraft execution occurred.
+
+## Active design task — Attended semantic review execution 0.1
+
+This task designs the final readiness and authorization boundary before one
+real human-attended semantic review. It does not authorize that execution.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"attended_semantic_review_execution_0_1",
+  "title":"Design the one-shot real semantic review execution boundary",
+  "baseline_commit":"7fdb6c35605819eba40a65c2118a835cdf22c699",
+  "authorization":{"status":"design_only","authorization_id":"attended_semantic_review_execution_0_1-20260826-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-26T20:30:00-05:00"},
+  "scope":{"allowed_paths":["docs/PATCH_NOTE_SEMANTIC_REVIEW_CEREMONY.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":52},
+  "protected_files":{"desktop-app/src/dpslab/patch_note_semantic_review_window.py":"3d14452f5bc73cd2c7271abf451c42d9764bf1c7a7b8739ca6fd8b8aaee6fa0f","desktop-app/src/dpslab/patch_note_semantic_review_ceremony.py":"0eb1285c65036481ddf23eb33a6ce6232e118f35ac909deb199fb23b72427a59",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
+  "audit":{"required":false,"independence":"not_applicable_design_only"},
+  "acceptance_criteria":["execution is one-shot and requires immediate human confirmation","live receipt content and slot hashes are reverified before each display and before finalization","only the approved window and ceremony core may receive transient content","close cancel timeout source drift and any invalid choice produce no approved record","durable output is content-free and written only after complete validated review","real execution authority is consumed regardless of success cancellation or failure","semantic approval does not authorize fact extraction selector approval catalog mutation or recommendations"],
+  "express_exclusions":["implementation","real execution","live request","content persistence","fact extraction","selector approval","catalog mutation","SimulationCraft","addon","distribution","changes outside two documentary paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation-entry verdict: `patch_note_semantic_review_window_0_1_authorized_for_implementation`.
+Design verdict: `attended_semantic_review_execution_0_1_design_ready`.

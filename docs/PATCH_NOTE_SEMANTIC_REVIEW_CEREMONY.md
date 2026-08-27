@@ -44,3 +44,13 @@ body must identify synthetic mode prominently. It presents one slot, requires
 an explicit role and reason selection, and returns no decision on close or
 cancel. Automated tests validate its presentation contract without starting a
 native window; native usability remains a separate human confirmation.
+
+## Human visual gate
+
+Daniel completed the native visual gate on 2026-08-26 and confirmed that the
+synthetic window is legible and appropriate for the design phase. GitHub
+Actions run `33030375509` also passed all lanes for commit `7fdb6c3`.
+
+This approval validates presentation only. A real attended execution remains
+single-use, requires immediate confirmation, consumes its authority even when
+cancelled or failed, and cannot authorize downstream fact extraction.
