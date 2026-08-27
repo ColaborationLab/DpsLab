@@ -7436,13 +7436,13 @@ The design remains valid evidence but is not an active implementation or real
 execution authority. Security foundation work is a prerequisite before this
 boundary can be reconsidered.
 
-## Active implementation task — Security foundation 0.1
+## Published implementation — Security foundation 0.1
 
 This block makes security a cross-cutting, machine-checkable prerequisite for
 future design and implementation. It does not claim production certification
 or enable any network, addon, update, signing, or SimulationCraft operation.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7458,6 +7458,44 @@ or enable any network, addon, update, signing, or SimulationCraft operation.
   "express_exclusions":["network calls or live-source observation","addon Lua UI updater packaging distribution or release activation","key generation signing recovery or secret access","SimulationCraft comparison runs results or baseline mutation","dependency installation GitHub settings workflow changes commit push or later blocks","changes outside the eight allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `security_foundation_0_1_published_with_ci_passed`.
+
+Evidence:
+
+- commit `a33615df01e9479cb3d453fbd3fd0b6eb163b036` is synchronized across
+  local `HEAD`, `origin/main`, and live `refs/heads/main`;
+- 5 focused and 57 tools tests passed locally;
+- the quality gate and procedural audit passed with no findings;
+- GitHub Actions run `33032859558` completed successfully in Policy and
+  contract, Tools tests, and Functional suite;
+- one transient Windows temporary-directory cleanup error 145 passed on its
+  controlled focused repeat and the subsequent complete suite;
+- no SimulationCraft, network observation, addon, updater, signing, secret,
+  release activation, or product distribution occurred.
+
+## Active implementation task — Security threat model 0.1
+
+This block identifies concrete threats, affected assets, current mitigations
+and unresolved beta gates. It does not claim that an open threat is resolved.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"security_threat_model_0_1",
+  "title":"Implement the versioned threat model and bind open threats to external-beta gates",
+  "baseline_commit":"a33615df01e9479cb3d453fbd3fd0b6eb163b036",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"security_threat_model_0_1-20260826-daniel-adjust-and-continue","authorized_by":"Daniel","authorized_at":"2026-08-26T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md","docs/THREAT_MODEL.md","security/security_baseline_0_1.json","security/threat_model_0_1.json","tools/tests/test_security_threat_model.py"],"generated_paths":[".dpslab/quality-gates/security_threat_model_0_1/implementation.json",".dpslab/quality-gates/security_threat_model_0_1/audit.json"],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/PROJECT_BRIEF.md","docs/ROADMAP.md","docs/SECURITY_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_security_threat_model","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":57,"minimum_test_count":62},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","docs/SECURITY_ARCHITECTURE.md":"ebe0dd5624e7149807275dfab891fd52e598f27e7c7afedfec2bd4fbc15fdde5",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5","desktop-app/src/dpslab/windows_key_protection.py":"27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b","desktop-app/src/dpslab/official_source_http.py":"423a28a8db7fdbffbe9d46a28ca652ba756d318752b6902f4286edf280c7b1a9","desktop-app/src/dpslab/runner.py":"92dc7712a5fa2001e816f4dc7025e1af6c81b67b2c98b9fd5f52c3301abacc93"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["assets adversaries assumptions and trust boundaries are explicit","twelve prioritized threats cover code injection updates keys sources resource exhaustion paths supply chain secrets addon exchange privacy guidance integrity and CI","every threat has closed fields assets status and concrete mitigations","open_beta_gate threats cannot be interpreted as resolved or beta-ready","material addon dependency network persistence key and update changes trigger review","the security baseline requires threat-model review before external beta","existing security architecture CI runtime acquisition and key-protection files remain unchanged"],
+  "express_exclusions":["implementing any mitigation updater addon or release mechanism","dependency installation workflow or GitHub settings changes","network calls live sources SimulationCraft comparisons or results","secret key recovery signing publication activation or distribution","commit push or later security gates","changes outside five allowlisted paths"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation status: `security_foundation_0_1_implemented_pending_verification_and_audit`.
+Implementation status: `security_threat_model_0_1_implemented_pending_verification_and_audit`.

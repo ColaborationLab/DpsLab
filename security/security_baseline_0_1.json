@@ -36,7 +36,8 @@
     "reproducible_dependencies_and_sbom",
     "secret_scanning",
     "signed_update_verification",
-    "static_analysis"
+    "static_analysis",
+    "threat_model_review"
   ],
   "unsafe_patterns": [
     "dynamic_code_from_data",
@@ -47,4 +48,3 @@
     "unbounded_untrusted_input"
   ]
 }
-

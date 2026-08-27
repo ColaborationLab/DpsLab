@@ -1,0 +1,26 @@
+{
+  "schema_version": "0.1",
+  "model_id": "dpslab.threat-model.0.1",
+  "review_triggers": [
+    "addon_api_or_exchange_change",
+    "dependency_or_ci_change",
+    "network_or_source_change",
+    "persistence_or_path_change",
+    "release_key_change",
+    "update_channel_change"
+  ],
+  "threats": [
+    {"id":"TM-01","boundary":"untrusted_data","assets":["guidance_integrity","user_device"],"status":"partial_control","mitigations":["closed_schemas","data_never_code","structured_process_argv"]},
+    {"id":"TM-02","boundary":"update_channel","assets":["release_authenticity","user_device"],"status":"open_beta_gate","mitigations":["atomic_activation","rollback_floor","signed_manifest"]},
+    {"id":"TM-03","boundary":"release_keys","assets":["release_authenticity"],"status":"partial_control","mitigations":["attended_operations","encrypted_recovery","user_dpapi"]},
+    {"id":"TM-04","boundary":"network_sources","assets":["guidance_integrity"],"status":"partial_control","mitigations":["allowlist","bounded_transport","quarantine_review"]},
+    {"id":"TM-05","boundary":"resource_limits","assets":["availability","game_experience","user_device"],"status":"open_beta_gate","mitigations":["bounded_inputs","retention_limits","timeouts"]},
+    {"id":"TM-06","boundary":"desktop_filesystem","assets":["local_data","user_device"],"status":"open_beta_gate","mitigations":["atomic_writes","path_confinement","symlink_rejection"]},
+    {"id":"TM-07","boundary":"supply_chain","assets":["release_authenticity","user_device"],"status":"open_beta_gate","mitigations":["pinned_actions","read_only_ci","version_upper_bounds"]},
+    {"id":"TM-08","boundary":"secret_handling","assets":["credentials","release_keys"],"status":"open_beta_gate","mitigations":["forbidden_secret_locations","non_secret_evidence","secretless_ci"]},
+    {"id":"TM-09","boundary":"addon_desktop_exchange","assets":["game_experience","guidance_integrity","local_data"],"status":"open_beta_gate","mitigations":["bounded_saved_variables","closed_exchange_schema","signed_addon_payload"]},
+    {"id":"TM-10","boundary":"privacy","assets":["player_privacy"],"status":"partial_control","mitigations":["local_first","no_current_telemetry","opt_in_only"]},
+    {"id":"TM-11","boundary":"knowledge_selection","assets":["game_experience","guidance_integrity"],"status":"partial_control","mitigations":["compatibility_checks","freshness_checks","guidance_unavailable"]},
+    {"id":"TM-12","boundary":"github_ci","assets":["release_authenticity","repository_integrity"],"status":"open_beta_gate","mitigations":["no_persisted_credentials","post_push_audit","sha_pinned_actions"]}
+  ]
+}
