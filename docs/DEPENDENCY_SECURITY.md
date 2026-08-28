@@ -107,3 +107,13 @@ entregue `GITHUB_TOKEN`. Las futuras excepciones, si se autorizan por separado,
 serán específicas de una huella, con propietario y caducidad; no se permitirán
 patrones amplios ni exclusiones permanentes. Este diseño no activa scanners ni
 autoriza la exploración del historial del repositorio.
+
+La investigación de diseño seleccionó Bandit `1.9.4` como candidato para el
+análisis de Python: su wheel universal publicado tiene SHA-256
+`f89ffa663767f5a0585ea075f01020207e966a9c0f2b9ef56a57c7963a3f6f8e` y
+procedencia PyPI atestada. Para secretos se excluye Gitleaks `8.30.1`: existe
+una discrepancia pública para su checksum Windows x64. El candidato retenido
+para una futura verificación independiente es Gitleaks `8.30.0`, artefacto
+`windows_x64.zip`, SHA-256
+`54fe94f644b832dd08e8c3a5915efb3bfa862386d59fb27ca0792cb687a83573`.
+La selección no autoriza su descarga, instalación o ejecución.

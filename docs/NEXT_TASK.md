@@ -7790,3 +7790,11 @@ sanitized aggregate evidence; treat a scanner failure as a gate failure; and
 require an exact, expiring, human-reviewed fingerprint for any future false
 positive suppression. GitHub's own hardening guidance confirms that any action
 used in a later workflow must remain fixed to a full commit SHA.
+
+Design evidence: Bandit `1.9.4` supplies an attested universal wheel with
+SHA-256 `f89ffa663767f5a0585ea075f01020207e966a9c0f2b9ef56a57c7963a3f6f8e`.
+Gitleaks `8.30.1` is excluded because a public report identifies a checksum
+mismatch for its Windows x64 release asset. The candidate retained for a
+future independently verified acquisition is Gitleaks `8.30.0`
+`windows_x64.zip`, SHA-256
+`54fe94f644b832dd08e8c3a5915efb3bfa862386d59fb27ca0792cb687a83573`.
