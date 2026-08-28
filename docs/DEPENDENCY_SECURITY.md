@@ -93,3 +93,17 @@ futura ejecución CI posterior a publicación autorizada.
   construir un distribuible permanecen separadas.
 - Otras plataformas necesitan locks y auditorías independientes.
 - Ningún artefacto descargado durante la resolución se versiona.
+
+## Diseño pendiente: análisis estático y secretos
+
+El siguiente diseño de seguridad separa dos controles que no deben compartir
+credenciales: análisis estático de Python y detección de secretos. La dirección
+propuesta es adquirir cada scanner por versión y SHA-256 verificables, ejecutar
+con privilegios mínimos, conservar sólo un resultado saneado y fallar cerrado
+si la identidad, la cobertura o la ejecución no pueden demostrarse.
+
+Un eventual scanner de secretos no usará una acción externa a la que se
+entregue `GITHUB_TOKEN`. Las futuras excepciones, si se autorizan por separado,
+serán específicas de una huella, con propietario y caducidad; no se permitirán
+patrones amplios ni exclusiones permanentes. Este diseño no activa scanners ni
+autoriza la exploración del historial del repositorio.

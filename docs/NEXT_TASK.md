@@ -7701,7 +7701,7 @@ the latest compatible corrected patch, keeps the exception registry empty and
 revalidates the combined vulnerability-audit candidate. It authorizes no
 functional code change, SimulationCraft, commit or push.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7717,7 +7717,7 @@ functional code change, SimulationCraft, commit or push.
   "express_exclusions":["vulnerability exception or ignore rule","automatic remediation or unrelated dependency update","functional source addon updater SimulationCraft comparison signing release or distribution","GitHub settings Actions permissions secrets commit or push","changes outside forty-two allowlisted paths"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Implementation evidence
 
@@ -7757,3 +7757,36 @@ functional code change, SimulationCraft, commit or push.
 
 Closure status:
 `cryptography_dependency_remediation_0_1_published_with_ci_approved`.
+
+## Active design task — Static analysis and secret scanning 0.1
+
+This design establishes the closed implementation boundary for two additional
+distribution gates: static analysis of DpsLab's Python source and secret
+scanning of the repository. It authorizes design documentation only. In
+particular, it does not install scanners, add a workflow, scan history, create
+an exception, upload findings or use repository credentials.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"static_analysis_and_secret_scanning_0_1_design",
+  "title":"Design hash-locked static analysis and credential-free secret scanning gates",
+  "baseline_commit":"7a41e1cd031ea0dae8054e3501f6e5f9233d1ba1",
+  "authorization":{"status":"design_only","authorization_id":"static_analysis_and_secret_scanning_0_1_design-20260828-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-28T06:58:00-05:00"},
+  "scope":{"allowed_paths":["docs/DEPENDENCY_SECURITY.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/static_analysis_and_secret_scanning_0_1_design/design.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/SECURITY_ARCHITECTURE.md","docs/THREAT_MODEL.md","tools/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":82,"minimum_test_count":82},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5",".github/workflows/dpslab-ci.yml":"49c1f3222d3a1f16108bba2dc652139a10765723bed7e8df0a486f9be4f6f8b1","desktop-app/pyproject.toml":"53363b1b7fd8bec9ec645596bda81be98c068b1e7bc553674f545eb0f05005a1"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define a credential-free scanner acquisition and integrity policy with exact version and SHA-256 evidence","define Python static-analysis scope severity threshold sanitized output and fail-closed tool-unavailable behavior","define secret-scanning scope that can scan committed history without sending source code findings or GitHub token to a third-party action","define only fingerprint-specific expiring human-reviewed suppressions and prohibit broad ignores","preserve the existing pinned-action least-privilege CI posture and seven-day sanitized evidence retention","separate scanner design from implementation dependency acquisition findings remediation commit push and release approval"],
+  "express_exclusions":["installing or running Bandit Gitleaks or another scanner","workflow modification CI execution or artifact upload","secret scanning of real repository history","credentials tokens secrets exception creation or finding remediation","SimulationCraft addon UI updater signing release or distribution","changes outside two allowlisted documentation paths"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Design direction: use a hash-locked scanner binary or package in CI rather
+than a third-party scanning action that receives `GITHUB_TOKEN`; collect only
+sanitized aggregate evidence; treat a scanner failure as a gate failure; and
+require an exact, expiring, human-reviewed fingerprint for any future false
+positive suppression. GitHub's own hardening guidance confirms that any action
+used in a later workflow must remain fixed to a full commit SHA.
