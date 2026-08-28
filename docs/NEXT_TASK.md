@@ -7423,7 +7423,7 @@ real human-attended semantic review. It does not authorize that execution.
   "scope":{"allowed_paths":["docs/PATCH_NOTE_SEMANTIC_REVIEW_CEREMONY.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","desktop-app/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","tools/**"],"allow_deletions":false,"allow_renames":false},
   "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":52,"minimum_test_count":52},
   "protected_files":{"desktop-app/src/dpslab/patch_note_semantic_review_window.py":"3d14452f5bc73cd2c7271abf451c42d9764bf1c7a7b8739ca6fd8b8aaee6fa0f","desktop-app/src/dpslab/patch_note_semantic_review_ceremony.py":"0eb1285c65036481ddf23eb33a6ce6232e118f35ac909deb199fb23b72427a59",".github/workflows/dpslab-ci.yml":"3c774c6cfbdf6dd1c9f9d6642786f0815925c157b5d6220a1fd10a72f15f93e5"},
-  "audit":{"required":false,"independence":"not_applicable_design_only"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["execution is one-shot and requires immediate human confirmation","live receipt content and slot hashes are reverified before each display and before finalization","only the approved window and ceremony core may receive transient content","close cancel timeout source drift and any invalid choice produce no approved record","durable output is content-free and written only after complete validated review","real execution authority is consumed regardless of success cancellation or failure","semantic approval does not authorize fact extraction selector approval catalog mutation or recommendations"],
   "express_exclusions":["implementation","real execution","live request","content persistence","fact extraction","selector approval","catalog mutation","SimulationCraft","addon","distribution","changes outside two documentary paths"]
 }
@@ -7512,13 +7512,13 @@ Evidence:
 - no mitigation implementation, network, addon, updater, key operation,
   SimulationCraft, release activation, or distribution occurred.
 
-## Active implementation task — Reproducible dependency inventory 0.1
+## Published implementation — Reproducible dependency inventory 0.1
 
 This block fixes the exact Windows CPython 3.13 dependency bytes installed by
 CI and publishes a matching SPDX inventory. Vulnerability and license review
 remain separate open gates.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7534,6 +7534,51 @@ remain separate open gates.
   "express_exclusions":["vulnerability or license approval claims","installing dependencies on the user workstation","runtime product code tests addon updater or packaging changes","secret scanning static analysis GitHub settings or new external Actions","network activity beyond the completed temporary PyPI wheel resolution","SimulationCraft comparisons results keys signing release activation or distribution","commit push or later security gates","changes outside nine allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Publication verdict: `reproducible_dependency_inventory_0_1_published_with_ci_passed`.
+
+Evidence:
+
+- commit `99982db1db1f654dc9b5c605ba91adc85f323ff7` is synchronized across
+  local `HEAD`, `origin/main`, and live `refs/heads/main`;
+- 5 focused, 16 combined policy/focused, and 67 tools tests passed locally;
+- quality gate and procedural audit passed with no findings;
+- GitHub Actions run `33035332057` passed Policy and contract, Tools tests,
+  and Functional suite using the hash-locked installation;
+- CI accepted all six exact wheel hashes and performed project installation
+  with no dependency resolution or isolated build download;
+- vulnerability and license approval, other platforms, pip provenance, secret
+  scanning, static analysis and external-beta readiness remain open;
+- no dependency was installed on the user workstation and no downloaded wheel
+  was added to the repository.
+
+Next security gate: `dependency_vulnerability_audit_0_1` requires a separate
+closed contract for advisory source, scanner provenance, severity policy,
+network failure behavior, exception expiry and CI evidence.
+
+## Active design task — Dependency vulnerability audit 0.1
+
+This task designs how DpsLab will detect known vulnerabilities without making
+CI depend on an unpinned scanner or silently accepting an unavailable advisory
+service. It authorizes no implementation.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"dependency_vulnerability_audit_0_1",
+  "title":"Design a fail-closed known-vulnerability audit for the locked Python dependency set",
+  "baseline_commit":"99982db1db1f654dc9b5c605ba91adc85f323ff7",
+  "authorization":{"status":"design_only","authorization_id":"dependency_vulnerability_audit_0_1-20260826-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-26T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/dependency_vulnerability_audit_0_1/design.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":67,"minimum_test_count":67},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"ba2bace6d40586f4569c8042c7036325f7dfa0ae04beb76134f35adf943d5002","desktop-app/pyproject.toml":"369c43c979dfffd409fbcc313e8fa60b7a4a09b4f86dd0b5bf2a8cba1cb2c897","desktop-app/requirements-ci-win-py313.lock":"dc6ec391a3cfae053e9a808115f5df4e65ea2a132664fb0af11e9897d1f2c612","security/sbom-runtime-win-py313.spdx.json":"603d502f18060070dcd35c2d8ec62114b2111970f140740e50b65db5a03062de","docs/DEPENDENCY_SECURITY.md":"6ec85410e13caa3326a41bb59fe132b271959535252f5c8cde41217f0b1ed365","docs/THREAT_MODEL.md":"4784525ec7e8af6073fd2b934f855f5ac8ee2a639cb3ff1200c1811883f8400f","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["choose an authoritative advisory source and a scanner with pinned provenance","define whether advisory unavailability fails the lane and how local development degrades","define severity handling for runtime build and security-tool dependencies","exceptions require vulnerability ID justification owner expiry and compensating control","audit consumes the exact locked package versions rather than performing a fresh resolution","scanner output is non-secret minimal retained and does not authorize dependency updates","separate vulnerability detection from license review and automatic remediation"],
+  "express_exclusions":["scanner or workflow implementation","network or advisory query","dependency installation update or exception creation","GitHub settings Actions permissions or secrets","runtime addon updater packaging SimulationCraft signing release or distribution","commit push or changes outside docs/NEXT_TASK.md"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Implementation status: `reproducible_dependency_inventory_0_1_implemented_pending_verification_and_audit`.
+Design status: `dependency_vulnerability_audit_0_1_design_in_progress`.
