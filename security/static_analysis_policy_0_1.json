@@ -1,0 +1,8 @@
+{
+  "schema_version": "0.1",
+  "policy_id": "dpslab.static-analysis-policy.0.1",
+  "scanner": {"name": "bandit", "version": "1.9.4", "severity_gate": "HIGH"},
+  "inputs": ["desktop-app/src", "tools"],
+  "outcomes": {"clean": 0, "findings": 1, "unavailable": 2},
+  "evidence": {"artifact": "static-security-summary.json", "retention_days": 7}
+}

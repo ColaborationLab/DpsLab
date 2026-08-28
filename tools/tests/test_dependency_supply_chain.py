@@ -72,7 +72,7 @@ class DependencySupplyChainTests(unittest.TestCase):
         self.assertIn("pip install --require-hashes -r ./desktop-app/requirements-ci-win-py313.lock", workflow)
         self.assertIn("pip install --no-deps --no-build-isolation ./desktop-app", workflow)
         self.assertNotIn("pip install ./desktop-app", workflow)
-        self.assertEqual(workflow.count("persist-credentials: false"), 3)
+        self.assertEqual(workflow.count("persist-credentials: false"), 4)
 
 
 if __name__ == "__main__":

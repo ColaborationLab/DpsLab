@@ -34,6 +34,21 @@ Actualizar una dependencia requiere una tarea separada que:
 El lock y el SBOM no prueban que una versión carezca de vulnerabilidades. Sólo
 eliminan la selección silenciosa y hacen auditable qué se instaló.
 
+## Análisis estático y detección de secretos
+
+La lane `static-security` ejecuta Bandit 1.9.4 desde el mismo lock con hashes
+y examina `desktop-app/src` y `tools`. Los hallazgos de severidad alta fallan
+el gate. La detección de secretos usa Gitleaks 8.30.0 descargado directamente
+desde su release oficial, validado con SHA-256 y ejecutado sobre todo el
+historial clonado; ninguna action de terceros recibe un token de GitHub.
+
+Los informes crudos permanecen en el directorio temporal del runner y se
+eliminan. Sólo `static-security-summary.json`, con conteos y estado cerrados,
+puede ser artefacto por siete días. Un escáner ausente, un hash distinto, un
+informe inválido o cualquier hallazgo produce fallo. El registro de
+excepciones empieza vacío: una excepción futura exige identidad exacta,
+justificación, vencimiento y aprobación humana separada.
+
 ## Auditoría de vulnerabilidades conocidas
 
 `tools/dependency_vulnerability_audit.py` usa `pip-audit 2.10.1` y la Python

@@ -7758,7 +7758,7 @@ functional code change, SimulationCraft, commit or push.
 Closure status:
 `cryptography_dependency_remediation_0_1_published_with_ci_approved`.
 
-## Active design task — Static analysis and secret scanning 0.1
+## Consumed design record — Static analysis and secret scanning 0.1
 
 This design establishes the closed implementation boundary for two additional
 distribution gates: static analysis of DpsLab's Python source and secret
@@ -7766,7 +7766,7 @@ scanning of the repository. It authorizes design documentation only. In
 particular, it does not install scanners, add a workflow, scan history, create
 an exception, upload findings or use repository credentials.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7782,7 +7782,7 @@ an exception, upload findings or use repository credentials.
   "express_exclusions":["installing or running Bandit Gitleaks or another scanner","workflow modification CI execution or artifact upload","secret scanning of real repository history","credentials tokens secrets exception creation or finding remediation","SimulationCraft addon UI updater signing release or distribution","changes outside two allowlisted documentation paths"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 Design direction: use a hash-locked scanner binary or package in CI rather
 than a third-party scanning action that receives `GITHUB_TOKEN`; collect only
@@ -7798,3 +7798,29 @@ mismatch for its Windows x64 release asset. The candidate retained for a
 future independently verified acquisition is Gitleaks `8.30.0`
 `windows_x64.zip`, SHA-256
 `54fe94f644b832dd08e8c3a5915efb3bfa862386d59fb27ca0792cb687a83573`.
+
+## Active implementation task — Static analysis and secret scanning 0.1
+
+This task implements the approved scanner controls with exact acquisition
+evidence. It may acquire scanner bytes only into a temporary verification
+directory, verify their identities before execution, and retain only sanitized
+aggregate results. It must not transmit a GitHub token or repository source to
+an external scanning service.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"static_analysis_and_secret_scanning_0_1",
+  "title":"Implement hash-locked static analysis and credential-free secret scanning gates",
+  "baseline_commit":"135ee6d41bfb75b47e739ac21951e78699ccdae5",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"static_analysis_and_secret_scanning_0_1-20260828-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-28T07:16:00-05:00"},
+  "scope":{"allowed_paths":[".github/workflows/dpslab-ci.yml","desktop-app/requirements-security-tools-win-py313.lock","docs/DEPENDENCY_SECURITY.md","docs/NEXT_TASK.md","security/static_analysis_policy_0_1.json","security/secret_scan_policy_0_1.json","security/secret_scan_exceptions_0_1.json","security/dependency_vulnerability_policy_0_1.json","tools/static_security_analysis.py","tools/tests/test_dependency_supply_chain.py","tools/tests/test_dependency_vulnerability_audit.py","tools/tests/test_github_automation.py","tools/tests/test_security_baseline.py","tools/tests/test_static_security_analysis.py"],"generated_paths":[".dpslab/quality-gates/static_analysis_and_secret_scanning_0_1/implementation.json",".dpslab/quality-gates/static_analysis_and_secret_scanning_0_1/audit.json"],"forbidden_paths":["desktop-app/src/**","desktop-app/tests/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/SECURITY_ARCHITECTURE.md","docs/THREAT_MODEL.md","security/security_baseline_0_1.json","security/threat_model_0_1.json","security/dependency_vulnerability_exceptions_0_1.json","security/sbom-runtime-win-py313.spdx.json"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_static_security_analysis","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":82,"minimum_test_count":86},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/pyproject.toml":"53363b1b7fd8bec9ec645596bda81be98c068b1e7bc553674f545eb0f05005a1","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["Bandit and every required Python dependency are version and SHA-256 locked before CI execution","Bandit scans only versioned Python product and tooling source with high-severity findings failing closed and no baseline suppression","Gitleaks 8.30.0 Windows x64 archive is downloaded from its official release only after SHA-256 verification and scans full committed history without GITHUB_TOKEN","raw scanner reports are temporary and only closed-schema sanitized counts identifiers and status may enter a seven-day artifact","tool failure integrity mismatch missing coverage or any unsuppressed finding returns a nonzero gate result","a future suppression is limited to one fingerprint with explicit human approval owner justification and expiry; empty exception registry is the initial state","no scanner operates on SimulationCraft profiles results local configuration addon or external network sources"],
+  "express_exclusions":["scanner exception approval or finding remediation","Gitleaks 8.30.1 or unverified scanner bytes","third-party scanning action GITHUB_TOKEN or other credentials","SimulationCraft addon UI updater signing release distribution or external beta","changes outside twelve allowlisted paths"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->

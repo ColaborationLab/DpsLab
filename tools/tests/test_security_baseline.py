@@ -58,7 +58,7 @@ class SecurityBaselineTests(unittest.TestCase):
     def test_ci_retains_least_privilege_controls(self) -> None:
         workflow = WORKFLOW.read_text(encoding="utf-8")
         self.assertIn("permissions:\n  contents: read", workflow)
-        self.assertEqual(workflow.count("persist-credentials: false"), 3)
+        self.assertEqual(workflow.count("persist-credentials: false"), 4)
         self.assertNotIn("pull_request_target:", workflow)
         self.assertNotIn("secrets.", workflow)
 

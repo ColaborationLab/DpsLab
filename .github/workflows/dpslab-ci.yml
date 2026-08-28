@@ -52,6 +52,46 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
+  static-security:
+    name: Static analysis and secret scanning
+    runs-on: windows-latest
+    steps:
+      - name: Checkout full history without persisted credentials
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python 3.13.14
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: 3.13.14
+      - name: Install hash-locked analysis tools
+        run: python -m pip install --require-hashes -r ./desktop-app/requirements-security-tools-win-py313.lock
+      - name: Run local static and secret scanners
+        run: |
+          $raw = Join-Path $env:RUNNER_TEMP "dpslab-static-security-raw"
+          New-Item -ItemType Directory -Force -Path $raw | Out-Null
+          & bandit -f json -o (Join-Path $raw "bandit.json") -r desktop-app/src tools
+          $banditExit = $LASTEXITCODE
+          $zip = Join-Path $raw "gitleaks.zip"
+          Invoke-WebRequest -Uri "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_windows_x64.zip" -OutFile $zip
+          if ((Get-FileHash -Algorithm SHA256 -LiteralPath $zip).Hash.ToLowerInvariant() -ne "54fe94f644b832dd08e8c3a5915efb3bfa862386d59fb27ca0792cb687a83573") { throw "gitleaks_hash_mismatch" }
+          Expand-Archive -LiteralPath $zip -DestinationPath $raw -Force
+          & (Join-Path $raw "gitleaks.exe") git --report-format json --report-path (Join-Path $raw "gitleaks.json") --no-banner
+          $gitleaksExit = $LASTEXITCODE
+          python tools/static_security_analysis.py --bandit (Join-Path $raw "bandit.json") --gitleaks (Join-Path $raw "gitleaks.json") --output static-security-summary.json
+          $summaryExit = $LASTEXITCODE
+          Remove-Item -LiteralPath $raw -Recurse -Force
+          if ($banditExit -ne 0 -or $gitleaksExit -ne 0 -or $summaryExit -ne 0) { exit 1 }
+      - name: Upload sanitized security evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dpslab-static-security-evidence
+          path: static-security-summary.json
+          retention-days: 7
+          if-no-files-found: error
+
   tools-tests:
     name: Tools tests
     runs-on: windows-latest

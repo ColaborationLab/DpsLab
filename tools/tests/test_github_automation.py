@@ -134,9 +134,9 @@ class GitHubAutomationTests(unittest.TestCase):
         self.assertNotRegex(self.workflow, r"(?m)^[ \t]+permissions:")
 
     def test_host_python_and_lanes_are_exact(self) -> None:
-        self.assertEqual(self.workflow.count("runs-on: windows-latest"), 3)
-        self.assertEqual(self.workflow.count("python-version: 3.13.14"), 3)
-        for job in ("policy", "tools-tests", "functional-suite"):
+        self.assertEqual(self.workflow.count("runs-on: windows-latest"), 4)
+        self.assertEqual(self.workflow.count("python-version: 3.13.14"), 4)
+        for job in ("policy", "static-security", "tools-tests", "functional-suite"):
             self.assertRegex(self.workflow, rf"(?m)^  {re.escape(job)}:$")
         self.assertIn("PYTHONPATH: src", self.workflow)
         self.assertIn("python -m unittest discover -s tests -v", self.workflow)
@@ -203,14 +203,14 @@ class GitHubAutomationTests(unittest.TestCase):
 
     def test_actions_are_pinned_and_checkout_drops_credentials(self) -> None:
         expected = {
-            f"actions/checkout@{CHECKOUT_SHA}": 3,
-            f"actions/setup-python@{SETUP_PYTHON_SHA}": 3,
-            f"actions/upload-artifact@{UPLOAD_ARTIFACT_SHA}": 3,
+            f"actions/checkout@{CHECKOUT_SHA}": 4,
+            f"actions/setup-python@{SETUP_PYTHON_SHA}": 4,
+            f"actions/upload-artifact@{UPLOAD_ARTIFACT_SHA}": 4,
         }
         for reference, count in expected.items():
             self.assertEqual(self.workflow.count(reference), count)
         self.assertNotRegex(self.workflow, r"uses:\s+actions/[^@\s]+@v\d")
-        self.assertEqual(self.workflow.count("persist-credentials: false"), 3)
+        self.assertEqual(self.workflow.count("persist-credentials: false"), 4)
 
     def test_forbidden_capabilities_are_absent(self) -> None:
         lowered = self.workflow.lower()
@@ -221,10 +221,10 @@ class GitHubAutomationTests(unittest.TestCase):
             self.assertNotIn(forbidden, lowered)
 
     def test_artifacts_are_minimal_and_retained_seven_days(self) -> None:
-        self.assertEqual(self.workflow.count("retention-days: 7"), 3)
-        self.assertEqual(self.workflow.count("if: ${{ always() }}"), 3)
+        self.assertEqual(self.workflow.count("retention-days: 7"), 4)
+        self.assertEqual(self.workflow.count("if: ${{ always() }}"), 4)
         self.assertEqual(self.workflow.count(".log"), 6)
-        self.assertEqual(self.workflow.count("summary.json"), 6)
+        self.assertEqual(self.workflow.count("summary.json"), 8)
 
     def test_contract_lifecycle_accepts_zero_or_one_active_contract(self) -> None:
         text = NEXT_TASK.read_text(encoding="utf-8")
