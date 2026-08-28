@@ -7694,9 +7694,9 @@ The finding is an open dependency-remediation gate, not a failure of the audit
 implementation. Publication without remediation would intentionally make the
 new CI audit step fail closed.
 
-## Active implementation task — Cryptography dependency remediation 0.1
+## Published implementation record — Cryptography dependency remediation 0.1
 
-This task replaces only the vulnerable `cryptography 49.0.0` dependency with
+This task replaced only the vulnerable `cryptography 49.0.0` dependency with
 the latest compatible corrected patch, keeps the exception registry empty and
 revalidates the combined vulnerability-audit candidate. It authorizes no
 functional code change, SimulationCraft, commit or push.
@@ -7744,10 +7744,16 @@ functional code change, SimulationCraft, commit or push.
 - the remediation-specific module set passed 282 tests with one expected skip,
   the focused cleanup-helper module passed 23 tests, and the complete local
   functional suite passed 1,117 tests with zero failures and one expected skip;
-- canonical Windows Python 3.13 installation, full-suite behavior and the CI
-  vulnerability lane remain unverified until a future authorized publication;
-- no exception, functional source change, SimulationCraft, addon, release,
-  commit or push occurred.
+- canonical Windows Python 3.13 CI execution verified the published candidate:
+  GitHub Actions run `33168962221` passed Policy and contract, Tools tests and
+  Functional suite on commit
+  `9a06c79af389cdb0a3f734c7c2eb88b4507124b3`;
+- the commit was published exclusively from `main` to `origin/main`; local,
+  tracking and live remote references were verified equal afterwards;
+- the authorization was consumed only by Daniel's subsequent explicit human
+  approval of the audited candidate, its local commit and its publication;
+- no exception, functional source change, SimulationCraft, addon or release
+  occurred.
 
-Implementation status:
-`cryptography_dependency_remediation_0_1_implemented_ready_for_independent_audit`.
+Closure status:
+`cryptography_dependency_remediation_0_1_published_with_ci_approved`.
