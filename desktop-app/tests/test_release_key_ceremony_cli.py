@@ -1,5 +1,6 @@
 import tempfile,unittest
 from pathlib import Path
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from dpslab.release_key_ceremony_cli import CeremonyLauncherError,LauncherConfig,LauncherDependencies,calculate_launcher_plan_sha256,confirmation_phrase,read_masked_secret,run_attended_launcher
 class Protector:
     def protect(self,v):return b"p:"+v
@@ -10,7 +11,7 @@ class Tx:
 class LauncherTests(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();r=Path(self.tmp.name).resolve();self.repo=r/"repo";self.repo.mkdir();self.cdir=r/"c";self.fdir=r/"f";self.ddir=r/"d";[p.mkdir() for p in (self.cdir,self.fdir,self.ddir)];self.cfg=LauncherConfig("ceremony.001","dpslab.release.ed25519.001","DANIELPC\\dpcs9","2026-08-01T00:00:00Z","2027-08-01T00:00:00Z",self.cdir/"key",self.fdir/"recovery",self.ddir/"evidence",(self.repo,));self.plan=calculate_launcher_plan_sha256(self.cfg);self.answers=[confirmation_phrase(s,self.plan) for s in ("readiness","generation","recovery","registry")];self.secrets=["synthetic password 001","synthetic password 001"];self.out=[];self.tx=Tx();self.times=iter([f"2026-08-01T00:00:0{i}Z" for i in range(1,6)])
-    def tearDown(self):self.tmp.cleanup()
+    def tearDown(self):strict_temporary_cleanup(self.tmp,Path(self.tmp.name))
     def deps(self,identity="DANIELPC\\dpcs9",answers=None,secrets=None):
         a=iter(self.answers if answers is None else answers);s=iter(self.secrets if secrets is None else secrets);return LauncherDependencies(lambda:identity,lambda _:next(a),lambda _:next(s),self.out.append,lambda:next(self.times),lambda:bytes(range(32)),Protector(),self.tx)
     def test_01_success(self):self.assertEqual(run_attended_launcher(self.cfg,self.deps()).status,"key_material_created_pending_registry_review")

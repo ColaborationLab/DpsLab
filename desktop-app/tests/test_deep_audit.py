@@ -5,6 +5,8 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
+
+from tests.strict_temporary_cleanup import strict_temporary_directory
 from unittest.mock import patch
 
 from dpslab.deep_audit import (
@@ -68,8 +70,7 @@ class DeepAuditTests(unittest.TestCase):
         self.assertEqual(canonical_damage_key({"owner_name": "x"}), (None, "unmappable"))
 
     def test_full_audit_separates_options_and_atomically_writes_four_files(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
+        with strict_temporary_directory() as root:
             manual = root / "manual.html"
             profile = root / "profiles" / "x.simc"
             run = root / "run"

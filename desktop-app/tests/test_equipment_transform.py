@@ -6,6 +6,8 @@ from dataclasses import replace
 from hashlib import sha256
 from pathlib import Path
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.comparison_spec import load_comparison_spec
 from dpslab.equipment_transform import EquipmentTransformError, materialize_neck_profile
 
@@ -17,7 +19,7 @@ SPEC = load_comparison_spec(ROOT / "comparisons/flasil_neck_50228_vs_249368_v1.t
 class EquipmentTransformTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.addCleanup(strict_temporary_cleanup, self.temp, Path(self.temp.name))
         self.destination = Path(self.temp.name) / "effective.simc"
 
     def test_a_materialization_is_equivalent_to_equipped_line(self) -> None:

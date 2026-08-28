@@ -6,6 +6,8 @@ import unittest
 from hashlib import sha256
 from pathlib import Path
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.comparison_adapter import AdapterMemberRequest, ComparisonMemberExecutionRequest, execute_comparison_member, execute_member, validate_artifact_references, validate_simc_identity
 from dpslab.comparison_models import PlannedParameters, RunArtifactReference, SimulationCraftIdentity
 from dpslab.config import SimulationConfig
@@ -16,7 +18,7 @@ from dpslab.scenario import load_scenario
 class ComparisonAdapterTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.addCleanup(strict_temporary_cleanup, self.temp, Path(self.temp.name))
         self.root = Path(self.temp.name)
         self.profile = self.root / "effective.simc"
         self.profile.write_text("neck=,id=1\n", encoding="utf-8")

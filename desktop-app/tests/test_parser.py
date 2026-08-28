@@ -4,6 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tests.strict_temporary_cleanup import strict_temporary_directory
+
 from dpslab import ProfileParseError, parse_profile, parse_profile_text
 
 
@@ -58,8 +60,8 @@ class ProfileParserTests(unittest.TestCase):
         self.assertEqual(snapshot.bag_gear[0].item_level, 190)
 
     def test_rejects_non_simc_input(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            html = Path(directory) / "profile.simc.html"
+        with strict_temporary_directory() as directory:
+            html = directory / "profile.simc.html"
             html.write_text("<html></html>", encoding="utf-8")
             with self.assertRaisesRegex(ProfileParseError, r"\.simc"):
                 parse_profile(html)

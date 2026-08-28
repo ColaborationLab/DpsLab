@@ -7,6 +7,8 @@ from copy import deepcopy
 from dataclasses import FrozenInstanceError, fields, replace
 from hashlib import sha256
 from pathlib import Path
+
+from tests.strict_temporary_cleanup import strict_temporary_directory
 from unittest.mock import patch
 
 from dpslab.comparator import _new_result as _new_result_impl
@@ -790,8 +792,8 @@ class PlannedMemberTests(unittest.TestCase):
     def test_durable_commit_round_trips_without_plaintext_token(self) -> None:
         previous = self._previous()
         plan = self._plan()
-        with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "comparison_result.json"
+        with strict_temporary_directory() as temporary:
+            path = temporary / "comparison_result.json"
             store = ComparisonResultStore(path)
             store.create(previous)
             confirmed = store.commit_planned_member(
@@ -813,8 +815,8 @@ class PlannedMemberTests(unittest.TestCase):
     def test_durable_exact_idempotence_confirms_without_writing(self) -> None:
         previous = self._previous()
         plan = self._plan()
-        with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "comparison_result.json"
+        with strict_temporary_directory() as temporary:
+            path = temporary / "comparison_result.json"
             store = ComparisonResultStore(path)
             store.create(previous)
             confirmed = store.commit_planned_member(
@@ -842,8 +844,8 @@ class PlannedMemberTests(unittest.TestCase):
     def test_durable_commit_rejects_missing_or_stale_previous_prephysical(self) -> None:
         previous = self._previous()
         plan = self._plan()
-        with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "comparison_result.json"
+        with strict_temporary_directory() as temporary:
+            path = temporary / "comparison_result.json"
             store = ComparisonResultStore(path)
             with self.assertRaisesRegex(ComparisonResultError, "no existe"):
                 store.commit_planned_member(
@@ -870,8 +872,8 @@ class PlannedMemberTests(unittest.TestCase):
     def test_durable_commit_requires_strict_timestamp_progress(self) -> None:
         previous = self._previous()
         plan = self._plan()
-        with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "comparison_result.json"
+        with strict_temporary_directory() as temporary:
+            path = temporary / "comparison_result.json"
             store = ComparisonResultStore(path)
             store.create(previous)
             before = path.read_bytes()
@@ -888,8 +890,7 @@ class PlannedMemberTests(unittest.TestCase):
     def test_durable_commit_preserves_bytes_and_removes_temp_on_replace_failure(self) -> None:
         previous = self._previous()
         plan = self._plan()
-        with tempfile.TemporaryDirectory() as temporary:
-            directory = Path(temporary)
+        with strict_temporary_directory() as directory:
             path = directory / "comparison_result.json"
             ComparisonResultStore(path).create(previous)
             before = path.read_bytes()
@@ -911,8 +912,8 @@ class PlannedMemberTests(unittest.TestCase):
     def test_durable_layer_does_not_call_runner_adapter_or_subprocess(self) -> None:
         previous = self._previous()
         plan = self._plan()
-        with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "comparison_result.json"
+        with strict_temporary_directory() as temporary:
+            path = temporary / "comparison_result.json"
             store = ComparisonResultStore(path)
             store.create(previous)
             with patch(

@@ -41,6 +41,15 @@ class DependencySupplyChainTests(unittest.TestCase):
             name = re.match(r"[A-Za-z0-9-]+", requirement).group(0).lower()
             self.assertIn(name, self.entries)
 
+    def test_vulnerable_cryptography_version_is_not_reintroduced(self) -> None:
+        self.assertEqual(
+            self.entries["cryptography"],
+            (
+                "50.0.1",
+                "aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648",
+            ),
+        )
+
     def test_sbom_matches_every_locked_version_and_hash(self) -> None:
         packages = {item["name"]: item for item in self.sbom["packages"]}
         self.assertEqual(set(packages), {"dpslab", *self.entries})

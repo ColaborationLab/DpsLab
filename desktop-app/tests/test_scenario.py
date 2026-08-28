@@ -5,6 +5,8 @@ import unittest
 from hashlib import sha256
 from pathlib import Path
 
+from tests.strict_temporary_cleanup import strict_temporary_directory
+
 from dpslab.scenario import ScenarioError, load_scenario
 
 
@@ -39,16 +41,16 @@ class ScenarioTests(unittest.TestCase):
             ("iterations = 0", "iterations = -1", "iterations"),
         )
         for old, new, error in replacements:
-            with self.subTest(field=error), tempfile.TemporaryDirectory() as directory:
-                path = Path(directory) / "scenario.toml"
+            with self.subTest(field=error), strict_temporary_directory() as directory:
+                path = directory / "scenario.toml"
                 path.write_text(valid.replace(old, new), encoding="utf-8")
                 with self.assertRaisesRegex(ScenarioError, error):
                     load_scenario(path)
 
     def test_iterations_zero_requires_target_error(self) -> None:
         source = (FIXTURES / "valid_scenario.toml").read_text(encoding="utf-8")
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "scenario.toml"
+        with strict_temporary_directory() as directory:
+            path = directory / "scenario.toml"
             path.write_text(source.replace("target_error = 0.05\n", ""), encoding="utf-8")
             with self.assertRaisesRegex(ScenarioError, "target_error"):
                 load_scenario(path)
@@ -56,4 +58,3 @@ class ScenarioTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

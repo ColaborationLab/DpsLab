@@ -7,6 +7,8 @@ from dataclasses import replace
 from pathlib import Path
 from unittest.mock import patch
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.comparator import _new_result as _new_result_impl
 from dpslab.comparison_environment import software_record
 from dpslab.comparison_models import (
@@ -86,7 +88,7 @@ def _artifacts(valid: bool = True) -> RunArtifactSet:
 class ComparisonMemberTransactionTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.addCleanup(strict_temporary_cleanup, self.temp, Path(self.temp.name))
 
     def _result_for(self, initial: str, final: str, identity: str = "execution"):
         result = _new_result(SPEC, identity)

@@ -6,6 +6,8 @@ from hashlib import sha256
 from pathlib import Path
 from unittest.mock import patch
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.variant import VariantError, create_effective_profile, load_variant
 
 
@@ -32,7 +34,7 @@ class VariantTests(unittest.TestCase):
         self.source.write_text(VALID, encoding="utf-8")
 
     def tearDown(self) -> None:
-        self.temporary.cleanup()
+        strict_temporary_cleanup(self.temporary, self.root)
 
     def test_valid_variant_and_byte_hash(self) -> None:
         loaded = load_variant(self.source)

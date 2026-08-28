@@ -36,6 +36,10 @@ jobs:
           @{ lane = "policy"; exit_code = $exitCode; conclusion = $(if ($exitCode -eq 0) { "passed" } else { "failed" }) } |
             ConvertTo-Json | Set-Content -Encoding utf8 policy-summary.json
           exit $exitCode
+      - name: Install hash-locked dependency audit tools
+        run: python -m pip install --require-hashes -r ./desktop-app/requirements-security-tools-win-py313.lock
+      - name: Audit exact runtime and security-tool locks
+        run: python tools/dependency_vulnerability_audit.py --output dependency-vulnerability-audit.json
       - name: Upload policy evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -44,6 +48,7 @@ jobs:
           path: |
             policy.log
             policy-summary.json
+            dependency-vulnerability-audit.json
           retention-days: 7
           if-no-files-found: error
 

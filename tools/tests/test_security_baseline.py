@@ -68,7 +68,7 @@ class SecurityBaselineTests(unittest.TestCase):
             line for line in project.splitlines() if line.startswith("dependencies =")
         )
         self.assertIn("scipy>=1.11.0,<2.0.0", dependency_line)
-        self.assertIn("cryptography>=49.0.0,<50.0.0", dependency_line)
+        self.assertIn("cryptography>=50.0.1,<51.0.0", dependency_line)
 
 
 if __name__ == "__main__":

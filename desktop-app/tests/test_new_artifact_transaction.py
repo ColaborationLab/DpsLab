@@ -1,9 +1,10 @@
 import os,tempfile,unittest
 from pathlib import Path
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from dpslab.new_artifact_transaction import NewArtifactTransaction,NewArtifactTransactionError
 class TransactionTests(unittest.TestCase):
     def setUp(self):self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name).resolve();self.a=self.root/"a.bin";self.b=self.root/"b.bin"
-    def tearDown(self):self.tmp.cleanup()
+    def tearDown(self):strict_temporary_cleanup(self.tmp,self.root)
     def test_01_commit_one(self):NewArtifactTransaction().commit_new({self.a:b"a"});self.assertEqual(self.a.read_bytes(),b"a")
     def test_02_commit_multiple(self):NewArtifactTransaction().commit_new({self.a:b"a",self.b:b"b"});self.assertEqual((self.a.read_bytes(),self.b.read_bytes()),(b"a",b"b"))
     def test_03_existing_refused(self):self.a.write_bytes(b"old");self.assertRaises(NewArtifactTransactionError,NewArtifactTransaction().commit_new,{self.a:b"new"});self.assertEqual(self.a.read_bytes(),b"old")

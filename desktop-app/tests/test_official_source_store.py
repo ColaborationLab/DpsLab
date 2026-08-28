@@ -4,11 +4,12 @@ import unittest
 from unittest.mock import patch
 from dpslab.official_source_receipt import calculate_receipt_sha256
 from dpslab.official_source_store import OfficialSourceStoreError,append_receipt_atomic,build_receipt_ledger,calculate_ledger_sha256,canonical_ledger_bytes,load_receipt_ledger,validate_receipt_ledger
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
 ROOT=Path(__file__).parents[2];FIXTURE=ROOT/"knowledge/snapshots/official_source_capture_receipt_synthetic_0_1.json"
 def rehash(value):value["integrity"]["receipt_sha256"]=calculate_receipt_sha256(value);return value
 class StoreTests(unittest.TestCase):
- def setUp(self):self.receipt=json.loads(FIXTURE.read_text());self.temp=tempfile.TemporaryDirectory(ignore_cleanup_errors=True);self.root=Path(self.temp.name).resolve()
- def tearDown(self):self.temp.cleanup()
+ def setUp(self):self.receipt=json.loads(FIXTURE.read_text());self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name).resolve()
+ def tearDown(self):strict_temporary_cleanup(self.temp,self.root)
  def next(self):
   value=copy.deepcopy(self.receipt);value["identity"].update(receipt_id="synthetic.receipt.002",captured_at="2026-08-01T20:01:00Z");return rehash(value)
  def test_missing_ledger_is_empty(self):self.assertEqual([],load_receipt_ledger(self.root,self.receipt["source"]["source_id"])["receipts"])

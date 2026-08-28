@@ -7,6 +7,8 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.comparison_environment import software_record
 from dpslab.comparison_execution import (
     ComparisonExecutionError,
@@ -33,7 +35,7 @@ EXECUTION_ID = "cmp-" + "a" * 32
 class ComparisonExecutionBridgeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.addCleanup(strict_temporary_cleanup, self.temp, Path(self.temp.name))
         self.root = Path(self.temp.name)
         self.exe = self.root / "simc.exe"
         self.exe.write_bytes(b"synthetic")

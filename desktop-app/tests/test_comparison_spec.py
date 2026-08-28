@@ -6,6 +6,8 @@ import json
 import shutil
 from pathlib import Path
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.comparison_spec import ComparisonSpecError, _validate_evidence, load_comparison_spec
 
 
@@ -24,7 +26,7 @@ class ComparisonSpecTests(unittest.TestCase):
 
     def _mutated(self, old: str, new: str) -> Path:
         temporary = tempfile.TemporaryDirectory()
-        self.addCleanup(temporary.cleanup)
+        self.addCleanup(strict_temporary_cleanup, temporary, Path(temporary.name))
         path = Path(temporary.name) / "spec.toml"
         path.write_text(SPEC.read_text(encoding="utf-8").replace(old, new), encoding="utf-8")
         return path
@@ -89,7 +91,7 @@ class ComparisonSpecTests(unittest.TestCase):
         for mutation in ("missing_image", "identity", "conclusion"):
             with self.subTest(mutation=mutation):
                 temporary = tempfile.TemporaryDirectory()
-                self.addCleanup(temporary.cleanup)
+                self.addCleanup(strict_temporary_cleanup, temporary, Path(temporary.name))
                 package = Path(temporary.name) / "evidence"
                 shutil.copytree(source, package)
                 manifest = package / "evidence_manifest.json"

@@ -6,6 +6,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.candidate_knowledge_set import calculate_receipt_sha256
 from dpslab.candidate_knowledge_store import (
     CandidateKnowledgeStoreError,
@@ -40,7 +42,9 @@ class CandidateKnowledgeStoreTests(unittest.TestCase):
         self.time = datetime(2026, 8, 1, 6, 0, tzinfo=timezone.utc)
 
     def tearDown(self):
-        self.temp.cleanup()
+        root = Path(self.temp.name)
+        strict_temporary_cleanup(self.temp, root)
+        self.assertFalse(root.exists())
 
     def commit(self, **changes):
         values = {**self.values, **changes}

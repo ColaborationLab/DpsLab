@@ -6,10 +6,11 @@ from dpslab.official_source_operator import OfficialSourceOperatorError,SOURCE_I
 from dpslab.official_source_store import load_receipt_ledger
 from dpslab.official_source_transport import OfficialTransportOutcome
 from dpslab.patch_source_adapter import InjectedResponse
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
 ROOT=Path(__file__).parents[2];REGISTRY=ROOT/"knowledge/sources/official_patch_source_registry_0_1.json"
 class OperatorTests(unittest.TestCase):
- def setUp(self):self.registry=json.loads(REGISTRY.read_text());self.temp=tempfile.TemporaryDirectory(ignore_cleanup_errors=True);self.store=Path(self.temp.name).resolve();self.now=datetime(2026,8,2,3,0,tzinfo=timezone.utc);self.calls=0
- def tearDown(self):self.temp.cleanup()
+ def setUp(self):self.registry=json.loads(REGISTRY.read_text());self.temp=tempfile.TemporaryDirectory();self.store=Path(self.temp.name).resolve();self.now=datetime(2026,8,2,3,0,tzinfo=timezone.utc);self.calls=0
+ def tearDown(self):strict_temporary_cleanup(self.temp,self.store)
  def fetch(self,body=b"<html>synthetic</html>"):
   def value(plan):self.calls+=1;return OfficialTransportOutcome("response_quarantined_pending_capture_validation",None,InjectedResponse(200,"worldofwarcraft.blizzard.com","text/html",body,True,'"s1"',None))
   return value

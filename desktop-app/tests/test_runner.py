@@ -8,7 +8,7 @@ from hashlib import sha256
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-from tests.strict_temporary_cleanup import strict_temporary_cleanup
+from tests.strict_temporary_cleanup import strict_temporary_cleanup, strict_temporary_directory
 
 from dpslab.config import SimulationConfig
 from dpslab.runner import (
@@ -55,6 +55,18 @@ class TemporaryCleanupTests(unittest.TestCase):
 
         with self.assertRaisesRegex(OSError, "unexpected cleanup failure"):
             strict_temporary_cleanup(temporary, Path("temporary-root"))
+
+    @patch("tests.strict_temporary_cleanup.strict_temporary_cleanup")
+    @patch("tests.strict_temporary_cleanup.tempfile.TemporaryDirectory")
+    def test_context_manager_delegates_to_strict_cleanup(self, created: Mock, cleanup: Mock) -> None:
+        temporary = Mock()
+        temporary.name = "temporary-root"
+        created.return_value = temporary
+
+        with strict_temporary_directory() as root:
+            self.assertEqual(Path("temporary-root"), root)
+
+        cleanup.assert_called_once_with(temporary, Path("temporary-root"))
 
 
 class SimulationRunnerTests(unittest.TestCase):

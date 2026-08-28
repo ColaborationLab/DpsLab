@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Parser y ejecutor local de SimulationCraft para DpsLab"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["scipy>=1.11.0,<2.0.0", "cryptography>=49.0.0,<50.0.0"]
+dependencies = ["scipy>=1.11.0,<2.0.0", "cryptography>=50.0.1,<51.0.0"]
 
 [project.scripts]
 dpslab = "dpslab.__main__:main"

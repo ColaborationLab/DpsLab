@@ -2,6 +2,8 @@ import copy
 from datetime import datetime, timezone, tzinfo
 import json
 from pathlib import Path
+
+from tests.strict_temporary_cleanup import strict_temporary_directory
 import tempfile
 import unittest
 
@@ -108,8 +110,8 @@ class KnowledgeEnvelopeTests(unittest.TestCase):
         )
 
     def test_noncanonical_file_bytes_are_rejected(self):
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "envelope.json"
+        with strict_temporary_directory() as directory:
+            path = directory / "envelope.json"
             path.write_text(json.dumps(self.document, indent=2), encoding="utf-8")
             with self.assertRaisesRegex(
                 KnowledgeEnvelopeError, "knowledge_envelope_bytes_noncanonical"

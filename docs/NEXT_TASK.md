@@ -7557,28 +7557,197 @@ Next security gate: `dependency_vulnerability_audit_0_1` requires a separate
 closed contract for advisory source, scanner provenance, severity policy,
 network failure behavior, exception expiry and CI evidence.
 
-## Active design task — Dependency vulnerability audit 0.1
+## Implemented pending publication — Dependency vulnerability audit 0.1
 
 This task designs how DpsLab will detect known vulnerabilities without making
 CI depend on an unpinned scanner or silently accepting an unavailable advisory
 service. It authorizes no implementation.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
   "task_id":"dependency_vulnerability_audit_0_1",
-  "title":"Design a fail-closed known-vulnerability audit for the locked Python dependency set",
-  "baseline_commit":"99982db1db1f654dc9b5c605ba91adc85f323ff7",
-  "authorization":{"status":"design_only","authorization_id":"dependency_vulnerability_audit_0_1-20260826-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-26T00:00:00-05:00"},
-  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/dependency_vulnerability_audit_0_1/design.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
-  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":67,"minimum_test_count":67},
-  "protected_files":{".github/workflows/dpslab-ci.yml":"ba2bace6d40586f4569c8042c7036325f7dfa0ae04beb76134f35adf943d5002","desktop-app/pyproject.toml":"369c43c979dfffd409fbcc313e8fa60b7a4a09b4f86dd0b5bf2a8cba1cb2c897","desktop-app/requirements-ci-win-py313.lock":"dc6ec391a3cfae053e9a808115f5df4e65ea2a132664fb0af11e9897d1f2c612","security/sbom-runtime-win-py313.spdx.json":"603d502f18060070dcd35c2d8ec62114b2111970f140740e50b65db5a03062de","docs/DEPENDENCY_SECURITY.md":"6ec85410e13caa3326a41bb59fe132b271959535252f5c8cde41217f0b1ed365","docs/THREAT_MODEL.md":"4784525ec7e8af6073fd2b934f855f5ac8ee2a639cb3ff1200c1811883f8400f","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "title":"Implement a fail-closed known-vulnerability audit for the locked Python dependency set",
+  "baseline_commit":"d19f18ea84fb3ec7da5627e5fc8b89a33042c8d3",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"dependency_vulnerability_audit_0_1-20260827-daniel-explicit","authorized_by":"Daniel","authorized_at":"2026-08-27T21:00:00-05:00"},
+  "scope":{"allowed_paths":[".github/workflows/dpslab-ci.yml","desktop-app/requirements-security-tools-win-py313.lock","docs/DEPENDENCY_SECURITY.md","docs/NEXT_TASK.md","security/dependency_vulnerability_policy_0_1.json","security/dependency_vulnerability_exceptions_0_1.json","tools/dependency_vulnerability_audit.py","tools/tests/test_dependency_vulnerability_audit.py"],"generated_paths":[".dpslab/quality-gates/dependency_vulnerability_audit_0_1/implementation.json",".dpslab/quality-gates/dependency_vulnerability_audit_0_1/audit.json"],"forbidden_paths":["desktop-app/src/**","desktop-app/tests/**","desktop-app/pyproject.toml","desktop-app/requirements-ci-win-py313.lock","security/security_baseline_0_1.json","security/threat_model_0_1.json","security/sbom-runtime-win-py313.spdx.json","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/SECURITY_ARCHITECTURE.md","docs/THREAT_MODEL.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_dependency_vulnerability_audit","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":67,"minimum_test_count":77},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/pyproject.toml":"369c43c979dfffd409fbcc313e8fa60b7a4a09b4f86dd0b5bf2a8cba1cb2c897","desktop-app/requirements-ci-win-py313.lock":"dc6ec391a3cfae053e9a808115f5df4e65ea2a132664fb0af11e9897d1f2c612","docs/SECURITY_ARCHITECTURE.md":"ebe0dd5624e7149807275dfab891fd52e598f27e7c7afedfec2bd4fbc15fdde5","docs/THREAT_MODEL.md":"4784525ec7e8af6073fd2b934f855f5ac8ee2a639cb3ff1200c1811883f8400f","security/sbom-runtime-win-py313.spdx.json":"603d502f18060070dcd35c2d8ec62114b2111970f140740e50b65db5a03062de","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","security/threat_model_0_1.json":"59fdb8dc84e6f0722605a63b5bb627b02e2f0db1e3d5c27e41e1e98391686131"},
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["choose an authoritative advisory source and a scanner with pinned provenance","define whether advisory unavailability fails the lane and how local development degrades","define severity handling for runtime build and security-tool dependencies","exceptions require vulnerability ID justification owner expiry and compensating control","audit consumes the exact locked package versions rather than performing a fresh resolution","scanner output is non-secret minimal retained and does not authorize dependency updates","separate vulnerability detection from license review and automatic remediation"],
-  "express_exclusions":["scanner or workflow implementation","network or advisory query","dependency installation update or exception creation","GitHub settings Actions permissions or secrets","runtime addon updater packaging SimulationCraft signing release or distribution","commit push or changes outside docs/NEXT_TASK.md"]
+  "express_exclusions":["real vulnerability exception creation or approval","automatic dependency remediation or license approval","GitHub settings Actions permissions or secrets","runtime product code tests addon updater packaging SimulationCraft signing release or distribution","commit push or changes outside eight allowlisted paths"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Design status: `dependency_vulnerability_audit_0_1_design_ready_for_review`.
+
+### Proposed audit design
+
+The authoritative advisory source is the Python Packaging Advisory Database as
+served for exact PyPI distributions. The selected scanner is PyPA
+`pip-audit`. Its future installation must use a dedicated security-tool lock
+that fixes the scanner and every transitive dependency by version, wheel and
+SHA-256; it must never be installed from an unpinned floating requirement.
+Before implementation, a focused preflight must verify the exact command-line
+and response semantics of the selected pinned release against primary PyPA
+documentation. That preflight may fix the version and hashes, but may not
+silently substitute a different advisory service.
+
+The audit input is the complete set of package name/version pairs already
+fixed in `desktop-app/requirements-ci-win-py313.lock` and represented in
+`security/sbom-runtime-win-py313.spdx.json`. The implementation must reject a
+lock/SBOM mismatch, duplicate package identity, unsupported requirement form,
+missing hash or any attempt by the scanner to resolve a newer dependency set.
+The runtime, build and security-tool dependency classes are explicit policy
+data and are not inferred from installation order.
+
+The lane has three closed outcomes:
+
+- `audit_clean`, exit 0: the pinned scanner completed against the authoritative
+  source and returned no applicable known vulnerability for every exact input;
+- `vulnerability_detected`, exit 1: at least one applicable advisory remains
+  without a current approved exception;
+- `audit_unavailable`, exit 2: advisory access, scanner execution, schema,
+  provenance, input integrity or completeness could not be proven.
+
+Both non-zero outcomes fail CI. Local development may continue unrelated work
+after `audit_unavailable`, but it cannot describe the dependency set as clean,
+approved or release-ready. Cached success never substitutes for a current
+online audit. No credentials are required; network access is restricted to the
+selected advisory service and package installation is a separate earlier CI
+step using the existing hash-locked files.
+
+Every applicable known vulnerability blocks by default even when no numeric
+severity is published. Severity is retained only for triage and cannot lower a
+finding automatically. Runtime and build findings block the product lane;
+security-tool findings invalidate the audit lane itself. An exception is valid
+only when a separately approved record contains the vulnerability identifier,
+exact package and version, owner, justification, compensating control,
+approval reference, creation time and expiry. Expired, ambiguous, wildcard,
+unowned or hash-mismatched exceptions fail closed. The proposed maximum life
+is 30 days and renewal is a new human decision; this design creates no
+exception.
+
+Retained evidence is a minimal non-secret JSON summary containing the scanner
+identity and hashes, input lock and SBOM hashes, advisory service identity,
+UTC observation time, normalized vulnerability identifiers, exception
+references, outcome and exit code. Raw HTTP bodies, environment variables,
+absolute personal paths and credentials are forbidden. CI retention is seven
+days. Detection does not approve dependency changes, license conclusions,
+automatic remediation, releases or external-beta readiness.
+
+### Closed implementation candidate
+
+The implementation candidate is limited to these eight versioned routes:
+
+- `.github/workflows/dpslab-ci.yml`;
+- `desktop-app/requirements-security-tools-win-py313.lock`;
+- `docs/DEPENDENCY_SECURITY.md`;
+- `docs/NEXT_TASK.md`;
+- `security/dependency_vulnerability_policy_0_1.json`;
+- `security/dependency_vulnerability_exceptions_0_1.json`;
+- `tools/dependency_vulnerability_audit.py`;
+- `tools/tests/test_dependency_vulnerability_audit.py`.
+
+Its future contract must protect the existing runtime lock, SBOM, security
+baseline, threat model and production source; forbid SimulationCraft, addon,
+updater, signing, releases, dependency remediation and GitHub setting changes;
+and require focused negative tests for advisory outage, scanner drift,
+lock/SBOM divergence, incomplete coverage, unknown severity and every invalid
+exception state. Implementation, network validation, dependency acquisition,
+commit and push remain unauthorized by this design.
+
+Design verdict: `dependency_vulnerability_audit_0_1_design_ready_for_human_review`.
+
+### Implementation evidence
+
+Implementation status:
+`dependency_vulnerability_audit_0_1_implemented_ready_for_independent_audit`.
+
+- Daniel explicitly approved the design and the eight-route implementation
+  scope on 2026-08-27; commit and push remain unauthorized;
+- PyPA `pip-audit 2.10.1` and 28 transitive distributions were acquired from
+  PyPI without workstation installation, fixed as 29 exact Windows CPython
+  3.13 wheel hashes, and the temporary acquisition directories were removed;
+- the adapter validates the runtime lock, matching SPDX SBOM, security-tool
+  lock, scanner version, complete result coverage, closed JSON form and an
+  empty versioned exception registry before accepting any result;
+- scanner execution is isolated with `-I`, removes Python and pip audit
+  environment overrides, uses `--require-hashes`, `--disable-pip`, `--strict`
+  and the PyPI advisory service, and never passes `--fix` or `--ignore-vuln`;
+- 14 focused tests and 81 complete tools tests passed; protected hashes and
+  the exact eight-route scope passed the quality-gate preflight and run;
+- the attended live observation at `2026-08-28T02:10:58Z` covered 35 exact
+  packages and returned `vulnerability_detected`, exit 1, for
+  `cryptography 49.0.0` / `PYSEC-2026-3552`, aliases `CVE-2026-69247` and
+  `GHSA-g6cj-pr64-35w5`, with `50.0.0` reported as a fix version;
+- the live observation used the available local Python 3.12 runtime with the
+  same package identities and versions. Windows Python 3.13 installation and
+  execution remain unverified until a future authorized publication triggers
+  CI;
+- no exception, dependency remediation, license decision, product code,
+  SimulationCraft, addon, release, commit or push occurred.
+
+The finding is an open dependency-remediation gate, not a failure of the audit
+implementation. Publication without remediation would intentionally make the
+new CI audit step fail closed.
+
+## Active implementation task — Cryptography dependency remediation 0.1
+
+This task replaces only the vulnerable `cryptography 49.0.0` dependency with
+the latest compatible corrected patch, keeps the exception registry empty and
+revalidates the combined vulnerability-audit candidate. It authorizes no
+functional code change, SimulationCraft, commit or push.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"cryptography_dependency_remediation_0_1",
+  "title":"Upgrade cryptography to the latest compatible corrected patch and revalidate the combined dependency-audit candidate",
+  "baseline_commit":"d19f18ea84fb3ec7da5627e5fc8b89a33042c8d3",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"cryptography_dependency_remediation_0_1-20260827-daniel-explicit","authorized_by":"Daniel","authorized_at":"2026-08-27T21:20:00-05:00"},
+  "scope":{"allowed_paths":[".github/workflows/dpslab-ci.yml","desktop-app/pyproject.toml","desktop-app/requirements-ci-win-py313.lock","desktop-app/requirements-security-tools-win-py313.lock","desktop-app/tests/strict_temporary_cleanup.py","desktop-app/tests/test_candidate_knowledge_store.py","desktop-app/tests/test_comparator.py","desktop-app/tests/test_comparison_adapter.py","desktop-app/tests/test_comparison_environment.py","desktop-app/tests/test_comparison_execution.py","desktop-app/tests/test_comparison_member_transactions.py","desktop-app/tests/test_comparison_models.py","desktop-app/tests/test_comparison_preflight.py","desktop-app/tests/test_comparison_readiness.py","desktop-app/tests/test_comparison_spec.py","desktop-app/tests/test_config.py","desktop-app/tests/test_deep_audit.py","desktop-app/tests/test_equipment_transform.py","desktop-app/tests/test_knowledge_envelope.py","desktop-app/tests/test_new_artifact_transaction.py","desktop-app/tests/test_official_source_operator.py","desktop-app/tests/test_official_source_store.py","desktop-app/tests/test_parser.py","desktop-app/tests/test_planned_member.py","desktop-app/tests/test_release_key_ceremony_cli.py","desktop-app/tests/test_release_key_ceremony_executor.py","desktop-app/tests/test_runner.py","desktop-app/tests/test_scenario.py","desktop-app/tests/test_simc_identity.py","desktop-app/tests/test_source_coverage.py","desktop-app/tests/test_static_template_catalog.py","desktop-app/tests/test_variant.py","desktop-app/tests/test_windows_key_protection.py","docs/DEPENDENCY_SECURITY.md","docs/NEXT_TASK.md","security/dependency_vulnerability_exceptions_0_1.json","security/dependency_vulnerability_policy_0_1.json","security/sbom-runtime-win-py313.spdx.json","tools/dependency_vulnerability_audit.py","tools/tests/test_dependency_supply_chain.py","tools/tests/test_dependency_vulnerability_audit.py","tools/tests/test_security_baseline.py"],"generated_paths":[".dpslab/quality-gates/cryptography_dependency_remediation_0_1/implementation.json",".dpslab/quality-gates/cryptography_dependency_remediation_0_1/audit.json"],"forbidden_paths":["desktop-app/src/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/SECURITY_ARCHITECTURE.md","docs/THREAT_MODEL.md","security/security_baseline_0_1.json","security/threat_model_0_1.json"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_runner","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1117,"minimum_test_count":1117},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"49c1f3222d3a1f16108bba2dc652139a10765723bed7e8df0a486f9be4f6f8b1","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/requirements-security-tools-win-py313.lock":"32cc25f59da407fb3ba6bdfd0a2b37915b75c44b337eca2554b6f3fc0f8561a0","docs/SECURITY_ARCHITECTURE.md":"ebe0dd5624e7149807275dfab891fd52e598f27e7c7afedfec2bd4fbc15fdde5","docs/THREAT_MODEL.md":"4784525ec7e8af6073fd2b934f855f5ac8ee2a639cb3ff1200c1811883f8400f","security/dependency_vulnerability_exceptions_0_1.json":"f59ab7e1c8367f08dac6a6abeb195bb91934497052a1e85e5995cc9cbdb6ddfe","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","security/threat_model_0_1.json":"59fdb8dc84e6f0722605a63b5bb627b02e2f0db1e3d5c27e41e1e98391686131","tools/dependency_vulnerability_audit.py":"09c8aa0b6a717254b6137413041bc07d9d5d35b0890f342ce3238dd91442ddad","tools/tests/test_dependency_vulnerability_audit.py":"09da65c753105fcaf12c873dcfdf901baf1351b73ffec09072a257faf2c8bf12"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["select the latest released corrected cryptography patch compatible with Windows x86-64 CPython 3.13","change no resolved runtime package other than cryptography","bind pyproject runtime lock SPDX SBOM and vulnerability policy hashes to the same exact version and wheel bytes","keep the vulnerability exception registry empty and unchanged","preserve the audited vulnerability adapter workflow and security-tool lock byte for byte","adopt one strict Windows-aware cleanup policy for every test module that creates TemporaryDirectory instances","retry only Windows directory-not-empty cleanup failures with bounded backoff and retain failure for every other cleanup error or exhausted retry","run affected modules plus the full tools and functional suites","repeat a live audit of all 35 exact runtime build and security-tool packages and require audit_clean exit 0","record local Python limitations separately from future canonical Windows Python 3.13 CI evidence"],
+  "express_exclusions":["vulnerability exception or ignore rule","automatic remediation or unrelated dependency update","functional source addon updater SimulationCraft comparison signing release or distribution","GitHub settings Actions permissions secrets commit or push","changes outside forty-two allowlisted paths"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-Design status: `dependency_vulnerability_audit_0_1_design_in_progress`.
+### Implementation evidence
+
+- `cryptography` changed from `49.0.0` to the latest compatible corrected
+  patch `50.0.1`; the canonical Windows x86-64 CPython 3.13/ABI3 wheel is
+  pinned by SHA-256
+  `aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648`;
+- the other five resolved runtime distributions retained their exact versions
+  and wheel hashes; the security-tool lock, vulnerability adapter, workflow
+  behavior and empty exception registry were preserved;
+- the runtime lock SHA-256 is
+  `8d2dfca84345d1c17ef575d50d01eaa36d5cea6fd94c25fc531e7180979e3586`
+  and the regenerated SPDX SBOM SHA-256 is
+  `0f92571035f4db9263cc2709dc4187f4f70db73b5f4e34e0fa826ded672c648c`;
+- 25 focused supply-chain, vulnerability-adapter and security-baseline tests
+  passed;
+- the attended live audit at `2026-08-28T03:05:35Z` covered all 35 exact
+  runtime, build and security-tool packages and returned `audit_clean`, zero
+  findings, zero exceptions and exit 0;
+- initial full-suite observations exposed a Windows temporary-directory cleanup
+  race (`WinError 145`) after otherwise successful assertions; the authorized
+  test-only remediation now routes every TemporaryDirectory user through one
+  bounded strict cleanup policy;
+- the remediation-specific module set passed 282 tests with one expected skip,
+  the focused cleanup-helper module passed 23 tests, and the complete local
+  functional suite passed 1,117 tests with zero failures and one expected skip;
+- canonical Windows Python 3.13 installation, full-suite behavior and the CI
+  vulnerability lane remain unverified until a future authorized publication;
+- no exception, functional source change, SimulationCraft, addon, release,
+  commit or push occurred.
+
+Implementation status:
+`cryptography_dependency_remediation_0_1_implemented_ready_for_independent_audit`.

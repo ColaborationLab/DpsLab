@@ -2,6 +2,8 @@ import copy
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+
+from tests.strict_temporary_cleanup import strict_temporary_directory
 import tempfile
 import unittest
 
@@ -96,8 +98,8 @@ class StaticTemplateCatalogTests(unittest.TestCase):
         self.assert_invalid(omitted, "catalog_integrity_fields_invalid")
 
     def test_noncanonical_file_is_rejected(self):
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "catalog.json"
+        with strict_temporary_directory() as directory:
+            path = directory / "catalog.json"
             path.write_text(json.dumps(self.document, indent=2), encoding="utf-8")
             with self.assertRaisesRegex(StaticTemplateCatalogError, "catalog_bytes_noncanonical"):
                 load_static_template_catalog(path)
@@ -221,8 +223,7 @@ class StaticTemplateCatalogTests(unittest.TestCase):
     def test_tank_and_healer_require_dynamic_safety(self):
         source = json.loads((ROOT / "knowledge/fixtures/static_fallback_template_synthetic_0_1.json").read_text(encoding="utf-8"))
         for role in ("tank", "healer"):
-            with tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
+            with strict_temporary_directory() as root:
                 fixture = root / "knowledge/fixtures/static_fallback_template_synthetic_0_1.json"
                 fixture.parent.mkdir(parents=True)
                 envelope = copy.deepcopy(source)

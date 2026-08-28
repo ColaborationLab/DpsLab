@@ -10,6 +10,8 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import patch
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.comparator import _new_result as _new_result_impl
 from dpslab.comparison_environment import software_record
 from dpslab.comparison_models import (
@@ -74,7 +76,7 @@ class RecordingFileOperations(_ComparisonFileOperations):
 
 class ComparisonModelTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
+        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(strict_temporary_cleanup, self.temp, Path(self.temp.name))
         self.path = Path(self.temp.name) / "comparison_result.json"
         self.result = _new_result(SPEC, "execution")
 

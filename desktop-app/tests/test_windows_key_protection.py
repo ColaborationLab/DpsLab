@@ -1,5 +1,6 @@
 import copy,tempfile,unittest
 from pathlib import Path
+from tests.strict_temporary_cleanup import strict_temporary_directory
 from dpslab.windows_key_protection import WindowsDataProtector,WindowsKeyProtectionError,build_protected_key_container,protected_key_path,unprotect_container,validate_protected_key_container
 class FakeProtector:
     def __init__(self):self.protected=[];self.unprotected=[]
@@ -18,7 +19,7 @@ class KeyProtectionTests(unittest.TestCase):
     def test_09_bad_ciphertext_rejected(self):c=copy.deepcopy(self.c);c["ciphertext_base64"]="***";self.assertRaises(WindowsKeyProtectionError,validate_protected_key_container,c)
     def test_10_short_private_key_rejected(self):self.assertRaises(WindowsKeyProtectionError,build_protected_key_container,b"x","synthetic.windows.001",self.public,"2026-08-01T00:00:00Z",self.p)
     def test_11_path_is_confined(self):
-        with tempfile.TemporaryDirectory() as d:self.assertEqual(protected_key_path(Path(d).resolve(),"synthetic.windows.001").parent,(Path(d).resolve()/"DpsLab"/"signing").resolve())
+        with strict_temporary_directory() as d:self.assertEqual(protected_key_path(d.resolve(),"synthetic.windows.001").parent,(d.resolve()/"DpsLab"/"signing").resolve())
     def test_12_relative_root_rejected(self):self.assertRaises(WindowsKeyProtectionError,protected_key_path,Path("relative"),"synthetic.windows.001")
     def test_13_dpapi_flags_forbid_ui_without_machine_scope(self):self.assertEqual(WindowsDataProtector.flags,0x01);self.assertEqual(WindowsDataProtector.flags&0x04,0)
     def test_14_dpapi_description_is_fixed(self):self.assertEqual(WindowsDataProtector.description,"DpsLab release key 0.1")

@@ -2,6 +2,8 @@ import copy
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+
+from tests.strict_temporary_cleanup import strict_temporary_directory
 import tempfile
 import unittest
 
@@ -60,8 +62,8 @@ class SourceCoverageTests(unittest.TestCase):
         with self.assertRaisesRegex(SourceCoverageError, "sha256_mismatch"): validate_source_capture_archive(value)
 
     def test_noncanonical_file_is_rejected(self):
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "manifest.json"; path.write_text(json.dumps(self.manifest, indent=2), encoding="utf-8")
+        with strict_temporary_directory() as directory:
+            path = directory / "manifest.json"; path.write_text(json.dumps(self.manifest, indent=2), encoding="utf-8")
             with self.assertRaisesRegex(SourceCoverageError, "bytes_noncanonical"): load_source_coverage_manifest(path)
 
     def test_duplicate_requirement_family_is_rejected(self):

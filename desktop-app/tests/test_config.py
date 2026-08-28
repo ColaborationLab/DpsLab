@@ -4,6 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.config import ConfigurationError, resolve_simulation_config
 from dpslab.scenario import load_scenario
 
@@ -28,7 +30,7 @@ class SimulationConfigTests(unittest.TestCase):
         )
 
     def tearDown(self) -> None:
-        self.temporary.cleanup()
+        strict_temporary_cleanup(self.temporary, self.root)
 
     def test_explicit_path_has_highest_priority(self) -> None:
         config = resolve_simulation_config(

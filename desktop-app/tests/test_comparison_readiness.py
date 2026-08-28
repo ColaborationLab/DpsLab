@@ -7,6 +7,8 @@ from hashlib import sha256
 from pathlib import Path
 from unittest.mock import Mock, patch
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.comparison_models import (
     ComparisonSoftware,
     DpsLabSourceIdentity,
@@ -45,7 +47,7 @@ class ComparisonReadinessTests(unittest.TestCase):
 
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.addCleanup(strict_temporary_cleanup, self.temp, Path(self.temp.name))
         self.exe = Path(self.temp.name) / "simc.exe"
         self.exe.write_bytes(b"controlled-simc-binary")
         self.spec = load_comparison_spec(SPEC, root=ROOT)

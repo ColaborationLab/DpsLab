@@ -10,6 +10,8 @@ from hashlib import sha256
 from pathlib import Path
 from unittest.mock import patch
 
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
+
 from dpslab.config import SimulationConfig
 from dpslab.simc_identity import (
     SimulationCraftIdentityProbeError,
@@ -27,7 +29,7 @@ BUILD_OUTPUT = (
 class SimulationCraftIdentityProbeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.addCleanup(strict_temporary_cleanup, self.temp, Path(self.temp.name))
         self.exe = Path(self.temp.name) / "simc.exe"
         self.exe.write_bytes(b"controlled-simulationcraft-binary")
         self.config = SimulationConfig(

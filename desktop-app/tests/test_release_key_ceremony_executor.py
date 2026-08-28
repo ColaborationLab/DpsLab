@@ -1,5 +1,6 @@
 import json,tempfile,unittest
 from pathlib import Path
+from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from dpslab.release_key_ceremony_executor import CeremonyConfirmation,CeremonyExecutionPlan,CeremonyExecutorError,execute_attended_ceremony
 class Protector:
     def protect(self,v):return b"dpapi:"+v
@@ -10,7 +11,7 @@ class Transaction:
 class ExecutorTests(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();r=Path(self.tmp.name).resolve();self.repo=r/"repo";self.repo.mkdir();self.plan=CeremonyExecutionPlan("ceremony.production.001","dpslab.release.ed25519.001","DANIELPC\\dpcs9","2026-08-01T00:00:00Z","2027-08-01T00:00:00Z","a"*64,r/"local"/"key.dpskey",r/"external"/"recovery.enc",r/"records"/"evidence.json",(self.repo,));self.conf=[CeremonyConfirmation(s,"a"*64,"DANIELPC\\dpcs9",f"2026-08-01T00:00:0{i}Z") for i,s in enumerate(("readiness","generation","recovery","registry"),1)];self.tx=Transaction()
-    def tearDown(self):self.tmp.cleanup()
+    def tearDown(self):strict_temporary_cleanup(self.tmp,Path(self.tmp.name))
     def run_ok(self,**kw):return execute_attended_ceremony(kw.get("plan",self.plan),kw.get("confirmations",self.conf),kw.get("generator",lambda:bytes(range(32))),Protector(),kw.get("encrypt",lambda v:b"recovery:"+v),kw.get("decrypt",lambda v:v.removeprefix(b"recovery:")),self.tx,"2026-08-01T00:01:00Z")
     def changed(self,**kw):return self.plan.__class__(**{**self.plan.__dict__,**kw})
     def test_01_success(self):self.assertEqual(self.run_ok().status,"key_material_created_pending_registry_review")
