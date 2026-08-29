@@ -2,11 +2,14 @@
 
 ## Propósito
 
-DpsLab es una aplicación local para convertir perfiles de SimulationCraft en
-datos tipados, ejecutar simulaciones reproducibles y auditables, interpretar
-sus resultados y comparar de forma controlada talentos y equipo. El proyecto
-prioriza reproducibilidad, procedencia y conservación
-byte a byte de las entradas.
+DpsLab es una solución local compuesta por aplicación de escritorio, addon de
+WoW y paquetes de conocimiento gobernados. Busca ayudar a mejorar el desempeño
+de personajes de World of Warcraft mediante observación consentida, plantillas
+vigentes, recomendaciones explicables y análisis reproducible. Para tanks, el
+DPS se subordina a supervivencia, mitigación y amenaza; para healers, a la
+curación y seguridad del grupo. El proyecto prioriza reproducibilidad,
+procedencia, privacidad, denegación por defecto y conservación byte a byte de
+las entradas analíticas.
 
 ## Arquitectura actual
 
@@ -15,6 +18,14 @@ byte a byte de las entradas.
 - `variants/`: overrides declarativos y restringidos aplicados a perfiles efectivos.
 - `config/`: configuración dependiente del computador; el archivo local no se versiona.
 - `desktop-app/src/dpslab/`: parser, modelos, configuración, runner, escenarios, variantes, resumen y auditoría.
+- `addon/DpsLab/`: addon sintético local, guía no accionable y exportación
+  manual acotada mediante SavedVariables.
+- `knowledge/`: esquemas, fuentes, snapshots sintéticos, candidatos, revisiones,
+  catálogos y registros públicos de confianza.
+- `security/`: baseline, modelo de amenazas, SBOM y políticas de análisis.
+- `tools/`: quality gate, auditorías de dependencias y seguridad, y ensayos de
+  separación del addon público.
+- `.github/workflows/`: CI de política, herramientas, funcionalidad y seguridad.
 - `results/`: snapshot, runs locales y auditorías versionables.
 - `desktop-app/tests/`: suite unitaria con procesos simulados y fixtures mínimos.
 
@@ -52,6 +63,19 @@ byte a byte de las entradas.
 - CI reproducible en GitHub para política/contrato, herramientas y suite
   funcional, con permisos mínimos, Actions fijadas por SHA y evidencia
   retenida durante siete días.
+- Pipeline current-only de conocimiento: cobertura de fuentes, adquisición
+  oficial atendida, adaptación estructural, revisión semántica, propuestas y
+  candidatos que nunca superan `pending_review` automáticamente.
+- Fundamentos de release: bundles candidatos, firma Ed25519, registro de
+  confianza, custodia/recuperación de clave y evaluación fail-closed de
+  readiness; no existe todavía un canal público de actualización.
+- Addon sintético con comandos `/dpslab synthetic`,
+  `/dpslab export synthetic` y `/dpslab export clear`. Declara únicamente
+  `DpsLabObservationExport`, no observa datos reales y no automatiza acciones.
+- Parser de transporte sintético en la aplicación, cerrado a una asignación
+  exacta y sin `eval`, ejecución de Lua, filesystem o red.
+- Locks con hashes, SBOM, auditoría de vulnerabilidades, análisis estático y
+  escaneo de secretos integrados en las cuatro lanes actuales de CI.
 
 ## Entradas y salidas
 
@@ -91,7 +115,14 @@ explica el diferencial.
   autorización vigente para repetirla, generalizar el resultado a otros
   personajes o iniciar otra matriz.
 - No se ejecutan matrices ni se generan combinaciones.
-- No existe GUI ni addon de WoW.
+- No existe todavía GUI. El addon actual es sintético, no accionable y aún no
+  ha sido probado dentro de una sesión real de WoW.
+- No existe adquisición de SavedVariables elegida por el usuario ni integración
+  real de extremo a extremo entre WoW y la aplicación.
+- Los catálogos versionados son sintéticos o candidatos: no constituyen todavía
+  cobertura vigente aprobada para todas las clases y especializaciones.
+- No existe instalador, actualizador público, canal estable/beta operativo ni
+  release autorizada para usuarios externos.
 - Las fuentes de daño manuales no pudieron normalizarse completamente porque
   el objeto JavaScript correspondiente no era JSON válido.
 - Algunos artefactos históricos conservan esquema 0.2 y no se regeneran automáticamente.
@@ -100,7 +131,7 @@ explica el diferencial.
 ## Eje transversal de seguridad
 
 DpsLab adopta seguridad por diseño y denegación por defecto. Datos externos,
-archivos locales, salida de procesos, paquetes de conocimiento y el futuro
+archivos locales, salida de procesos, paquetes de conocimiento y el
 intercambio con el addon cruzan límites de confianza y deben validarse con
 esquemas cerrados, límites de recursos, procedencia e integridad antes de uso.
 

@@ -1,5 +1,15 @@
 # Roadmap — DpsLab
 
+## Estado general conciliado — 2026-08-29
+
+- Fundación técnica y de seguridad interna: **aproximadamente 65 %**.
+- Producto integral distribuible para usuarios: **aproximadamente 40 %**.
+
+Estas cifras son estimaciones de planificación, no estados aprobatorios. La
+primera mide componentes internos implementados y verificados; la segunda
+incluye todavía GUI, integración real aplicación–addon, conocimiento vigente
+multiclase, empaquetado, actualización y puertas de beta.
+
 ## Primer bloque técnico — completado
 
 - [x] Parser de perfiles SimulationCraft.
@@ -40,12 +50,43 @@
   `cmp-3120334d365b4ba2922cdbb25afe0d7f`, 8/8 bloques, 16/16 runs válidos,
   sin reintentos; ambos análisis clasifican `winner_b`.
 
-## Etapas posteriores no aprobadas
+## Fundación de conocimiento, distribución y addon — implementada internamente
+
+- [x] Esquemas cerrados de conocimiento y catálogo estático current-only con
+  estados de revisión y denegación por defecto.
+- [x] Pipeline gobernado para fuentes oficiales de Blizzard, evidencia de
+  parche y candidatos `pending_review`; no aprueba recomendaciones solo.
+- [x] Firma Ed25519, registro de confianza, custodia y recuperación de clave de
+  release bajo ceremonias atendidas; no constituye todavía un canal público.
+- [x] Dependencias reproducibles, locks con hashes, SBOM, auditoría de
+  vulnerabilidades, análisis estático y escaneo de secretos en CI.
+- [x] Addon sintético local con guía no accionable, intercambio direccional,
+  observación cerrada, serialización y exportación manual mediante la única
+  SavedVariable `DpsLabObservationExport`.
+- [x] Parser de escritorio estricto para el transporte sintético, sin ejecutar
+  Lua, descubrir archivos automáticamente ni acceder a red.
+
+## Camino restante hacia un producto distribuible
+
+- [ ] Prueba atendida dentro de WoW del ciclo sintético exportar, persistir,
+  cerrar el juego, leer una copia seleccionada y limpiar.
+- [ ] Adquisición de SavedVariables elegida explícitamente por el usuario, con
+  preflight de WoW cerrado, privacidad, límites y rechazo de symlinks/rutas
+  ambiguas; nunca editar el archivo del juego in situ.
+- [ ] Observación real mínima y consentida, separada de nombres, cuenta,
+  telemetría y datos no necesarios.
+- [ ] Catálogo vigente aprobado para clases, especializaciones y roles,
+  priorizando supervivencia para tanks y curación para healers.
+- [ ] Interfaz gráfica local accesible y empaquetado reproducible para Windows.
+- [ ] Actualizador firmado con canales estable/beta, anti-rollback, revocación
+  y recuperación verificadas.
+- [ ] Empaquetado y distribución pública del addon con revisión de licencias,
+  privacidad, propiedad intelectual y términos de plataforma.
+- [ ] Revisión independiente de seguridad y piloto cerrado antes de beta.
+
+## Fuera del alcance inmediato
 
 - Generación automática de combinaciones y optimización.
-- Interfaz gráfica local.
-- Addon de WoW.
-- Arquitectura multiclase.
 - Entrenador o analizador de combate.
 - Weekly Reward Choices, currencies, high watermarks y achievements.
 
@@ -56,12 +97,16 @@
 - [x] Límites de confianza iniciales para aplicación, addon, fuentes, CI,
   paquetes, actualización y claves.
 - [x] Política de reporte responsable y baseline legible por pruebas.
-- [ ] Modelo de amenazas revisado para el primer alcance distribuible.
-- [ ] Dependencias reproducibles, SBOM y auditoría automática de vulnerabilidades.
-- [ ] Análisis estático y escaneo de secretos en CI.
+- [x] Modelo de amenazas versionado y probado; conserva puertas abiertas para
+  beta en lugar de declararlas cerradas.
+- [x] Dependencias reproducibles, SBOM y auditoría automática de vulnerabilidades.
+- [x] Análisis estático y escaneo de secretos en CI.
 - [ ] Canal de actualización firmado con protección contra repetición,
   degradación y rollback malicioso.
-- [ ] Contrato y pruebas adversariales del intercambio aplicación–addon.
+- [x] Contrato, parser estricto y pruebas negativas del transporte sintético
+  aplicación–addon.
+- [ ] Ensayo adversarial de extremo a extremo con archivos realmente escritos
+  por WoW y seleccionados por el usuario.
 - [ ] Política de privacidad y procedimiento de respuesta, revocación y
   recuperación ejercitado.
 - [ ] Revisión de seguridad independiente antes de beta externa.

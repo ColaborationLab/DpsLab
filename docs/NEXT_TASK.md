@@ -8264,9 +8264,9 @@ The closed manual persistence design was published through
 approved all four lanes. The record itself did not declare SavedVariables or
 change addon code.
 
-## Active implementation task — Manual synthetic observation persistence 0.1
+## Published implementation record — Manual synthetic observation persistence 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8280,6 +8280,32 @@ change addon code.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["declare exactly one account-wide DpsLabObservationExport SavedVariables name and no per-character or additional persistent state","keep the variable absent by default and mutate it only through exact export synthetic or export clear player actions","require the exact successful serializer reason and assignment grammar before retaining only an even-length bounded lowercase hexadecimal value","leave an existing value unchanged for unknown commands missing or invalid serializer output and make clear idempotent","never print payload character path or persistence-to-disk claims","introduce no event frame timer game API network automation real character data or actionable guidance surface","pass focused tool tests full tool suite procedural audit and locked remote functional suite"],
   "express_exclusions":["real character identity equipment talents stats combat events or game API access","automatic export load login reload combat zone logout update timer or event driven persistence","general serialization parsing execution desktop file discovery import guidance actionability network telemetry credentials updates signing or activation","SimulationCraft execution comparisons or run creation","dependency lock SBOM package license repository or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The opt-in synthetic SavedVariables implementation was published through
+`012f71c85514b45106c05b0ab44201de5ef1e0ac`. GitHub Actions run #147
+approved policy and contract, tools tests, the locked functional suite, and
+static analysis with secret scanning. The implementation remains synthetic,
+manual and non-actionable; it has not been exercised inside WoW.
+
+## Active documentation task — Canonical status reconciliation 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"canonical_status_reconciliation_0_1",
+  "title":"Reconcile project brief and roadmap with the published technical security knowledge and addon state",
+  "baseline_commit":"012f71c85514b45106c05b0ab44201de5ef1e0ac",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"canonical_status_reconciliation_0_1-20260829-daniel-continuemos-status-general","authorized_by":"Daniel","authorized_at":"2026-08-29T15:15:02-05:00"},
+  "scope":{"allowed_paths":["docs/PROJECT_BRIEF.md","docs/ROADMAP.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/canonical_status_reconciliation_0_1/implementation.json",".dpslab/quality-gates/canonical_status_reconciliation_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":123,"minimum_test_count":123},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"9ab88e26a1de2e84302a0751ea5b5a5b527d3541ec6ae415bc2c23a47c39a248","addon/DpsLab/DpsLab.toc":"0fd2e41d9b7afc0108b2425cda36317596cd390130eb5a4e57923b462ca9c739","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb","desktop-app/src/dpslab/addon_observation_transport.py":"950debcd799914ac56a63adfa6a94a2ca5f6b8cf57c04a5769032f8e1d0df76a"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["replace obsolete claims that no addon exists with the exact synthetic published state","separate internal technical foundation progress from user-distributable product progress","record implemented knowledge release security and addon foundations without implying current real guidance public distribution or beta readiness","enumerate the remaining end-to-end GUI current-knowledge update packaging privacy and independent-review gates","preserve exact published commit and CI evidence and make no code configuration security policy or artifact change"],
+  "express_exclusions":["code test workflow policy schema knowledge catalog addon or security mutation","WoW installation execution SavedVariables acquisition or real character data","SimulationCraft execution comparisons runs results or baseline changes","GUI packaging updater release distribution network account donation marketing or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
