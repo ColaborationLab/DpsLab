@@ -25,3 +25,9 @@ identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,
 user-selected file acquisition, privacy review, WoW-closed preflight and
 adversarial resource tests. This block cannot make guidance actionable.
+
+The addon-side synthetic serializer now rehearses the same representation. It
+uses a schema-specific fixed key order, validates the complete fixture before
+serialization, verifies the declared byte count, emits two lowercase hex
+digits per payload byte, and exposes the result only as an in-memory synthetic
+value. It is not a general JSON or Lua serializer and is not persisted.

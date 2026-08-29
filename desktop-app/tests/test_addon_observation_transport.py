@@ -40,6 +40,7 @@ class AddonObservationTransportTests(unittest.TestCase):
             parse_synthetic_saved_variable(raw)
 
     def test_valid_transport_returns_immutable_summary(self):
+        self.assertEqual(706, document()["observation"]["byte_count"])
         result = parse_synthetic_saved_variable(transport())
         self.assertEqual(("synthetic.observation.001", "damage", 0, 0, 0), (result.observation_id, result.role, result.damage_events, result.incoming_damage_events, result.healing_events))
 

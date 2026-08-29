@@ -8189,9 +8189,9 @@ The synthetic observation envelope was published through
 approved all four lanes. It remains non-persistent and contains no real
 character or combat data.
 
-## Active implementation task — Synthetic addon observation transport parser 0.1
+## Published implementation record — Synthetic addon observation transport parser 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8205,6 +8205,31 @@ character or combat data.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["accept only one exact DpsLabObservationExport assignment containing lowercase hexadecimal and no other Lua syntax","decode at most 4096 bytes of canonical UTF-8 JSON without eval exec imports subprocess filesystem or network access","reject duplicate keys non-finite values noncanonical bytes unknown fields unsupported product or producer boolean integers malformed timestamps roles and tokens","bind the declared byte count and signal total to the decoded payload","require synthetic non-personal non-executable non-actionable no-automation safety state","return only an immutable validated summary","require the remote locked functional suite to pass before publication is considered closed"],
   "express_exclusions":["real SavedVariables declaration file discovery reading writing or persistence","general Lua parsing or execution","real character identity equipment talents stats combat events or game API access","guidance generation selection or actionability","SimulationCraft execution comparisons or run creation","network telemetry credentials automatic updates signing or activation","dependency lock SBOM package license repository or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The strict synthetic desktop parser was published through
+`3ddec76562857666c4c5467a0490d488d2267e99`. GitHub Actions run #144
+approved all four lanes, including the locked functional suite. It has no
+filesystem capability and does not parse general Lua.
+
+## Active implementation task — Synthetic addon observation serializer 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_synthetic_serializer_0_1",
+  "title":"Implement a schema-specific in-memory synthetic addon serializer compatible with the strict desktop parser",
+  "baseline_commit":"3ddec76562857666c4c5467a0490d488d2267e99",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_synthetic_serializer_0_1-20260829-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-29T14:20:00-05:00"},
+  "scope":{"allowed_paths":["addon/DpsLab/SyntheticObservation.lua","tools/tests/test_addon_synthetic_observation.py","tools/tests/test_addon_synthetic_observation_serializer.py","desktop-app/tests/test_addon_observation_transport.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_synthetic_serializer_0_1/implementation.json",".dpslab/quality-gates/addon_observation_synthetic_serializer_0_1/audit.json"],"forbidden_paths":[".github/**","desktop-app/src/**","security/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","addon/DpsLab/DpsLab.lua","addon/DpsLab/SyntheticGuidance.lua","addon/DpsLab/SyntheticExchange.lua"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-p","test_addon_synthetic_observation*.py","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":112,"minimum_test_count":117},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/addon_observation_transport.py":"950debcd799914ac56a63adfa6a94a2ca5f6b8cf57c04a5769032f8e1d0df76a","desktop-app/requirements-ci-win-py313.lock":"8d2dfca84345d1c17ef575d50d01eaa36d5cea6fd94c25fc531e7180979e3586","security/sbom-runtime-win-py313.spdx.json":"0f92571035f4db9263cc2709dc4187f4f70db73b5f4e34e0fa826ded672c648c","addon/DpsLab/DpsLab.lua":"204a4d0013cdf4df3c3865b4938fa5a79114a24bab8527389dfed4fa7b617ca3","addon/DpsLab/SyntheticGuidance.lua":"c4a198aa134978b9d88e6e7f908115bee0237a80ceb4bc4cad6356ad37a47b27","addon/DpsLab/SyntheticExchange.lua":"73a1eb171ccee060af02670f17f91fce9b103d88759bd67f30b4610bcec59ae8"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["validate the complete synthetic observation before serialization","emit the exact canonical schema-specific JSON key order expected by the desktop parser and exactly one trailing LF","bind the declared byte count to the serialized payload and reject payloads above 4096 bytes","encode every payload byte as two lowercase hexadecimal digits inside one exact DpsLabObservationExport assignment","strengthen the synthetic timestamp shape so strings cannot escape the JSON representation","expose only an in-memory synthetic export and reason without SavedVariables declaration filesystem game API general serialization or actionability","require the remote locked functional suite to pass before closure"],
+  "express_exclusions":["real SavedVariables declaration file discovery reading writing or persistence","general JSON or Lua serialization parsing or execution","real character identity equipment talents stats combat events or game API access","guidance generation selection or actionability","SimulationCraft execution comparisons or run creation","network telemetry credentials automatic updates signing or activation","dependency lock SBOM package license repository or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

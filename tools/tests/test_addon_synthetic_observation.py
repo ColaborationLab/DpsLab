@@ -51,6 +51,10 @@ class AddonSyntheticObservationTests(unittest.TestCase):
             with self.subTest(token=token):
                 self.assertNotIn(token.lower(), self.text.lower())
 
+    def test_timestamp_and_serialized_byte_count_are_fixed_for_the_fixture(self) -> None:
+        self.assertIn('captured_at:match("^%d%d%d%d%-%d%d%-%d%dT%d%d:%d%d:%d%dZ$")', self.text)
+        self.assertIn("byte_count = 706", self.text)
+
 
 if __name__ == "__main__":
     unittest.main()
