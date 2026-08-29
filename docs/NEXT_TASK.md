@@ -8040,9 +8040,9 @@ remains available but has no scanner package installed.
 GitHub Actions run #114 approved policy and contract, static analysis and
 secret scanning, tools tests, and the functional suite for this record.
 
-## Active design task — Static analysis finding triage 0.1
+## Published design record — Static analysis finding triage 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8056,6 +8056,30 @@ secret scanning, tools tests, and the functional suite for this record.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["classify every recorded finding as context_review remediation_candidate or additional_evidence_required","state only behavior-level rationale without source excerpts","identify any remediation candidate's exact future scope but do not modify it","preserve all current gates locks policies and exclusions"],
   "express_exclusions":["source or test changes","security policy lock or exception changes","scanner configuration changes","SimulationCraft","application execution","remediation","commits or pushes beyond this documentation record"]
+}
+```
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
+
+The 31 findings remain documented as `context_review` without exceptions,
+suppression, remediation, or a change to the high-severity fail-closed gate.
+GitHub Actions run #116 approved the associated published record.
+
+## Active design task — Desktop interface architecture 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"desktop_interface_architecture_0_1_design",
+  "title":"Design the local desktop interface boundary for governed DpsLab results and templates",
+  "baseline_commit":"f13a39f810c6ca0d3526aeb31868cbcc99279f51",
+  "authorization":{"status":"design_only","authorization_id":"desktop_interface_architecture_0_1_design-20260828-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-28T23:44:00-05:00"},
+  "scope":{"allowed_paths":["docs/DESKTOP_INTERFACE_ARCHITECTURE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/desktop_interface_architecture_0_1_design/design.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/ROADMAP.md","docs/PROJECT_BRIEF.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define local-only interface responsibilities and trust boundaries","show only validated immutable result and template data","define unavailable pending-review and incompatible states as non-actionable","specify privacy accessibility and failure-safe interaction requirements","produce a closed future implementation scope without selecting a UI framework or writing application code"],
+  "express_exclusions":["application or addon code","SimulationCraft execution","comparisons or run creation","network or live-source access","update distribution signing secrets or telemetry","commits or pushes beyond the design documentation record"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
