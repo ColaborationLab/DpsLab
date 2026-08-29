@@ -7950,9 +7950,9 @@ lock change was made, and no scanner or application code was executed.
 GitHub Actions run #112 approved policy and contract, static analysis and
 secret scanning, tools tests, and the functional suite for this record.
 
-## Active diagnostic task — Static analysis finding diagnosis 0.2
+## Published diagnostic record — Static analysis finding diagnosis 0.2
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7968,7 +7968,7 @@ secret scanning, tools tests, and the functional suite for this record.
   "express_exclusions":["source or test changes","security policy lock or exception changes","scanner configuration changes","SimulationCraft","application execution","remediation","commits or pushes beyond this documentation record"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Sanitized diagnostic packet
 
@@ -8016,3 +8016,26 @@ approve an exception or any code change.
 After the packet was recorded, the raw Bandit JSON, downloaded wheels, and all
 temporary `site-packages` contents were removed. The isolated CPython runtime
 remains available but has no scanner package installed.
+
+GitHub Actions run #114 approved policy and contract, static analysis and
+secret scanning, tools tests, and the functional suite for this record.
+
+## Active design task — Static analysis finding triage 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"static_analysis_finding_triage_0_1_design",
+  "title":"Read-only technical triage of sanitized non-high Bandit findings",
+  "baseline_commit":"3936f30952c0b3635882b2fb9be59894be5f6043",
+  "authorization":{"status":"design_only","authorization_id":"static_analysis_finding_triage_0_1_design-20260828-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-28T23:28:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/static_analysis_finding_triage_0_1_design/design.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/requirements-security-tools-win-py313.lock":"e3dd0be77ca90dc9e2ccefe79608730bb524ac16c9c99d44573fb677ad0ef1f7","security/static_analysis_policy_0_1.json":"9895b8e1367cd8a76bac33954c9eb80aa3cdc846d49855cfd93ff48b0dae3b6f"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["classify every recorded finding as context_review remediation_candidate or additional_evidence_required","state only behavior-level rationale without source excerpts","identify any remediation candidate's exact future scope but do not modify it","preserve all current gates locks policies and exclusions"],
+  "express_exclusions":["source or test changes","security policy lock or exception changes","scanner configuration changes","SimulationCraft","application execution","remediation","commits or pushes beyond this documentation record"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
