@@ -8139,9 +8139,9 @@ run #141 approved policy and contract, static analysis and secret scanning,
 tools tests, and the functional suite. This record does not authorize a real
 transport, SavedVariables parsing, real guidance, or package activation.
 
-## Active documentation task — Directional addon exchange architecture 0.1
+## Published documentation record — Directional addon exchange architecture 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8155,6 +8155,31 @@ transport, SavedVariables parsing, real guidance, or package activation.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["separate addon-to-desktop observations from desktop-to-addon guidance as two local unidirectional channels","reserve SavedVariables for bounded addon-owned observation export and prohibit desktop in-place edits","require desktop guidance staging validation and atomic activation only while WoW is confirmed not running","require double validation fail-closed degradation rollback path and rejection of ambiguous process state symlinks traversal partial activation and executable payloads","state that the current synthetic digest is a placeholder rather than proof of a real transferred artifact"],
   "express_exclusions":["addon or desktop implementation","real SavedVariables or character data","real guidance package generation signing transfer or activation","background watchers hot reload network telemetry credentials or automatic updates","SimulationCraft execution","comparisons or run creation","license trademark account repository or GitHub setting changes","package installation lock regeneration or dependency changes","commits or pushes beyond this documentation record"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The two directional local transport boundaries were published through
+`064c480602a08fea0c16af4134875d580c0b9e37`. GitHub Actions run #142
+approved all four lanes. This architecture record does not implement either
+transport and does not authorize real SavedVariables or character data.
+
+## Active implementation task — Synthetic addon observation envelope 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_synthetic_observation_envelope_0_1",
+  "title":"Implement a closed non-persistent synthetic addon observation envelope and validator",
+  "baseline_commit":"064c480602a08fea0c16af4134875d580c0b9e37",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_synthetic_observation_envelope_0_1-20260829-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-29T13:10:00-05:00"},
+  "scope":{"allowed_paths":["addon/DpsLab/DpsLab.toc","addon/DpsLab/SyntheticObservation.lua","tools/tests/test_addon_synthetic_observation.py","tools/tests/test_addon_synthetic_exchange.py","tools/tests/test_addon_synthetic_guidance.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_synthetic_observation_envelope_0_1/implementation.json",".dpslab/quality-gates/addon_synthetic_observation_envelope_0_1/audit.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","addon/DpsLab/DpsLab.lua","addon/DpsLab/SyntheticGuidance.lua","addon/DpsLab/SyntheticExchange.lua"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":108,"minimum_test_count":108},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","docs/ADDON_MVP_ARCHITECTURE.md":"c87ba55ac5c65896c033cb72989c787ec76a5ca07bd1846672a0325815bf16c4","addon/DpsLab/DpsLab.lua":"204a4d0013cdf4df3c3865b4938fa5a79114a24bab8527389dfed4fa7b617ca3","addon/DpsLab/SyntheticGuidance.lua":"c4a198aa134978b9d88e6e7f908115bee0237a80ceb4bc4cad6356ad37a47b27","addon/DpsLab/SyntheticExchange.lua":"73a1eb171ccee060af02670f17f91fce9b103d88759bd67f30b4610bcec59ae8"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define one closed schema 0.1 synthetic observation envelope with identity producer compatibility subject payload signals and safety","support only synthetic class and specialization tokens and the damage tank or healer roles without names realms equipment talents or other personal character data","bound build interface string byte event count sample window and damage incoming-damage and healing event signals","require signal totals to equal the declared event count","load the fixture before the renderer without declaring SavedVariables persistence or any game API","reject unknown fields non-integers unsupported producer non-retail product non-synthetic subjects malformed roles excessive values personal data executable content actionable states and automation"],
+  "express_exclusions":["real SavedVariables declaration reading writing or parsing","real character identity equipment talents stats combat events or game API access","desktop application code real transport package signing or activation","background watcher hot reload network telemetry credentials or automatic updates","SimulationCraft execution","comparisons or run creation","license trademark account repository or GitHub setting changes","package installation lock regeneration or dependency changes","commits or pushes beyond this implementation record"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

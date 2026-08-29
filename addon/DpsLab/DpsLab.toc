@@ -4,4 +4,5 @@
 ## Version: 0.1.0-synthetic
 SyntheticGuidance.lua
 SyntheticExchange.lua
+SyntheticObservation.lua
 DpsLab.lua
