@@ -13,11 +13,24 @@ local SYNTHETIC = {
   limitations = "No live balance, simulation, automation, or desktop exchange.",
 }
 
-function DpsLab.Render(state)
+local function syntheticDetail(role)
+  local package = DpsLabSyntheticGuidance
+  if package == nil or package.schema_version ~= "0.1" or package.safety.actionable ~= false then
+    return SYNTHETIC.detail
+  end
+  local roleGuidance = package.guidance[role]
+  return roleGuidance and roleGuidance.priority or SYNTHETIC.detail
+end
+
+function DpsLab.RenderRole(state, role)
   if state == "synthetic" then
-    return SYNTHETIC
+    return { status = SYNTHETIC.status, title = SYNTHETIC.title, detail = syntheticDetail(role), limitations = SYNTHETIC.limitations }
   end
   return UNAVAILABLE
+end
+
+function DpsLab.Render(state)
+  return DpsLab.RenderRole(state, nil)
 end
 
 function DpsLab.IsActionable(view)
@@ -26,7 +39,8 @@ end
 
 SLASH_DPSLAB1 = "/dpslab"
 SlashCmdList["DPSLAB"] = function(message)
-  local view = DpsLab.Render(message == "synthetic" and "synthetic" or nil)
+  local command, role = message:match("^(%S*)%s*(%S*)$")
+  local view = DpsLab.RenderRole(command == "synthetic" and "synthetic" or nil, role)
   print("[DpsLab] " .. view.title .. ": " .. view.detail)
 end
 
