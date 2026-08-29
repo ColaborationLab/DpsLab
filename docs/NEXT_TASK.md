@@ -8013,6 +8013,26 @@ approve an exception or any code change.
 | B607 | LOW | HIGH | tools/tests/test_quality_gate.py | 356 | unclassified_pending_human_review |
 | B105 | LOW | MEDIUM | tools/tests/test_static_security_analysis.py | 42 | unclassified_pending_human_review |
 
+### Technical triage outcome
+
+All 31 findings are classified as `context_review`; none is a
+`remediation_candidate` and none requires additional evidence for this
+design-level assessment. This classification records technical context only:
+it neither suppresses a future finding nor modifies the CI severity gate.
+
+| Pattern | Count | Classification | Behavior-level rationale |
+| --- | ---: | --- | --- |
+| B404 | 8 | context_review | The modules import the subprocess API for controlled process boundaries; the import itself does not execute a process. |
+| B603 | 9 | context_review | Every identified process invocation explicitly disables shell interpretation and uses a structured argument list. |
+| B607 | 3 | context_review | The identified partial-path calls are test-only Git fixture commands, not product process execution. |
+| B101 | 6 | context_review | Assertions follow closed validation or internal state branching; they are not the input-validation boundary. |
+| B105 | 4 | context_review | The findings are deterministic proposal metadata or deliberately synthetic test-fixture values; no credential storage or transmission path was identified. |
+| B604 | 1 | context_review | The field carries recorded invocation metadata; it does not control subprocess execution. |
+
+No future code change is proposed from this triage. A later material change to
+process construction, untrusted command input, secret handling, or the
+scanner policy must trigger a new review rather than rely on this assessment.
+
 After the packet was recorded, the raw Bandit JSON, downloaded wheels, and all
 temporary `site-packages` contents were removed. The isolated CPython runtime
 remains available but has no scanner package installed.
