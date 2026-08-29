@@ -82,7 +82,7 @@ jobs:
           python tools/static_security_analysis.py --bandit (Join-Path $raw "bandit.json") --gitleaks (Join-Path $raw "gitleaks.json") --output static-security-summary.json
           $summaryExit = $LASTEXITCODE
           Remove-Item -LiteralPath $raw -Recurse -Force
-          if ($banditExit -ne 0 -or $gitleaksExit -ne 0 -or $summaryExit -ne 0) { exit 1 }
+          if ($banditExit -gt 1 -or $gitleaksExit -ne 0 -or $summaryExit -ne 0) { exit 1 }
       - name: Upload sanitized security evidence
         if: ${{ always() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
