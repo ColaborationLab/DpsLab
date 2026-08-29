@@ -8214,9 +8214,9 @@ The strict synthetic desktop parser was published through
 approved all four lanes, including the locked functional suite. It has no
 filesystem capability and does not parse general Lua.
 
-## Active implementation task — Synthetic addon observation serializer 0.1
+## Published implementation record — Synthetic addon observation serializer 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8230,6 +8230,31 @@ filesystem capability and does not parse general Lua.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["validate the complete synthetic observation before serialization","emit the exact canonical schema-specific JSON key order expected by the desktop parser and exactly one trailing LF","bind the declared byte count to the serialized payload and reject payloads above 4096 bytes","encode every payload byte as two lowercase hexadecimal digits inside one exact DpsLabObservationExport assignment","strengthen the synthetic timestamp shape so strings cannot escape the JSON representation","expose only an in-memory synthetic export and reason without SavedVariables declaration filesystem game API general serialization or actionability","require the remote locked functional suite to pass before closure"],
   "express_exclusions":["real SavedVariables declaration file discovery reading writing or persistence","general JSON or Lua serialization parsing or execution","real character identity equipment talents stats combat events or game API access","guidance generation selection or actionability","SimulationCraft execution comparisons or run creation","network telemetry credentials automatic updates signing or activation","dependency lock SBOM package license repository or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The schema-specific synthetic serializer was published through
+`b2c10c103bb72cba2165695a769366a45704cbd5`. GitHub Actions run #145
+approved all four lanes. It remains in-memory only and does not declare or
+write SavedVariables.
+
+## Active documentation task — Manual synthetic observation persistence design 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_manual_persistence_design_0_1",
+  "title":"Define the closed opt-in boundary for one synthetic SavedVariables export and clear command",
+  "baseline_commit":"b2c10c103bb72cba2165695a769366a45704cbd5",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_manual_persistence_design_0_1-20260829-daniel-continue-with-current-authority","authorized_by":"Daniel","authorized_at":"2026-08-29T15:05:00-05:00"},
+  "scope":{"allowed_paths":["docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_manual_persistence_design_0_1/implementation.json",".dpslab/quality-gates/addon_observation_manual_persistence_design_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":117,"minimum_test_count":117},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"204a4d0013cdf4df3c3865b4938fa5a79114a24bab8527389dfed4fa7b617ca3","addon/DpsLab/DpsLab.toc":"2fb29223c93a6d25a674bea71882f8b4f5c18f4f5112cd9b3c061fc1d4ab8ec1","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb","desktop-app/src/dpslab/addon_observation_transport.py":"950debcd799914ac56a63adfa6a94a2ca5f6b8cf57c04a5769032f8e1d0df76a"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define exactly one account-wide DpsLabObservationExport SavedVariables candidate and no other persistent state","require explicit exact export synthetic and export clear player commands with persistence absent by default","state that WoW controls disk flush and that in-memory success cannot claim file persistence","prohibit load login reload combat zone logout update timer or event driven creation refresh repair or overwrite","require unknown pre-existing values invalid serializer states and unknown commands to remain unchanged","require idempotent clear no payload logging and no effect on guidance configuration or other addons","retain synthetic non-personal non-actionable no-automation scope and reserve real observations for a separate privacy decision","produce a closed future implementation path list without changing code or the TOC"],
+  "express_exclusions":["SavedVariables declaration or persistence implementation","addon desktop or test code changes","real character identity equipment talents stats combat events or game API access","general serialization parsing execution guidance actionability network telemetry credentials updates signing or activation","SimulationCraft execution comparisons or run creation","dependency lock SBOM package license repository or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
