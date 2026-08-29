@@ -7915,9 +7915,9 @@ hashes, and 87/87 tools tests. Its declared procedural audit is recorded as
 `blocked`: that status records the unavailable exact interpreter, not a code
 or security-policy failure. No remediation candidate has been identified.
 
-## Active implementation task — Isolated CPython 3.13 runtime 0.1
+## Published implementation record — Isolated CPython 3.13 runtime 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7933,7 +7933,7 @@ or security-policy failure. No remediation candidate has been identified.
   "express_exclusions":["system-wide Python installation","PATH or registry changes","source or test changes","security policy or lock changes","Bandit execution","SimulationCraft","commits or pushes beyond this documentation record"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Execution result
 
@@ -7946,3 +7946,26 @@ interpreter returned `Python 3.13.14`. Its local `Lib/site-packages` path is
 enabled in the runtime's own `.pth` file. The verified archive was then
 removed. No global PATH, launcher, registry, association, source, policy, or
 lock change was made, and no scanner or application code was executed.
+
+GitHub Actions run #112 approved policy and contract, static analysis and
+secret scanning, tools tests, and the functional suite for this record.
+
+## Active diagnostic task — Static analysis finding diagnosis 0.2
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"static_analysis_finding_diagnosis_0_2",
+  "title":"Derive a sanitized review packet for non-high Bandit findings with the verified isolated runtime",
+  "baseline_commit":"bfea6fc215f688040948402c3e4d046a2ac0319a",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"static_analysis_finding_diagnosis_0_2-20260828-daniel-explicit","authorized_by":"Daniel","authorized_at":"2026-08-28T23:12:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/static_analysis_finding_diagnosis_0_2/implementation.json",".dpslab/quality-gates/static_analysis_finding_diagnosis_0_2/audit.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/requirements-security-tools-win-py313.lock":"e3dd0be77ca90dc9e2ccefe79608730bb524ac16c9c99d44573fb677ad0ef1f7","security/static_analysis_policy_0_1.json":"9895b8e1367cd8a76bac33954c9eb80aa3cdc846d49855cfd93ff48b0dae3b6f"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["use only the verified D:/DPSLab Tools/cpython-3.13.14-win-amd64 runtime","populate its local site-packages only from desktop-app/requirements-security-tools-win-py313.lock using require-hashes and CPython-3.13 Windows x64 wheel targeting","run Bandit only against desktop-app/src and tools without application execution","retain in docs only rule ID severity confidence repository-relative path and line for non-high findings; retain no source excerpt raw JSON scanner log credential or secret","delete raw results and all temporarily installed site-packages after the sanitized packet is recorded","preserve the high-severity fail-closed gate and require a separate contract for every remediation suppression or policy change"],
+  "express_exclusions":["source or test changes","security policy lock or exception changes","scanner configuration changes","SimulationCraft","application execution","remediation","commits or pushes beyond this documentation record"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
