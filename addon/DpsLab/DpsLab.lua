@@ -13,9 +13,48 @@ local SYNTHETIC = {
   limitations = "No live balance, simulation, automation, or desktop exchange.",
 }
 
+local function hasOnlyFields(value, allowed)
+  if type(value) ~= "table" then return false end
+  for key in pairs(value) do
+    if allowed[key] ~= true then return false end
+  end
+  return true
+end
+
+function DpsLab.ValidatePackage(package, build, interfaceVersion, role)
+  if type(package) ~= "table" then return false, "package_missing" end
+  if not hasOnlyFields(package, { schema_version=true, identity=true, compatibility=true, lifecycle=true, evidence=true, safety=true, guidance=true }) then
+    return false, "package_fields_invalid"
+  end
+  if package.schema_version ~= "0.1" then return false, "schema_incompatible" end
+  if not hasOnlyFields(package.identity, { package_id=true, content_version=true }) then return false, "identity_invalid" end
+  if type(package.identity.package_id) ~= "string" or type(package.identity.content_version) ~= "string" then return false, "identity_invalid" end
+  local compatibility = package.compatibility
+  if not hasOnlyFields(compatibility, { wow_product=true, build_min=true, build_max=true, interface_min=true, interface_max=true }) then return false, "compatibility_invalid" end
+  if type(compatibility.wow_product) ~= "string" or type(compatibility.build_min) ~= "number" or type(compatibility.build_max) ~= "number" or type(compatibility.interface_min) ~= "number" or type(compatibility.interface_max) ~= "number" then return false, "compatibility_invalid" end
+  if compatibility.build_min > compatibility.build_max or compatibility.interface_min > compatibility.interface_max then return false, "compatibility_invalid" end
+  if type(build) ~= "number" or type(interfaceVersion) ~= "number" then return false, "context_unknown" end
+  if build < compatibility.build_min or build > compatibility.build_max or interfaceVersion < compatibility.interface_min or interfaceVersion > compatibility.interface_max then
+    return false, "context_incompatible"
+  end
+  if not hasOnlyFields(package.lifecycle, { state=true }) or package.lifecycle.state ~= "pending_review" then return false, "lifecycle_invalid" end
+  if not hasOnlyFields(package.evidence, { tier=true, source_ids=true, limitations=true }) or type(package.evidence.tier) ~= "string" or type(package.evidence.source_ids) ~= "table" or type(package.evidence.limitations) ~= "table" or #package.evidence.source_ids > 8 or #package.evidence.limitations > 8 then return false, "evidence_invalid" end
+  if not hasOnlyFields(package.safety, { no_automation=true, actionable=true, degradation_policy=true }) then return false, "safety_invalid" end
+  if package.safety.no_automation ~= true or package.safety.actionable ~= false or package.safety.degradation_policy ~= "fail_closed" then
+    return false, "safety_invalid"
+  end
+  if not hasOnlyFields(package.guidance, { damage=true, tank=true, healer=true }) then return false, "guidance_invalid" end
+  if role ~= "damage" and role ~= "tank" and role ~= "healer" then return false, "role_unsupported" end
+  if not hasOnlyFields(package.guidance[role], { priority=true }) or type(package.guidance[role].priority) ~= "string" or #package.guidance[role].priority > 240 then
+    return false, "guidance_invalid"
+  end
+  return true, "validSyntheticNonActionable"
+end
+
 local function syntheticDetail(role)
   local package = DpsLabSyntheticGuidance
-  if package == nil or package.schema_version ~= "0.1" or package.safety.actionable ~= false then
+  local valid = DpsLab.ValidatePackage(package, 120000, 120000, role)
+  if not valid then
     return SYNTHETIC.detail
   end
   local roleGuidance = package.guidance[role]

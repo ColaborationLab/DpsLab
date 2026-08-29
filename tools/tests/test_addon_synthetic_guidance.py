@@ -35,8 +35,11 @@ class AddonSyntheticGuidanceTests(unittest.TestCase):
         self.assertLessEqual(len(re.findall(r"priority\s*=", self.package)), 3)
 
     def test_renderer_fails_closed_and_requires_explicit_synthetic_command(self) -> None:
-        self.assertIn('package.schema_version ~= "0.1"', self.renderer)
-        self.assertIn("package.safety.actionable ~= false", self.renderer)
+        self.assertIn("function DpsLab.ValidatePackage(package, build, interfaceVersion, role)", self.renderer)
+        for reason in ("package_fields_invalid", "schema_incompatible", "identity_invalid", "compatibility_invalid", "context_unknown", "context_incompatible", "lifecycle_invalid", "evidence_invalid", "safety_invalid", "role_unsupported", "guidance_invalid"):
+            self.assertIn(reason, self.renderer)
+        self.assertIn("#package.guidance[role].priority > 240", self.renderer)
+        self.assertIn('return true, "validSyntheticNonActionable"', self.renderer)
         self.assertIn('command == "synthetic"', self.renderer)
 
 
