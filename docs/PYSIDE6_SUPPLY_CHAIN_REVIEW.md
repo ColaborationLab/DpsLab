@@ -2,8 +2,9 @@
 
 ## Status
 
-`design_only`. This review does not approve a package, version, license path,
-download, installation, lock update, UI implementation, or distribution.
+`design_only`. This review records a licensing direction but does not approve a
+package, version, download, installation, lock update, UI implementation, or
+distribution.
 
 ## Observed package facts
 
@@ -18,20 +19,29 @@ Qt module package set necessary for typed Qt Widgets views, rather than take
 the umbrella package by default. It must demonstrate the required Widgets API
 is available in that exact, hash-verified artifact set.
 
-## License decision gate
+## Selected license direction
 
-Qt for Python documents community LGPLv3/GPL licensing and a commercial
-option. The following are mandatory human decisions before dependency adoption:
+The selected direction for a future production distribution of the proprietary
+DpsLab desktop application is a **Qt commercial license**. This keeps the
+desktop application's proprietary licensing path clear and avoids asserting
+LGPL compliance before its detailed distribution obligations are reviewed.
 
-1. Confirm the intended distribution model and its compatibility with the
-   precise Qt for Python license path.
-2. Confirm the notices, attribution, replacement/relinking obligations, and
-   third-party license inventory needed by the chosen distribution method.
-3. Decide whether a commercial Qt license is necessary.
+This is a product and distribution decision, not a purchase authorization. No
+Qt license may be purchased, commercial wheel obtained, or Qt package installed
+until a separate, costed acquisition and dependency-integration authorization.
 
-This is a compliance decision, not an engineering inference. DpsLab may not
-claim that LGPL conditions are satisfied until it has explicit human and, if
-needed, legal review evidence.
+Qt for Python documents community LGPLv3/GPL licensing and a commercial option.
+Before adoption, the following evidence remains mandatory:
+
+1. Confirm the intended proprietary distribution model and the exact commercial
+   Qt for Python entitlement and package channel.
+2. Confirm the notices, attribution, and third-party license inventory needed
+   by the chosen distribution method.
+3. Record the acquired license evidence and its supported Windows package set.
+
+This is a compliance boundary, not an engineering inference. DpsLab must not
+claim either commercial entitlement or LGPL compliance without corresponding
+evidence and, where needed, legal review.
 
 ## Required acquisition evidence
 
