@@ -7875,9 +7875,9 @@ configuration change remains a separate implementation contract with its own
 exact paths, test command, approval, audit, commit, and publication decision.
 The existing gate remains fail-closed for high-severity findings throughout.
 
-## Active diagnostic task — Static analysis finding diagnosis 0.1
+## Blocked diagnostic record — Static analysis finding diagnosis 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7893,7 +7893,7 @@ The existing gate remains fail-closed for high-severity findings throughout.
   "express_exclusions":["source or test changes","security policy or lock changes","finding suppression or exception changes","SimulationCraft","application execution","commits or pushes beyond this documentation record"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Execution observation
 
@@ -7914,3 +7914,23 @@ Quality gate execution validated the sole documentation delta, all protected
 hashes, and 87/87 tools tests. Its declared procedural audit is recorded as
 `blocked`: that status records the unavailable exact interpreter, not a code
 or security-policy failure. No remediation candidate has been identified.
+
+## Active implementation task — Isolated CPython 3.13 runtime 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"isolated_cpython_313_runtime_0_1",
+  "title":"Provision a hash-verified isolated CPython 3.13 runtime for approved local diagnostics",
+  "baseline_commit":"d3301533ce5b2199aed395685c0bb84932568520",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"isolated_cpython_313_runtime_0_1-20260828-daniel-explicit","authorized_by":"Daniel","authorized_at":"2026-08-28T22:54:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/isolated_cpython_313_runtime_0_1/implementation.json",".dpslab/quality-gates/isolated_cpython_313_runtime_0_1/audit.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/requirements-security-tools-win-py313.lock":"e3dd0be77ca90dc9e2ccefe79608730bb524ac16c9c99d44573fb677ad0ef1f7"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["acquire only the official Python.org Windows x64 installer for CPython 3.13.14","verify SHA-256 c54d9b9bbb8a36e6489363ddd01139707fd781d72f1f9e90c7ec65d0061368e0 before execution","install only into D:/Proyectos/DpsLab/.dpslab/runtimes/cpython-3.13.14-win-amd64","do not register global PATH, file associations, launcher entries, or system-wide settings","verify python --version resolves to 3.13.14 and delete the installer after verification","do not execute Bandit, SimulationCraft, application code, or a comparison"],
+  "express_exclusions":["system-wide Python installation","PATH or registry changes","source or test changes","security policy or lock changes","Bandit execution","SimulationCraft","commits or pushes beyond this documentation record"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
