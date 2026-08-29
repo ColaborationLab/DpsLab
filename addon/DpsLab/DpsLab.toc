@@ -1,0 +1,5 @@
+## Interface: 120000
+## Title: DpsLab
+## Notes: Local synthetic guidance renderer. No automation or network access.
+## Version: 0.1.0-synthetic
+DpsLab.lua
