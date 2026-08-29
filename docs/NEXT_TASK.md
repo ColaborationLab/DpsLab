@@ -7799,7 +7799,7 @@ future independently verified acquisition is Gitleaks `8.30.0`
 `windows_x64.zip`, SHA-256
 `54fe94f644b832dd08e8c3a5915efb3bfa862386d59fb27ca0792cb687a83573`.
 
-## Active implementation task — Static analysis and secret scanning 0.1
+## Published implementation record — Static analysis and secret scanning 0.1
 
 This task implements the approved scanner controls with exact acquisition
 evidence. It may acquire scanner bytes only into a temporary verification
@@ -7807,7 +7807,7 @@ directory, verify their identities before execution, and retain only sanitized
 aggregate results. It must not transmit a GitHub token or repository source to
 an external scanning service.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7823,4 +7823,54 @@ an external scanning service.
   "express_exclusions":["scanner exception approval or finding remediation","Gitleaks 8.30.1 or unverified scanner bytes","third-party scanning action GITHUB_TOKEN or other credentials","SimulationCraft addon UI updater signing release distribution or external beta","changes outside twelve allowlisted paths"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+### Publication result
+
+`static_analysis_and_secret_scanning_0_1` is published at commit
+`9de95a29f10a44492ba98fc2c40de7c2afdf57ff`. GitHub Actions run #107
+approved policy and contract, static analysis and secret scanning, tools tests,
+and the functional suite. The static lane scans 110 committed revisions with
+Bandit 1.9.4 and Gitleaks 8.30.0. It retains only a seven-day sanitized
+summary artifact. The four historical exact-value allowlist entries were
+reviewed as non-secrets; they do not suppress paths, commits, or future
+findings.
+
+The remaining Bandit findings below high severity are not an approval of
+their remediation. A separate design and authorization are required to assess
+them, decide risk treatment, and make any source change.
+
+## Active design task — Static analysis finding review 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"static_analysis_finding_review_0_1_design",
+  "title":"Design the review boundary for non-high Bandit findings",
+  "baseline_commit":"9de95a29f10a44492ba98fc2c40de7c2afdf57ff",
+  "authorization":{"status":"design_only","authorization_id":"static_analysis_finding_review_0_1_design-20260828-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-28T22:27:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/static_analysis_finding_review_0_1_design/design.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["record only a review method for non-high static findings","preserve the high-severity fail-closed gate","keep actual remediation subject to a separate authorization","do not execute SimulationCraft or change product behavior"],
+  "express_exclusions":["source or test changes","security policy changes","finding suppression changes","SimulationCraft","commits or pushes beyond this documentation record"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design outcome required
+
+The design record must define a read-only, sanitized review packet for Bandit
+findings below high severity. The packet may identify rule ID, severity,
+confidence, path, line number, and a short normalized rationale, but must
+never include source contents, credentials, or scanner logs. Each finding must
+be classified by human review as `remediate`, `context_review`, or
+`false_positive_candidate`; neither of the latter two classifications may add
+a suppression or exception.
+
+Any remediation, policy exception, suppression, dependency update, or scanner
+configuration change remains a separate implementation contract with its own
+exact paths, test command, approval, audit, commit, and publication decision.
+The existing gate remains fail-closed for high-severity findings throughout.
