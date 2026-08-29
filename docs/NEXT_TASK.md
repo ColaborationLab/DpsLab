@@ -8088,9 +8088,9 @@ The design remains local-only and non-executable. GitHub Actions run #118
 approved policy and contract, static analysis and secret scanning, tools tests,
 and the functional suite for its publication.
 
-## Active design task — Desktop framework selection 0.1
+## Published design record — Desktop framework selection 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8104,6 +8104,31 @@ and the functional suite for its publication.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["compare only candidates compatible with a local Python application on Windows","assess accessibility packaging dependency surface licensing and update-boundary fit","recommend one direction with explicit non-selection reasons","retain framework versions and installation as future decisions","produce a closed implementation scope that does not alter application behavior"],
   "express_exclusions":["framework installation","application or addon code","SimulationCraft execution","comparisons or run creation","network or live-source implementation","update distribution signing secrets or telemetry","commits or pushes beyond the design documentation record"]
+}
+```
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
+
+The selected direction remains PySide6 with Qt Widgets, subject to a separate
+license and supply-chain review. GitHub Actions run #120 approved policy and
+contract, static analysis and secret scanning, tools tests, and the functional
+suite for the selection record.
+
+## Active design task — PySide6 supply-chain review 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"pyside6_supply_chain_review_0_1_design",
+  "title":"Design the license and supply-chain decision boundary for a future PySide6 dependency",
+  "baseline_commit":"478deb7e51910d662a26d0b8b9181a540296e41c",
+  "authorization":{"status":"design_only","authorization_id":"pyside6_supply_chain_review_0_1_design-20260829-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-29T00:11:00-05:00"},
+  "scope":{"allowed_paths":["docs/PYSIDE6_SUPPLY_CHAIN_REVIEW.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/pyside6_supply_chain_review_0_1_design/design.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","docs/ROADMAP.md","docs/PROJECT_BRIEF.md","docs/DEPENDENCY_SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/requirements-ci-win-py313.lock":"8d2dfca84345d1c17ef575d50d01eaa36d5cea6fd94c25fc531e7180979e3586","security/sbom-runtime-win-py313.spdx.json":"0f92571035f4db9263cc2709dc4187f4f70db73b5f4e34e0fa826ded672c648c"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["identify the official package and license evidence needed before adoption","define artifact identity dependency lock SBOM vulnerability and CI requirements","state mandatory human license decision points without inferring legal approval","produce a closed future implementation scope limited to dependency integration and synthetic UI fixtures"],
+  "express_exclusions":["package download installation or lock regeneration","application or addon code","SimulationCraft execution","comparisons or run creation","network or live-source implementation","update distribution signing secrets or telemetry","commits or pushes beyond the design documentation record"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
