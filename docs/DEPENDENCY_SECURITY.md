@@ -45,9 +45,11 @@ historial clonado; ninguna action de terceros recibe un token de GitHub.
 Los informes crudos permanecen en el directorio temporal del runner y se
 eliminan. Sólo `static-security-summary.json`, con conteos y estado cerrados,
 puede ser artefacto por siete días. Un escáner ausente, un hash distinto, un
-informe inválido o cualquier hallazgo produce fallo. El registro de
-excepciones empieza vacío: una excepción futura exige identidad exacta,
-justificación, vencimiento y aprobación humana separada.
+informe inválido o cualquier hallazgo produce fallo. El registro conserva una
+única revisión de cuatro valores históricos benignos, todos limitados por
+coincidencia exacta a la regla `generic-api-key`; no hay exclusiones por ruta
+ni commit. Una excepción futura exige identidad exacta, justificación,
+vencimiento y aprobación humana separada.
 
 ## Auditoría de vulnerabilidades conocidas
 

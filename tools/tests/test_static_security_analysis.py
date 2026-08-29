@@ -6,6 +6,7 @@ from tools.static_security_analysis import SecurityAnalysisError, summarize
 
 
 ROOT = Path(__file__).resolve().parents[2]
+GITLEAKS_CONFIG = ROOT / ".gitleaks.toml"
 
 
 class StaticSecurityAnalysisTests(unittest.TestCase):
@@ -16,7 +17,21 @@ class StaticSecurityAnalysisTests(unittest.TestCase):
         self.assertEqual(static["scanner"], {"name": "bandit", "version": "1.9.4", "severity_gate": "HIGH"})
         self.assertEqual(secret["scanner"]["version"], "8.30.0")
         self.assertEqual(len(secret["scanner"]["windows_x64_zip_sha256"]), 64)
-        self.assertEqual(registry, {"schema_version": "0.1", "registry_id": "dpslab.secret-scan-exceptions.0.1", "exceptions": []})
+        self.assertEqual(registry["schema_version"], "0.1")
+        self.assertEqual(registry["registry_id"], "dpslab.secret-scan-exceptions.0.1")
+        self.assertEqual(len(registry["exceptions"]), 1)
+        config = GITLEAKS_CONFIG.read_text(encoding="utf-8")
+        self.assertIn("useDefault = true", config)
+        self.assertIn('targetRules = ["generic-api-key"]', config)
+        self.assertNotIn("paths =", config)
+        self.assertNotIn("commits =", config)
+        for value in (
+            "27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b",
+            "3e07388cb4062dad53da0322c8dddbbb1521b1655a10048a2568d52f76ceeeb0",
+            "dc66f8109174a516fab600838cc86f021a4bb2e424199bde76b7088fe982c080",
+            "flasil/vilefiend/headbutt",
+        ):
+            self.assertIn(f"^{value}$", config)
 
     def test_clean_summary_exposes_counts_only(self) -> None:
         result = summarize({"errors": [], "generated_at": "x", "metrics": {}, "results": []}, [])

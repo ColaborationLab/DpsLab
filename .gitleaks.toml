@@ -1,0 +1,15 @@
+title = "DpsLab exact historical false-positive allowlist"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Exact non-secret historical SHA-256 and canonical combat-action values"
+targetRules = ["generic-api-key"]
+regexTarget = "secret"
+regexes = [
+  "^27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b$",
+  "^3e07388cb4062dad53da0322c8dddbbb1521b1655a10048a2568d52f76ceeeb0$",
+  "^dc66f8109174a516fab600838cc86f021a4bb2e424199bde76b7088fe982c080$",
+  "^flasil/vilefiend/headbutt$"
+]

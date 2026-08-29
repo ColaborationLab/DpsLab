@@ -219,6 +219,8 @@ class GitHubAutomationTests(unittest.TestCase):
             "simc.exe", "results/runs", "results/comparisons",
         ):
             self.assertNotIn(forbidden, lowered)
+        self.assertIn("gitleaks.exe", self.workflow)
+        self.assertIn("--config .gitleaks.toml", self.workflow)
 
     def test_artifacts_are_minimal_and_retained_seven_days(self) -> None:
         self.assertEqual(self.workflow.count("retention-days: 7"), 4)

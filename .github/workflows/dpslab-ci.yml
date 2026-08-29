@@ -77,7 +77,7 @@ jobs:
           Invoke-WebRequest -Uri "https://github.com/gitleaks/gitleaks/releases/download/v8.30.0/gitleaks_8.30.0_windows_x64.zip" -OutFile $zip
           if ((Get-FileHash -Algorithm SHA256 -LiteralPath $zip).Hash.ToLowerInvariant() -ne "54fe94f644b832dd08e8c3a5915efb3bfa862386d59fb27ca0792cb687a83573") { throw "gitleaks_hash_mismatch" }
           Expand-Archive -LiteralPath $zip -DestinationPath $raw -Force
-          & (Join-Path $raw "gitleaks.exe") git --report-format json --report-path (Join-Path $raw "gitleaks.json") --no-banner
+          & (Join-Path $raw "gitleaks.exe") git --config .gitleaks.toml --report-format json --report-path (Join-Path $raw "gitleaks.json") --no-banner
           $gitleaksExit = $LASTEXITCODE
           python tools/static_security_analysis.py --bandit (Join-Path $raw "bandit.json") --gitleaks (Join-Path $raw "gitleaks.json") --output static-security-summary.json
           $summaryExit = $LASTEXITCODE
