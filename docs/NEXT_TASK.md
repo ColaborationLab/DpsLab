@@ -7929,8 +7929,20 @@ or security-policy failure. No remediation candidate has been identified.
   "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
   "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","desktop-app/requirements-security-tools-win-py313.lock":"e3dd0be77ca90dc9e2ccefe79608730bb524ac16c9c99d44573fb677ad0ef1f7"},
   "audit":{"required":true,"independence":"declared_and_procedural"},
-  "acceptance_criteria":["acquire only the official Python.org Windows x64 embeddable archive for CPython 3.13.14","verify SHA-256 90b4e5b9898b72d744650524bff92377c367f44bd5fbd09e3148656c080ad907 before extraction","extract only into D:/Proyectos/DpsLab/.dpslab/runtimes/cpython-3.13.14-win-amd64","enable only that runtime's local site-packages directory without global PATH, file associations, launcher entries, registry, or system-wide settings","verify python --version resolves to 3.13.14 and delete the archive after verification","do not execute Bandit, SimulationCraft, application code, or a comparison"],
+  "acceptance_criteria":["acquire only the official Python.org Windows x64 embeddable archive for CPython 3.13.14","verify SHA-256 90b4e5b9898b72d744650524bff92377c367f44bd5fbd09e3148656c080ad907 before extraction","retain the runtime only in D:/DPSLab Tools/cpython-3.13.14-win-amd64, outside the versioned repository","enable only that runtime's local site-packages directory without global PATH, file associations, launcher entries, registry, or system-wide settings","verify python --version resolves to 3.13.14 and delete the archive after verification","do not execute Bandit, SimulationCraft, application code, or a comparison"],
   "express_exclusions":["system-wide Python installation","PATH or registry changes","source or test changes","security policy or lock changes","Bandit execution","SimulationCraft","commits or pushes beyond this documentation record"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Execution result
+
+The official Python.org embeddable archive for CPython 3.13.14 x64 was acquired
+and verified as
+`90b4e5b9898b72d744650524bff92377c367f44bd5fbd09e3148656c080ad907`.
+It was extracted initially under the repository for verification and then
+relocated outside it to `D:/DPSLab Tools/cpython-3.13.14-win-amd64`; its
+interpreter returned `Python 3.13.14`. Its local `Lib/site-packages` path is
+enabled in the runtime's own `.pth` file. The verified archive was then
+removed. No global PATH, launcher, registry, association, source, policy, or
+lock change was made, and no scanner or application code was executed.
