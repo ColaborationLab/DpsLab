@@ -8113,9 +8113,9 @@ license and supply-chain review. GitHub Actions run #120 approved policy and
 contract, static analysis and secret scanning, tools tests, and the functional
 suite for the selection record.
 
-## Active design task — PySide6 supply-chain review 0.1
+## Published implementation record — Synthetic addon exchange envelope 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8129,6 +8129,32 @@ suite for the selection record.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["define one closed synthetic exchange envelope with schema identity producer compatibility payload binding integrity and safety","validate exact fields identifiers lowercase SHA-256 format byte and item bounds and supported synthetic producer","load the envelope before the renderer without exposing it as actionable guidance","reject unknown fields malformed hashes unsupported producer incompatible versions oversized values and any non-synthetic safety state","provide static tests proving absence of SavedVariables network executable content credentials and real character data"],
   "express_exclusions":["creating publishing cloning splitting or changing any repository or GitHub setting","creating or changing any license notice EULA trademark registration or platform account","package download installation or lock regeneration","desktop application code real SavedVariables real character data or real game data","SimulationCraft execution","comparisons or run creation","network or live-source implementation","update distribution signing secrets or telemetry","commit or push"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The synthetic exchange envelope and its package-binding validation were
+published through `b89923e3535e6e123229bf64a8cf6badcc662282`. GitHub Actions
+run #141 approved policy and contract, static analysis and secret scanning,
+tools tests, and the functional suite. This record does not authorize a real
+transport, SavedVariables parsing, real guidance, or package activation.
+
+## Active documentation task — Directional addon exchange architecture 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_exchange_transport_architecture_0_1",
+  "title":"Clarify the two unidirectional local transport boundaries between the addon and desktop application",
+  "baseline_commit":"b89923e3535e6e123229bf64a8cf6badcc662282",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_exchange_transport_architecture_0_1-20260829-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-29T12:50:00-05:00"},
+  "scope":{"allowed_paths":["docs/ADDON_MVP_ARCHITECTURE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_exchange_transport_architecture_0_1/implementation.json",".dpslab/quality-gates/addon_exchange_transport_architecture_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":108,"minimum_test_count":108},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"204a4d0013cdf4df3c3865b4938fa5a79114a24bab8527389dfed4fa7b617ca3","addon/DpsLab/SyntheticGuidance.lua":"c4a198aa134978b9d88e6e7f908115bee0237a80ceb4bc4cad6356ad37a47b27","addon/DpsLab/SyntheticExchange.lua":"73a1eb171ccee060af02670f17f91fce9b103d88759bd67f30b4610bcec59ae8"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["separate addon-to-desktop observations from desktop-to-addon guidance as two local unidirectional channels","reserve SavedVariables for bounded addon-owned observation export and prohibit desktop in-place edits","require desktop guidance staging validation and atomic activation only while WoW is confirmed not running","require double validation fail-closed degradation rollback path and rejection of ambiguous process state symlinks traversal partial activation and executable payloads","state that the current synthetic digest is a placeholder rather than proof of a real transferred artifact"],
+  "express_exclusions":["addon or desktop implementation","real SavedVariables or character data","real guidance package generation signing transfer or activation","background watchers hot reload network telemetry credentials or automatic updates","SimulationCraft execution","comparisons or run creation","license trademark account repository or GitHub setting changes","package installation lock regeneration or dependency changes","commits or pushes beyond this documentation record"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

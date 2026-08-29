@@ -44,6 +44,35 @@ Any failed gate discards the payload for guidance purposes and enters
 `unavailable`; it must not partially merge, repair, or retain the data as a
 recommendation. The addon may display only a non-sensitive failure category.
 
+### Directional transport boundary
+
+The desktop-addon boundary is two separate, user-initiated, local channels;
+it is not a bidirectional session and it has no background watcher:
+
+1. **Addon to desktop observation export.** The addon may persist a bounded,
+   versioned, non-executable observation document through its own declared
+   SavedVariables only. The desktop may read a user-selected copy after WoW
+   has flushed it. The desktop never edits that observation document in place.
+2. **Desktop to addon guidance delivery.** A future desktop operation may
+   stage a closed, immutable guidance data module outside the live addon,
+   validate it completely, and activate it atomically only while WoW is not
+   running. The addon treats the module as untrusted declarative data and
+   validates its identity, compatibility, integrity, lifecycle, evidence and
+   safety again at load time.
+
+SavedVariables are therefore not the desktop-to-addon delivery mechanism.
+Neither channel may infer that the game is closed merely because a file is
+temporarily readable. A future implementation must use an explicit preflight,
+refuse ambiguous process state, preserve a recoverable previous module, reject
+symlinks and traversal, and never partially activate a package. Automatic
+polling, hot reload, in-combat replacement, network transport, credentials,
+telemetry and executable payloads remain prohibited.
+
+The synthetic exchange envelope currently proves schema and package binding
+only. Its placeholder digest is not evidence that a real desktop artifact was
+hashed, signed, transferred or activated. Those capabilities require separate
+contracts and adversarial tests.
+
 ## Player-control and combat boundary
 
 The MVP may show information only after ordinary player interaction with the
