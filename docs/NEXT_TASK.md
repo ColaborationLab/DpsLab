@@ -8164,9 +8164,9 @@ The two directional local transport boundaries were published through
 approved all four lanes. This architecture record does not implement either
 transport and does not authorize real SavedVariables or character data.
 
-## Active implementation task — Synthetic addon observation envelope 0.1
+## Published implementation record — Synthetic addon observation envelope 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8180,6 +8180,31 @@ transport and does not authorize real SavedVariables or character data.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["define one closed schema 0.1 synthetic observation envelope with identity producer compatibility subject payload signals and safety","support only synthetic class and specialization tokens and the damage tank or healer roles without names realms equipment talents or other personal character data","bound build interface string byte event count sample window and damage incoming-damage and healing event signals","require signal totals to equal the declared event count","load the fixture before the renderer without declaring SavedVariables persistence or any game API","reject unknown fields non-integers unsupported producer non-retail product non-synthetic subjects malformed roles excessive values personal data executable content actionable states and automation"],
   "express_exclusions":["real SavedVariables declaration reading writing or parsing","real character identity equipment talents stats combat events or game API access","desktop application code real transport package signing or activation","background watcher hot reload network telemetry credentials or automatic updates","SimulationCraft execution","comparisons or run creation","license trademark account repository or GitHub setting changes","package installation lock regeneration or dependency changes","commits or pushes beyond this implementation record"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The synthetic observation envelope was published through
+`becf37c904bd0b6b74e9fbd3059d6621047e0a74`. GitHub Actions run #143
+approved all four lanes. It remains non-persistent and contains no real
+character or combat data.
+
+## Active implementation task — Synthetic addon observation transport parser 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_transport_parser_0_1",
+  "title":"Implement a strict non-executing desktop parser for one synthetic addon observation assignment",
+  "baseline_commit":"becf37c904bd0b6b74e9fbd3059d6621047e0a74",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_transport_parser_0_1-20260829-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-29T13:35:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/addon_observation_transport.py","desktop-app/tests/test_addon_observation_transport.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_transport_parser_0_1/implementation.json",".dpslab/quality-gates/addon_observation_transport_parser_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":10,"minimum_test_count":10},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/requirements-ci-win-py313.lock":"8d2dfca84345d1c17ef575d50d01eaa36d5cea6fd94c25fc531e7180979e3586","security/sbom-runtime-win-py313.spdx.json":"0f92571035f4db9263cc2709dc4187f4f70db73b5f4e34e0fa826ded672c648c","addon/DpsLab/SyntheticObservation.lua":"f30be3b66f70b783858c27204a09f20d3e09a28e1a18b175725eed18d59b82b4","docs/ADDON_MVP_ARCHITECTURE.md":"c87ba55ac5c65896c033cb72989c787ec76a5ca07bd1846672a0325815bf16c4"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["accept only one exact DpsLabObservationExport assignment containing lowercase hexadecimal and no other Lua syntax","decode at most 4096 bytes of canonical UTF-8 JSON without eval exec imports subprocess filesystem or network access","reject duplicate keys non-finite values noncanonical bytes unknown fields unsupported product or producer boolean integers malformed timestamps roles and tokens","bind the declared byte count and signal total to the decoded payload","require synthetic non-personal non-executable non-actionable no-automation safety state","return only an immutable validated summary","require the remote locked functional suite to pass before publication is considered closed"],
+  "express_exclusions":["real SavedVariables declaration file discovery reading writing or persistence","general Lua parsing or execution","real character identity equipment talents stats combat events or game API access","guidance generation selection or actionability","SimulationCraft execution comparisons or run creation","network telemetry credentials automatic updates signing or activation","dependency lock SBOM package license repository or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
