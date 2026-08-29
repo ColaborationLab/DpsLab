@@ -7969,3 +7969,50 @@ secret scanning, tools tests, and the functional suite for this record.
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Sanitized diagnostic packet
+
+Bandit 1.9.4 under the verified CPython 3.13.14 runtime returned exit code
+`1` with 31 results and no `HIGH` severity result. The exit code records
+non-high findings; it is not a high-severity gate failure. No source excerpts,
+raw JSON, scanner log, credential, suppression, or remediation is retained.
+Every item below is `unclassified_pending_human_review`; that status does not
+approve an exception or any code change.
+
+| Rule | Severity | Confidence | Repository path | Line | Review status |
+| --- | --- | --- | --- | ---: | --- |
+| B105 | LOW | MEDIUM | desktop-app/src/dpslab/catalog_change_proposal.py | 140 | unclassified_pending_human_review |
+| B105 | LOW | MEDIUM | desktop-app/src/dpslab/catalog_change_proposal.py | 140 | unclassified_pending_human_review |
+| B604 | MEDIUM | LOW | desktop-app/src/dpslab/comparison_adapter.py | 177 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | desktop-app/src/dpslab/comparison_environment.py | 8 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | desktop-app/src/dpslab/comparison_environment.py | 45 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | desktop-app/src/dpslab/comparison_environment.py | 46 | unclassified_pending_human_review |
+| B101 | LOW | HIGH | desktop-app/src/dpslab/comparison_result_io.py | 75 | unclassified_pending_human_review |
+| B101 | LOW | HIGH | desktop-app/src/dpslab/comparison_result_io.py | 141 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | desktop-app/src/dpslab/runner.py | 8 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | desktop-app/src/dpslab/runner.py | 407 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | desktop-app/src/dpslab/simc_identity.py | 9 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | desktop-app/src/dpslab/simc_identity.py | 479 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | tools/dependency_vulnerability_audit.py | 10 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | tools/dependency_vulnerability_audit.py | 296 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | tools/quality_gate.py | 12 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | tools/quality_gate.py | 190 | unclassified_pending_human_review |
+| B101 | LOW | HIGH | tools/quality_gate.py | 414 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | tools/tests/test_dependency_vulnerability_audit.py | 9 | unclassified_pending_human_review |
+| B105 | LOW | MEDIUM | tools/tests/test_dependency_vulnerability_audit.py | 258 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | tools/tests/test_github_automation.py | 7 | unclassified_pending_human_review |
+| B607 | LOW | HIGH | tools/tests/test_github_automation.py | 170 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | tools/tests/test_github_automation.py | 176 | unclassified_pending_human_review |
+| B607 | LOW | HIGH | tools/tests/test_github_automation.py | 189 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | tools/tests/test_github_automation.py | 195 | unclassified_pending_human_review |
+| B101 | LOW | HIGH | tools/tests/test_github_automation.py | 236 | unclassified_pending_human_review |
+| B101 | LOW | HIGH | tools/tests/test_github_automation.py | 242 | unclassified_pending_human_review |
+| B101 | LOW | HIGH | tools/tests/test_github_automation.py | 270 | unclassified_pending_human_review |
+| B404 | LOW | HIGH | tools/tests/test_quality_gate.py | 6 | unclassified_pending_human_review |
+| B603 | LOW | HIGH | tools/tests/test_quality_gate.py | 356 | unclassified_pending_human_review |
+| B607 | LOW | HIGH | tools/tests/test_quality_gate.py | 356 | unclassified_pending_human_review |
+| B105 | LOW | MEDIUM | tools/tests/test_static_security_analysis.py | 42 | unclassified_pending_human_review |
+
+After the packet was recorded, the raw Bandit JSON, downloaded wheels, and all
+temporary `site-packages` contents were removed. The isolated CPython runtime
+remains available but has no scanner package installed.
