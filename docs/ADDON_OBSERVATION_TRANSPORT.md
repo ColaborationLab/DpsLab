@@ -38,8 +38,9 @@ The first eligible persistence block is intentionally synthetic and opt-in.
 It may declare exactly one account-wide SavedVariables name,
 `DpsLabObservationExport`, and may expose only two exact player commands:
 
-- `/dpslab export synthetic` copies the already validated in-memory synthetic
-  transport string into that variable;
+- `/dpslab export synthetic` strictly extracts the lowercase hexadecimal value
+  from the already validated in-memory synthetic transport and retains only
+  that value in the variable;
 - `/dpslab export clear` assigns `nil` to remove the retained export.
 
 The variable must remain absent by default. Addon load, login, reload, combat,
@@ -61,12 +62,13 @@ real observation requires a separate privacy and minimization decision.
 
 ### Closed implementation scope
 
-A future implementation may change only these exact paths:
+The authorized implementation may change only these exact paths:
 
 - `addon/DpsLab/DpsLab.toc`;
 - `addon/DpsLab/DpsLab.lua`;
 - `tools/tests/test_addon_synthetic_renderer.py`;
 - `tools/tests/test_addon_synthetic_persistence.py`;
+- `tools/tests/test_addon_synthetic_observation.py`;
 - `docs/ADDON_OBSERVATION_TRANSPORT.md`;
 - `docs/NEXT_TASK.md`.
 
@@ -75,3 +77,9 @@ commands; serializer success required before retention; unknown command and
 invalid serializer states leave the variable unchanged; clear is idempotent;
 the payload is never printed; no event, frame, network or gameplay surface is
 introduced. Publication still requires the locked remote functional suite.
+
+The implementation keeps the variable absent until the player issues the exact
+export command. It validates the serializer reason and the complete assignment
+shape before retaining only its lowercase hexadecimal value. Unsupported
+commands and invalid serializer output preserve any existing value; clear is
+the only path that assigns `nil`. Status output never includes the payload.

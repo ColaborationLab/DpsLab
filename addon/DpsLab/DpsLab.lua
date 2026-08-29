@@ -76,9 +76,42 @@ function DpsLab.IsActionable(view)
   return view ~= nil and view.status == "approved"
 end
 
+local SYNTHETIC_EXPORT_REASON = "validSyntheticObservationTransportNonActionable"
+local EXPORT_STATUS = {
+  retained = "Synthetic export retained for WoW-managed persistence.",
+  cleared = "Synthetic export cleared.",
+  unavailable = "Synthetic export unavailable.",
+  unsupported = "Synthetic export command unavailable.",
+}
+
+local function syntheticExportCandidate()
+  if type(DpsLabSyntheticObservationExport) ~= "string" then return nil end
+  if DpsLabSyntheticObservationExportReason ~= SYNTHETIC_EXPORT_REASON then return nil end
+  local candidate = DpsLabSyntheticObservationExport:match('^DpsLabObservationExport = "([0-9a-f]+)"\n$')
+  if candidate == nil or #candidate == 0 or #candidate > 8192 or #candidate % 2 ~= 0 then return nil end
+  return candidate
+end
+
+local function handleSyntheticExport(action)
+  if action == "clear" then
+    _G.DpsLabObservationExport = nil
+    return "cleared"
+  end
+  if action ~= "synthetic" then return "unsupported" end
+  local candidate = syntheticExportCandidate()
+  if candidate == nil then return "unavailable" end
+  _G.DpsLabObservationExport = candidate
+  return "retained"
+end
+
 SLASH_DPSLAB1 = "/dpslab"
 SlashCmdList["DPSLAB"] = function(message)
   local command, role = message:match("^(%S*)%s*(%S*)$")
+  if command == "export" then
+    local status = handleSyntheticExport(role)
+    print("[DpsLab] " .. EXPORT_STATUS[status])
+    return
+  end
   local view = DpsLab.RenderRole(command == "synthetic" and "synthetic" or nil, role)
   print("[DpsLab] " .. view.title .. ": " .. view.detail)
 end

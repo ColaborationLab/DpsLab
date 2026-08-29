@@ -8239,9 +8239,9 @@ The schema-specific synthetic serializer was published through
 approved all four lanes. It remains in-memory only and does not declare or
 write SavedVariables.
 
-## Active documentation task — Manual synthetic observation persistence design 0.1
+## Published documentation record — Manual synthetic observation persistence design 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8255,6 +8255,31 @@ write SavedVariables.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["define exactly one account-wide DpsLabObservationExport SavedVariables candidate and no other persistent state","require explicit exact export synthetic and export clear player commands with persistence absent by default","state that WoW controls disk flush and that in-memory success cannot claim file persistence","prohibit load login reload combat zone logout update timer or event driven creation refresh repair or overwrite","require unknown pre-existing values invalid serializer states and unknown commands to remain unchanged","require idempotent clear no payload logging and no effect on guidance configuration or other addons","retain synthetic non-personal non-actionable no-automation scope and reserve real observations for a separate privacy decision","produce a closed future implementation path list without changing code or the TOC"],
   "express_exclusions":["SavedVariables declaration or persistence implementation","addon desktop or test code changes","real character identity equipment talents stats combat events or game API access","general serialization parsing execution guidance actionability network telemetry credentials updates signing or activation","SimulationCraft execution comparisons or run creation","dependency lock SBOM package license repository or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The closed manual persistence design was published through
+`0e4fb44e4ad4bf4f2cf5d3f286186b99534fa174`. GitHub Actions run #146
+approved all four lanes. The record itself did not declare SavedVariables or
+change addon code.
+
+## Active implementation task — Manual synthetic observation persistence 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_manual_persistence_0_1",
+  "title":"Implement one opt-in synthetic SavedVariables export and clear command",
+  "baseline_commit":"0e4fb44e4ad4bf4f2cf5d3f286186b99534fa174",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_manual_persistence_0_1-20260829-daniel-exact-scope-plus-observation-test","authorized_by":"Daniel","authorized_at":"2026-08-29T15:00:41-05:00"},
+  "scope":{"allowed_paths":["addon/DpsLab/DpsLab.toc","addon/DpsLab/DpsLab.lua","tools/tests/test_addon_synthetic_renderer.py","tools/tests/test_addon_synthetic_persistence.py","tools/tests/test_addon_synthetic_observation.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_manual_persistence_0_1/implementation.json",".dpslab/quality-gates/addon_observation_manual_persistence_0_1/audit.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","addon/DpsLab/SyntheticGuidance.lua","addon/DpsLab/SyntheticExchange.lua","addon/DpsLab/SyntheticObservation.lua"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-p","test_addon_synthetic*.py","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":117,"minimum_test_count":123},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb","addon/DpsLab/SyntheticGuidance.lua":"c4a198aa134978b9d88e6e7f908115bee0237a80ceb4bc4cad6356ad37a47b27","addon/DpsLab/SyntheticExchange.lua":"73a1eb171ccee060af02670f17f91fce9b103d88759bd67f30b4610bcec59ae8","desktop-app/src/dpslab/addon_observation_transport.py":"950debcd799914ac56a63adfa6a94a2ca5f6b8cf57c04a5769032f8e1d0df76a"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["declare exactly one account-wide DpsLabObservationExport SavedVariables name and no per-character or additional persistent state","keep the variable absent by default and mutate it only through exact export synthetic or export clear player actions","require the exact successful serializer reason and assignment grammar before retaining only an even-length bounded lowercase hexadecimal value","leave an existing value unchanged for unknown commands missing or invalid serializer output and make clear idempotent","never print payload character path or persistence-to-disk claims","introduce no event frame timer game API network automation real character data or actionable guidance surface","pass focused tool tests full tool suite procedural audit and locked remote functional suite"],
+  "express_exclusions":["real character identity equipment talents stats combat events or game API access","automatic export load login reload combat zone logout update timer or event driven persistence","general serialization parsing execution desktop file discovery import guidance actionability network telemetry credentials updates signing or activation","SimulationCraft execution comparisons or run creation","dependency lock SBOM package license repository or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

@@ -11,10 +11,11 @@ class AddonSyntheticObservationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.text = OBSERVATION.read_text(encoding="utf-8")
 
-    def test_observation_loads_before_renderer_without_persistence(self) -> None:
+    def test_observation_loads_before_renderer_with_one_manual_export(self) -> None:
         lines = [line for line in TOC.read_text(encoding="utf-8").splitlines() if line and not line.startswith("##")]
         self.assertEqual(lines, ["SyntheticGuidance.lua", "SyntheticExchange.lua", "SyntheticObservation.lua", "DpsLab.lua"])
-        self.assertNotIn("SavedVariables", TOC.read_text(encoding="utf-8"))
+        saved = [line for line in TOC.read_text(encoding="utf-8").splitlines() if line.startswith("## SavedVariables:")]
+        self.assertEqual(saved, ["## SavedVariables: DpsLabObservationExport"])
 
     def test_closed_validator_covers_identity_subject_payload_and_safety(self) -> None:
         self.assertIn("function Observation.Validate(value)", self.text)

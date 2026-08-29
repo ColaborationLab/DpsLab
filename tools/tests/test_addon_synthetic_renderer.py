@@ -1,3 +1,4 @@
+import re
 import unittest
 from pathlib import Path
 
@@ -12,10 +13,14 @@ class AddonSyntheticRendererTests(unittest.TestCase):
         self.toc = TOC.read_text(encoding="utf-8")
         self.lua = LUA.read_text(encoding="utf-8")
 
-    def test_toc_declares_only_the_single_renderer(self) -> None:
+    def test_toc_declares_only_the_single_renderer_and_export(self) -> None:
         self.assertIn("## Interface: 120000", self.toc)
         self.assertIn("DpsLab.lua", self.toc)
-        self.assertNotIn("SavedVariables", self.toc)
+        self.assertEqual(
+            [line for line in self.toc.splitlines() if line.startswith("## SavedVariables:")],
+            ["## SavedVariables: DpsLabObservationExport"],
+        )
+        self.assertNotIn("SavedVariablesPerCharacter", self.toc)
 
     def test_renderer_has_only_safe_synthetic_and_unavailable_states(self) -> None:
         self.assertIn('status = "unavailable"', self.lua)
@@ -31,11 +36,12 @@ class AddonSyntheticRendererTests(unittest.TestCase):
 
     def test_prohibited_automation_network_and_data_surfaces_are_absent(self) -> None:
         prohibited = (
-            "C_", "CastSpell", "UseAction", "RunMacro", "SendChatMessage",
-            "CreateFrame", "LoadAddOn", "SavedVariables", "http", "socket",
+            "CastSpell", "UseAction", "RunMacro", "SendChatMessage",
+            "CreateFrame", "LoadAddOn", "http", "socket",
             "donate", "patreon", "telemetry",
         )
         lower = self.lua.lower()
+        self.assertIsNone(re.search(r"\bC_[A-Za-z]", self.lua))
         for token in prohibited:
             with self.subTest(token=token):
                 self.assertNotIn(token.lower(), lower)
