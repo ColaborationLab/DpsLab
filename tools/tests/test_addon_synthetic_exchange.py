@@ -31,6 +31,24 @@ class AddonSyntheticExchangeTests(unittest.TestCase):
         self.assertIn('#value == 64', self.text)
         self.assertIn('value:match("^[0-9a-f]+$")', self.text)
 
+    def test_binding_matches_the_loaded_guidance_identity_and_schema(self) -> None:
+        self.assertIn("function Exchange.ValidateBinding(envelope, package)", self.text)
+        self.assertIn("package.identity.package_id ~= envelope.payload.guidance_package_id", self.text)
+        self.assertIn("package.identity.content_version ~= envelope.payload.guidance_content_version", self.text)
+        self.assertIn("package.schema_version ~= envelope.compatibility.guidance_schema", self.text)
+        for reason in ("bindingPackageMissing", "bindingPackageIdMismatch", "bindingContentVersionMismatch", "bindingSchemaMismatch"):
+            self.assertIn(reason, self.text)
+
+    def test_binding_remains_synthetic_pending_review_and_non_actionable(self) -> None:
+        self.assertIn('package.lifecycle.state ~= "pending_review"', self.text)
+        self.assertIn('package.evidence.tier ~= "synthetic_fixture"', self.text)
+        self.assertIn("package.safety.no_automation ~= true", self.text)
+        self.assertIn("package.safety.actionable ~= false", self.text)
+        self.assertIn('package.safety.degradation_policy ~= "fail_closed"', self.text)
+        self.assertIn("roleCount ~= envelope.payload.role_count", self.text)
+        for reason in ("bindingLifecycleInvalid", "bindingEvidenceInvalid", "bindingSafetyInvalid", "bindingRoleCountMismatch", "validSyntheticBindingNonActionable"):
+            self.assertIn(reason, self.text)
+
     def test_exchange_contains_no_real_input_or_execution_surface(self) -> None:
         prohibited = ("SavedVariables", "loadstring", "http", "socket", "CastSpell", "SendChatMessage", "password", "token", "character_name", "realm")
         lower = self.text.lower()

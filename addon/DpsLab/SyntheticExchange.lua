@@ -23,6 +23,31 @@ function Exchange.Validate(value)
   return true, "validSyntheticExchangeNonActionable"
 end
 
+local function guidanceRoleCount(value)
+  if type(value) ~= "table" then return nil end
+  local count = 0
+  for role in pairs(value) do
+    if role ~= "damage" and role ~= "tank" and role ~= "healer" then return nil end
+    count = count + 1
+  end
+  return count
+end
+
+function Exchange.ValidateBinding(envelope, package)
+  local envelopeValid, envelopeReason = Exchange.Validate(envelope)
+  if not envelopeValid then return false, envelopeReason end
+  if type(package) ~= "table" or type(package.identity) ~= "table" then return false, "bindingPackageMissing" end
+  if package.identity.package_id ~= envelope.payload.guidance_package_id then return false, "bindingPackageIdMismatch" end
+  if package.identity.content_version ~= envelope.payload.guidance_content_version then return false, "bindingContentVersionMismatch" end
+  if package.schema_version ~= envelope.compatibility.guidance_schema then return false, "bindingSchemaMismatch" end
+  if type(package.lifecycle) ~= "table" or package.lifecycle.state ~= "pending_review" then return false, "bindingLifecycleInvalid" end
+  if type(package.evidence) ~= "table" or package.evidence.tier ~= "synthetic_fixture" then return false, "bindingEvidenceInvalid" end
+  if type(package.safety) ~= "table" or package.safety.no_automation ~= true or package.safety.actionable ~= false or package.safety.degradation_policy ~= "fail_closed" then return false, "bindingSafetyInvalid" end
+  local roleCount = guidanceRoleCount(package.guidance)
+  if roleCount == nil or roleCount ~= envelope.payload.role_count then return false, "bindingRoleCountMismatch" end
+  return true, "validSyntheticBindingNonActionable"
+end
+
 DpsLabSyntheticExchange = {
   schema_version = "0.1",
   identity = { exchange_id = "synthetic.exchange.001", created_at = "2026-08-29T00:00:00Z" },
