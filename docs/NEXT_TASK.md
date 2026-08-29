@@ -7840,9 +7840,9 @@ The remaining Bandit findings below high severity are not an approval of
 their remediation. A separate design and authorization are required to assess
 them, decide risk treatment, and make any source change.
 
-## Active design task — Static analysis finding review 0.1
+## Published design record — Static analysis finding review 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -7858,7 +7858,7 @@ them, decide risk treatment, and make any source change.
   "express_exclusions":["source or test changes","security policy changes","finding suppression changes","SimulationCraft","commits or pushes beyond this documentation record"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_CONSUMED_DESIGN_CONTRACT_END -->
 
 ### Design outcome required
 
@@ -7874,3 +7874,43 @@ Any remediation, policy exception, suppression, dependency update, or scanner
 configuration change remains a separate implementation contract with its own
 exact paths, test command, approval, audit, commit, and publication decision.
 The existing gate remains fail-closed for high-severity findings throughout.
+
+## Active diagnostic task — Static analysis finding diagnosis 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"static_analysis_finding_diagnosis_0_1",
+  "title":"Collect a sanitized, read-only diagnostic packet for non-high Bandit findings",
+  "baseline_commit":"bbbbe074b7747097b21143e91163ddaa9375710c",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"static_analysis_finding_diagnosis_0_1-20260828-daniel-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-28T22:44:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/static_analysis_finding_diagnosis_0_1/implementation.json",".dpslab/quality-gates/static_analysis_finding_diagnosis_0_1/audit.json"],"forbidden_paths":[".github/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":87,"minimum_test_count":87},
+  "protected_files":{"AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/static_analysis_policy_0_1.json":"9895b8e1367cd8a76bac33954c9eb80aa3cdc846d49855cfd93ff48b0dae3b6f"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["install only the existing hash-locked Bandit tool into a disposable local environment","scan only desktop-app/src and tools without executing application code","destroy raw output after deriving a sanitized packet","record no source excerpts, secrets, scanner logs, policy changes, or suppressions","preserve the high-severity fail-closed gate and require a separate contract for each remediation candidate"],
+  "express_exclusions":["source or test changes","security policy or lock changes","finding suppression or exception changes","SimulationCraft","application execution","commits or pushes beyond this documentation record"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Execution observation
+
+The initial local diagnostic attempt intentionally stopped before a Bandit scan.
+The available Codex runtime is CPython 3.12 and no local CPython 3.13
+installation was found in the standard user or system locations. The
+CPython-3.13 Windows lock correctly rejected the CPython-3.12
+`charset-normalizer` wheel because its hash is not the hash attested by the
+lock. No scanner was installed, no source was scanned, no report was produced,
+and the incomplete disposable environment was removed.
+
+The diagnosis therefore remains pending an exact CPython 3.13 environment
+with the existing, unchanged hash lock. Creating a cross-version lock,
+changing the scanner policy, or installing a new interpreter is outside this
+contract and requires a separate review.
+
+Quality gate execution validated the sole documentation delta, all protected
+hashes, and 87/87 tools tests. Its declared procedural audit is recorded as
+`blocked`: that status records the unavailable exact interpreter, not a code
+or security-policy failure. No remediation candidate has been identified.
