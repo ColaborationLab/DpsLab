@@ -24,6 +24,11 @@ class AddonSyntheticRendererTests(unittest.TestCase):
         self.assertIn("function DpsLab.IsActionable(view)", self.lua)
         self.assertIn('view.status == "approved"', self.lua)
 
+    def test_manual_status_command_has_no_gameplay_action(self) -> None:
+        self.assertIn('SLASH_DPSLAB1 = "/dpslab"', self.lua)
+        self.assertIn('SlashCmdList["DPSLAB"]', self.lua)
+        self.assertIn("print(\"[DpsLab] ", self.lua)
+
     def test_prohibited_automation_network_and_data_surfaces_are_absent(self) -> None:
         prohibited = (
             "C_", "CastSpell", "UseAction", "RunMacro", "SendChatMessage",

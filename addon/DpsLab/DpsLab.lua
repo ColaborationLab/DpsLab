@@ -24,4 +24,10 @@ function DpsLab.IsActionable(view)
   return view ~= nil and view.status == "approved"
 end
 
+SLASH_DPSLAB1 = "/dpslab"
+SlashCmdList["DPSLAB"] = function(message)
+  local view = DpsLab.Render(message == "synthetic" and "synthetic" or nil)
+  print("[DpsLab] " .. view.title .. ": " .. view.detail)
+end
+
 _G.DpsLab = DpsLab
