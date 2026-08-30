@@ -8318,9 +8318,9 @@ The canonical status reconciliation was published through
 approved all four lanes. It records planning estimates rather than approval or
 beta readiness.
 
-## Active corrective task — Observed WoW SavedVariables CRLF wrapper 0.1
+## Published corrective record — Observed WoW SavedVariables CRLF wrapper 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8334,6 +8334,34 @@ beta readiness.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["preserve the existing canonical assignment form","accept exactly one optional leading CRLF observed in the attended retail SavedVariables file","continue to accept only one trailing LF or CRLF and one lowercase hexadecimal assignment","reject leading LF repeated blank lines spaces comments additional variables uppercase hexadecimal and general Lua","validate the attended file locally without recording account paths payload bytes or character data","record that authenticated runtime testing starts from Battle.net rather than direct Wow.exe launch","pass focused tests procedural audit and locked remote functional suite"],
   "express_exclusions":["filesystem discovery or acquisition implementation","real character account realm equipment talent combat or gameplay data","addon code SavedVariables mutation game API events automation or UI","SimulationCraft comparisons runs results baselines network updater release distribution or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The exact wrapper correction was published through
+`949333db99777510fb577114273b771ee126e143`. GitHub Actions run #149
+approved all four lanes. The attended export was accepted by the strict parser
+without retaining its payload or account path. A subsequent attended
+`/dpslab export clear`, followed by a full game exit, produced the exact
+non-payload assignment `DpsLabObservationExport = nil`; no synthetic payload
+remained persisted.
+
+## Active implementation task — Local synthetic observation acquisition 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_local_acquisition_0_1",
+  "title":"Acquire one synthetic DpsLab SavedVariables export through a bounded fail-closed local reader",
+  "baseline_commit":"949333db99777510fb577114273b771ee126e143",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_local_acquisition_0_1-20260830-daniel-continue-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-30T00:31:12-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/addon_observation_acquisition.py","desktop-app/tests/test_addon_observation_acquisition.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_local_acquisition_0_1/implementation.json",".dpslab/quality-gates/addon_observation_local_acquisition_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_acquisition","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_acquisition","tests.test_addon_observation_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":11,"minimum_test_count":21},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"9ab88e26a1de2e84302a0751ea5b5a5b527d3541ec6ae415bc2c23a47c39a248","addon/DpsLab/DpsLab.toc":"0fd2e41d9b7afc0108b2425cda36317596cd390130eb5a4e57923b462ca9c739","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb","desktop-app/src/dpslab/addon_observation_transport.py":"1b714689efc721ff50e0f2d69db918c23ae46c05ea77ea62204c85c2144432d5"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["accept only an absolute caller-selected retail root and an explicit stopped process state","inspect only direct account-level SavedVariables/DpsLab.lua candidates and never expose account directory names","return absent for no file and cleared only for the exact observed nil assignment","require exactly one candidate for an available or cleared state and reject multiple accounts as ambiguous","reject symlinks reparse points non-regular files oversized files and files changed during acquisition","read bytes only after bounded metadata checks and pass available content to the existing strict non-executing parser","return only a sanitized immutable state byte count SHA-256 and parsed synthetic observation without source path or raw bytes","introduce no watcher process launch registry lookup logs network game API writes or real character data","pass focused tests procedural audit and locked remote functional suite"],
+  "express_exclusions":["automatic WoW installation discovery registry access or process inspection","background watcher polling hot reload or automatic import","real character account realm equipment talent stat combat event or gameplay data","SavedVariables modification deletion or addon changes","general Lua parsing or execution","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

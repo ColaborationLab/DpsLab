@@ -28,6 +28,18 @@ additional variables or general whitespace. The attended flow must launch WoW
 through the authenticated Battle.net launcher; invoking `Wow.exe` directly is
 not an equivalent account-session test.
 
+The local acquisition boundary remains synthetic and user-initiated. It takes
+an absolute retail root selected by its caller and an explicit assertion that
+WoW is stopped. It inspects only direct
+`WTF/Account/*/SavedVariables/DpsLab.lua` candidates, rejects ambiguous account
+matches, links and reparse points, non-regular or oversized files, and any file
+whose identity or metadata changes while its descriptor is open. No account
+directory name, source path, or raw bytes are returned. The sanitized result is
+only `absent`, the exact observed `cleared` assignment, or an `available`
+synthetic observation accepted by the existing strict parser, together with a
+byte count and SHA-256. Installation discovery, registry access, process
+inspection, watchers and automatic imports remain outside this boundary.
+
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,
