@@ -13,7 +13,8 @@ class AddonSyntheticExchangeTests(unittest.TestCase):
 
     def test_exchange_loads_after_guidance_and_before_renderer(self) -> None:
         lines = [line for line in TOC.read_text(encoding="utf-8").splitlines() if line and not line.startswith("##")]
-        self.assertEqual(lines, ["SyntheticGuidance.lua", "SyntheticExchange.lua", "SyntheticObservation.lua", "DpsLab.lua"])
+        self.assertLess(lines.index("SyntheticGuidance.lua"), lines.index("SyntheticExchange.lua"))
+        self.assertLess(lines.index("SyntheticExchange.lua"), lines.index("DpsLab.lua"))
 
     def test_envelope_is_closed_versioned_and_non_actionable(self) -> None:
         self.assertIn("function Exchange.Validate(value)", self.text)

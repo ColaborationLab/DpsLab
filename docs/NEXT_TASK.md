@@ -8547,9 +8547,9 @@ The canonical synthetic observation status reconciliation was published
 through `e08502f8d604c8accb402e784ac1a0a28f784546`. GitHub Actions run
 #157 approved all four lanes.
 
-## Active design task — Minimal real addon observation 0.1
+## Published design record — Minimal real addon observation 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8565,4 +8565,65 @@ through `e08502f8d604c8accb402e784ac1a0a28f784546`. GitHub Actions run
   "express_exclusions":["implementation code tests addon mutation or WoW API invocation","real character capture account access SavedVariables write or attended game test","equipment talents stats items action bars cooldowns auras combat events damage healing or incoming damage","names realms GUIDs account identifiers guild group location chat contacts screenshots or telemetry","SimulationCraft comparisons runs results baselines GUI network updater release distribution credentials commit push or GitHub setting changes"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The closed design was published through
+`5737bcfd9f28659ba89f4f54c3cf2234105b76b2`. GitHub Actions run #158
+approved Policy and contract, Tools tests, Functional suite, and Static
+analysis and secret scanning.
+
+## Active implementation authorization — Minimal real addon observation 0.1
+
+Daniel's expanded continuation authorization and the attended probe evidence
+received on 2026-08-30 authorize the closed implementation below. The probe
+evaluated only `type(...)` for the seven allowlisted functions and returned
+`function` for all seven entries. It did not invoke those functions or expose,
+retain, transmit, or persist any character value.
+
+The human review confirms the closed field set, exact manual command, one-value
+replacement policy, local-character-data privacy classification, exact API
+allowlist, synthetic fixtures, and eight implementation routes described in
+`docs/ADDON_REAL_OBSERVATION.md`. Four pre-existing tests are additionally
+allowlisted only to replace obsolete exact-file-count assumptions and preserve
+historical `design_only` evidence; they add no runtime surface.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_real_observation_minimal_0_1",
+  "title":"Implement one consented privacy-minimized real character identity snapshot",
+  "baseline_commit":"5737bcfd9f28659ba89f4f54c3cf2234105b76b2",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_real_observation_minimal_0_1-20260830-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-30T08:16:18-05:00"},
+  "scope":{"allowed_paths":["addon/DpsLab/CharacterIdentityObservation.lua","addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","tools/tests/test_addon_character_identity_observation.py","desktop-app/src/dpslab/addon_character_identity_transport.py","desktop-app/tests/test_addon_character_identity_transport.py","docs/ADDON_REAL_OBSERVATION.md","docs/NEXT_TASK.md","tools/tests/test_addon_synthetic_exchange.py","tools/tests/test_addon_synthetic_guidance.py","tools/tests/test_addon_synthetic_observation.py","tools/tests/test_github_automation.py"],"generated_paths":[".dpslab/quality-gates/addon_real_observation_minimal_0_1/implementation.json",".dpslab/quality-gates/addon_real_observation_minimal_0_1/audit.json"],"forbidden_paths":[".github/**","security/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_OBSERVATION_TRANSPORT.md","addon/DpsLab/SyntheticObservation.lua","desktop-app/src/dpslab/addon_observation_transport.py","desktop-app/src/dpslab/addon_observation_import.py"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_addon_character_identity_observation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1185,"minimum_test_count":1195},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb","desktop-app/src/dpslab/addon_observation_transport.py":"1b714689efc721ff50e0f2d69db918c23ae46c05ea77ea62204c85c2144432d5","desktop-app/src/dpslab/addon_observation_import.py":"7b40d24fa5d09c6403bf60b96bd8c09d35609c570a888bac7deebbd93aca2e00","docs/ADDON_OBSERVATION_TRANSPORT.md":"b2446722b2e69b19fffe45693bc8cf6660358e3679a478efd22a79e1e890890e"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["use only GetBuildInfo UnitClass GetSpecialization GetSpecializationInfo UnitLevel UnitRace and GetServerTime after their attended type-only availability probe","capture only after the exact manual command /dpslab export identity and never from events timers polling login reload logout or state changes","collect normalize validate canonically serialize and size-check the complete candidate before one replacement of DpsLabObservationExport","preserve the prior export on every unavailable ambiguous invalid or oversized candidate and emit only bounded static reasons","serialize exactly schema_version observation_type compatibility subject capture and safety with the closed fields and constants approved by the design","treat class specialization role level and race as local character data without direct identifiers durable fingerprints logs history telemetry or network","retain synthetic and real transports as distinct schemas selected only by exact observation_type","add an independent immutable strict desktop parser that rejects booleans as integers duplicate keys noncanonical JSON unknown fields invalid bounds and synthetic payloads","keep /dpslab export clear as the only idempotent deletion path and introduce no additional SavedVariable","pass focused tests full functional suite procedural audit protected-hash verification and remote CI"],
+  "express_exclusions":["character name realm GUID account guild group location chat contacts screenshots or stable fingerprint","equipment items item levels enchants gems talents loadouts stats action bars cooldowns auras currencies quests achievements combat events damage healing incoming damage or encounter history","event registration frames timers polling watchers automatic capture retry migration history database logging telemetry network process launch executable data or arbitrary Lua","recommendations simulations comparisons runs results baselines SimulationCraft GUI updater release distribution credentials secrets GitHub settings or files outside the eight-route allowlist"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Local implementation and procedural audit result
+
+The implementation remained within the twelve-path contractual allowlist:
+eight runtime, parser, documentation, and new-test routes plus four
+compatibility-test corrections. The attended allowlist evidence was used only
+to approve the seven function names; no observed character value entered the
+repository or test fixtures.
+
+Focused addon tests passed 10/10 and the independent desktop transport tests
+passed 10/10. The complete tools suite passed 133/133. The locked functional
+suite passed 1195/1195 with one expected skip and exit code 0. The quality gate
+reported `implemented_pending_independent_audit`, verified every protected
+hash, removed its temporary functional workspace, and recorded that
+SimulationCraft was not invoked.
+
+The declared and procedurally separate audit actor recorded decision
+`approved` with no findings. This separation is not a cryptographic guarantee
+of identity and does not authorize any additional field, automatic capture,
+recommendation, simulation, comparison, or later block. Daniel's expanded
+continuation authorization is consumed for further implementation edits after
+the final evidence refresh; the closed delta may proceed through commit and
+publication with remote CI verification.

@@ -16,7 +16,8 @@ class AddonSyntheticGuidanceTests(unittest.TestCase):
 
     def test_package_is_loaded_before_renderer(self) -> None:
         lines = [line for line in TOC.read_text(encoding="utf-8").splitlines() if line and not line.startswith("##")]
-        self.assertEqual(lines, ["SyntheticGuidance.lua", "SyntheticExchange.lua", "SyntheticObservation.lua", "DpsLab.lua"])
+        self.assertIn("SyntheticGuidance.lua", lines)
+        self.assertLess(lines.index("SyntheticGuidance.lua"), lines.index("DpsLab.lua"))
 
     def test_package_is_versioned_pending_review_and_non_actionable(self) -> None:
         for token in ('schema_version = "0.1"', 'state = "pending_review"', "no_automation = true", "actionable = false", 'degradation_policy = "fail_closed"'):

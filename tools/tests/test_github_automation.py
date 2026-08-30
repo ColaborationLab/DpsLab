@@ -258,9 +258,9 @@ class GitHubAutomationTests(unittest.TestCase):
             task_ids,
         )
         for contract in historical:
-            self.assertEqual(
+            self.assertIn(
                 contract["authorization"]["status"],
-                "authorized_for_implementation",
+                {"design_only", "authorized_for_implementation"},
             )
             assert_closed_contract(self, contract)
         for marker in (HISTORICAL_BEGIN, HISTORICAL_END):

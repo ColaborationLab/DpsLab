@@ -1,10 +1,12 @@
-# DpsLab Minimal Real Addon Observation 0.1 — Design Only
+# DpsLab Minimal Real Addon Observation 0.1
 
 ## Status and objective
 
-This document is a closed design. It does not authorize addon code, WoW API
-access, SavedVariables writes, a live character capture, or a desktop parser
-change.
+The closed design was approved for implementation after an attended,
+metadata-only API probe. The implementation remains limited to the manual
+identity snapshot and boundaries in this document. It does not authorize an
+automatic capture, recommendation, simulation, comparison, or any additional
+character field.
 
 The first real observation is one manually requested identity snapshot used
 only to decide whether local guidance can apply to the current character. It
@@ -43,9 +45,23 @@ The future canonical payload has exactly these families and fields:
 
 All integers reject booleans, fractions and values outside declared bounds.
 Role accepts only `damage`, `tank` or `healer`. Unknown build, interface,
-class, specialization, role, level, race or time fails closed. A future
-implementation must verify the precise WoW API allowlist against the installed
-Retail build through a separate attended, metadata-only probe before using it.
+class, specialization, role, level, race or time fails closed.
+
+The attended installed-Retail probe on 2026-08-30 evaluated only `type(...)`
+and returned `function` for every allowlisted entry. It did not invoke a WoW
+API or observe a character value. The exact runtime allowlist is:
+
+- `GetBuildInfo` for build and interface version;
+- `UnitClass` with exact unit `player` for class ID;
+- `GetSpecialization` for the active specialization index;
+- `GetSpecializationInfo` for specialization ID and role token;
+- `UnitLevel` with exact unit `player` for level;
+- `UnitRace` with exact unit `player` for race ID;
+- `GetServerTime` for the UTC epoch capture time.
+
+No other global, namespace, event, frame, timer or API is permitted. Runtime
+availability, protected calls, type checks, integer bounds and exact role
+normalization fail closed before serialization.
 
 ## Privacy boundary
 
@@ -86,9 +102,9 @@ produces guidance unavailable, never a nearest-template guess.
 - The snapshot does not authorize a recommendation, simulation or comparison.
 - Clearing affects only `DpsLabObservationExport`.
 
-## Candidate implementation routes
+## Closed implementation routes
 
-A later implementation contract may consider only:
+Implementation is limited to:
 
 - `addon/DpsLab/CharacterIdentityObservation.lua`;
 - `addon/DpsLab/DpsLab.lua`;
@@ -99,7 +115,13 @@ A later implementation contract may consider only:
 - `docs/ADDON_REAL_OBSERVATION.md`;
 - `docs/NEXT_TASK.md`.
 
-Before implementation, human review must confirm the field set, manual command,
-single-value replacement policy, privacy classification, exact API allowlist,
-test fixtures and eight-route maximum. Approval of this design is not approval
-to capture a real character.
+Human review confirmed the field set, manual command, single-value replacement
+policy, privacy classification, exact API allowlist, synthetic fixtures and
+eight-route maximum. A successful implementation still requires the player to
+invoke `/dpslab export identity`; installation, login, reload and gameplay do
+not constitute consent and cannot capture or refresh a snapshot.
+
+Four pre-existing contract and synthetic-addon tests are also in the active
+change allowlist solely to replace obsolete exact-file-count assumptions with
+load-order invariants and to preserve historical `design_only` contracts. They
+do not expand the eight implementation routes or the runtime surface.

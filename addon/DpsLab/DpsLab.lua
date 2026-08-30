@@ -79,6 +79,12 @@ end
 local SYNTHETIC_EXPORT_REASON = "validSyntheticObservationTransportNonActionable"
 local EXPORT_STATUS = {
   retained = "Synthetic export retained for WoW-managed persistence.",
+  identity_retained = "Identity snapshot retained for WoW-managed persistence.",
+  identity_api_unavailable = "Identity snapshot unavailable: required API unavailable.",
+  identity_api_failed = "Identity snapshot unavailable: API call failed.",
+  identity_context_invalid = "Identity snapshot unavailable: context invalid.",
+  identity_role_unsupported = "Identity snapshot unavailable: role unsupported.",
+  identity_payload_invalid = "Identity snapshot unavailable: payload invalid.",
   cleared = "Synthetic export cleared.",
   unavailable = "Synthetic export unavailable.",
   unsupported = "Synthetic export command unavailable.",
@@ -90,6 +96,20 @@ local function syntheticExportCandidate()
   local candidate = DpsLabSyntheticObservationExport:match('^DpsLabObservationExport = "([0-9a-f]+)"\n$')
   if candidate == nil or #candidate == 0 or #candidate > 8192 or #candidate % 2 ~= 0 then return nil end
   return candidate
+end
+
+local function handleIdentityExport()
+  local module = DpsLabCharacterIdentityObservation
+  if type(module) ~= "table" or type(module.Capture) ~= "function" then
+    return "identity_api_unavailable"
+  end
+  local candidate, reason = module.Capture()
+  if candidate == nil then
+    if EXPORT_STATUS[reason] ~= nil then return reason end
+    return "identity_payload_invalid"
+  end
+  _G.DpsLabObservationExport = candidate
+  return "identity_retained"
 end
 
 local function handleSyntheticExport(action)
@@ -108,7 +128,7 @@ SLASH_DPSLAB1 = "/dpslab"
 SlashCmdList["DPSLAB"] = function(message)
   local command, role = message:match("^(%S*)%s*(%S*)$")
   if command == "export" then
-    local status = handleSyntheticExport(role)
+    local status = role == "identity" and handleIdentityExport() or handleSyntheticExport(role)
     print("[DpsLab] " .. EXPORT_STATUS[status])
     return
   end

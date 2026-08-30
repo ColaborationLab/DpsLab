@@ -13,7 +13,8 @@ class AddonSyntheticObservationTests(unittest.TestCase):
 
     def test_observation_loads_before_renderer_with_one_manual_export(self) -> None:
         lines = [line for line in TOC.read_text(encoding="utf-8").splitlines() if line and not line.startswith("##")]
-        self.assertEqual(lines, ["SyntheticGuidance.lua", "SyntheticExchange.lua", "SyntheticObservation.lua", "DpsLab.lua"])
+        self.assertIn("SyntheticObservation.lua", lines)
+        self.assertLess(lines.index("SyntheticObservation.lua"), lines.index("DpsLab.lua"))
         saved = [line for line in TOC.read_text(encoding="utf-8").splitlines() if line.startswith("## SavedVariables:")]
         self.assertEqual(saved, ["## SavedVariables: DpsLabObservationExport"])
 

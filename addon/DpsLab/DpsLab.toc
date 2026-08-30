@@ -6,4 +6,5 @@
 SyntheticGuidance.lua
 SyntheticExchange.lua
 SyntheticObservation.lua
+CharacterIdentityObservation.lua
 DpsLab.lua
