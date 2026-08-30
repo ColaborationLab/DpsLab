@@ -6,16 +6,23 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from dpslab.addon_observation_acquisition import SyntheticObservationAcquisition
+from dpslab.addon_observation_acquisition import AddonObservationAcquisition
+from dpslab.addon_character_identity_transport import (
+    parse_character_identity_saved_variable,
+)
 from dpslab.addon_observation_import import (
     AddonObservationImportResult,
-    import_synthetic_addon_observation,
+    import_addon_observation,
 )
 from dpslab.retail_installation import validate_retail_installation_root
 from dpslab.retail_installation_store import DOCUMENT_NAME, store_retail_installation
 from dpslab.wow_process_state import WoWProcessState
 from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from tests.test_addon_observation_transport import transport
+from tests.test_addon_character_identity_transport import (
+    document as identity_document,
+    transport as identity_transport,
+)
 
 
 class AddonObservationImportTests(unittest.TestCase):
@@ -44,14 +51,14 @@ class AddonObservationImportTests(unittest.TestCase):
             "dpslab.addon_observation_acquisition.probe_wow_process_state",
             return_value=WoWProcessState("stopped", 0),
         ):
-            return import_synthetic_addon_observation(self.config)
+            return import_addon_observation(self.config)
 
     def test_absent_selection_is_not_configured_without_acquisition(self) -> None:
         with patch(
-            "dpslab.addon_observation_import.acquire_synthetic_observation_from_installation",
+            "dpslab.addon_observation_import.acquire_addon_observation_from_installation",
             side_effect=AssertionError("acquisition_forbidden"),
         ):
-            result = import_synthetic_addon_observation(self.config)
+            result = import_addon_observation(self.config)
         self.assertEqual(AddonObservationImportResult("not_configured", None, 0, None, None), result)
 
     def test_configured_source_without_file_is_absent(self) -> None:
@@ -73,13 +80,26 @@ class AddonObservationImportTests(unittest.TestCase):
         result = self.import_stopped()
         self.assertEqual("available", result.state)
         self.assertEqual("synthetic.observation.001", result.observation.observation_id)
+        self.assertEqual("synthetic_observation", result.observation_type)
         self.assertEqual(len(raw), result.byte_count)
+        self.assertFalse(hasattr(result, "path"))
+        self.assertFalse(hasattr(result, "raw"))
+
+    def test_identity_source_is_available_without_public_character_fields(self) -> None:
+        self.configure()
+        raw = identity_transport(identity_document())
+        self.write_candidate(raw)
+        result = self.import_stopped()
+        self.assertEqual("available", result.state)
+        self.assertEqual("character_identity_snapshot", result.observation_type)
+        self.assertEqual(2, result.observation.class_id)
+        self.assertNotIn("class_id", result.__dict__)
         self.assertFalse(hasattr(result, "path"))
         self.assertFalse(hasattr(result, "raw"))
 
     def test_invalid_configuration_maps_to_bounded_reason(self) -> None:
         (self.config / DOCUMENT_NAME).write_bytes(b"not-json")
-        self.assertEqual(_rejected("configuration_invalid"), import_synthetic_addon_observation(self.config))
+        self.assertEqual(_rejected("configuration_invalid"), import_addon_observation(self.config))
 
     def test_running_process_maps_to_bounded_reason(self) -> None:
         self.configure()
@@ -87,7 +107,7 @@ class AddonObservationImportTests(unittest.TestCase):
             "dpslab.addon_observation_acquisition.probe_wow_process_state",
             return_value=WoWProcessState("running", 1),
         ):
-            result = import_synthetic_addon_observation(self.config)
+            result = import_addon_observation(self.config)
         self.assertEqual(_rejected("wow_not_stopped"), result)
 
     def test_invalid_or_ambiguous_source_maps_to_bounded_reason(self) -> None:
@@ -98,7 +118,7 @@ class AddonObservationImportTests(unittest.TestCase):
 
     def test_result_is_frozen_closed_and_path_redacted(self) -> None:
         result = AddonObservationImportResult("absent", None, 0, None, None)
-        self.assertEqual({"state", "reason", "byte_count", "source_sha256", "observation"}, {field.name for field in fields(result)})
+        self.assertEqual({"state", "reason", "byte_count", "source_sha256", "observation", "observation_type"}, {field.name for field in fields(result)})
         self.assertNotIn(str(self.retail), repr(result))
         with self.assertRaises((AttributeError, TypeError)):
             result.state = "changed"  # type: ignore[misc]
@@ -106,17 +126,31 @@ class AddonObservationImportTests(unittest.TestCase):
     def test_unexpected_failures_and_invalid_internal_states_are_not_masked(self) -> None:
         self.configure()
         with patch(
-            "dpslab.addon_observation_import.acquire_synthetic_observation_from_installation",
+            "dpslab.addon_observation_import.acquire_addon_observation_from_installation",
             side_effect=RuntimeError("synthetic_programming_failure"),
         ):
             with self.assertRaisesRegex(RuntimeError, "synthetic_programming_failure"):
-                import_synthetic_addon_observation(self.config)
+                import_addon_observation(self.config)
         with patch(
-            "dpslab.addon_observation_import.acquire_synthetic_observation_from_installation",
-            return_value=SyntheticObservationAcquisition("unexpected", 0, None, None),
+            "dpslab.addon_observation_import.acquire_addon_observation_from_installation",
+            return_value=AddonObservationAcquisition("unexpected", 0, None, None),
         ):
             with self.assertRaisesRegex(RuntimeError, "addon_observation_import_state_invalid"):
-                import_synthetic_addon_observation(self.config)
+                import_addon_observation(self.config)
+
+    def test_internal_type_and_parsed_object_mismatch_is_rejected(self) -> None:
+        self.configure()
+        parsed_identity = parse_character_identity_saved_variable(
+            identity_transport(identity_document())
+        )
+        with patch(
+            "dpslab.addon_observation_import.acquire_addon_observation_from_installation",
+            return_value=AddonObservationAcquisition(
+                "available", 7, "a" * 64, parsed_identity, "synthetic_observation"
+            ),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "addon_observation_import_state_invalid"):
+                import_addon_observation(self.config)
 
     def test_source_has_no_automatic_privileged_or_cross_project_surface(self) -> None:
         source = (Path(__file__).parents[1] / "src" / "dpslab" / "addon_observation_import.py").read_text(encoding="utf-8").lower()

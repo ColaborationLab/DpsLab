@@ -10,6 +10,7 @@ from dpslab.addon_observation_acquisition import (
     AddonObservationAcquisitionError,
     MAX_TRANSPORT_BYTES,
     SyntheticObservationAcquisition,
+    acquire_addon_observation,
     acquire_synthetic_observation,
     acquire_synthetic_observation_from_installation,
     acquire_synthetic_observation_with_probe,
@@ -18,6 +19,10 @@ from dpslab.retail_installation import validate_retail_installation_root
 from dpslab.wow_process_state import WoWProcessState
 from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from tests.test_addon_observation_transport import transport
+from tests.test_addon_character_identity_transport import (
+    document as identity_document,
+    transport as identity_transport,
+)
 
 
 class AddonObservationAcquisitionTests(unittest.TestCase):
@@ -47,6 +52,7 @@ class AddonObservationAcquisitionTests(unittest.TestCase):
         self.assertEqual(len(raw), result.byte_count)
         self.assertEqual(64, len(result.source_sha256 or ""))
         self.assertEqual("synthetic.observation.001", result.observation.observation_id)
+        self.assertEqual("synthetic_observation", result.observation_type)
         self.assertFalse(hasattr(result, "path"))
         self.assertFalse(hasattr(result, "raw"))
         with self.assertRaises((AttributeError, TypeError)):
@@ -56,6 +62,27 @@ class AddonObservationAcquisitionTests(unittest.TestCase):
         result = acquire_synthetic_observation(self.root, wow_process_state="stopped")
         self.assertEqual(SyntheticObservationAcquisition("absent", 0, None, None), result)
         self.assertFalse((self.root / "WTF").exists())
+
+    def test_identity_export_is_strictly_selected_and_retained_only_in_memory(self) -> None:
+        raw = identity_transport(identity_document())
+        self.write_candidate("synthetic-account", raw)
+        result = acquire_addon_observation(self.root, wow_process_state="stopped")
+        self.assertEqual("available", result.state)
+        self.assertEqual("character_identity_snapshot", result.observation_type)
+        self.assertEqual(2, result.observation.class_id)
+        self.assertFalse(hasattr(result, "path"))
+        self.assertFalse(hasattr(result, "raw"))
+
+    def test_unsupported_identity_type_has_no_parser_fallback(self) -> None:
+        value = identity_document()
+        value["observation_type"] = "character_identity_future"
+        self.write_candidate("synthetic-account", identity_transport(value))
+        self.assert_reason(
+            "addon_observation_acquisition_transport_invalid",
+            acquire_addon_observation,
+            self.root,
+            wow_process_state="stopped",
+        )
 
     def test_exact_observed_nil_assignment_is_cleared(self) -> None:
         raw = b"\r\nDpsLabObservationExport = nil\r\n"

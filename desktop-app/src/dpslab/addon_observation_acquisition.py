@@ -1,4 +1,4 @@
-"""Bounded local acquisition for one synthetic DpsLab SavedVariables export."""
+"""Bounded local acquisition for one supported DpsLab SavedVariables export."""
 
 from __future__ import annotations
 
@@ -8,9 +8,15 @@ import os
 from pathlib import Path
 import stat as stat_module
 
+from .addon_character_identity_transport import (
+    CharacterIdentitySnapshot,
+    CharacterIdentityTransportError,
+    MAX_PAYLOAD_BYTES as MAX_IDENTITY_PAYLOAD_BYTES,
+    parse_character_identity_saved_variable,
+)
 from .addon_observation_transport import (
     AddonObservationTransportError,
-    MAX_PAYLOAD_BYTES,
+    MAX_PAYLOAD_BYTES as MAX_SYNTHETIC_PAYLOAD_BYTES,
     SyntheticAddonObservation,
     parse_synthetic_saved_variable,
 )
@@ -25,15 +31,25 @@ class AddonObservationAcquisitionError(ValueError):
     """The local observation source is unsafe, ambiguous, or incompatible."""
 
 
+SupportedAddonObservation = SyntheticAddonObservation | CharacterIdentitySnapshot
+
+
 @dataclass(frozen=True)
-class SyntheticObservationAcquisition:
+class AddonObservationAcquisition:
     state: str
     byte_count: int
     source_sha256: str | None
-    observation: SyntheticAddonObservation | None
+    observation: SupportedAddonObservation | None
+    observation_type: str | None = None
 
 
-MAX_TRANSPORT_BYTES = 2 * MAX_PAYLOAD_BYTES + 64
+# Compatibility name retained for callers of the original synthetic-only API.
+SyntheticObservationAcquisition = AddonObservationAcquisition
+
+
+MAX_TRANSPORT_BYTES = 2 * max(
+    MAX_SYNTHETIC_PAYLOAD_BYTES, MAX_IDENTITY_PAYLOAD_BYTES
+) + 64
 _CLEARED_ASSIGNMENT = b"\r\nDpsLabObservationExport = nil\r\n"
 _REPARSE_ATTRIBUTE = getattr(stat_module, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
 
@@ -154,10 +170,32 @@ def _read_bounded(path: Path) -> bytes:
     return raw
 
 
-def acquire_synthetic_observation(
+def _parse_supported_observation(
+    raw: bytes,
+) -> tuple[str, SupportedAddonObservation]:
+    matches: list[tuple[str, SupportedAddonObservation]] = []
+    try:
+        matches.append(("synthetic_observation", parse_synthetic_saved_variable(raw)))
+    except AddonObservationTransportError:
+        pass
+    try:
+        matches.append(
+            (
+                "character_identity_snapshot",
+                parse_character_identity_saved_variable(raw),
+            )
+        )
+    except CharacterIdentityTransportError:
+        pass
+    if len(matches) != 1:
+        _fail("addon_observation_acquisition_transport_invalid")
+    return matches[0]
+
+
+def acquire_addon_observation(
     retail_root: Path, *, wow_process_state: str
-) -> SyntheticObservationAcquisition:
-    """Acquire one sanitized synthetic observation without retaining its path or bytes."""
+) -> AddonObservationAcquisition:
+    """Acquire one supported observation without retaining its path or bytes."""
     if wow_process_state != "stopped":
         _fail("addon_observation_acquisition_wow_not_stopped")
     if not isinstance(retail_root, Path) or not retail_root.is_absolute():
@@ -165,38 +203,58 @@ def acquire_synthetic_observation(
     _directory(retail_root, "addon_observation_acquisition_root_invalid")
     candidates = _candidate_files(retail_root)
     if not candidates:
-        return SyntheticObservationAcquisition("absent", 0, None, None)
+        return AddonObservationAcquisition("absent", 0, None, None)
     if len(candidates) != 1:
         _fail("addon_observation_acquisition_ambiguous")
     raw = _read_bounded(candidates[0])
     digest = sha256(raw).hexdigest()
     if raw == _CLEARED_ASSIGNMENT:
-        return SyntheticObservationAcquisition("cleared", len(raw), digest, None)
-    try:
-        observation = parse_synthetic_saved_variable(raw)
-    except AddonObservationTransportError as exc:
-        raise AddonObservationAcquisitionError(
-            "addon_observation_acquisition_transport_invalid"
-        ) from exc
-    return SyntheticObservationAcquisition("available", len(raw), digest, observation)
+        return AddonObservationAcquisition("cleared", len(raw), digest, None)
+    observation_type, observation = _parse_supported_observation(raw)
+    return AddonObservationAcquisition(
+        "available", len(raw), digest, observation, observation_type
+    )
 
 
-def acquire_synthetic_observation_with_probe(
+def acquire_addon_observation_with_probe(
     retail_root: Path,
-) -> SyntheticObservationAcquisition:
+) -> AddonObservationAcquisition:
     """Use the native process probe; running and unknown states fail closed."""
     process_state = probe_wow_process_state()
-    return acquire_synthetic_observation(
+    return acquire_addon_observation(
         retail_root,
         wow_process_state=process_state.state,
     )
 
 
-def acquire_synthetic_observation_from_installation(
+def acquire_addon_observation_from_installation(
     selection: RetailInstallationSelection,
-) -> SyntheticObservationAcquisition:
+) -> AddonObservationAcquisition:
     """Revalidate a caller-selected Retail root before the probed acquisition."""
     if not isinstance(selection, RetailInstallationSelection):
         _fail("addon_observation_acquisition_selection_invalid")
     current = validate_retail_installation_root(selection.root)
-    return acquire_synthetic_observation_with_probe(current.root)
+    return acquire_addon_observation_with_probe(current.root)
+
+
+def acquire_synthetic_observation(
+    retail_root: Path, *, wow_process_state: str
+) -> AddonObservationAcquisition:
+    """Compatibility entry; now accepts either explicitly supported schema."""
+    return acquire_addon_observation(
+        retail_root, wow_process_state=wow_process_state
+    )
+
+
+def acquire_synthetic_observation_with_probe(
+    retail_root: Path,
+) -> AddonObservationAcquisition:
+    """Compatibility entry for the original process-gated API."""
+    return acquire_addon_observation_with_probe(retail_root)
+
+
+def acquire_synthetic_observation_from_installation(
+    selection: RetailInstallationSelection,
+) -> AddonObservationAcquisition:
+    """Compatibility entry for the original selected-installation API."""
+    return acquire_addon_observation_from_installation(selection)

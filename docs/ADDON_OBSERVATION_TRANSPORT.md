@@ -89,8 +89,10 @@ the bounded SavedVariables acquisition. It returns only one closed state:
 `not_configured`, `absent`, `cleared`, `available`, or `rejected`. Rejections
 use only the public reasons `configuration_invalid`, `wow_not_stopped`, or
 `source_invalid`; internal exception text, configured paths, account names and
-raw bytes are not returned. An available synthetic observation remains an
-immutable in-memory value with its bounded byte count and source SHA-256.
+raw bytes are not returned. An available supported observation remains an
+immutable in-memory value with its bounded byte count, source SHA-256 and one
+exact public type: `synthetic_observation` or
+`character_identity_snapshot`.
 
 The coordinator is not a watcher or an automatic import facility. It performs
 no polling, logging, UI, AppData discovery, network access, process launch,
@@ -104,9 +106,10 @@ The desktop CLI exposes these boundaries through two explicit commands.
 the selected Retail folder, and stores it through the existing atomic local
 store. Its JSON output contains only `configured` and the configuration byte
 count. `addon-import` requires `--config-root`, invokes exactly one coordinator
-attempt, and returns only state, bounded reason, byte count, source SHA-256 and
-whether an in-memory synthetic observation is present. It never serializes the
-observation or prints either supplied path. A rejected import uses exit code 2;
+attempt, and returns only state, bounded reason, byte count, source SHA-256,
+whether an in-memory observation is present, and its exact type. It never
+serializes the observation, emits any character field, or prints either
+supplied path. A rejected import uses exit code 2;
 all other closed import states use exit code 0.
 
 These commands do not choose a configuration root, open a file picker, consult
@@ -177,3 +180,19 @@ export command. It validates the serializer reason and the complete assignment
 shape before retaining only its lowercase hexadecimal value. Unsupported
 commands and invalid serializer output preserve any existing value; clear is
 the only path that assigns `nil`. Status output never includes the payload.
+
+## Character identity import boundary
+
+The explicit acquisition, coordinator and CLI now accept exactly two complete
+strict schemas. Each parser validates the entire assignment independently;
+exactly one parser must succeed. Malformed, unsupported, ambiguous and
+cross-schema payloads collapse to the same bounded `source_invalid` public
+reason. No discriminator is trusted before full schema validation.
+
+For `character_identity_snapshot`, the immutable parsed object may exist only
+inside the current explicit import call. The public result adds only the exact
+type token. It does not expose build, interface, class, specialization, role,
+level, race or capture time. This integration performs no template lookup,
+applicability decision, recommendation, persistence, history, logging or
+network operation. All tests use synthetic fixtures; the attended real export
+is not copied, hashed anew, printed or committed as evidence.

@@ -125,3 +125,19 @@ Four pre-existing contract and synthetic-addon tests are also in the active
 change allowlist solely to replace obsolete exact-file-count assumptions with
 load-order invariants and to preserve historical `design_only` contracts. They
 do not expand the eight implementation routes or the runtime surface.
+
+## Published capture and import status
+
+The manual snapshot implementation was published through
+`02145ed7f18e33d872e4b3d33164d2015754b59f`; GitHub Actions run #159 approved
+all four lanes. One attended local exercise confirmed that the command created
+a snapshot accepted by the independent strict parser. The verification emitted
+only validity, byte count, SHA-256, runtime class name and memory-only retention
+status; no field value was printed or retained as project evidence.
+
+The subsequent import integration recognizes exactly
+`character_identity_snapshot` alongside the historical synthetic schema. The
+coordinator retains the typed snapshot only in memory and the CLI exposes only
+its availability and exact type. It does not display the snapshot fields or
+use them for guidance. Applying a template, assessing compatibility and
+producing a recommendation remain separate future decisions.

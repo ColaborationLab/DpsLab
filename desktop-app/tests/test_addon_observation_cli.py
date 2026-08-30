@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from dpslab.__main__ import _arguments, main
 from dpslab.addon_observation_import import AddonObservationImportResult
+from dpslab.addon_character_identity_transport import CharacterIdentitySnapshot
 from dpslab.retail_installation_store import load_retail_installation
 from tests.strict_temporary_cleanup import strict_temporary_cleanup
 
@@ -67,7 +68,7 @@ class AddonObservationCliTests(unittest.TestCase):
 
     def test_import_not_configured_is_closed_json_without_probe(self) -> None:
         with patch(
-            "dpslab.addon_observation_import.acquire_synthetic_observation_from_installation",
+            "dpslab.addon_observation_import.acquire_addon_observation_from_installation",
             side_effect=AssertionError("probe_forbidden"),
         ):
             code, stdout, stderr = self.invoke([
@@ -77,6 +78,7 @@ class AddonObservationCliTests(unittest.TestCase):
         self.assertEqual({
             "byte_count": 0,
             "observation_available": False,
+            "observation_type": None,
             "reason": None,
             "source_sha256": None,
             "state": "not_configured",
@@ -84,21 +86,39 @@ class AddonObservationCliTests(unittest.TestCase):
         self.assertEqual("", stderr)
 
     def test_available_import_outputs_presence_not_observation_fields(self) -> None:
-        result = AddonObservationImportResult("available", None, 7, "a" * 64, object())
-        with patch("dpslab.__main__.import_synthetic_addon_observation", return_value=result):
+        result = AddonObservationImportResult(
+            "available", None, 7, "a" * 64, object(), "character_identity_snapshot"
+        )
+        with patch("dpslab.__main__.import_addon_observation", return_value=result):
             code, stdout, stderr = self.invoke([
                 "addon-import", "--config-root", str(self.config)
             ])
         payload = json.loads(stdout)
         self.assertEqual(0, code)
         self.assertTrue(payload["observation_available"])
-        self.assertEqual({"byte_count", "observation_available", "reason", "source_sha256", "state"}, set(payload))
+        self.assertEqual("character_identity_snapshot", payload["observation_type"])
+        self.assertEqual({"byte_count", "observation_available", "observation_type", "reason", "source_sha256", "state"}, set(payload))
         self.assertNotIn("observation_id", stdout)
+        self.assertEqual("", stderr)
+
+    def test_identity_import_never_emits_snapshot_values(self) -> None:
+        snapshot = CharacterIdentitySnapshot(987654, 876543, 37, 4567, "healer", 88, 29, 1_999_999_999)
+        result = AddonObservationImportResult(
+            "available", None, 17, "b" * 64, snapshot, "character_identity_snapshot"
+        )
+        with patch("dpslab.__main__.import_addon_observation", return_value=result):
+            code, stdout, stderr = self.invoke([
+                "addon-import", "--config-root", str(self.config)
+            ])
+        self.assertEqual(0, code)
+        self.assertEqual("character_identity_snapshot", json.loads(stdout)["observation_type"])
+        for private_value in ("987654", "876543", "4567", "healer", "1999999999"):
+            self.assertNotIn(private_value, stdout)
         self.assertEqual("", stderr)
 
     def test_rejected_import_is_sanitized_and_uses_exit_two(self) -> None:
         result = AddonObservationImportResult("rejected", "wow_not_stopped", 0, None, None)
-        with patch("dpslab.__main__.import_synthetic_addon_observation", return_value=result):
+        with patch("dpslab.__main__.import_addon_observation", return_value=result):
             code, stdout, stderr = self.invoke([
                 "addon-import", "--config-root", str(self.config)
             ])

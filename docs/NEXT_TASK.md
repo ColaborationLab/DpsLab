@@ -8587,7 +8587,7 @@ allowlist, synthetic fixtures, and eight implementation routes described in
 allowlisted only to replace obsolete exact-file-count assumptions and preserve
 historical `design_only` evidence; they add no runtime surface.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8603,7 +8603,7 @@ historical `design_only` evidence; they add no runtime surface.
   "express_exclusions":["character name realm GUID account guild group location chat contacts screenshots or stable fingerprint","equipment items item levels enchants gems talents loadouts stats action bars cooldowns auras currencies quests achievements combat events damage healing incoming damage or encounter history","event registration frames timers polling watchers automatic capture retry migration history database logging telemetry network process launch executable data or arbitrary Lua","recommendations simulations comparisons runs results baselines SimulationCraft GUI updater release distribution credentials secrets GitHub settings or files outside the eight-route allowlist"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Local implementation and procedural audit result
 
@@ -8627,3 +8627,55 @@ recommendation, simulation, comparison, or later block. Daniel's expanded
 continuation authorization is consumed for further implementation edits after
 the final evidence refresh; the closed delta may proceed through commit and
 publication with remote CI verification.
+
+The implementation was committed and published through
+`02145ed7f18e33d872e4b3d33164d2015754b59f`. GitHub Actions run #159
+approved Policy and contract, Tools tests, Functional suite, and Static
+analysis and secret scanning. The attended local exercise then confirmed one
+valid manual identity snapshot through the strict parser while emitting only
+its valid state, byte count, SHA-256, runtime class name and memory-only
+retention status. No character field value was printed, logged or added to the
+repository.
+
+## Active implementation authorization — Character identity import 0.1
+
+Daniel's expanded continuation authorization received on 2026-08-30 permits
+the closed integration below. The attended exercise proves that the existing
+manual identity transport is parseable; its real values are not test fixtures,
+contract evidence or catalog inputs. This block uses synthetic identity
+fixtures only.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_character_identity_import_0_1",
+  "title":"Integrate the manual character identity snapshot into the explicit sanitized local import path",
+  "baseline_commit":"02145ed7f18e33d872e4b3d33164d2015754b59f",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_character_identity_import_0_1-20260830-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-30T09:00:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/addon_observation_acquisition.py","desktop-app/tests/test_addon_observation_acquisition.py","desktop-app/src/dpslab/addon_observation_import.py","desktop-app/tests/test_addon_observation_import.py","desktop-app/src/dpslab/__main__.py","desktop-app/tests/test_addon_observation_cli.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/ADDON_REAL_OBSERVATION.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_character_identity_import_0_1/implementation.json",".dpslab/quality-gates/addon_character_identity_import_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","desktop-app/src/dpslab/addon_character_identity_transport.py","desktop-app/src/dpslab/addon_observation_transport.py"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_acquisition","tests.test_addon_observation_import","tests.test_addon_observation_cli","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1195,"minimum_test_count":1200},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"1ee8504558f84fb03e7ec79e2860e655afda68a4cc7dd2ef6e43fe4ab452b66e","addon/DpsLab/DpsLab.toc":"a59f8a8dd26c230c12aec4e2189351b4d35b37b04f91c752dcf4ba435a619b95","addon/DpsLab/CharacterIdentityObservation.lua":"782dd4b8cb16399b411506f39781d9f5cdbe79d809b8a00b99302e2cc02875d5","desktop-app/src/dpslab/addon_character_identity_transport.py":"85b6e914a026e7aac761a6c0731d2cd71716b987e33af146726962d6f737c13e"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["retain one explicit process-gated bounded SavedVariables read and accept exactly the existing synthetic observation or character_identity_snapshot schemas","select a parser only through successful strict full validation and reject malformed ambiguous unsupported or cross-schema payloads with one bounded public reason","return a closed immutable result with state reason byte count source SHA-256 observation type and one parsed object retained only in memory","emit through addon-import only state bounded reason byte count source SHA-256 observation availability and exact observation type without any character value path account raw bytes or exception text","preserve absent cleared not_configured rejected and synthetic available behavior","use only synthetic fixtures including False-free integer values and never read retain copy hash or disclose the attended real SavedVariables file during tests","introduce no recommendation applicability catalog lookup storage history automatic import watcher polling logging telemetry network process launch or SavedVariables write","pass focused tests full functional suite procedural audit protected-hash verification and remote CI"],
+  "express_exclusions":["real character values as fixtures logs output documents catalog facts or repository evidence","character name realm GUID account guild group location equipment talents stats combat events or additional WoW APIs","recommendation selection template lookup guidance decision simulation comparison runs results baselines or SimulationCraft","SavedVariables modification addon mutation GUI background service automatic import network updater release distribution telemetry credentials secrets GitHub settings or paths outside the closed allowlist"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Local implementation and procedural audit result
+
+The implementation changed only the nine allowlisted routes. Focused
+acquisition, coordinator and CLI tests passed 36/36. The locked functional
+suite passed 1200/1200 with one expected skip and exit code 0; the tools suite
+passed 133/133. Tests used only synthetic identity fixtures and did not reopen,
+copy or inspect the attended real export.
+
+The quality gate reported `implemented_pending_independent_audit`, verified all
+protected hashes, removed its clean temporary functional workspace, and
+recorded `simulationcraft_invoked=false`. The declared and procedurally
+separate audit actor recorded `approved` with no findings. This separation is
+not a cryptographic guarantee of identity. Human approval under Daniel's
+expanded continuation authority applies only to this closed delta and does not
+authorize recommendation selection, additional character fields, automatic
+import, SimulationCraft or another block.

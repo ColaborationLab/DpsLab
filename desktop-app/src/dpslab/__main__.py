@@ -10,7 +10,7 @@ from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from typing import Sequence
 
-from .addon_observation_import import import_synthetic_addon_observation
+from .addon_observation_import import import_addon_observation
 from .comparison_environment import software_record
 from .comparison_execution import (
     ComparisonExecutionError,
@@ -118,7 +118,7 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
 
     addon_import = commands.add_parser(
         "addon-import",
-        help="Importa una observación sintética mediante una acción explícita",
+        help="Importa una observación admitida mediante una acción explícita",
     )
     addon_import.add_argument("--config-root", type=Path, required=True)
     return parser.parse_args(argv)
@@ -313,12 +313,13 @@ def _addon_configure(args: argparse.Namespace) -> int:
 
 
 def _addon_import(args: argparse.Namespace) -> int:
-    result = import_synthetic_addon_observation(args.config_root)
+    result = import_addon_observation(args.config_root)
     print(
         json.dumps(
             {
                 "byte_count": result.byte_count,
                 "observation_available": result.observation is not None,
+                "observation_type": result.observation_type,
                 "reason": result.reason,
                 "source_sha256": result.source_sha256,
                 "state": result.state,
