@@ -20,6 +20,14 @@ the desktop recognize a minimal grammar without parsing or evaluating general
 Lua. The parser accepts bytes supplied by a caller and has no filesystem,
 process, network or persistence capability.
 
+An attended retail observation showed that WoW writes the single assignment
+with exactly one leading CRLF and one trailing CRLF. The strict parser accepts
+that observed wrapper in addition to the serializer's canonical no-prefix
+form. It does not accept a leading LF, multiple blank lines, spaces, comments,
+additional variables or general whitespace. The attended flow must launch WoW
+through the authenticated Battle.net launcher; invoking `Wow.exe` directly is
+not an equivalent account-session test.
+
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,

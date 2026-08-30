@@ -44,6 +44,15 @@ class AddonObservationTransportTests(unittest.TestCase):
         result = parse_synthetic_saved_variable(transport())
         self.assertEqual(("synthetic.observation.001", "damage", 0, 0, 0), (result.observation_id, result.role, result.damage_events, result.incoming_damage_events, result.healing_events))
 
+    def test_observed_wow_crlf_wrapper_is_accepted_but_not_general_whitespace(self):
+        observed = b"\r\n" + transport().replace(b"\n", b"\r\n")
+        result = parse_synthetic_saved_variable(observed)
+        self.assertEqual("synthetic.observation.001", result.observation_id)
+        self.assert_invalid(b"\n" + transport(), "assignment_invalid")
+        self.assert_invalid(b"\r\n\r\n" + transport(), "assignment_invalid")
+        self.assert_invalid(b" \r\n" + transport(), "assignment_invalid")
+        self.assert_invalid(b"-- comment\r\n" + transport(), "assignment_invalid")
+
     def test_assignment_grammar_rejects_code_extra_variables_and_uppercase_hex(self):
         valid = transport()
         self.assert_invalid(b"loadstring('x')\n" + valid, "assignment_invalid")

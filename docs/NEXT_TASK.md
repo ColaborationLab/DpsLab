@@ -8288,11 +8288,14 @@ The opt-in synthetic SavedVariables implementation was published through
 `012f71c85514b45106c05b0ab44201de5ef1e0ac`. GitHub Actions run #147
 approved policy and contract, tools tests, the locked functional suite, and
 static analysis with secret scanning. The implementation remains synthetic,
-manual and non-actionable; it has not been exercised inside WoW.
+manual and non-actionable. An attended retail check launched through Battle.net
+confirmed that the addon was enabled and that both manual export commands
+responded as designed; no character or gameplay data was authorized or
+recorded.
 
-## Active documentation task — Canonical status reconciliation 0.1
+## Published documentation record — Canonical status reconciliation 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8306,6 +8309,31 @@ manual and non-actionable; it has not been exercised inside WoW.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["replace obsolete claims that no addon exists with the exact synthetic published state","separate internal technical foundation progress from user-distributable product progress","record implemented knowledge release security and addon foundations without implying current real guidance public distribution or beta readiness","enumerate the remaining end-to-end GUI current-knowledge update packaging privacy and independent-review gates","preserve exact published commit and CI evidence and make no code configuration security policy or artifact change"],
   "express_exclusions":["code test workflow policy schema knowledge catalog addon or security mutation","WoW installation execution SavedVariables acquisition or real character data","SimulationCraft execution comparisons runs results or baseline changes","GUI packaging updater release distribution network account donation marketing or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The canonical status reconciliation was published through
+`d1736fac5e3ee8033bab92b6f01592df3cc6ae7b`. GitHub Actions run #148
+approved all four lanes. It records planning estimates rather than approval or
+beta readiness.
+
+## Active corrective task — Observed WoW SavedVariables CRLF wrapper 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_wow_crlf_wrapper_0_1",
+  "title":"Accept only the exact leading CRLF wrapper observed in an attended WoW SavedVariables export",
+  "baseline_commit":"d1736fac5e3ee8033bab92b6f01592df3cc6ae7b",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_wow_crlf_wrapper_0_1-20260830-daniel-continue-attended-test","authorized_by":"Daniel","authorized_at":"2026-08-30T00:10:34-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/addon_observation_transport.py","desktop-app/tests/test_addon_observation_transport.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_wow_crlf_wrapper_0_1/implementation.json",".dpslab/quality-gates/addon_observation_wow_crlf_wrapper_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":10,"minimum_test_count":11},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"9ab88e26a1de2e84302a0751ea5b5a5b527d3541ec6ae415bc2c23a47c39a248","addon/DpsLab/DpsLab.toc":"0fd2e41d9b7afc0108b2425cda36317596cd390130eb5a4e57923b462ca9c739","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["preserve the existing canonical assignment form","accept exactly one optional leading CRLF observed in the attended retail SavedVariables file","continue to accept only one trailing LF or CRLF and one lowercase hexadecimal assignment","reject leading LF repeated blank lines spaces comments additional variables uppercase hexadecimal and general Lua","validate the attended file locally without recording account paths payload bytes or character data","record that authenticated runtime testing starts from Battle.net rather than direct Wow.exe launch","pass focused tests procedural audit and locked remote functional suite"],
+  "express_exclusions":["filesystem discovery or acquisition implementation","real character account realm equipment talent combat or gameplay data","addon code SavedVariables mutation game API events automation or UI","SimulationCraft comparisons runs results baselines network updater release distribution or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

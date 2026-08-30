@@ -30,7 +30,7 @@ class SyntheticAddonObservation:
 
 MAX_PAYLOAD_BYTES = 4096
 _ASSIGNMENT = re.compile(
-    rb'DpsLabObservationExport = "([0-9a-f]+)"(?:\r\n|\n)?\Z'
+    rb'(?:\r\n)?DpsLabObservationExport = "([0-9a-f]+)"(?:\r\n|\n)?\Z'
 )
 _TOKEN = re.compile(r"[a-z0-9][a-z0-9_.-]{0,79}")
 _ROOT = {"schema_version", "identity", "producer", "compatibility", "subject", "observation", "safety"}
