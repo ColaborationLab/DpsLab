@@ -8523,9 +8523,9 @@ approved Policy and contract, Tools tests, Functional suite, and Static
 analysis and secret scanning. The local locked Python 3.13.14 suite passed
 1185 tests with one expected skip and exit code 0.
 
-## Active documentation task — Addon observation status reconciliation 0.1
+## Published documentation record — Addon observation status reconciliation 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8539,6 +8539,30 @@ analysis and secret scanning. The local locked Python 3.13.14 suite passed
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["record the published explicit Retail selection store process gate bounded SavedVariables acquisition coordinator and CLI","mark only the synthetic attended and explicit acquisition milestones actually supported by repository and run evidence","remove stale claims that no in-game test or user-selected acquisition exists","retain that the current observation payload is synthetic non-actionable and contains no real character data","retain open work for a privacy-minimized real observation schema and adversarial available-payload end-to-end exercise","make no code addon workflow security knowledge result configuration or artifact changes","pass contract and tools tests with protected hashes intact"],
   "express_exclusions":["Fallout 4 chats data files concepts or evidence","real character data WoW API access SavedVariables mutation or addon implementation","SimulationCraft comparisons runs results baselines","GUI network updater release distribution telemetry credentials or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The canonical synthetic observation status reconciliation was published
+through `e08502f8d604c8accb402e784ac1a0a28f784546`. GitHub Actions run
+#157 approved all four lanes.
+
+## Active design task — Minimal real addon observation 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_real_observation_minimal_design_0_1",
+  "title":"Design one consented privacy-minimized real character identity snapshot",
+  "baseline_commit":"e08502f8d604c8accb402e784ac1a0a28f784546",
+  "authorization":{"status":"design_only","authorization_id":"addon_real_observation_minimal_design_0_1-20260830-daniel-explicit","authorized_by":"Daniel","authorized_at":"2026-08-30T07:58:14-05:00"},
+  "scope":{"allowed_paths":["docs/ADDON_REAL_OBSERVATION.md","docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":123,"minimum_test_count":123},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"9ab88e26a1de2e84302a0751ea5b5a5b527d3541ec6ae415bc2c23a47c39a248","addon/DpsLab/DpsLab.toc":"0fd2e41d9b7afc0108b2425cda36317596cd390130eb5a4e57923b462ca9c739","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb","desktop-app/src/dpslab/addon_observation_transport.py":"1b714689efc721ff50e0f2d69db918c23ae46c05ea77ea62204c85c2144432d5","desktop-app/src/dpslab/addon_observation_import.py":"7b40d24fa5d09c6403bf60b96bd8c09d35609c570a888bac7deebbd93aca2e00","docs/ADDON_OBSERVATION_TRANSPORT.md":"b2446722b2e69b19fffe45693bc8cf6660358e3679a478efd22a79e1e890890e"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define one explicit manual snapshot command and no event-driven capture","allow only current build interface class specialization role level race and capture time","exclude name realm GUID account guild location equipment talents currencies chat contacts and combat data","declare the class specialization level and race tuple as local character data even without direct identifiers","reuse one bounded SavedVariable only after complete validation and never append history","specify closed canonical serialization compatibility bounds and independent strict desktop parsing","require fail-closed API availability and role normalization with an attended installed-build API probe before implementation","retain synthetic and real schemas as distinct formats with explicit type discrimination","define deletion replacement retention and error behavior without logs telemetry network or database","produce an implementation-candidate route list without authorizing any code or live capture"],
+  "express_exclusions":["implementation code tests addon mutation or WoW API invocation","real character capture account access SavedVariables write or attended game test","equipment talents stats items action bars cooldowns auras combat events damage healing or incoming damage","names realms GUIDs account identifiers guild group location chat contacts screenshots or telemetry","SimulationCraft comparisons runs results baselines GUI network updater release distribution credentials commit push or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
