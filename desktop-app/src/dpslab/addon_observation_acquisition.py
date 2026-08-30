@@ -14,6 +14,7 @@ from .addon_observation_transport import (
     SyntheticAddonObservation,
     parse_synthetic_saved_variable,
 )
+from .wow_process_state import probe_wow_process_state
 
 
 class AddonObservationAcquisitionError(ValueError):
@@ -174,3 +175,14 @@ def acquire_synthetic_observation(
             "addon_observation_acquisition_transport_invalid"
         ) from exc
     return SyntheticObservationAcquisition("available", len(raw), digest, observation)
+
+
+def acquire_synthetic_observation_with_probe(
+    retail_root: Path,
+) -> SyntheticObservationAcquisition:
+    """Use the native process probe; running and unknown states fail closed."""
+    process_state = probe_wow_process_state()
+    return acquire_synthetic_observation(
+        retail_root,
+        wow_process_state=process_state.state,
+    )

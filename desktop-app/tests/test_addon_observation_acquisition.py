@@ -11,7 +11,9 @@ from dpslab.addon_observation_acquisition import (
     MAX_TRANSPORT_BYTES,
     SyntheticObservationAcquisition,
     acquire_synthetic_observation,
+    acquire_synthetic_observation_with_probe,
 )
+from dpslab.wow_process_state import WoWProcessState
 from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from tests.test_addon_observation_transport import transport
 
@@ -157,6 +159,33 @@ class AddonObservationAcquisitionTests(unittest.TestCase):
                 self.root,
                 wow_process_state="stopped",
             )
+
+    def test_probed_entry_acquires_only_after_stopped_result(self) -> None:
+        raw = b"\r\nDpsLabObservationExport = nil\r\n"
+        self.write_candidate("synthetic-account", raw)
+        with patch(
+            "dpslab.addon_observation_acquisition.probe_wow_process_state",
+            return_value=WoWProcessState("stopped", 0),
+        ):
+            result = acquire_synthetic_observation_with_probe(self.root)
+        self.assertEqual("cleared", result.state)
+
+    def test_probed_entry_blocks_running_and_unknown_before_file_discovery(self) -> None:
+        for state, count in (("running", 1), ("unknown", 0)):
+            with self.subTest(state=state):
+                with patch(
+                    "dpslab.addon_observation_acquisition.probe_wow_process_state",
+                    return_value=WoWProcessState(state, count),
+                ):
+                    with patch(
+                        "dpslab.addon_observation_acquisition._candidate_files",
+                        side_effect=AssertionError("file_discovery_forbidden"),
+                    ):
+                        self.assert_reason(
+                            "addon_observation_acquisition_wow_not_stopped",
+                            acquire_synthetic_observation_with_probe,
+                            self.root,
+                        )
 
 
 if __name__ == "__main__":

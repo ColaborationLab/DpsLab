@@ -40,6 +40,16 @@ synthetic observation accepted by the existing strict parser, together with a
 byte count and SHA-256. Installation discovery, registry access, process
 inspection, watchers and automatic imports remain outside this boundary.
 
+The Windows process gate uses the native Toolhelp snapshot API and recognizes
+only the exact case-insensitive executable name `Wow.exe`. It returns only
+`running`, `stopped` or `unknown` plus a bounded match count; it does not expose
+PIDs, users, command lines, executable paths or other process names. Unsupported
+platforms, API failures, malformed or excessive enumeration, and handle-close
+failures become `unknown`. The integrated acquisition entry reads the file only
+after a `stopped` result. The lower-level explicit-state function remains a
+deterministic test seam and is not the entry for UI or automation. The probe is
+a local safety interlock, not a defense against a compromised operating system.
+
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,

@@ -8346,9 +8346,9 @@ without retaining its payload or account path. A subsequent attended
 non-payload assignment `DpsLabObservationExport = nil`; no synthetic payload
 remained persisted.
 
-## Active implementation task — Local synthetic observation acquisition 0.1
+## Published implementation record — Local synthetic observation acquisition 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8362,6 +8362,32 @@ remained persisted.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["accept only an absolute caller-selected retail root and an explicit stopped process state","inspect only direct account-level SavedVariables/DpsLab.lua candidates and never expose account directory names","return absent for no file and cleared only for the exact observed nil assignment","require exactly one candidate for an available or cleared state and reject multiple accounts as ambiguous","reject symlinks reparse points non-regular files oversized files and files changed during acquisition","read bytes only after bounded metadata checks and pass available content to the existing strict non-executing parser","return only a sanitized immutable state byte count SHA-256 and parsed synthetic observation without source path or raw bytes","introduce no watcher process launch registry lookup logs network game API writes or real character data","pass focused tests procedural audit and locked remote functional suite"],
   "express_exclusions":["automatic WoW installation discovery registry access or process inspection","background watcher polling hot reload or automatic import","real character account realm equipment talent stat combat event or gameplay data","SavedVariables modification deletion or addon changes","general Lua parsing or execution","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The bounded local acquisition boundary was published through
+`ad15c013538c74760c730e15daf1c9f107a206d3`. GitHub Actions run #150
+approved all four lanes. A local attended check against the already-cleared
+retail file returned only `cleared`, 33 bytes, its SHA-256 and no observation;
+the result exposed neither source path nor raw bytes.
+
+## Active implementation task — Native WoW process-state gate 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"wow_process_state_gate_0_1",
+  "title":"Detect the retail WoW process with a native fail-closed Windows probe before local observation acquisition",
+  "baseline_commit":"ad15c013538c74760c730e15daf1c9f107a206d3",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"wow_process_state_gate_0_1-20260830-daniel-continue-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-30T00:43:23-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/wow_process_state.py","desktop-app/tests/test_wow_process_state.py","desktop-app/src/dpslab/addon_observation_acquisition.py","desktop-app/tests/test_addon_observation_acquisition.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/wow_process_state_gate_0_1/implementation.json",".dpslab/quality-gates/wow_process_state_gate_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_wow_process_state","tests.test_addon_observation_acquisition","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_wow_process_state","tests.test_addon_observation_acquisition","tests.test_addon_observation_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":21,"minimum_test_count":30},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"9ab88e26a1de2e84302a0751ea5b5a5b527d3541ec6ae415bc2c23a47c39a248","addon/DpsLab/DpsLab.toc":"0fd2e41d9b7afc0108b2425cda36317596cd390130eb5a4e57923b462ca9c739","addon/DpsLab/SyntheticObservation.lua":"4c2375b2b3a1bc37c3e7ddc4500e435744dfc8b093a4578bcbb03a6a2328dccb","desktop-app/src/dpslab/addon_observation_transport.py":"1b714689efc721ff50e0f2d69db918c23ae46c05ea77ea62204c85c2144432d5"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["use the native Windows Toolhelp process snapshot API without spawning a command or importing a new dependency","match only the exact case-insensitive executable name Wow.exe and ignore launcher helper voice proxy beta PTR and similar names","return an immutable sanitized state of running stopped or unknown and a bounded match count without PID user executable path command line or other process names","return unknown on unsupported platforms API unavailability malformed output snapshot overflow or any enumeration and handle-close failure","close every acquired native snapshot handle on success and failure","provide one integrated acquisition entry that invokes the probe and permits file access only when its state is stopped","retain the existing explicit-state acquisition seam for deterministic tests but document that UI and automation callers must use the probed entry","perform no process termination launch injection handle opening to game processes polling logging network registry or installation discovery","pass focused tests procedural audit and locked remote functional suite"],
+  "express_exclusions":["Battle.net launch login or account automation","PID user command-line executable-path module window or memory inspection","process termination suspension injection or game modification","background watcher polling timer service or automatic import","real character account realm equipment talent stat combat event or gameplay data","SavedVariables modification deletion or addon changes","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
