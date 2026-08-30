@@ -41,3 +41,23 @@ current, approved knowledge before any recommendation becomes available.
 DpsLab may eventually explain why an objective has priority and how a current
 recommendation serves it. It must not present a fixed sequence as a universal
 guide to playing the class or specialization.
+
+## Identity-context binding 0.1
+
+The next internal boundary accepts the already validated immutable character
+identity and an injected Druid registry. The registry must contain exactly one
+unique binding for each of Balance, Feral, Guardian and Restoration. Class,
+specialization and role must all match exactly before the semantic policy is
+returned.
+
+The registry is injected rather than hardcoded because class and
+specialization identifiers are game facts. Tests use deliberately synthetic
+bounded values. A later knowledge-evidence block must establish the current
+real mapping and its review status before a real observation can cross this
+boundary.
+
+The binding result contains only `status`, a bounded static `reason`, and the
+semantic role policy. It does not retain or expose build, interface, class,
+specialization ID, level, race or capture time. Invalid registries, forged
+observations, class mismatch, unmapped specialization and role mismatch all
+produce `context_unavailable`.

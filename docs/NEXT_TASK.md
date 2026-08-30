@@ -8722,14 +8722,14 @@ or real character value was introduced. The live `main` reference was
 verified at the same SHA; GitHub Actions run #161 is the publication check for
 this record.
 
-## Active implementation authorization — Druid role context 0.1
+## Published implementation record — Druid role context 0.1
 
 Daniel's request to begin executing the reorganized plan, together with his
 expanded continuation authority, authorizes this first closed vertical-slice
 block. It defines semantic priorities only. It does not yet connect a real
 character, select a knowledge package or produce an actionable recommendation.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8743,6 +8743,40 @@ character, select a knowledge package or produce an actionable recommendation.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["represent Balance and Feral as damage contexts, Guardian as tank, and Restoration as healer using closed immutable values","make damage primary for damage roles, secondary and subordinate to survival mitigation and threat for Guardian, and secondary and subordinate to ally safety healing stability dispels and emergency capacity for Restoration","retain encounter obligations and survival as non-negotiable constraints for every role","return context unavailable for unknown noncanonical or role-mismatched inputs without fuzzy matching or nearest-template fallback","contain no spell rotation talent equipment statistic coefficient build interface source or personal character fact","document the boundary between performance guidance and a class or specialization guide","pass focused tests the complete functional suite procedural audit and protected-hash verification"],
   "express_exclusions":["real specialization IDs character observations SavedVariables or personal data","abilities rotations talents equipment statistics formulas simulations comparisons runs results or baselines","knowledge catalog changes source acquisition network addon UI updater release distribution donations or marketing","SimulationCraft execution commit push or any path outside the closed allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The role-context block was implemented, tested, procedurally audited, committed
+and published through `85e0eea448857ddb9ae9d0057cb8402386ce338a`.
+Focused tests passed 8/8, the functional suite passed 1208/1208 with one
+expected skip, and the tools suite passed 133/133. GitHub Actions run #162
+approved Policy and contract, Tools tests, Functional suite, and Static
+analysis and secret scanning. The live branch ref was verified at the same
+SHA. No real identifier, character value, knowledge fact or recommendation was
+introduced.
+
+## Active implementation authorization — Druid identity-context binding 0.1
+
+Daniel's instruction to continue with expanded authority permits the next
+closed vertical-slice block. The mapping is injected and synthetic in tests so
+that real class and specialization identifiers require separate current,
+reviewed evidence rather than being encoded from memory.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"druid_identity_context_binding_0_1",
+  "title":"Bind a validated character identity to Druid role context through an injected registry",
+  "baseline_commit":"85e0eea448857ddb9ae9d0057cb8402386ce338a",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"druid_identity_context_binding_0_1-20260830-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-30T12:44:45-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/druid_identity_context.py","desktop-app/tests/test_druid_identity_context.py","docs/DRUID_VERTICAL_SLICE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/druid_identity_context_binding_0_1/implementation.json",".dpslab/quality-gates/druid_identity_context_binding_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","desktop-app/src/dpslab/addon_character_identity_transport.py","desktop-app/src/dpslab/druid_role_context.py","desktop-app/src/dpslab/static_template_catalog.py","desktop-app/src/dpslab/knowledge_envelope.py"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_druid_identity_context","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1208,"minimum_test_count":1216},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/addon_character_identity_transport.py":"85b6e914a026e7aac761a6c0731d2cd71716b987e33af146726962d6f737c13e","desktop-app/src/dpslab/druid_role_context.py":"5013998a3e80154d0e0b3a8cc90eff417bdbb964ea6257dd0bbf3a45c0e3d017","desktop-app/src/dpslab/static_template_catalog.py":"47654521f1b80173c64eb1887502c5dabd4ecdaa14f1d9c1e872ba546e8b4307","desktop-app/src/dpslab/knowledge_envelope.py":"156d5a0487ab4720e0c68e3d89b90461f6c60b7bdcf825e9a7a70f3af15b485d"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["accept only the existing immutable CharacterIdentitySnapshot and a closed immutable injected Druid registry","require the registry to contain exactly balance feral guardian and restoration with unique bounded synthetic identifiers and roles accepted by the role-context policy","bind only an exact class specialization and role match and return context unavailable for invalid registry invalid observation class mismatch unmapped specialization or role mismatch","return only the existing semantic role policy and bounded static reason without retaining or exposing the source observation","use exclusively synthetic registry and identity values in tests and encode no remembered or asserted live WoW identifier","introduce no catalog selection guidance output source acquisition persistence network addon UI or automatic import","pass focused tests the complete functional suite procedural audit and protected-hash verification"],
+  "express_exclusions":["real class specialization race character build interface level or capture values as fixtures documentation or output","hardcoded live WoW identifier mapping or unreviewed game fact","abilities rotations talents equipment statistics formulas knowledge packages recommendations or nearest-template fallback","SimulationCraft comparisons runs results baselines commit push or any path outside the closed allowlist"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
