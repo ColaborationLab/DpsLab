@@ -50,6 +50,13 @@ after a `stopped` result. The lower-level explicit-state function remains a
 deterministic test seam and is not the entry for UI or automation. The probe is
 a local safety interlock, not a defense against a compromised operating system.
 
+An attended retail sequence validated the published interlock without exposing
+process identity or game data: with WoW closed the probe returned `stopped/0`;
+at the Battle.net-launched character menu it returned `running/1` and the
+integrated acquisition entry rejected access before SavedVariables discovery;
+after full game exit it returned `stopped/0` again. Battle.net itself may remain
+open because only the exact `Wow.exe` process is the read-safety condition.
+
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,

@@ -8372,9 +8372,9 @@ approved all four lanes. A local attended check against the already-cleared
 retail file returned only `cleared`, 33 bytes, its SHA-256 and no observation;
 the result exposed neither source path nor raw bytes.
 
-## Active implementation task — Native WoW process-state gate 0.1
+## Published implementation record — Native WoW process-state gate 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8388,6 +8388,30 @@ the result exposed neither source path nor raw bytes.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["use the native Windows Toolhelp process snapshot API without spawning a command or importing a new dependency","match only the exact case-insensitive executable name Wow.exe and ignore launcher helper voice proxy beta PTR and similar names","return an immutable sanitized state of running stopped or unknown and a bounded match count without PID user executable path command line or other process names","return unknown on unsupported platforms API unavailability malformed output snapshot overflow or any enumeration and handle-close failure","close every acquired native snapshot handle on success and failure","provide one integrated acquisition entry that invokes the probe and permits file access only when its state is stopped","retain the existing explicit-state acquisition seam for deterministic tests but document that UI and automation callers must use the probed entry","perform no process termination launch injection handle opening to game processes polling logging network registry or installation discovery","pass focused tests procedural audit and locked remote functional suite"],
   "express_exclusions":["Battle.net launch login or account automation","PID user command-line executable-path module window or memory inspection","process termination suspension injection or game modification","background watcher polling timer service or automatic import","real character account realm equipment talent stat combat event or gameplay data","SavedVariables modification deletion or addon changes","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The native process-state gate was published through
+`57385020f8f5695275287b35b10a0c2c2c3be513`. GitHub Actions run #151
+approved all four lanes.
+
+## Active documentation task — Attended WoW process-state closure 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"wow_process_state_attended_closure_0_1",
+  "title":"Record the sanitized attended stopped running blocked stopped process-gate sequence",
+  "baseline_commit":"57385020f8f5695275287b35b10a0c2c2c3be513",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"wow_process_state_attended_closure_0_1-20260830-daniel-listo-broad-authority","authorized_by":"Daniel","authorized_at":"2026-08-30T00:54:57-05:00"},
+  "scope":{"allowed_paths":["docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/wow_process_state_attended_closure_0_1/implementation.json",".dpslab/quality-gates/wow_process_state_attended_closure_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":123,"minimum_test_count":123},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"9ab88e26a1de2e84302a0751ea5b5a5b527d3541ec6ae415bc2c23a47c39a248","addon/DpsLab/DpsLab.toc":"0fd2e41d9b7afc0108b2425cda36317596cd390130eb5a4e57923b462ca9c739","desktop-app/src/dpslab/addon_observation_transport.py":"1b714689efc721ff50e0f2d69db918c23ae46c05ea77ea62204c85c2144432d5","desktop-app/src/dpslab/addon_observation_acquisition.py":"314a058e8bd9ea639b6c0788a606a585e34e2c87e6003490fb6f0adbf864ed01","desktop-app/src/dpslab/wow_process_state.py":"826bbb1c691b7602b07047caaeb2a3da268fb374b0b3c12e3730962d242ded6a"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["record the initial attended stopped state with zero matches","record the attended running state with one match while WoW was open at the character menu","record that integrated acquisition was blocked before SavedVariables access while running","record the final attended stopped state with zero matches after full game exit","retain only sanitized states and counts without PID account character path command line process list or game data","make no code test workflow addon security policy configuration or artifact change"],
+  "express_exclusions":["process or SavedVariables inspection beyond the already completed sanitized checks","account character realm equipment talent stat combat event or gameplay data","addon desktop tool workflow security knowledge configuration or test mutation","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
