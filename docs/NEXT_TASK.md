@@ -8396,9 +8396,9 @@ The native process-state gate was published through
 `57385020f8f5695275287b35b10a0c2c2c3be513`. GitHub Actions run #151
 approved all four lanes.
 
-## Active documentation task — Attended WoW process-state closure 0.1
+## Published documentation record — Attended WoW process-state closure 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8412,6 +8412,30 @@ approved all four lanes.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["record the initial attended stopped state with zero matches","record the attended running state with one match while WoW was open at the character menu","record that integrated acquisition was blocked before SavedVariables access while running","record the final attended stopped state with zero matches after full game exit","retain only sanitized states and counts without PID account character path command line process list or game data","make no code test workflow addon security policy configuration or artifact change"],
   "express_exclusions":["process or SavedVariables inspection beyond the already completed sanitized checks","account character realm equipment talent stat combat event or gameplay data","addon desktop tool workflow security knowledge configuration or test mutation","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The sanitized attended sequence was published through
+`321b8b2c047e5dee7e0077fcea563f0cca580d27`. GitHub Actions run #152
+approved all four lanes.
+
+## Active implementation task — User-selected Retail installation 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"retail_installation_selection_0_1",
+  "title":"Validate one user-selected Retail installation and bind it to the safe observation entry",
+  "baseline_commit":"321b8b2c047e5dee7e0077fcea563f0cca580d27",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"retail_installation_selection_0_1-20260830-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-30T01:04:48-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/retail_installation.py","desktop-app/tests/test_retail_installation.py","desktop-app/src/dpslab/addon_observation_acquisition.py","desktop-app/tests/test_addon_observation_acquisition.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/retail_installation_selection_0_1/implementation.json",".dpslab/quality-gates/retail_installation_selection_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_retail_installation","tests.test_addon_observation_acquisition","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_retail_installation","tests.test_wow_process_state","tests.test_addon_observation_acquisition","tests.test_addon_observation_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":30,"minimum_test_count":39},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/DpsLab.lua":"9ab88e26a1de2e84302a0751ea5b5a5b527d3541ec6ae415bc2c23a47c39a248","addon/DpsLab/DpsLab.toc":"0fd2e41d9b7afc0108b2425cda36317596cd390130eb5a4e57923b462ca9c739","desktop-app/src/dpslab/addon_observation_transport.py":"1b714689efc721ff50e0f2d69db918c23ae46c05ea77ea62204c85c2144432d5","desktop-app/src/dpslab/wow_process_state.py":"826bbb1c691b7602b07047caaeb2a3da268fb374b0b3c12e3730962d242ded6a"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["accept only an absolute existing directory selected by the caller whose exact final name is _retail_","require exact direct children Wow.exe and Interface without case folding alternate flavor fallback or recursive search","reject symlink reparse non-directory roots non-regular or empty executables and invalid Interface entries","return an immutable runtime-only selection whose repr and string forms never expose the path","perform no registry environment-variable drive scan Battle.net query network process launch executable read or version inference","provide one integrated observation entry that accepts only a validated selection and then invokes the native process gate","retain fail-closed acquisition semantics and expose no account character path payload or process identity","pass focused tests procedural audit and locked remote functional suite"],
+  "express_exclusions":["automatic installation discovery registry access environment expansion or persistence","Battle.net launch login account or update automation","executable execution hashing signature inspection version-resource reading or modification","real character realm equipment talent stat combat event or gameplay data","SavedVariables writes addon changes background watcher polling timer or automatic import","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

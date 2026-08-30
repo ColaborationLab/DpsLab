@@ -11,8 +11,10 @@ from dpslab.addon_observation_acquisition import (
     MAX_TRANSPORT_BYTES,
     SyntheticObservationAcquisition,
     acquire_synthetic_observation,
+    acquire_synthetic_observation_from_installation,
     acquire_synthetic_observation_with_probe,
 )
+from dpslab.retail_installation import validate_retail_installation_root
 from dpslab.wow_process_state import WoWProcessState
 from tests.strict_temporary_cleanup import strict_temporary_cleanup
 from tests.test_addon_observation_transport import transport
@@ -186,6 +188,24 @@ class AddonObservationAcquisitionTests(unittest.TestCase):
                             acquire_synthetic_observation_with_probe,
                             self.root,
                         )
+
+    def test_validated_installation_is_rechecked_before_probed_acquisition(self) -> None:
+        (self.root / "Wow.exe").write_bytes(b"synthetic-not-executable")
+        (self.root / "Interface").mkdir()
+        raw = b"\r\nDpsLabObservationExport = nil\r\n"
+        self.write_candidate("synthetic-account", raw)
+        selection = validate_retail_installation_root(self.root)
+        with patch(
+            "dpslab.addon_observation_acquisition.probe_wow_process_state",
+            return_value=WoWProcessState("stopped", 0),
+        ):
+            result = acquire_synthetic_observation_from_installation(selection)
+        self.assertEqual("cleared", result.state)
+        self.assert_reason(
+            "addon_observation_acquisition_selection_invalid",
+            acquire_synthetic_observation_from_installation,
+            self.root,
+        )
 
 
 if __name__ == "__main__":

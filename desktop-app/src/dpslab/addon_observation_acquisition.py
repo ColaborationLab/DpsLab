@@ -15,6 +15,10 @@ from .addon_observation_transport import (
     parse_synthetic_saved_variable,
 )
 from .wow_process_state import probe_wow_process_state
+from .retail_installation import (
+    RetailInstallationSelection,
+    validate_retail_installation_root,
+)
 
 
 class AddonObservationAcquisitionError(ValueError):
@@ -186,3 +190,13 @@ def acquire_synthetic_observation_with_probe(
         retail_root,
         wow_process_state=process_state.state,
     )
+
+
+def acquire_synthetic_observation_from_installation(
+    selection: RetailInstallationSelection,
+) -> SyntheticObservationAcquisition:
+    """Revalidate a caller-selected Retail root before the probed acquisition."""
+    if not isinstance(selection, RetailInstallationSelection):
+        _fail("addon_observation_acquisition_selection_invalid")
+    current = validate_retail_installation_root(selection.root)
+    return acquire_synthetic_observation_with_probe(current.root)

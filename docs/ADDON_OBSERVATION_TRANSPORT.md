@@ -57,6 +57,17 @@ integrated acquisition entry rejected access before SavedVariables discovery;
 after full game exit it returned `stopped/0` again. Battle.net itself may remain
 open because only the exact `Wow.exe` process is the read-safety condition.
 
+The desktop installation boundary begins with a folder explicitly selected by
+the user. Validation accepts only an absolute existing directory named exactly
+`_retail_` with direct, exact `Wow.exe` and `Interface` children. It rejects
+links, reparse points, alternate flavors, similar executable names, empty or
+non-regular executables, and invalid directories. It performs no drive scan,
+registry or environment lookup, Battle.net query, executable read or launch.
+The runtime selection redacts its path from `str` and `repr`; the integrated
+observation entry revalidates it immediately before applying the native process
+gate and bounded SavedVariables reader. Persisting this selection remains a
+separate future boundary.
+
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,
