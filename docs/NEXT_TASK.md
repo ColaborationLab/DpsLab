@@ -8687,7 +8687,7 @@ Functional suite, and Static analysis and secret scanning. The live branch
 ref was verified at the same SHA. This closure does not authorize any
 recommendation, catalog update, new WoW field or future implementation block.
 
-## Active design authorization — Product roadmap reorientation 0.1
+## Published record — Product roadmap reorientation 0.1
 
 Daniel's request on 2026-08-30 authorizes a planning-only reconciliation. It
 does not authorize code, addon, real sources, SimulationCraft, comparisons,
@@ -8695,7 +8695,7 @@ commits or pushes. The selected prototype is the Druid because one class
 covers Balance, Feral, Guardian and Restoration; Blood Death Knight remains a
 later tank-safety contrast.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8709,6 +8709,40 @@ later tank-safety contrast.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["update only the roadmap and project brief to prioritize a Druid vertical slice before multiclase expansion","state explicitly that the addon remains thin and the desktop application owns interpretation knowledge and recommendations","cover Balance Feral Guardian and Restoration with role-specific priorities and retain DK Blood as a later contrast","preserve current-only knowledge policy with Blizzard primary and fansites as corroboration only","retain no-database policy and fail closed on unknown stale contradictory or inapplicable knowledge","separate completed foundation from pending product work, distribution, updater, donations and beta gates","make no code addon source catalog SimulationCraft comparison GitHub setting or artifact change","pass documentation contract tests and verify protected hashes"],
   "express_exclusions":["implementation of the vertical slice, templates, recommendation engine or GUI","real character data, live source acquisition, API use, SimulationCraft comparisons or runs","database, historical recommendation fallback, automatic updater, public release, donations or marketing execution","code, addon, workflow, security policy, knowledge package, commit, push or any path outside the three documents"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The documentation-only reorientation was implemented, procedurally audited,
+committed and published through
+`0f0334790785b1e6ca274a624af7181dd9f9b31c`. It selected the Druid vertical
+slice as the next product priority and retained Blood Death Knight as a later
+tank-safety contrast. No code, addon, catalog fact, SimulationCraft execution
+or real character value was introduced. The live `main` reference was
+verified at the same SHA; GitHub Actions run #161 is the publication check for
+this record.
+
+## Active implementation authorization — Druid role context 0.1
+
+Daniel's request to begin executing the reorganized plan, together with his
+expanded continuation authority, authorizes this first closed vertical-slice
+block. It defines semantic priorities only. It does not yet connect a real
+character, select a knowledge package or produce an actionable recommendation.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"druid_role_context_0_1",
+  "title":"Define a pure fail-closed role context for the Druid vertical slice",
+  "baseline_commit":"0f0334790785b1e6ca274a624af7181dd9f9b31c",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"druid_role_context_0_1-20260830-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-30T12:24:40-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/druid_role_context.py","desktop-app/tests/test_druid_role_context.py","docs/DRUID_VERTICAL_SLICE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/druid_role_context_0_1/implementation.json",".dpslab/quality-gates/druid_role_context_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","desktop-app/src/dpslab/static_template_catalog.py","desktop-app/src/dpslab/knowledge_envelope.py"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_druid_role_context","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1200,"minimum_test_count":1208},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/static_template_catalog.py":"47654521f1b80173c64eb1887502c5dabd4ecdaa14f1d9c1e872ba546e8b4307","desktop-app/src/dpslab/knowledge_envelope.py":"156d5a0487ab4720e0c68e3d89b90461f6c60b7bdcf825e9a7a70f3af15b485d"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["represent Balance and Feral as damage contexts, Guardian as tank, and Restoration as healer using closed immutable values","make damage primary for damage roles, secondary and subordinate to survival mitigation and threat for Guardian, and secondary and subordinate to ally safety healing stability dispels and emergency capacity for Restoration","retain encounter obligations and survival as non-negotiable constraints for every role","return context unavailable for unknown noncanonical or role-mismatched inputs without fuzzy matching or nearest-template fallback","contain no spell rotation talent equipment statistic coefficient build interface source or personal character fact","document the boundary between performance guidance and a class or specialization guide","pass focused tests the complete functional suite procedural audit and protected-hash verification"],
+  "express_exclusions":["real specialization IDs character observations SavedVariables or personal data","abilities rotations talents equipment statistics formulas simulations comparisons runs results or baselines","knowledge catalog changes source acquisition network addon UI updater release distribution donations or marketing","SimulationCraft execution commit push or any path outside the closed allowlist"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
