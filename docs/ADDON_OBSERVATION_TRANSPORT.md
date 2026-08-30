@@ -99,6 +99,21 @@ caller must invoke every attempt explicitly, and an unexpected programming
 failure propagates for diagnosis instead of being mislabeled as untrusted user
 data.
 
+The desktop CLI exposes these boundaries through two explicit commands.
+`addon-configure` requires both `--config-root` and `--retail-root`, validates
+the selected Retail folder, and stores it through the existing atomic local
+store. Its JSON output contains only `configured` and the configuration byte
+count. `addon-import` requires `--config-root`, invokes exactly one coordinator
+attempt, and returns only state, bounded reason, byte count, source SHA-256 and
+whether an in-memory synthetic observation is present. It never serializes the
+observation or prints either supplied path. A rejected import uses exit code 2;
+all other closed import states use exit code 0.
+
+These commands do not choose a configuration root, open a file picker, consult
+AppData or the registry, launch Battle.net or WoW, watch files, poll, or retry.
+They are a testable application entry for a later UI, not an automation
+service.
+
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,

@@ -8471,9 +8471,9 @@ The bounded local selection store was published through
 approved all four lanes. No real AppData configuration was written; the
 implementation remains limited to a caller-provided configuration root.
 
-## Active implementation task — Addon observation import coordinator 0.1
+## Published implementation record — Addon observation import coordinator 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8487,6 +8487,32 @@ implementation remains limited to a caller-provided configuration root.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["load only the existing local Retail selection through the strict bounded store","return not_configured without probing WoW or SavedVariables when no selection exists","revalidate the selected installation and invoke only the existing process-gated acquisition entry","map results to the closed sanitized states not_configured absent cleared available or rejected","map known configuration and acquisition failures to bounded public reasons without exposing paths accounts raw bytes process identity or internal exception text","retain an available parsed synthetic observation only in memory together with its bounded byte count and SHA-256","propagate unexpected programming failures rather than masking them as user data errors","require explicit caller invocation and introduce no watcher polling automatic import logging printing network launch write or deletion","pass focused tests procedural audit and locked remote functional suite"],
   "express_exclusions":["Fallout 4 chats data files concepts or evidence","automatic AppData installation or account discovery registry environment expansion UI or migration","background watcher polling timer hot reload service or automatic import","real character realm equipment talent stat combat event or gameplay data","SavedVariables writes addon mutation arbitrary Lua execution or raw payload retention","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The explicit sanitized import coordinator was published through
+`a18c78b967c36f29b341caa237c61e640604fbbe`. GitHub Actions run #155
+approved Policy and contract, Tools tests, Functional suite, and Static
+analysis and secret scanning. Local parity on the locked Python 3.13.14
+environment passed 1177 tests with one expected skip and exit code 0.
+
+## Active implementation task — Explicit addon observation CLI 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_cli_0_1",
+  "title":"Expose explicit path-redacted Retail configuration and one-shot synthetic observation import commands",
+  "baseline_commit":"a18c78b967c36f29b341caa237c61e640604fbbe",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_cli_0_1-20260830-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-30T07:11:33-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/__main__.py","desktop-app/tests/test_addon_observation_cli.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_cli_0_1/implementation.json",".dpslab/quality-gates/addon_observation_cli_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_cli","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_observation_cli","tests.test_addon_observation_import","tests.test_retail_installation_store","tests.test_retail_installation","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":29,"minimum_test_count":37},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/addon_observation_import.py":"7b40d24fa5d09c6403bf60b96bd8c09d35609c570a888bac7deebbd93aca2e00","desktop-app/src/dpslab/retail_installation.py":"56dfb18b72bd00287d75f385355a20511c12604d73bbb008cd514f779561adc1","desktop-app/src/dpslab/retail_installation_store.py":"07e988802b73ea2ae35446ca134d6fedb4bb2f31eac100ee629cd5d0b624a5c7","desktop-app/src/dpslab/addon_observation_acquisition.py":"a23d272d0b50e0ea6a5509687be25d60817c040091bebcab140cae836dfe41af"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["add addon-configure with required explicit absolute config-root and retail-root arguments","validate the selected Retail installation and use only the existing atomic local store","emit a fixed sorted JSON receipt with state and byte count and never print either path","add addon-import with a required explicit absolute config-root argument and invoke only the existing import coordinator","emit a fixed sorted JSON summary containing state bounded reason byte count source SHA-256 and observation availability but no observation fields paths raw bytes account or process identity","return exit code 2 for a sanitized rejected import and zero for all non-rejected closed states","map validation and store failures to the existing static CLI error channel without private path disclosure","perform no AppData discovery environment lookup watcher polling process launch network write beyond explicit configuration or SimulationCraft invocation","pass focused tests procedural audit local locked full suite and remote functional suite"],
+  "express_exclusions":["Fallout 4 chats data files concepts or evidence","automatic AppData installation account or config discovery registry environment expansion and migration","GUI file picker background watcher polling timer hot reload service or automatic import","real character realm equipment talent stat combat event or gameplay data","SavedVariables writes addon mutation arbitrary Lua execution or raw payload output","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

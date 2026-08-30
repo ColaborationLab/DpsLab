@@ -10,6 +10,7 @@ from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from typing import Sequence
 
+from .addon_observation_import import import_synthetic_addon_observation
 from .comparison_environment import software_record
 from .comparison_execution import (
     ComparisonExecutionError,
@@ -23,6 +24,11 @@ from .comparison_spec import ComparisonSpecError, load_comparison_spec
 from .config import ConfigurationError, project_root, resolve_simulation_config
 from .parser import ProfileParseError, parse_profile
 from .result_parser import ResultSummaryError, summarize_run
+from .retail_installation import RetailInstallationError, validate_retail_installation_root
+from .retail_installation_store import (
+    RetailInstallationStoreError,
+    store_retail_installation,
+)
 from .runner import SimulationRunError, run_simulation
 from .scenario import ScenarioError, load_scenario
 from .variant import VariantError, load_variant
@@ -102,6 +108,19 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
     comparison_execute.add_argument(
         "--confirm-comparison-id", required=True
     )
+
+    addon_configure = commands.add_parser(
+        "addon-configure",
+        help="Guarda una instalación Retail elegida explícitamente",
+    )
+    addon_configure.add_argument("--config-root", type=Path, required=True)
+    addon_configure.add_argument("--retail-root", type=Path, required=True)
+
+    addon_import = commands.add_parser(
+        "addon-import",
+        help="Importa una observación sintética mediante una acción explícita",
+    )
+    addon_import.add_argument("--config-root", type=Path, required=True)
     return parser.parse_args(argv)
 
 
@@ -280,6 +299,37 @@ def _comparison_execute(args: argparse.Namespace) -> int:
     return 0
 
 
+def _addon_configure(args: argparse.Namespace) -> int:
+    selection = validate_retail_installation_root(args.retail_root)
+    receipt = store_retail_installation(args.config_root, selection)
+    print(
+        json.dumps(
+            {"byte_count": receipt.byte_count, "state": "configured"},
+            ensure_ascii=True,
+            sort_keys=True,
+        )
+    )
+    return 0
+
+
+def _addon_import(args: argparse.Namespace) -> int:
+    result = import_synthetic_addon_observation(args.config_root)
+    print(
+        json.dumps(
+            {
+                "byte_count": result.byte_count,
+                "observation_available": result.observation is not None,
+                "reason": result.reason,
+                "source_sha256": result.source_sha256,
+                "state": result.state,
+            },
+            ensure_ascii=True,
+            sort_keys=True,
+        )
+    )
+    return 2 if result.state == "rejected" else 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _arguments(argv)
     try:
@@ -291,6 +341,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _comparison_ready(args)
         if args.command == "comparison-execute":
             return _comparison_execute(args)
+        if args.command == "addon-configure":
+            return _addon_configure(args)
+        if args.command == "addon-import":
+            return _addon_import(args)
         return _summarize(args)
     except (
         ComparisonReadinessError,
@@ -298,6 +352,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         ComparisonSpecError,
         ConfigurationError,
         ProfileParseError,
+        RetailInstallationError,
+        RetailInstallationStoreError,
         ResultSummaryError,
         ScenarioError,
         VariantError,
