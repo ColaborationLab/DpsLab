@@ -1,14 +1,51 @@
 # Roadmap — DpsLab
 
-## Estado general conciliado — 2026-08-29
+## Estado general conciliado — 2026-08-30
 
-- Fundación técnica y de seguridad interna: **aproximadamente 65 %**.
-- Producto integral distribuible para usuarios: **aproximadamente 40 %**.
+- Fundación técnica y de seguridad interna: **aproximadamente 80 %**.
+- Producto integral distribuible para usuarios: **aproximadamente 35 %**.
+- Vertical slice de producto para una clase prototipo: **0 % iniciado**.
 
 Estas cifras son estimaciones de planificación, no estados aprobatorios. La
 primera mide componentes internos implementados y verificados; la segunda
-incluye todavía GUI, integración real aplicación–addon, conocimiento vigente
-multiclase, empaquetado, actualización y puertas de beta.
+incluye todavía la experiencia de usuario completa, recomendaciones vigentes,
+empaquetado, actualización y puertas de beta. La tercera comienza en cero
+porque aún no se ha construido el recorrido completo de observación a
+recomendación para una clase.
+
+## Reorientación de producto aprobada
+
+DpsLab conserva su arquitectura de addon delgado más aplicación de escritorio.
+El addon observa o exporta únicamente lo consentido; la aplicación interpreta
+el contexto, consulta conocimiento vigente y presenta recomendaciones
+explicables. DpsLab no es una guía rígida de una clase ni un centro de
+simulación retroproyectado: optimiza el desempeño según la función y el
+contexto del personaje.
+
+La prioridad deja de ser ampliar infraestructura o cobertura multiclase antes
+de demostrar valor. El siguiente objetivo es un vertical slice completo con un
+personaje que permita validar todos los roles del juego sin cambiar de clase.
+
+### Prototipo elegido: Druida
+
+El Druida es el prototipo inicial por cubrir cuatro funciones con una misma
+clase:
+
+- Balance: daño a distancia y escenarios de misiones;
+- Feral: daño cuerpo a cuerpo;
+- Guardian: tanque, donde el DPS queda subordinado a supervivencia,
+  mitigación, amenaza y estabilidad;
+- Restauración: sanador, donde el daño auxiliar queda subordinado a mantener
+  la curación y la seguridad del grupo.
+
+El prototipo no pretende enseñar a jugar Druida. Comprueba que el mismo modelo
+de contexto produce una orientación distinta por función, sin mezclar
+prioridades ni convertir una recomendación de DPS en una guía universal. El uso
+actual de Restauración y Balance para misiones es un escenario de validación,
+no una fuente de datos personales ni una regla fija.
+
+El DK Sangre queda como segundo caso de contraste, especialmente para validar
+que un tanque no reciba una sugerencia de daño que comprometa su supervivencia.
 
 ## Primer bloque técnico — completado
 
@@ -66,6 +103,78 @@ multiclase, empaquetado, actualización y puertas de beta.
 - [x] Parser de escritorio estricto para el transporte sintético, sin ejecutar
   Lua, descubrir archivos automáticamente ni acceder a red.
 
+## Fases reordenadas hacia el primer producto útil
+
+### Fase A — Fundación y límites (en gran parte completada)
+
+- [x] CI, quality gate, seguridad, dependencias, SBOM y procedencia.
+- [x] Contratos de addon, transporte local, identidad mínima y publicación.
+- [x] Integración GitHub para desarrollo, auditoría y publicación.
+- [x] Separación de estados técnicos, aprobatorios, publicados e históricos.
+- [ ] Cerrar administrativamente los contratos publicados que sigan marcados
+  como activos.
+
+La infraestructura restante debe mantenerse estable salvo correcciones de
+seguridad, compatibilidad o defectos demostrados. No se ampliará por sí misma.
+
+### Fase B — Vertical slice del Druida (siguiente prioridad)
+
+- [ ] Definir el contrato de contexto de función para Balance, Feral, Guardian
+  y Restauración.
+- [ ] Definir una plantilla inicial por especialización con parámetros vigentes
+  y procedencia explícita, sin base de datos ni valores históricos como
+  sustituto de actualidad.
+- [ ] Definir reglas de prioridad: DPS para Balance/Feral; supervivencia,
+  mitigación y amenaza para Guardian; curación y seguridad del grupo para
+  Restauración, con daño solo como objetivo secundario.
+- [ ] Construir un recorrido sintético completo de identidad → contexto →
+  conocimiento vigente → recomendación explicada.
+- [ ] Verificar que una observación incompatible o desactualizada suprima la
+  recomendación en lugar de adivinar la especialización o usar la plantilla
+  más cercana.
+- [ ] Validar claridad con escenarios de Balance y Restauración.
+
+Esta fase no autoriza matrices de equipo, talentos, combinaciones,
+comparaciones reales ni una guía automática de rotación.
+
+### Fase C — Conocimiento vigente y actualización controlada
+
+- [ ] Establecer cobertura mínima de fuentes oficiales de Blizzard para el
+  prototipo y evidencia de vigencia.
+- [ ] Usar Wowhead u otros fansites solo como contraste o investigación; ninguna
+  recomendación se aprueba sin fuente primaria o revisión humana.
+- [ ] Definir detección de cambios de parche, revisión, caducidad y sustitución
+  atómica de paquetes de conocimiento.
+- [ ] Probar que una fuente no disponible, contradictoria o caducada produce
+  estado no disponible y no una recomendación aproximada.
+
+### Fase D — Aplicación de escritorio y experiencia de usuario
+
+- [ ] Interfaz local para seleccionar instalación, importar manualmente y
+  mostrar estado, procedencia, vigencia y limitaciones.
+- [ ] Presentar recomendaciones diferenciadas por función y explicar qué
+  prioridad domina en cada caso.
+- [ ] Mantener los campos de personaje locales y minimizar lo que se conserva.
+- [ ] Ensayar recuperación ante actualización incompleta, fuente inválida y
+  addon ausente.
+
+### Fase E — Actualización, distribución y comunidad
+
+- [ ] Actualizador firmado con canales estable/beta, anti-rollback, revocación y
+  recuperación verificadas.
+- [ ] Empaquetado reproducible de aplicación y addon.
+- [ ] Revisar licencias, propiedad intelectual, privacidad y términos de
+  plataforma.
+- [ ] Preparar publicación y donaciones solo después de que exista un producto
+  útil, una política de soporte y un plan de marketing aprobados.
+
+### Fase F — Expansión controlada
+
+- [ ] Usar DK Sangre como segundo caso de contraste.
+- [ ] Ampliar a otras clases solo después de cerrar el vertical slice del
+  Druida y sus pruebas de seguridad, vigencia y comprensión.
+- [ ] Añadir nuevas funciones o categorías únicamente con contratos separados.
+
 ## Camino restante hacia un producto distribuible
 
 - [x] Prueba atendida dentro de WoW de exportación y limpieza sintéticas, con
@@ -75,10 +184,13 @@ multiclase, empaquetado, actualización y puertas de beta.
   explícitamente, almacenamiento local acotado, preflight nativo de WoW
   cerrado, límites y rechazo de symlinks/rutas ambiguas; nunca edita el archivo
   del juego in situ.
-- [ ] Observación real mínima y consentida, separada de nombres, cuenta,
-  telemetría y datos no necesarios.
-- [ ] Catálogo vigente aprobado para clases, especializaciones y roles,
-  priorizando supervivencia para tanks y curación para healers.
+- [x] Observación real mínima y consentida, separada de nombres, cuenta,
+  telemetría y datos no necesarios; su importación permanece limitada y no
+  acciona recomendaciones.
+- [ ] Vertical slice vigente del Druida para Balance, Feral, Guardian y
+  Restauración, con prioridades por función.
+- [ ] Catálogo vigente aprobado para el prototipo; no se mantendrá una base de
+  datos histórica como sustituto de la información actual.
 - [ ] Interfaz gráfica local accesible y empaquetado reproducible para Windows.
 - [ ] Actualizador firmado con canales estable/beta, anti-rollback, revocación
   y recuperación verificadas.

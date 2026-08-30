@@ -8637,7 +8637,7 @@ its valid state, byte count, SHA-256, runtime class name and memory-only
 retention status. No character field value was printed, logged or added to the
 repository.
 
-## Active implementation authorization — Character identity import 0.1
+## Published implementation record — Character identity import 0.1
 
 Daniel's expanded continuation authorization received on 2026-08-30 permits
 the closed integration below. The attended exercise proves that the existing
@@ -8645,7 +8645,7 @@ manual identity transport is parseable; its real values are not test fixtures,
 contract evidence or catalog inputs. This block uses synthetic identity
 fixtures only.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8661,7 +8661,7 @@ fixtures only.
   "express_exclusions":["real character values as fixtures logs output documents catalog facts or repository evidence","character name realm GUID account guild group location equipment talents stats combat events or additional WoW APIs","recommendation selection template lookup guidance decision simulation comparison runs results baselines or SimulationCraft","SavedVariables modification addon mutation GUI background service automatic import network updater release distribution telemetry credentials secrets GitHub settings or paths outside the closed allowlist"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Local implementation and procedural audit result
 
@@ -8679,3 +8679,36 @@ not a cryptographic guarantee of identity. Human approval under Daniel's
 expanded continuation authority applies only to this closed delta and does not
 authorize recommendation selection, additional character fields, automatic
 import, SimulationCraft or another block.
+
+The character identity import was committed and published through
+`63a41d7e6ca0c14681b544b4a9f747224c436981`. GitHub Actions run #160 completed
+successfully on the published commit across Policy and contract, Tools tests,
+Functional suite, and Static analysis and secret scanning. The live branch
+ref was verified at the same SHA. This closure does not authorize any
+recommendation, catalog update, new WoW field or future implementation block.
+
+## Active design authorization — Product roadmap reorientation 0.1
+
+Daniel's request on 2026-08-30 authorizes a planning-only reconciliation. It
+does not authorize code, addon, real sources, SimulationCraft, comparisons,
+commits or pushes. The selected prototype is the Druid because one class
+covers Balance, Feral, Guardian and Restoration; Blood Death Knight remains a
+later tank-safety contrast.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"product_roadmap_reorientation_0_1",
+  "title":"Reorient the roadmap around a Druid vertical slice before multiclase expansion",
+  "baseline_commit":"63a41d7e6ca0c14681b544b4a9f747224c436981",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"product_roadmap_reorientation_0_1-20260830-daniel-explicit","authorized_by":"Daniel","authorized_at":"2026-08-30T09:30:00-05:00"},
+  "scope":{"allowed_paths":["docs/ROADMAP.md","docs/PROJECT_BRIEF.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/product_roadmap_reorientation_0_1/implementation.json",".dpslab/quality-gates/product_roadmap_reorientation_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":133,"minimum_test_count":133},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["update only the roadmap and project brief to prioritize a Druid vertical slice before multiclase expansion","state explicitly that the addon remains thin and the desktop application owns interpretation knowledge and recommendations","cover Balance Feral Guardian and Restoration with role-specific priorities and retain DK Blood as a later contrast","preserve current-only knowledge policy with Blizzard primary and fansites as corroboration only","retain no-database policy and fail closed on unknown stale contradictory or inapplicable knowledge","separate completed foundation from pending product work, distribution, updater, donations and beta gates","make no code addon source catalog SimulationCraft comparison GitHub setting or artifact change","pass documentation contract tests and verify protected hashes"],
+  "express_exclusions":["implementation of the vertical slice, templates, recommendation engine or GUI","real character data, live source acquisition, API use, SimulationCraft comparisons or runs","database, historical recommendation fallback, automatic updater, public release, donations or marketing execution","code, addon, workflow, security policy, knowledge package, commit, push or any path outside the three documents"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->

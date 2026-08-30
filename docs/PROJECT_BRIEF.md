@@ -155,5 +155,27 @@ externa hasta que todas las puertas obligatorias tengan evidencia vigente.
 
 La arquitectura busca admitir múltiples clases mediante modelos comunes,
 adaptadores específicos por clase y comparación reproducible de variantes.
-Esta visión no autoriza todavía implementar módulos multiclase, reglas de
-optimización ni un entrenador de combate.
+Antes de ampliar cobertura, el primer producto útil será un vertical slice del
+Druida como clase prototipo: Balance y Feral para daño, Guardian para tanque y
+Restauración para sanación con daño auxiliar. Esto permite validar en una sola
+clase que el contexto de función cambia las prioridades sin convertir DpsLab en
+una guía de rotación de una especialización.
+
+Para Guardian, el daño siempre queda subordinado a supervivencia, mitigación y
+amenaza. Para Restauración, el daño auxiliar queda subordinado a mantener la
+curación y la seguridad del grupo. Balance y Feral pueden priorizar desempeño
+de daño dentro del contexto declarado. El DK Sangre será el segundo contraste
+para probar la política de tanque.
+
+La información debe ser current-only: las fuentes oficiales de Blizzard son la
+autoridad primaria; Wowhead y otros fansites pueden servir para contraste,
+investigación o detectar discrepancias, pero no sustituyen la revisión de la
+fuente primaria. No se construirá una base de datos histórica para alimentar
+recomendaciones obsoletas. La aplicación debe indicar no disponible cuando la
+vigencia, procedencia o aplicabilidad no puedan demostrarse.
+
+La siguiente secuencia de trabajo es: contexto de función, plantilla vigente
+del Druida, recomendación explicable, actualización controlada y experiencia
+de usuario. La expansión multiclase, la matriz masiva de combinaciones y el
+entrenador de combate quedan después del vertical slice y requieren contratos
+separados.
