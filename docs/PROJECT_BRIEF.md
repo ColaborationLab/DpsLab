@@ -74,6 +74,11 @@ las entradas analíticas.
   `DpsLabObservationExport`, no observa datos reales y no automatiza acciones.
 - Parser de transporte sintético en la aplicación, cerrado a una asignación
   exacta y sin `eval`, ejecución de Lua, filesystem o red.
+- Flujo local sintético de extremo a extremo: selección Retail explícita,
+  almacenamiento atómico local, interlock nativo que exige `Wow.exe` detenido,
+  adquisición acotada de SavedVariables, coordinador saneado y comandos
+  `addon-configure`/`addon-import`. No descubre instalaciones o cuentas, no
+  vigila archivos y no imprime rutas, bytes crudos ni contenido observado.
 - Locks con hashes, SBOM, auditoría de vulnerabilidades, análisis estático y
   escaneo de secretos integrados en las cuatro lanes actuales de CI.
 
@@ -115,10 +120,12 @@ explica el diferencial.
   autorización vigente para repetirla, generalizar el resultado a otros
   personajes o iniciar otra matriz.
 - No se ejecutan matrices ni se generan combinaciones.
-- No existe todavía GUI. El addon actual es sintético, no accionable y aún no
-  ha sido probado dentro de una sesión real de WoW.
-- No existe adquisición de SavedVariables elegida por el usuario ni integración
-  real de extremo a extremo entre WoW y la aplicación.
+- No existe todavía GUI. El addon fue probado de forma atendida dentro de WoW,
+  pero su observación continúa siendo sintética y no accionable.
+- La adquisición explícita y el enlace local addon–aplicación están
+  implementados para el transporte sintético. Aún no existe un esquema de
+  observación real minimizado ni una prueba adversarial completa con un payload
+  disponible escrito por WoW.
 - Los catálogos versionados son sintéticos o candidatos: no constituyen todavía
   cobertura vigente aprobada para todas las clases y especializaciones.
 - No existe instalador, actualizador público, canal estable/beta operativo ni

@@ -68,11 +68,13 @@ multiclase, empaquetado, actualización y puertas de beta.
 
 ## Camino restante hacia un producto distribuible
 
-- [ ] Prueba atendida dentro de WoW del ciclo sintético exportar, persistir,
-  cerrar el juego, leer una copia seleccionada y limpiar.
-- [ ] Adquisición de SavedVariables elegida explícitamente por el usuario, con
-  preflight de WoW cerrado, privacidad, límites y rechazo de symlinks/rutas
-  ambiguas; nunca editar el archivo del juego in situ.
+- [x] Prueba atendida dentro de WoW de exportación y limpieza sintéticas, con
+  persistencia observada y lectura saneada del estado `cleared` después de
+  cerrar completamente el juego.
+- [x] Adquisición de SavedVariables mediante instalación Retail elegida
+  explícitamente, almacenamiento local acotado, preflight nativo de WoW
+  cerrado, límites y rechazo de symlinks/rutas ambiguas; nunca edita el archivo
+  del juego in situ.
 - [ ] Observación real mínima y consentida, separada de nombres, cuenta,
   telemetría y datos no necesarios.
 - [ ] Catálogo vigente aprobado para clases, especializaciones y roles,
@@ -105,8 +107,9 @@ multiclase, empaquetado, actualización y puertas de beta.
   degradación y rollback malicioso.
 - [x] Contrato, parser estricto y pruebas negativas del transporte sintético
   aplicación–addon.
-- [ ] Ensayo adversarial de extremo a extremo con archivos realmente escritos
-  por WoW y seleccionados por el usuario.
+- [ ] Ensayo adversarial de extremo a extremo del estado `available` con un
+  payload realmente escrito por WoW y seleccionado por el usuario; el estado
+  `cleared` ya fue observado de forma atendida.
 - [ ] Política de privacidad y procedimiento de respuesta, revocación y
   recuperación ejercitado.
 - [ ] Revisión de seguridad independiente antes de beta externa.

@@ -8497,9 +8497,9 @@ approved Policy and contract, Tools tests, Functional suite, and Static
 analysis and secret scanning. Local parity on the locked Python 3.13.14
 environment passed 1177 tests with one expected skip and exit code 0.
 
-## Active implementation task — Explicit addon observation CLI 0.1
+## Published implementation record — Explicit addon observation CLI 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8513,6 +8513,32 @@ environment passed 1177 tests with one expected skip and exit code 0.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["add addon-configure with required explicit absolute config-root and retail-root arguments","validate the selected Retail installation and use only the existing atomic local store","emit a fixed sorted JSON receipt with state and byte count and never print either path","add addon-import with a required explicit absolute config-root argument and invoke only the existing import coordinator","emit a fixed sorted JSON summary containing state bounded reason byte count source SHA-256 and observation availability but no observation fields paths raw bytes account or process identity","return exit code 2 for a sanitized rejected import and zero for all non-rejected closed states","map validation and store failures to the existing static CLI error channel without private path disclosure","perform no AppData discovery environment lookup watcher polling process launch network write beyond explicit configuration or SimulationCraft invocation","pass focused tests procedural audit local locked full suite and remote functional suite"],
   "express_exclusions":["Fallout 4 chats data files concepts or evidence","automatic AppData installation account or config discovery registry environment expansion and migration","GUI file picker background watcher polling timer hot reload service or automatic import","real character realm equipment talent stat combat event or gameplay data","SavedVariables writes addon mutation arbitrary Lua execution or raw payload output","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The path-redacted explicit addon commands were published through
+`e42b11c756bbadf1330f8827fce8c6d313c04db2`. GitHub Actions run #156
+approved Policy and contract, Tools tests, Functional suite, and Static
+analysis and secret scanning. The local locked Python 3.13.14 suite passed
+1185 tests with one expected skip and exit code 0.
+
+## Active documentation task — Addon observation status reconciliation 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_observation_documentation_reconciliation_0_1",
+  "title":"Reconcile canonical project status with the published synthetic addon observation path",
+  "baseline_commit":"e42b11c756bbadf1330f8827fce8c6d313c04db2",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"addon_observation_documentation_reconciliation_0_1-20260830-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-30T07:27:52-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md","docs/PROJECT_BRIEF.md","docs/ROADMAP.md"],"generated_paths":[".dpslab/quality-gates/addon_observation_documentation_reconciliation_0_1/implementation.json",".dpslab/quality-gates/addon_observation_documentation_reconciliation_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":123,"minimum_test_count":123},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","docs/ADDON_OBSERVATION_TRANSPORT.md":"b2446722b2e69b19fffe45693bc8cf6660358e3679a478efd22a79e1e890890e","desktop-app/src/dpslab/addon_observation_import.py":"7b40d24fa5d09c6403bf60b96bd8c09d35609c570a888bac7deebbd93aca2e00","desktop-app/src/dpslab/retail_installation_store.py":"07e988802b73ea2ae35446ca134d6fedb4bb2f31eac100ee629cd5d0b624a5c7","desktop-app/src/dpslab/addon_observation_acquisition.py":"a23d272d0b50e0ea6a5509687be25d60817c040091bebcab140cae836dfe41af"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["record the published explicit Retail selection store process gate bounded SavedVariables acquisition coordinator and CLI","mark only the synthetic attended and explicit acquisition milestones actually supported by repository and run evidence","remove stale claims that no in-game test or user-selected acquisition exists","retain that the current observation payload is synthetic non-actionable and contains no real character data","retain open work for a privacy-minimized real observation schema and adversarial available-payload end-to-end exercise","make no code addon workflow security knowledge result configuration or artifact changes","pass contract and tools tests with protected hashes intact"],
+  "express_exclusions":["Fallout 4 chats data files concepts or evidence","real character data WoW API access SavedVariables mutation or addon implementation","SimulationCraft comparisons runs results baselines","GUI network updater release distribution telemetry credentials or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
