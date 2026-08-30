@@ -66,7 +66,20 @@ registry or environment lookup, Battle.net query, executable read or launch.
 The runtime selection redacts its path from `str` and `repr`; the integrated
 observation entry revalidates it immediately before applying the native process
 gate and bounded SavedVariables reader. Persisting this selection remains a
-separate future boundary.
+separate local boundary.
+
+The local selection store writes only
+`retail_installation_0_1.json` inside an existing configuration directory
+provided by its caller. The closed canonical document contains schema `0.1`,
+product `retail`, and the explicitly selected absolute root. The path is local
+configuration, not a credential: it is not encrypted and no confidentiality or
+ACL guarantee is claimed. It must never be copied to logs, CI, support packets
+or versioned files. Writes use a same-directory exclusive temporary file,
+flush, `fsync`, atomic replace and post-commit byte verification; failures clean
+the temporary and preserve an existing document. Loads are bounded, reject
+links and structural ambiguity, and revalidate the Retail installation before
+returning a path-redacted runtime selection. AppData discovery, reset/deletion
+and UI remain separate boundaries.
 
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate

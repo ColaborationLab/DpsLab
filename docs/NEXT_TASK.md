@@ -8420,9 +8420,9 @@ The sanitized attended sequence was published through
 `321b8b2c047e5dee7e0077fcea563f0cca580d27`. GitHub Actions run #152
 approved all four lanes.
 
-## Active implementation task — User-selected Retail installation 0.1
+## Published implementation record — User-selected Retail installation 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8436,6 +8436,32 @@ approved all four lanes.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["accept only an absolute existing directory selected by the caller whose exact final name is _retail_","require exact direct children Wow.exe and Interface without case folding alternate flavor fallback or recursive search","reject symlink reparse non-directory roots non-regular or empty executables and invalid Interface entries","return an immutable runtime-only selection whose repr and string forms never expose the path","perform no registry environment-variable drive scan Battle.net query network process launch executable read or version inference","provide one integrated observation entry that accepts only a validated selection and then invokes the native process gate","retain fail-closed acquisition semantics and expose no account character path payload or process identity","pass focused tests procedural audit and locked remote functional suite"],
   "express_exclusions":["automatic installation discovery registry access environment expansion or persistence","Battle.net launch login account or update automation","executable execution hashing signature inspection version-resource reading or modification","real character realm equipment talent stat combat event or gameplay data","SavedVariables writes addon changes background watcher polling timer or automatic import","SimulationCraft comparisons runs results baselines network updater release distribution telemetry credentials or GitHub setting changes"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The user-selected Retail installation boundary was published through
+`8575fb02863dfc48c6050a73b0b055f77f5e5a6b`. GitHub Actions run #153
+approved all four lanes. The known local installation was accepted without
+printing its path and the integrated read returned the existing `cleared`
+state.
+
+## Active implementation task — Local Retail selection store 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"retail_installation_store_0_1",
+  "title":"Persist one explicitly selected Retail root in a bounded atomic local configuration document",
+  "baseline_commit":"8575fb02863dfc48c6050a73b0b055f77f5e5a6b",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"retail_installation_store_0_1-20260830-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-30T01:12:44-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/retail_installation_store.py","desktop-app/tests/test_retail_installation_store.py","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/retail_installation_store_0_1/implementation.json",".dpslab/quality-gates/retail_installation_store_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_retail_installation_store","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_retail_installation_store","tests.test_retail_installation","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":9,"minimum_test_count":19},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/retail_installation.py":"56dfb18b72bd00287d75f385355a20511c12604d73bbb008cd514f779561adc1","desktop-app/src/dpslab/addon_observation_acquisition.py":"a23d272d0b50e0ea6a5509687be25d60817c040091bebcab140cae836dfe41af","desktop-app/src/dpslab/wow_process_state.py":"826bbb1c691b7602b07047caaeb2a3da268fb374b0b3c12e3730962d242ded6a"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["accept only an absolute existing caller-provided configuration directory and reject links reparse points or non-directories","store exactly retail_installation_0_1.json with a closed schema version product and selected absolute root","require a currently validated RetailInstallationSelection before storing and revalidate the root before every load","write canonical UTF-8 JSON atomically through a same-directory exclusive temporary file fsync and replace with cleanup on failure","read through a bounded regular-file descriptor with before after identity checks and reject oversized changed linked malformed duplicate-key unknown-field or noncanonical documents","return only path-redacted immutable receipts and loaded selections and never log print hash or copy the configured path outside the local document","treat absence as an explicit sanitized state and preserve an existing valid document on failed replacement","perform no automatic config-directory discovery registry environment lookup encryption claim ACL claim network process launch or deletion","pass focused tests procedural audit and locked remote functional suite"],
+  "express_exclusions":["automatic AppData or installation discovery registry environment expansion and migration","DPAPI encryption credential secret or private-key storage and claims of confidentiality","configuration deletion reset UI background watcher polling timer or automatic import","real character account realm equipment talent stat combat event or gameplay data","SavedVariables writes addon changes SimulationCraft comparisons runs results baselines network updater release distribution telemetry or GitHub setting changes"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
