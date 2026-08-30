@@ -81,6 +81,24 @@ links and structural ambiguity, and revalidate the Retail installation before
 returning a path-redacted runtime selection. AppData discovery, reset/deletion
 and UI remain separate boundaries.
 
+The explicit import coordinator joins these already-published boundaries
+without expanding them. A caller supplies the configuration root for one
+intentional import attempt. The coordinator loads and revalidates the stored
+Retail selection, applies the native WoW process interlock, and then invokes
+the bounded SavedVariables acquisition. It returns only one closed state:
+`not_configured`, `absent`, `cleared`, `available`, or `rejected`. Rejections
+use only the public reasons `configuration_invalid`, `wow_not_stopped`, or
+`source_invalid`; internal exception text, configured paths, account names and
+raw bytes are not returned. An available synthetic observation remains an
+immutable in-memory value with its bounded byte count and source SHA-256.
+
+The coordinator is not a watcher or an automatic import facility. It performs
+no polling, logging, UI, AppData discovery, network access, process launch,
+SavedVariables write, deletion, migration, or cross-project ingestion. The
+caller must invoke every attempt explicitly, and an unexpected programming
+failure propagates for diagnosis instead of being mislabeled as untrusted user
+data.
+
 The synthetic fixture contains no name, realm, equipment, talents, account
 identifier or real measurements. A future real channel requires separate
 contracts for addon-side serialization, an explicit SavedVariables declaration,
