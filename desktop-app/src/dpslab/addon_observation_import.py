@@ -11,6 +11,7 @@ from .addon_observation_acquisition import (
     acquire_addon_observation_from_installation,
 )
 from .addon_character_identity_transport import CharacterIdentitySnapshot
+from .addon_specialization_registry_transport import ClassSpecializationRegistrySnapshot
 from .addon_observation_transport import SyntheticAddonObservation
 from .retail_installation import RetailInstallationError
 from .retail_installation_store import (
@@ -25,7 +26,12 @@ class AddonObservationImportResult:
     reason: str | None
     byte_count: int
     source_sha256: str | None
-    observation: SyntheticAddonObservation | CharacterIdentitySnapshot | None
+    observation: (
+        SyntheticAddonObservation
+        | CharacterIdentitySnapshot
+        | ClassSpecializationRegistrySnapshot
+        | None
+    )
     observation_type: str | None = None
 
 
@@ -40,6 +46,9 @@ def _observation_type_matches(acquired: AddonObservationAcquisition) -> bool:
     ) or (
         acquired.observation_type == "character_identity_snapshot"
         and isinstance(acquired.observation, CharacterIdentitySnapshot)
+    ) or (
+        acquired.observation_type == "class_specialization_registry_snapshot"
+        and isinstance(acquired.observation, ClassSpecializationRegistrySnapshot)
     )
 
 
@@ -69,7 +78,11 @@ def _public_result(
             or len(acquired.source_sha256) != 64
             or acquired.observation is None
             or acquired.observation_type
-            not in {"synthetic_observation", "character_identity_snapshot"}
+            not in {
+                "synthetic_observation",
+                "character_identity_snapshot",
+                "class_specialization_registry_snapshot",
+            }
             or not _observation_type_matches(acquired)
         ):
             raise RuntimeError("addon_observation_import_state_invalid")

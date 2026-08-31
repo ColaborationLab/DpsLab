@@ -23,6 +23,10 @@ from tests.test_addon_character_identity_transport import (
     document as identity_document,
     transport as identity_transport,
 )
+from tests.test_addon_specialization_registry_transport import (
+    document as registry_document,
+    transport as registry_transport,
+)
 
 
 class AddonObservationAcquisitionTests(unittest.TestCase):
@@ -83,6 +87,17 @@ class AddonObservationAcquisitionTests(unittest.TestCase):
             self.root,
             wow_process_state="stopped",
         )
+
+    def test_registry_export_is_strictly_selected_and_retained_only_in_memory(self) -> None:
+        raw = registry_transport(registry_document())
+        self.write_candidate("synthetic-account", raw)
+        result = acquire_addon_observation(self.root, wow_process_state="stopped")
+        self.assertEqual("available", result.state)
+        self.assertEqual("class_specialization_registry_snapshot", result.observation_type)
+        self.assertEqual(801, result.observation.class_id)
+        self.assertEqual(4, len(result.observation.specializations))
+        self.assertFalse(hasattr(result, "path"))
+        self.assertFalse(hasattr(result, "raw"))
 
     def test_exact_observed_nil_assignment_is_cleared(self) -> None:
         raw = b"\r\nDpsLabObservationExport = nil\r\n"

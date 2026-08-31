@@ -23,6 +23,10 @@ from tests.test_addon_character_identity_transport import (
     document as identity_document,
     transport as identity_transport,
 )
+from tests.test_addon_specialization_registry_transport import (
+    document as registry_document,
+    transport as registry_transport,
+)
 
 
 class AddonObservationImportTests(unittest.TestCase):
@@ -93,6 +97,18 @@ class AddonObservationImportTests(unittest.TestCase):
         self.assertEqual("available", result.state)
         self.assertEqual("character_identity_snapshot", result.observation_type)
         self.assertEqual(2, result.observation.class_id)
+        self.assertNotIn("class_id", result.__dict__)
+        self.assertFalse(hasattr(result, "path"))
+        self.assertFalse(hasattr(result, "raw"))
+
+    def test_registry_source_is_available_without_public_observed_fields(self) -> None:
+        self.configure()
+        raw = registry_transport(registry_document())
+        self.write_candidate(raw)
+        result = self.import_stopped()
+        self.assertEqual("available", result.state)
+        self.assertEqual("class_specialization_registry_snapshot", result.observation_type)
+        self.assertEqual(801, result.observation.class_id)
         self.assertNotIn("class_id", result.__dict__)
         self.assertFalse(hasattr(result, "path"))
         self.assertFalse(hasattr(result, "raw"))

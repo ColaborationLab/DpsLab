@@ -14,6 +14,12 @@ from .addon_character_identity_transport import (
     MAX_PAYLOAD_BYTES as MAX_IDENTITY_PAYLOAD_BYTES,
     parse_character_identity_saved_variable,
 )
+from .addon_specialization_registry_transport import (
+    ClassSpecializationRegistrySnapshot,
+    SpecializationRegistryTransportError,
+    MAX_PAYLOAD_BYTES as MAX_REGISTRY_PAYLOAD_BYTES,
+    parse_specialization_registry_saved_variable,
+)
 from .addon_observation_transport import (
     AddonObservationTransportError,
     MAX_PAYLOAD_BYTES as MAX_SYNTHETIC_PAYLOAD_BYTES,
@@ -31,7 +37,11 @@ class AddonObservationAcquisitionError(ValueError):
     """The local observation source is unsafe, ambiguous, or incompatible."""
 
 
-SupportedAddonObservation = SyntheticAddonObservation | CharacterIdentitySnapshot
+SupportedAddonObservation = (
+    SyntheticAddonObservation
+    | CharacterIdentitySnapshot
+    | ClassSpecializationRegistrySnapshot
+)
 
 
 @dataclass(frozen=True)
@@ -48,7 +58,9 @@ SyntheticObservationAcquisition = AddonObservationAcquisition
 
 
 MAX_TRANSPORT_BYTES = 2 * max(
-    MAX_SYNTHETIC_PAYLOAD_BYTES, MAX_IDENTITY_PAYLOAD_BYTES
+    MAX_SYNTHETIC_PAYLOAD_BYTES,
+    MAX_IDENTITY_PAYLOAD_BYTES,
+    MAX_REGISTRY_PAYLOAD_BYTES,
 ) + 64
 _CLEARED_ASSIGNMENT = b"\r\nDpsLabObservationExport = nil\r\n"
 _REPARSE_ATTRIBUTE = getattr(stat_module, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
@@ -186,6 +198,15 @@ def _parse_supported_observation(
             )
         )
     except CharacterIdentityTransportError:
+        pass
+    try:
+        matches.append(
+            (
+                "class_specialization_registry_snapshot",
+                parse_specialization_registry_saved_variable(raw),
+            )
+        )
+    except SpecializationRegistryTransportError:
         pass
     if len(matches) != 1:
         _fail("addon_observation_acquisition_transport_invalid")

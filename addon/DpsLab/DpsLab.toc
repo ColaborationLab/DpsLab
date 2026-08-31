@@ -7,4 +7,5 @@ SyntheticGuidance.lua
 SyntheticExchange.lua
 SyntheticObservation.lua
 CharacterIdentityObservation.lua
+CharacterSpecializationRegistryObservation.lua
 DpsLab.lua

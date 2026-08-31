@@ -82,3 +82,26 @@ Tests use the pre-existing synthetic damage fixture and an injected synthetic
 Druid registry. They do not establish live Druid identifiers, current balance
 facts, spells, rotations, talents, equipment, or real recommendations. Current
 knowledge acquisition and approval remain separate future work.
+
+## Attended specialization-registry observation 0.1
+
+The next product-facing evidence boundary asks the live Retail client for the
+current player's class identifier and the four specialization identifiers and
+roles exposed for that class. Capture occurs only after the player types
+`/dpslab export specialization-registry`. It uses the same single WoW-managed
+SavedVariable as the other mutually exclusive manual exports; it does not add
+a watcher, timer, event handler, network request, or historical store.
+
+The captured registry contains build, interface, class identifier, four unique
+specialization identifiers, normalized roles and capture time. It deliberately
+omits specialization names, character name, realm, account, GUID, equipment,
+talents and gameplay events. The shape must be exactly two damage roles, one
+tank and one healer role. Any other shape is unavailable rather than guessed.
+
+The application decodes the assignment as bounded lowercase hex and canonical
+JSON without evaluating Lua. Acquisition remains blocked while WoW is running,
+and the public import result does not expose raw bytes or a filesystem path.
+The immutable result is evidence only: it does not assert that the class is a
+Druid, bind semantic names to specialization identifiers, approve a catalog,
+or enable guidance. Those transitions require an attended observation followed
+by a separate human review and current-source evidence.

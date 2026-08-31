@@ -85,6 +85,13 @@ local EXPORT_STATUS = {
   identity_context_invalid = "Identity snapshot unavailable: context invalid.",
   identity_role_unsupported = "Identity snapshot unavailable: role unsupported.",
   identity_payload_invalid = "Identity snapshot unavailable: payload invalid.",
+  registry_retained = "Specialization registry snapshot retained for WoW-managed persistence.",
+  registry_api_unavailable = "Specialization registry unavailable: required API unavailable.",
+  registry_api_failed = "Specialization registry unavailable: API call failed.",
+  registry_context_invalid = "Specialization registry unavailable: context invalid.",
+  registry_shape_unsupported = "Specialization registry unavailable: class shape unsupported.",
+  registry_role_unsupported = "Specialization registry unavailable: role unsupported.",
+  registry_payload_invalid = "Specialization registry unavailable: payload invalid.",
   cleared = "Synthetic export cleared.",
   unavailable = "Synthetic export unavailable.",
   unsupported = "Synthetic export command unavailable.",
@@ -112,6 +119,20 @@ local function handleIdentityExport()
   return "identity_retained"
 end
 
+local function handleSpecializationRegistryExport()
+  local module = DpsLabCharacterSpecializationRegistryObservation
+  if type(module) ~= "table" or type(module.Capture) ~= "function" then
+    return "registry_api_unavailable"
+  end
+  local candidate, reason = module.Capture()
+  if candidate == nil then
+    if EXPORT_STATUS[reason] ~= nil then return reason end
+    return "registry_payload_invalid"
+  end
+  _G.DpsLabObservationExport = candidate
+  return "registry_retained"
+end
+
 local function handleSyntheticExport(action)
   if action == "clear" then
     _G.DpsLabObservationExport = nil
@@ -128,7 +149,9 @@ SLASH_DPSLAB1 = "/dpslab"
 SlashCmdList["DPSLAB"] = function(message)
   local command, role = message:match("^(%S*)%s*(%S*)$")
   if command == "export" then
-    local status = role == "identity" and handleIdentityExport() or handleSyntheticExport(role)
+    local status = role == "identity" and handleIdentityExport()
+      or role == "specialization-registry" and handleSpecializationRegistryExport()
+      or handleSyntheticExport(role)
     print("[DpsLab] " .. EXPORT_STATUS[status])
     return
   end

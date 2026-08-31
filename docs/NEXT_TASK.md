@@ -8790,14 +8790,14 @@ Tools tests, Functional suite, and Static analysis and secret scanning. The
 live branch ref was verified at the same SHA. No real identifier, character
 value, catalog fact, or recommendation was introduced.
 
-## Active implementation authorization — Druid synthetic guidance coordination 0.1
+## Published implementation record — Druid synthetic guidance coordination 0.1
 
 Daniel's instruction to continue the project with expanded authority permits
 the next closed vertical-slice block. It composes only existing validated
 boundaries and synthetic fixtures; current game facts and live recommendations
 remain separate governed work.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8811,6 +8811,42 @@ remain separate governed work.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["bind identity to semantic role context before any catalog evaluation","construct only an in-memory Retail compatibility context from the already validated snapshot plus explicit bounded content context and observation time","return guidance only for one exact eligible catalog entry with matching external approval evidence","preserve the semantic role policy while returning an empty statement set for unavailable knowledge","convert invalid identity role request catalog envelope or approval inputs into bounded fail-closed results without nearest-template fallback","retain no character identity and expose no build interface class specialization level race or capture field in the result","use exclusively the existing synthetic catalog fixture injected synthetic Druid registry and synthetic snapshots in tests","make no catalog fixture schema source acquisition persistence network addon UI simulation or automatic import change","pass focused tests complete functional suite procedural audit and protected-hash verification"],
   "express_exclusions":["real Druid class specialization race character build interface level or capture facts","live knowledge approval catalog mutation source acquisition or recommendation claims","abilities rotations talents equipment statistics formulas simulations comparisons runs results or baselines","SavedVariables addon UI network updater release distribution commit push or any path outside the closed allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The synthetic coordinator was implemented, tested, procedurally audited,
+committed and published through
+`c393edc6352f607df632a5ca4832c9b4c56b8dfd`. Focused tests passed 10/10,
+the functional suite passed 1226/1226 with one expected skip, and the tools
+suite passed 133/133. GitHub Actions run #164 approved Policy and contract,
+Tools tests, Functional suite, and Static analysis and secret scanning. The
+live `main` reference was verified at the same SHA. No live game identifier,
+catalog fact, recommendation, SimulationCraft run or character identity was
+introduced.
+
+## Active implementation authorization — Druid specialization registry observation 0.1
+
+Daniel's expanded continuation authority permits the next closed vertical-
+slice block. The observed registry is produced only by an attended manual
+command inside WoW and remains non-actionable until a separate human review
+binds it to the Druid product subject. It does not approve knowledge or enable
+guidance.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"druid_specialization_registry_observation_0_1",
+  "title":"Capture and strictly import one attended current class specialization registry",
+  "baseline_commit":"c393edc6352f607df632a5ca4832c9b4c56b8dfd",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"druid_specialization_registry_observation_0_1-20260830-daniel-continue","authorized_by":"Daniel","authorized_at":"2026-08-30T23:59:10-05:00"},
+  "scope":{"allowed_paths":["addon/DpsLab/CharacterSpecializationRegistryObservation.lua","addon/DpsLab/DpsLab.toc","addon/DpsLab/DpsLab.lua","desktop-app/src/dpslab/addon_specialization_registry_transport.py","desktop-app/src/dpslab/addon_observation_acquisition.py","desktop-app/src/dpslab/addon_observation_import.py","desktop-app/tests/test_addon_specialization_registry_transport.py","desktop-app/tests/test_addon_observation_acquisition.py","desktop-app/tests/test_addon_observation_import.py","tools/tests/test_addon_specialization_registry_observation.py","docs/DRUID_VERTICAL_SLICE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/druid_specialization_registry_observation_0_1/implementation.json",".dpslab/quality-gates/druid_specialization_registry_observation_0_1/audit.json"],"forbidden_paths":[".github/**","security/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","addon/DpsLab/CharacterIdentityObservation.lua","desktop-app/src/dpslab/addon_character_identity_transport.py","desktop-app/src/dpslab/druid_role_context.py","desktop-app/src/dpslab/druid_identity_context.py","desktop-app/src/dpslab/druid_guidance_coordinator.py","desktop-app/src/dpslab/static_template_catalog.py","desktop-app/src/dpslab/knowledge_envelope.py"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_specialization_registry_transport","tests.test_addon_observation_acquisition","tests.test_addon_observation_import","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1226,"minimum_test_count":1236},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","addon/DpsLab/CharacterIdentityObservation.lua":"782dd4b8cb16399b411506f39781d9f5cdbe79d809b8a00b99302e2cc02875d5","desktop-app/src/dpslab/addon_character_identity_transport.py":"85b6e914a026e7aac761a6c0731d2cd71716b987e33af146726962d6f737c13e","desktop-app/src/dpslab/druid_role_context.py":"5013998a3e80154d0e0b3a8cc90eff417bdbb964ea6257dd0bbf3a45c0e3d017","desktop-app/src/dpslab/druid_identity_context.py":"9dc29be1084893062ea157cd451a2e273582c490d2d60a4fd9dba046c4edf867","desktop-app/src/dpslab/druid_guidance_coordinator.py":"18600a9e50f117e94771a8dd59f90708cdc4cc4b24c7df0050fad6c8e4f1f5d0"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["add one manual slash-command export that calls only an explicit current WoW API allowlist and writes the existing single SavedVariable only after complete validation","capture only product build interface class identifier four unique specialization identifiers normalized roles capture time and safety metadata with no names realm account GUID equipment talents combat or history","require exactly four specializations with two damage one tank and one healer roles before serialization without asserting a class name","use canonical bounded lowercase-hex transport and a strict non-executing Python parser with closed fields duplicate-key rejection canonical-byte verification and bool-as-int rejection","integrate the new observation type into the existing process-gated single-file acquisition and sanitized import without automatic watching persistence or recommendation selection","return only an immutable non-actionable registry snapshot and never convert runtime observation into trusted Druid mapping or approval","use exclusively simulated API values and synthetic files in automated tests; a real attended observation remains a separate operation","pass focused tests complete functional and tools suites procedural audit and protected-hash verification"],
+  "express_exclusions":["automatic capture events timers polling telemetry network or background file watching","character name realm account GUID guild equipment talents spells combat events damage healing or other direct identifiers","hardcoded or asserted live Druid class and specialization identifiers or current recommendation facts","catalog mutation approval guidance selection addon UI expansion SimulationCraft comparisons runs results baselines release or publication","commit push or any path outside the closed allowlist"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
