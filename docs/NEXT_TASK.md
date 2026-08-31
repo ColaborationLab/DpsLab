@@ -8921,13 +8921,13 @@ minimal non-versioned local evidence record, exact implementation paths,
 freshness and invalidation rules, tests for disagreement and drift, and a
 separate authorization for any product-facing guidance.
 
-## Active implementation authorization — remote agent collaboration 0.1
+## Published implementation record — remote agent collaboration 0.1
 
 This closed block establishes repository-only collaboration scaffolding. It
 does not grant external accounts access, merge rights, production ownership or
 authority over protected areas.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8941,6 +8941,43 @@ authority over protected areas.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["document roles and exclusive ownership boundaries","provide Issue and PR templates with exact allowlists and evidence requirements","require agent branches and prohibit direct main, force-push, secrets, real game data and implicit publication","document GitHub invitation steps and minimum permission principle","make compensating review controls explicit because branch protection may be unavailable","pass focused and complete tools suites with protected hashes unchanged"],
   "express_exclusions":["external invitation or permission change","GitHub settings, Actions workflows, secrets, tokens, keys or releases","production code, addon, knowledge, security baseline, real observation, SimulationCraft, comparisons, runs, results or baselines","merge, commit, push or publication beyond this closed documentation block"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The governed collaboration scaffolding was implemented, tested, procedurally
+audited, committed and published through
+`0193beea7f2054029dd5936225c3178305d18069`. Local `main`, `origin/main` and
+the live repository were verified at that commit, the tree was clean, and the
+associated GitHub Actions workflow completed successfully. The external
+account was subsequently able to read the private repository in Codex Cloud,
+observe the exact commit, read `AGENTS.md` and this workflow, and preserve a
+clean tree. Its isolated task environment did not expose an authenticated
+GitHub CLI or a configured `origin`, so future Cloud tasks must receive their
+complete closed contract in the prompt and must not be given a `GH_TOKEN` or
+other repository credential merely to read an Issue.
+
+## Active implementation authorization — remote agent Cloud pilot 0.1
+
+This pilot records the smallest useful correction learned from the attended
+Cloud-readiness exercise. The external agent may change only the remote-agent
+workflow document. This `NEXT_TASK.md` delta is the pre-authored governing
+contract and the external agent must preserve it byte-for-byte.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"remote_agent_cloud_pilot_0_1",
+  "title":"Document the governed Codex Cloud handoff and review boundary",
+  "baseline_commit":"0193beea7f2054029dd5936225c3178305d18069",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"remote_agent_cloud_pilot_0_1-20260831-daniel","authorized_by":"Daniel","authorized_at":"2026-08-31T17:01:35-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md","docs/REMOTE_AGENT_WORKFLOW.md"],"generated_paths":[".dpslab/quality-gates/remote_agent_cloud_pilot_0_1/implementation.json",".dpslab/quality-gates/remote_agent_cloud_pilot_0_1/audit.json"],"forbidden_paths":["AGENTS.md",".github/**","desktop-app/**","addon/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","keys/**","releases/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["document that the complete approved contract is copied into the Codex Cloud prompt when Issue access is unavailable","document that an isolated Cloud work branch and absent terminal origin do not authorize direct main access","prohibit adding GH_TOKEN personal tokens signing keys or repository secrets solely to let the task inspect an Issue","require summary and diff review before a human chooses whether to create a pull request","preserve this pre-authored NEXT_TASK.md contract byte-for-byte during external execution","pass focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["any external-agent edit to docs/NEXT_TASK.md beyond preserving this pre-authored contract","GitHub authentication tokens secrets settings permissions workflows Issues comments branches pull requests merges or publication","production code addon knowledge security real observations SimulationCraft comparisons runs results baselines releases or keys","commit push or any path outside the closed allowlist"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
