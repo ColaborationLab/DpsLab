@@ -61,3 +61,24 @@ semantic role policy. It does not retain or expose build, interface, class,
 specialization ID, level, race or capture time. Invalid registries, forged
 observations, class mismatch, unmapped specialization and role mismatch all
 produce `context_unavailable`.
+
+## Synthetic guidance coordination 0.1
+
+The next boundary joins the validated identity-context result to the existing
+governed static-template catalog. It creates a compatibility context in memory,
+asks the catalog for an exact eligible entry, and returns only the semantic
+role policy, entry identifier, and bounded guidance statements. It retains no
+character identity and performs no acquisition, persistence, network access,
+simulation, or game-fact lookup.
+
+Identity and role validation happen before knowledge selection. Invalid
+identity therefore cannot probe the catalog. Pending, incomplete, stale,
+ambiguous, mismatched, unapproved, or malformed knowledge returns
+`guidance_unavailable`; it is never replaced by the nearest template. A valid
+role policy may remain visible when knowledge is unavailable, but its statement
+set is empty and it is not presented as a recommendation.
+
+Tests use the pre-existing synthetic damage fixture and an injected synthetic
+Druid registry. They do not establish live Druid identifiers, current balance
+facts, spells, rotations, talents, equipment, or real recommendations. Current
+knowledge acquisition and approval remain separate future work.
