@@ -8825,7 +8825,7 @@ live `main` reference was verified at the same SHA. No live game identifier,
 catalog fact, recommendation, SimulationCraft run or character identity was
 introduced.
 
-## Active implementation authorization — Druid specialization registry observation 0.1
+## Published implementation record — Druid specialization registry observation 0.1
 
 Daniel's expanded continuation authority permits the next closed vertical-
 slice block. The observed registry is produced only by an attended manual
@@ -8833,7 +8833,7 @@ command inside WoW and remains non-actionable until a separate human review
 binds it to the Druid product subject. It does not approve knowledge or enable
 guidance.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8849,4 +8849,15 @@ guidance.
   "express_exclusions":["automatic capture events timers polling telemetry network or background file watching","character name realm account GUID guild equipment talents spells combat events damage healing or other direct identifiers","hardcoded or asserted live Druid class and specialization identifiers or current recommendation facts","catalog mutation approval guidance selection addon UI expansion SimulationCraft comparisons runs results baselines release or publication","commit push or any path outside the closed allowlist"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The specialization-registry observation boundary was implemented, tested,
+procedurally audited, committed and published through
+`5c35724a72061c5fbd459c77f8e4ab3b016a7265`. Focused tests passed 37/37,
+the functional suite passed 1236/1236 with one expected skip, and the tools
+suite passed 142/142. GitHub Actions run #165 approved Policy and contract,
+Tools tests, Functional suite, and Static analysis and secret scanning. The
+live `main` reference was verified at the same SHA. No attended in-game
+observation, live class mapping, knowledge approval, recommendation or
+SimulationCraft execution was performed. The next product evidence requires a
+separate attended manual export inside WoW followed by a distinct review.
