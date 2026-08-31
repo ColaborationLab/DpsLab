@@ -8861,3 +8861,28 @@ live `main` reference was verified at the same SHA. No attended in-game
 observation, live class mapping, knowledge approval, recommendation or
 SimulationCraft execution was performed. The next product evidence requires a
 separate attended manual export inside WoW followed by a distinct review.
+
+## Active design authorization — Druid specialization-registry review 0.1
+
+The current attended registry is technical evidence only. This design records
+the review boundary needed to compare it with current sources without storing
+observed identifiers in the repository, selecting guidance, or turning a
+technical match into an approval.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"druid_specialization_registry_review_0_1",
+  "title":"Design the evidence review boundary for one attended Druid specialization registry",
+  "baseline_commit":"add7d5144158eb4a13daa3c97993626f48fa0eb5",
+  "authorization":{"status":"design_only","authorization_id":"druid_specialization_registry_review_0_1-20260831-daniel-expanded-continuation","authorized_by":"Daniel","authorized_at":"2026-08-31T07:20:37-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","security/**","tools/**","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/DRUID_VERTICAL_SLICE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"1886e30bdec4abf3669dee0c2f0ce0a7271fa3cf30ed3830dfff24aef49edcb0","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define evidence classes and a human decision record for comparing one attended non-actionable class specialization registry against current sources","require primary Blizzard confirmation of the Druid specialization set and allow a technically maintained fansite only as corroboration for identifier mapping","preserve the distinction between observed identifiers source facts semantic role policy and approved knowledge","retain neither raw SavedVariables nor observed identifier values in repository documentation outputs or generated artifacts","fail closed on a missing stale contradictory or incomplete source set","propose no recommendation catalog mutation addon change mapping implementation or automatic import","pass the focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["implementation code tests addon SavedVariables import changes or registry persistence","hardcoding observed identifiers current game facts or source content into the repository","knowledge catalog mutation approval guidance selection recommendations or live user-facing output","SimulationCraft comparisons runs results baselines network acquisition credentials releases commits pushes or any path outside the closed allowlist"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
