@@ -105,6 +105,23 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 
 ## Quality gate y autorizaciones
 
+## Protocolo de agentes subordinados y trabajo remoto
+
+- La colaboración remota se rige por `docs/REMOTE_AGENT_WORKFLOW.md` y las
+  plantillas de `.github/`; son guías operativas y no sustituyen una
+  autorización de N0-GOV.
+- Todo colaborador externo debe recibir un Issue con `task_id`, baseline,
+  allowlist, exclusiones, pruebas y criterio de cierre. Debe trabajar en una
+  rama `agent/<task_id>/<slug>` de su fork privado y entregar un PR; nunca
+  directamente en `main`. El acceso inicial recomendado es `Read`.
+- `desktop-app/src/**`, `addon/**`, `knowledge/**`, `security/**`, CI,
+  settings, secretos, perfiles, escenarios, resultados, SimulationCraft,
+  observación real, releases y claves permanecen bajo responsabilidad
+  exclusiva de Codex principal y autorizaciones separadas.
+- Un PR, una prueba verde o una revisión técnica no equivalen a aprobación,
+  merge, commit, push o publicación. Las invitaciones de GitHub se realizan
+  manualmente con el nombre exacto de la cuenta y el mínimo permiso necesario.
+
 - No modificar el árbol sin una tarea explícitamente autorizada y con alcance
   cerrado en `docs/NEXT_TASK.md`.
 - Iniciar cada tarea futura desde un árbol Git limpio; los cambios previos no

@@ -8862,14 +8862,14 @@ observation, live class mapping, knowledge approval, recommendation or
 SimulationCraft execution was performed. The next product evidence requires a
 separate attended manual export inside WoW followed by a distinct review.
 
-## Active design authorization — Druid specialization-registry review 0.1
+## Historical design authorization — Druid specialization-registry review 0.1
 
 The current attended registry is technical evidence only. This design records
 the review boundary needed to compare it with current sources without storing
 observed identifiers in the repository, selecting guidance, or turning a
 technical match into an approval.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8885,7 +8885,7 @@ technical match into an approval.
   "express_exclusions":["implementation code tests addon SavedVariables import changes or registry persistence","hardcoding observed identifiers current game facts or source content into the repository","knowledge catalog mutation approval guidance selection recommendations or live user-facing output","SimulationCraft comparisons runs results baselines network acquisition credentials releases commits pushes or any path outside the closed allowlist"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Design output — attended registry evidence review
 
@@ -8920,3 +8920,27 @@ If Daniel later approves a mapping decision, the next contract must define a
 minimal non-versioned local evidence record, exact implementation paths,
 freshness and invalidation rules, tests for disagreement and drift, and a
 separate authorization for any product-facing guidance.
+
+## Active implementation authorization — remote agent collaboration 0.1
+
+This closed block establishes repository-only collaboration scaffolding. It
+does not grant external accounts access, merge rights, production ownership or
+authority over protected areas.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"remote_agent_collaboration_0_1",
+  "title":"Establish governed remote collaboration for subordinate agents",
+  "baseline_commit":"963cf748ffb4f1f6e1dab93d8458670fca331615",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"remote_agent_collaboration_0_1-20260831-daniel","authorized_by":"Daniel","authorized_at":"2026-08-31T00:00:00-05:00"},
+  "scope":{"allowed_paths":["AGENTS.md","docs/REMOTE_AGENT_WORKFLOW.md",".github/PULL_REQUEST_TEMPLATE.md",".github/ISSUE_TEMPLATE/agent-task.md",".github/CODEOWNERS","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/remote_agent_collaboration_0_1/implementation.json",".dpslab/quality-gates/remote_agent_collaboration_0_1/audit.json"],"forbidden_paths":[".github/workflows/**","desktop-app/src/**","addon/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","keys/**","releases/**"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["document roles and exclusive ownership boundaries","provide Issue and PR templates with exact allowlists and evidence requirements","require agent branches and prohibit direct main, force-push, secrets, real game data and implicit publication","document GitHub invitation steps and minimum permission principle","make compensating review controls explicit because branch protection may be unavailable","pass focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["external invitation or permission change","GitHub settings, Actions workflows, secrets, tokens, keys or releases","production code, addon, knowledge, security baseline, real observation, SimulationCraft, comparisons, runs, results or baselines","merge, commit, push or publication beyond this closed documentation block"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
