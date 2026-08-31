@@ -8886,3 +8886,37 @@ technical match into an approval.
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design output — attended registry evidence review
+
+The review consumes one ephemeral, already validated registry snapshot and a
+small source set. It does not copy the snapshot, its raw payload, its class
+identifier, its specialization identifiers, or source excerpts into versioned
+files. The reviewer may retain only a sanitized decision record outside the
+repository with the observation SHA-256, capture compatibility envelope,
+source URLs and revisions, reviewer identity, timestamp, and decision state.
+
+Evidence is evaluated in this order:
+
+1. the attended local snapshot establishes only the current client shape:
+   one class, four unique specializations, two damage roles, one tank role and
+   one healer role;
+2. an official Blizzard class reference establishes the named Druid
+   specialization set and their semantic role expectations;
+3. one technically maintained community API reference may corroborate the
+   identifier-to-name mapping, but cannot replace an absent, stale or
+   contradictory primary source;
+4. a human reviewer compares both sources against the ephemeral snapshot and
+   records either `mapping_ready_for_human_approval` or a bounded unavailable
+   state.
+
+The review fails closed when the observation is unavailable or incompatible,
+the primary source is absent, the corroboration is missing or disagrees, the
+sources are stale for the observed build/interface, or the reviewer cannot
+attest the comparison. A successful technical comparison is still not a
+catalog approval, a recommendation, or an implementation authorization.
+
+If Daniel later approves a mapping decision, the next contract must define a
+minimal non-versioned local evidence record, exact implementation paths,
+freshness and invalidation rules, tests for disagreement and drift, and a
+separate authorization for any product-facing guidance.
