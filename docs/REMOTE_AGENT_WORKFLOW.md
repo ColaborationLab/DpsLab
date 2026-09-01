@@ -32,6 +32,19 @@ un Issue y un contrato cerrado aprobado por N0-GOV.
 Nunca se trabaja directamente sobre `main`, se hace force-push, se cambia el
 remoto, se crean releases ni se habilitan workflows desde una tarea delegada.
 
+## Trabajo mediante Codex Cloud
+
+Si el entorno no puede consultar el Issue, el prompt debe incluir una copia
+completa de su contrato aprobado. Esa copia no sustituye el Issue canónico ni
+amplía la autoridad concedida. La rama aislada `work` y la ausencia de
+`origin` en la terminal tampoco autorizan acceso directo a `main`.
+
+No se añaden `GH_TOKEN`, PAT, claves de firma, secretos ni credenciales solo
+para consultar el Issue. El agente entrega un resumen, las pruebas y el diff;
+Codex principal revisa ese diff antes de que una persona decida si crea un
+pull request. Crear el PR, aprobarlo, fusionarlo y publicar son transiciones
+separadas, y ningún resultado técnico equivale a aprobación humana.
+
 ## Matriz de propiedad
 
 | Área | Agente subordinado | Codex principal |
