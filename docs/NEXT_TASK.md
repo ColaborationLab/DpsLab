@@ -8989,7 +8989,7 @@ merged by rebase into `main`. The published main ref is
 Issue #2 remains open as the task record and the pilot branch remains
 preserved. This historical record does not authorize new external work.
 
-## Active design authorization — Druid approved registry binding 0.1
+## Published design record — Druid approved registry binding 0.1
 
 Daniel approved a human review of one attended Druid specialization registry.
 The reviewed evidence is retained only in a sanitized local record outside the
@@ -8997,7 +8997,7 @@ repository. This design defines the boundary by which a later, separately
 authorized implementation could use an approved local mapping without placing
 observed identifiers, source content, or player data in version control.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9013,7 +9013,7 @@ observed identifiers, source content, or player data in version control.
   "express_exclusions":["implementation code tests addon SavedVariables import changes or registry persistence","versioning real identifiers observed payloads source excerpts player data or local evidence records","catalog mutation approval guidance selection recommendations or live user-facing output","SimulationCraft comparisons runs results baselines network acquisition credentials releases commits pushes or any path outside the closed allowlist"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Design output — approved local registry-binding boundary
 
@@ -9048,3 +9048,74 @@ exact local-only paths, bounded serialization, atomic write/replace behavior
 if it persists a decision record, freshness duration, source revision format,
 synthetic fixtures, negative tests for every ineligible state, and a separate
 authorization for any catalog or guidance use.
+
+The approved design was committed and published through
+`4040dc9a28f61351b33a7c4a41bef42da5437317`; GitHub Actions run
+`33472210005` completed successfully. This historical record does not
+authorize persistence, implementation, catalog work, or guidance.
+
+## Active design authorization — Local character context profile 0.1
+
+The desktop application needs a local, user-recognizable character profile to
+show relevant WoW context and later evaluate compatibility. This design keeps
+that visible profile distinct from the narrow technical registry-evidence
+record. It expands no runtime capture or storage today.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_character_context_profile_0_1",
+  "title":"Design a consented local desktop character context profile",
+  "baseline_commit":"4040dc9a28f61351b33a7c4a41bef42da5437317",
+  "authorization":{"status":"design_only","authorization_id":"local_character_context_profile_0_1-20260901-daniel","authorized_by":"Daniel","authorized_at":"2026-09-01T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","docs/ADDON_REAL_OBSERVATION.md":"8f7214330aede2e4245f6cf32a7f63b939cf01c048c8ce69816b21d94e2aad17","docs/DESKTOP_INTERFACE_ARCHITECTURE.md":"868ee94ee5d002daa31141600fa2b5741f24380134d17f40728930c6c14b8c73","desktop-app/src/dpslab/addon_character_identity_transport.py":"85b6e914a026e7aac761a6c0731d2cd71716b987e33af146726962d6f737c13e","desktop-app/src/dpslab/druid_identity_context.py":"9dc29be1084893062ea157cd451a2e273582c490d2d60a4fd9dba046c4edf867"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define separate local profile display identity performance-context and technical-evidence families without creating a durable universal player fingerprint","allow a future explicit manual capture of display name realm class specialization role level race equipment talents and other applicability inputs only after a distinct per-category minimization and consent decision","require a local-only profile selected by the user with explicit create update inspect export and delete lifecycle controls and no background watcher login refresh or telemetry","define no-network default storage retention encryption or Windows-user protection options migration and atomic replacement behavior without choosing an implementation","require that raw observations names realm equipment talents and profile data never enter Git CI logs Issues artifacts recommendations or an external service by default","require source build compatibility freshness and applicability to be evaluated independently from visual profile recognition","define unavailable stale partial and incompatible state handling that never shows a personalized result as current","propose synthetic future fixtures and negative tests for consent absence deletion tampering cross-profile confusion stale context and attempted network transmission","propose no code addon capture persistence UI catalog guidance or user-facing implementation","pass focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["implementation code tests addon SavedVariables import changes real observation capture or local profile persistence","real name realm account GUID equipment talents items stats combat events or other player data in the repository documentation output or generated artifact","catalog mutation approval guidance selection recommendations or live user-facing output","network telemetry synchronization cloud backup credentials releases commits pushes or any path outside the closed allowlist"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design output — local character context profile
+
+The future desktop profile has three separated views. `display_identity` holds
+the human-recognizable name and realm chosen for local display. `performance_
+context` holds the class, specialization, role, level, race, build, equipment,
+talent/loadout and other variables that a separately approved guidance rule may
+need. `evidence_links` holds only local references to compatible reviewed
+registries, source decisions and freshness state. No one view substitutes for
+another: a matching display name cannot establish applicability, and a valid
+technical evidence record cannot silently identify a user-facing profile.
+
+Capture and retention are explicit local lifecycle operations. A future user
+must choose a character and request create or update; the application must
+show the field categories and capture time before durable replacement. A
+future delete operation removes the selected profile and its local supporting
+data; a separate clear-all operation requires a second confirmation. There is
+no login, addon-load, specialization-change, equipment-change, talent-change,
+timer, polling, filesystem watcher, cloud backup, telemetry or automatic
+refresh path.
+
+Default storage is local to the Windows user and outside the repository. The
+implementation must choose either user-bound Windows protection or an explicit
+documented plaintext-local risk decision, use bounded canonical serialization
+and atomic replacement, and reject reparse paths and cross-profile mixups. It
+must not retain the raw addon payload after parsing. Export is a later,
+separately authorized feature and must offer a sanitized form by default.
+
+The application may show a profile's local display identity and the age and
+completeness of its context. It may not show a guidance result merely because a
+profile exists. Missing consent, partial capture, incompatible build, stale
+evidence, changed equipment or talents, revoked mapping or unavailable
+knowledge must produce an explicit non-actionable state. Equipment and talent
+capture remain separate categories because they have higher volume, volatility
+and source-rights implications than identity context.
+
+The next implementation decision must select the initial profile field subset,
+the local storage root and Windows protection approach, exact desktop routes,
+synthetic fixtures, deletion semantics and all negative tests. It must be
+authorized independently from technical registry binding, addon capture,
+catalog approval and guidance selection.
