@@ -8957,14 +8957,14 @@ GitHub CLI or a configured `origin`, so future Cloud tasks must receive their
 complete closed contract in the prompt and must not be given a `GH_TOKEN` or
 other repository credential merely to read an Issue.
 
-## Active implementation authorization — remote agent Cloud pilot 0.1
+## Published implementation record — remote agent Cloud pilot 0.1
 
 This pilot records the smallest useful correction learned from the attended
 Cloud-readiness exercise. The external agent may change only the remote-agent
 workflow document. This `NEXT_TASK.md` delta is the pre-authored governing
 contract and the external agent must preserve it byte-for-byte.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -8980,4 +8980,71 @@ contract and the external agent must preserve it byte-for-byte.
   "express_exclusions":["any external-agent edit to docs/NEXT_TASK.md beyond preserving this pre-authored contract","GitHub authentication tokens secrets settings permissions workflows Issues comments branches pull requests merges or publication","production code addon knowledge security real observations SimulationCraft comparisons runs results baselines releases or keys","commit push or any path outside the closed allowlist"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The pilot was executed in Codex Cloud, independently audited, transported by
+the principal Codex into a governed branch, reviewed in Draft PR #3, and
+merged by rebase into `main`. The published main ref is
+`7762add0fd7a9dcf2ce1a5d63751f376cdf36756`; GitHub Actions run #172 passed.
+Issue #2 remains open as the task record and the pilot branch remains
+preserved. This historical record does not authorize new external work.
+
+## Active design authorization — Druid approved registry binding 0.1
+
+Daniel approved a human review of one attended Druid specialization registry.
+The reviewed evidence is retained only in a sanitized local record outside the
+repository. This design defines the boundary by which a later, separately
+authorized implementation could use an approved local mapping without placing
+observed identifiers, source content, or player data in version control.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"druid_approved_registry_binding_0_1",
+  "title":"Design a fail-closed boundary for an approved local Druid registry mapping",
+  "baseline_commit":"7762add0fd7a9dcf2ce1a5d63751f376cdf36756",
+  "authorization":{"status":"design_only","authorization_id":"druid_approved_registry_binding_0_1-20260901-daniel","authorized_by":"Daniel","authorized_at":"2026-09-01T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/DRUID_VERTICAL_SLICE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/druid_identity_context.py":"9dc29be1084893062ea157cd451a2e273582c490d2d60a4fd9dba046c4edf867","desktop-app/src/dpslab/druid_role_context.py":"5013998a3e80154d0e0b3a8cc90eff417bdbb964ea6257dd0bbf3a45c0e3d017","desktop-app/src/dpslab/druid_guidance_coordinator.py":"18600a9e50f117e94771a8dd59f90708cdc4cc4b24c7df0050fad6c8e4f1f5d0"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define the minimum local decision record reference needed to bind one approved registry mapping without versioning identifiers payloads character data or source excerpts","define freshness source-revision compatibility and invalidation requirements before any mapping can be considered usable","require exact observation hash decision state source set and compatibility envelope agreement with no nearest mapping fallback","define bounded unavailable outcomes for missing malformed stale revoked contradictory or unreviewed evidence","separate technical mapping validity human approval catalog approval and guidance availability","specify future synthetic tests for tampering disagreement expiry revocation and attempted identity leakage","propose no code addon catalog source acquisition persistence network recommendation or user-facing output","pass focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["implementation code tests addon SavedVariables import changes or registry persistence","versioning real identifiers observed payloads source excerpts player data or local evidence records","catalog mutation approval guidance selection recommendations or live user-facing output","SimulationCraft comparisons runs results baselines network acquisition credentials releases commits pushes or any path outside the closed allowlist"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design output — approved local registry-binding boundary
+
+The future implementation consumes two distinct local inputs: an ephemeral
+validated registry snapshot and a sanitized human decision record. It does not
+load an implicit global mapping, infer a Druid identity from role shape, or
+write either input into the repository. A decision record is eligible only
+when all of the following are exact matches:
+
+1. its observation SHA-256 matches the snapshot source hash;
+2. its compatibility envelope covers the current Retail product, build and
+   interface version;
+3. its decision state is explicitly approved and has not expired or been
+   revoked;
+4. its primary Blizzard source and technical corroboration are present, known
+   revisions, mutually non-contradictory, and within the defined freshness
+   window;
+5. the mapping represented in local memory is complete, one-to-one and agrees
+   with the validated registry role shape.
+
+The binding result must expose only a bounded state, a decision reference, and
+the existing semantic role policy. It must not return class or specialization
+identifiers, the raw observation, source excerpts, source filesystem paths, or
+player data. Missing, malformed, stale, revoked, contradictory or incomplete
+evidence produces `context_unavailable`; it never selects a nearby mapping,
+uses a previous build silently, or unlocks catalog guidance.
+
+Technical mapping validity, human mapping approval, catalog approval and
+guidance availability remain four separate transitions. This design does not
+authorize the next transition. A later implementation contract must define
+exact local-only paths, bounded serialization, atomic write/replace behavior
+if it persists a decision record, freshness duration, source revision format,
+synthetic fixtures, negative tests for every ineligible state, and a separate
+authorization for any catalog or guidance use.
