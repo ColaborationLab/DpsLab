@@ -9054,14 +9054,14 @@ The approved design was committed and published through
 `33472210005` completed successfully. This historical record does not
 authorize persistence, implementation, catalog work, or guidance.
 
-## Active design authorization — Local character context profile 0.1
+## Published design record — Local character context profile 0.1
 
 The desktop application needs a local, user-recognizable character profile to
 show relevant WoW context and later evaluate compatibility. This design keeps
 that visible profile distinct from the narrow technical registry-evidence
 record. It expands no runtime capture or storage today.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9077,7 +9077,7 @@ record. It expands no runtime capture or storage today.
   "express_exclusions":["implementation code tests addon SavedVariables import changes real observation capture or local profile persistence","real name realm account GUID equipment talents items stats combat events or other player data in the repository documentation output or generated artifact","catalog mutation approval guidance selection recommendations or live user-facing output","network telemetry synchronization cloud backup credentials releases commits pushes or any path outside the closed allowlist"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Design output — local character context profile
 
@@ -9119,3 +9119,70 @@ the local storage root and Windows protection approach, exact desktop routes,
 synthetic fixtures, deletion semantics and all negative tests. It must be
 authorized independently from technical registry binding, addon capture,
 catalog approval and guidance selection.
+
+This approved design was committed and published through
+`135c550a8d0d81c5835728484e54b14e9eff10c6`; GitHub Actions run
+`33474211048` completed successfully. It remains a design record and does not
+authorize persistence or data capture.
+
+## Active design authorization — Local character context profile core 0.1
+
+This bounded design selects the first durable profile boundary before any
+capture, addon integration or desktop interface. It makes a conservative
+choice for Windows-user-local protection, retains only the smallest useful
+identity/context set, and leaves equipment and talents for later independent
+decisions.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_character_context_profile_core_0_1",
+  "title":"Design the protected local core for one selected character profile",
+  "baseline_commit":"135c550a8d0d81c5835728484e54b14e9eff10c6",
+  "authorization":{"status":"design_only","authorization_id":"local_character_context_profile_core_0_1-20260901-daniel-continuation","authorized_by":"Daniel","authorized_at":"2026-09-01T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","docs/ADDON_REAL_OBSERVATION.md":"8f7214330aede2e4245f6cf32a7f63b939cf01c048c8ce69816b21d94e2aad17","docs/DESKTOP_INTERFACE_ARCHITECTURE.md":"868ee94ee5d002daa31141600fa2b5741f24380134d17f40728930c6c14b8c73","desktop-app/src/dpslab/windows_key_protection.py":"27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b","desktop-app/src/dpslab/retail_installation_store.py":"07e988802b73ea2ae35446ca134d6fedb4bb2f31eac100ee629cd5d0b624a5c7"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["select one local profile at a time with an opaque locally generated identifier rather than a universal game or account identifier","define the first retained field set as display name realm class specialization role level race client build capture timestamp and local profile schema version","keep equipment talents items stats combat events account GUID raw SavedVariables and raw addon payload out of the first retained field set","select Windows DPAPI current-user protection for the durable profile body and treat a DPAPI failure or unavailable Windows context as non-actionable","require a bounded closed canonical document stored below the current user's LocalAppData DpsLab profile root with atomic replace reparse rejection and cross-profile isolation","define explicit create inspect replace selected delete and double-confirmed clear-all lifecycle operations without UI or automatic triggers","require a stored profile to be displayable only after integrity protection schema and compatibility checks succeed and never itself create guidance","define synthetic fixtures and negative tests for consent absence tamper corruption reparse paths cross-profile substitution stale or incompatible context failed DPAPI and accidental network transmission","propose exact future implementation paths without creating code tests persistence UI addon capture catalog or guidance","pass focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["implementation code tests addon SavedVariables import changes real observation capture or local profile persistence","real name realm account GUID equipment talents items stats combat events or other player data in the repository documentation output or generated artifact","catalog mutation approval guidance selection recommendations or live user-facing output","network telemetry synchronization cloud backup credentials releases commits pushes or any path outside the closed allowlist"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design output — protected single-profile core
+
+The first core is deliberately a single selected local profile, identified by
+an opaque value generated only on durable creation. It retains `display_name`,
+`realm`, `class_id`, `specialization_id`, `role`, `level`, `race_id`,
+`client_build`, `captured_at`, and `schema_version`. The name and realm exist
+solely for local recognition. They cannot act as an account identity, lookup
+key, recommendation key or network identifier.
+
+The durable body is protected by Windows DPAPI at current-user scope. DPAPI is
+chosen over an application-managed password to avoid creating a second secret
+the player must preserve. If Windows protection, integrity, schema validation,
+or build compatibility fails, the stored profile is unavailable. The profile
+is not silently downgraded to plaintext or partially recovered.
+
+Future storage belongs below the current user's LocalAppData `DpsLab` root,
+outside the repository. It uses a closed, bounded canonical document and an
+atomic replacement path. Existing storage safety patterns may inform the
+implementation, but the release-key container must not be reused as a profile
+schema. The profile-specific protection boundary, field validation and tests
+must be independently implemented and reviewed.
+
+Lifecycle remains explicit: create, inspect, replace the selected profile,
+delete the selected profile, and clear all only after a second confirmation.
+There is no login detection, addon load, specialization switch, equipment or
+talent change, scheduled job, polling, watcher, telemetry, network request or
+background migration. Equipment and talents remain absent until a separate
+approved category contract establishes their minimization, volatility and
+source constraints.
+
+The next implementation contract must be limited to the profile core model,
+profile-specific Windows protection/store adapter, synthetic tests and its
+documentation/status record. It must not expose a UI, read a SavedVariable,
+perform a game observation, create guidance, select a template or run
+SimulationCraft.
