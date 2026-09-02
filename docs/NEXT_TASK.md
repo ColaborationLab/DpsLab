@@ -9125,7 +9125,7 @@ This approved design was committed and published through
 `33474211048` completed successfully. It remains a design record and does not
 authorize persistence or data capture.
 
-## Active design authorization — Local character context profile core 0.1
+## Published design record — Local character context profile core 0.1
 
 This bounded design selects the first durable profile boundary before any
 capture, addon integration or desktop interface. It makes a conservative
@@ -9133,7 +9133,7 @@ choice for Windows-user-local protection, retains only the smallest useful
 identity/context set, and leaves equipment and talents for later independent
 decisions.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9149,7 +9149,7 @@ decisions.
   "express_exclusions":["implementation code tests addon SavedVariables import changes real observation capture or local profile persistence","real name realm account GUID equipment talents items stats combat events or other player data in the repository documentation output or generated artifact","catalog mutation approval guidance selection recommendations or live user-facing output","network telemetry synchronization cloud backup credentials releases commits pushes or any path outside the closed allowlist"]
 }
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 ### Design output — protected single-profile core
 
@@ -9186,3 +9186,32 @@ profile-specific Windows protection/store adapter, synthetic tests and its
 documentation/status record. It must not expose a UI, read a SavedVariable,
 perform a game observation, create guidance, select a template or run
 SimulationCraft.
+
+The approved design was committed and published through
+`8566f2c8272e95a9a78af50bc3437a9c8df2b715`. This historical record does not
+authorize a wider profile, any observation, user interface, guidance or data
+transfer.
+
+## Active implementation authorization — Local character context profile core 0.1
+
+This implementation creates only the protected local core previously designed.
+All inputs in tests are synthetic. It accepts explicitly supplied values but
+does not acquire them from the addon, WoW, Windows user profile or network.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_character_context_profile_core_implementation_0_1",
+  "title":"Implement one protected local character context profile core",
+  "baseline_commit":"8566f2c8272e95a9a78af50bc3437a9c8df2b715",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"local_character_context_profile_core_implementation_0_1-20260901-daniel-continuation","authorized_by":"Daniel","authorized_at":"2026-09-01T00:00:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/local_character_context_profile.py","desktop-app/tests/test_local_character_context_profile.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/local_character_context_profile_core_implementation_0_1/implementation.json",".dpslab/quality-gates/local_character_context_profile_core_implementation_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","desktop-app/src/dpslab/windows_key_protection.py","desktop-app/src/dpslab/retail_installation_store.py","desktop-app/src/dpslab/addon_observation_acquisition.py","desktop-app/src/dpslab/addon_observation_import.py","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-p","test_local_character_context_profile.py","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1045,"minimum_test_count":1045},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/windows_key_protection.py":"27d1bfdce76df7c06666e98aaaa2456cd23e17b06eaccee98f7bb440080ef67b","desktop-app/src/dpslab/retail_installation_store.py":"07e988802b73ea2ae35446ca134d6fedb4bb2f31eac100ee629cd5d0b624a5c7","desktop-app/src/dpslab/addon_observation_acquisition.py":"91761921ae8c5044e53a03f85a526204c1d883112b5f1c89e1805aab0827b1a1"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define closed immutable profile input and stored-state models for the minimal designed fields only","reject booleans as integer identifiers empty or overlong display values invalid role values naive timestamps unsupported build formats and unknown keys","protect the canonical profile body with a profile-specific Windows current-user DPAPI adapter and never use the release-key container or its schema","store one selected profile under an explicit caller-provided local root using bounded canonical serialization atomic replacement regular-file checks reparse rejection and no durable plaintext fallback","offer explicit create inspect replace selected delete and clear-all operations without automatic capture discovery migration watcher timer or network operation","return bounded non-sensitive states and never include a display name realm profile body path ciphertext or raw input in error strings or reprs","cover synthetic normal and negative paths including tamper wrong protector reparse root replacement cross-profile substitution malformed canonical content and failed delete","pass focused and full suites with protected hashes unchanged and no SimulationCraft invocation"],
+  "express_exclusions":["real name realm account GUID equipment talents items stats combat events SavedVariables or other player data in tests repository documentation output or generated artifact","addon APIs WoW observation capture import discovery UI CLI wiring recommendations templates catalog changes comparisons runs SimulationCraft network telemetry synchronization cloud backup credentials releases commits pushes","any path outside the closed allowlist"]
+}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
