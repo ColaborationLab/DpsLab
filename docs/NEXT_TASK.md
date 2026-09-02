@@ -9192,13 +9192,13 @@ The approved design was committed and published through
 authorize a wider profile, any observation, user interface, guidance or data
 transfer.
 
-## Active implementation authorization — Local character context profile core 0.1
+## Published implementation record — Local character context profile core 0.1
 
 This implementation creates only the protected local core previously designed.
 All inputs in tests are synthetic. It accepts explicitly supplied values but
 does not acquire them from the addon, WoW, Windows user profile or network.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9214,4 +9214,118 @@ does not acquire them from the addon, WoW, Windows user profile or network.
   "express_exclusions":["real name realm account GUID equipment talents items stats combat events SavedVariables or other player data in tests repository documentation output or generated artifact","addon APIs WoW observation capture import discovery UI CLI wiring recommendations templates catalog changes comparisons runs SimulationCraft network telemetry synchronization cloud backup credentials releases commits pushes","any path outside the closed allowlist"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The authorization above was consumed only by the audited implementation in
+`desktop-app/src/dpslab/local_character_context_profile.py`, its synthetic
+tests, and this record. The implementation was committed as
+`dde7f932bdad38792f692562b850367a20e37c4e` (`feat: add protected local
+character context profile`) and published to `main`. GitHub Actions run
+`33591023267` completed successfully. The reported evidence was five focused
+tests and 1,241 full-suite tests passing (one expected skip), with no
+SimulationCraft invocation. This closes the implementation contract; it does
+not authorize capture, addon integration, UI, recommendations, templates,
+networking, or any broader retained profile fields.
+
+## Active design authorization — Manual addon-to-profile transfer 0.1
+
+This task designs the explicit, local, fail-closed boundary between a future
+user-requested addon export and the protected desktop profile core. It neither
+implements nor captures game data. It may use only synthetic field categories
+and existing canonical design records to determine the contract.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"addon_profile_manual_transfer_design_0_1",
+  "title":"Design a consented manual transfer from addon observation to the protected local profile",
+  "baseline_commit":"dde7f932bdad38792f692562b850367a20e37c4e",
+  "authorization":{"status":"design_only","authorization_id":"addon_profile_manual_transfer_design_0_1-20260902-daniel","authorized_by":"Daniel","authorized_at":"2026-09-02T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define a user-visible request-and-confirm sequence with no automatic import watcher, polling, login capture, addon-load capture, specialization-change capture, or background refresh","separate untrusted addon observation transport from the desktop profile input and declare strict schema, bounded field, source, freshness, compatibility, and consent checks before any future durable write","retain only the minimal core profile fields already designed and mark equipment, talents, items, combat events, account identifiers, GUIDs, raw SavedVariables, raw payloads, and unsupported API values as excluded or separately governed categories","define explicit fail-closed outcomes for missing consent, malformed or duplicate fields, stale or incompatible builds, ambiguous specialization or role, unsupported product branch, cross-profile confusion, and any attempted network transmission","require local-only, user-initiated inspect-before-create or replace behavior and a clear explanation that a valid profile does not itself produce guidance","propose synthetic-only fixtures, negative tests, exact future implementation routes, and a separate authorization boundary for any addon API, real observation, UI, persistence wiring, or recommendation work","make no implementation, capture, transfer, recommendation, catalog, UI, commit, push, or SimulationCraft change"],
+  "express_exclusions":["addon code, WoW API access, real character, realm, GUID, equipment, talent, item, combat, SavedVariables, account, or raw observation data","desktop code, persistence wiring, UI, CLI, network, telemetry, synchronization, cloud backup, catalog, template, guidance, recommendation, comparison, run, result, baseline, SimulationCraft, commit, push, release, or any path outside the allowlist"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design questions to resolve
+
+1. What exact, closed, synthetic transport schema can represent only the core
+   profile fields without preserving raw SavedVariables or an account identity?
+2. Which user-visible confirmations must occur in the addon and desktop before
+   an observation can be previewed, created, or replace the selected profile?
+3. How should source build, interface version, product branch, capture time,
+   class, specialization, and role be validated independently before a future
+   profile operation becomes available?
+4. Which bounded local diagnostic states can explain rejection without exposing
+   a name, realm, raw payload, ciphertext, local path, or sensitive values in
+   logs, errors, Git, CI, Issues, or artifacts?
+5. Which synthetic fixtures and negative tests prove consent absence,
+   malformed/duplicate transport fields, stale data, unsupported compatibility,
+   cross-profile substitution, and attempted network use fail closed?
+
+The required output is a design-only record in this file. Its next possible
+implementation must be a separate, closed contract; no result of this design
+authorizes an addon API, a real observation, a durable import, or guidance.
+
+### Design output — consented local transfer boundary
+
+The transfer is a two-step, local-only ceremony rather than an integration
+pipe. First, the player explicitly requests a future addon export and sees
+which field categories are offered. Second, the desktop application requires a
+separate explicit import request, presents a bounded preview, and requires the
+selected-profile create or replace confirmation already defined by the profile
+core. No event in either application can advance the other step automatically.
+
+The future transport is an untrusted, bounded JSON-compatible envelope with a
+closed schema. It contains only: transport schema version; WoW product and
+interface/build compatibility values; addon version; capture time; a random
+per-export nonce that is not a character or account identifier; declared
+field-category presence; and the prospective core fields `display_name`,
+`realm`, `class_id`, `specialization_id`, `role`, `level`, `race_id`, and
+`client_build`. A later implementation may omit unavailable prospective fields
+but must never invent them. The transport contains no GUID, account identity,
+equipment, talents, items, statistics, combat event, history, raw
+SavedVariables, Lua fragment, executable payload, recommendation, catalog, or
+signature/private-key material.
+
+The addon export and the desktop parser must each impose a fixed byte limit,
+closed key set, maximum string lengths, strict integer rules that reject
+booleans, an explicit UTC timestamp representation, and duplicate-key
+rejection. The desktop validates product branch, interface/build syntax,
+capture freshness, class-specialization-role mapping, field category consent,
+and compatibility before it can construct a profile-core input. A valid
+transport is only a preview candidate: it never identifies an account, selects
+guidance, upgrades evidence, or authorizes durable storage by itself.
+
+The desktop discards the raw transport immediately after bounded parsing. It
+passes only the accepted minimal profile fields into the existing protected
+profile boundary. A failed validation produces a stable, non-sensitive local
+reason code such as `consent_required`, `transport_malformed`,
+`transport_stale`, `compatibility_unavailable`, `field_unavailable`, or
+`profile_confirmation_required`; it must not put raw content, name, realm,
+path, ciphertext, or identifier into logs, errors, Git, CI, Issues, or
+artifacts. Any unknown, contradictory, future-schema, stale, incompatible, or
+cross-profile state is non-actionable and must leave the selected profile
+unchanged.
+
+There is no network request, telemetry, cloud backup, clipboard watcher,
+filesystem watcher, addon-load detection, login detection, automatic polling,
+automatic refresh, background migration, or automatic export/import. A future
+user may explicitly inspect the resulting protected profile and may use its
+existing delete or double-confirmed clear-all operations. Deletion of a profile
+does not command the addon to create a new export.
+
+A future implementation contract must separately identify the exact addon and
+desktop routes, introduce only synthetic fixtures first, and prove these
+negative paths: absent desktop consent; absent addon export request; malformed
+or duplicate transport keys; boolean identifiers; oversize content; stale or
+incompatible build; unknown class-specialization-role relation; raw payload
+retention attempt; cross-profile substitution; failed protected-store write;
+and attempted network use. Real WoW API observation, a user-facing UI, durable
+transfer wiring, and all guidance remain independently authorized follow-on
+work.
