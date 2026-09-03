@@ -9328,7 +9328,7 @@ and attempted network use. Real WoW API observation, a user-facing UI, durable
 transfer wiring, and all guidance remain independently authorized follow-on
 work.
 
-## Active implementation authorization — Manual addon-to-profile transfer core 0.1
+## Published implementation record — Manual addon-to-profile transfer core 0.1
 
 This implementation is the desktop-only, explicit bridge for the existing
 strict `character_identity_snapshot`. It accepts an already parsed immutable
@@ -9336,7 +9336,7 @@ snapshot plus separately supplied local display values. It does not read a
 SavedVariables file, invoke a WoW API, add an addon command, display a UI, or
 contact a network service.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9350,6 +9350,87 @@ contact a network service.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["accept only the existing immutable CharacterIdentitySnapshot plus an explicit local display-name and realm input; never acquire, derive, log, or retain those display values outside the protected profile operation","require a literal desktop preview confirmation and a separate literal create or replace confirmation before calling the existing protected profile core","validate an exact expected Retail build and interface version, a bounded freshness interval, a non-future capture time, and all source values before constructing a CharacterContextProfileInput","return only bounded state and reason values; never return a raw snapshot, display value, realm, profile path, ciphertext, or source payload","create only when no selected profile exists and replace only with an exact caller-supplied selected profile identifier; leave durable state unchanged on every rejected request","cover exclusively synthetic snapshots, display values, fake protectors, normal create/replace, consent absence, stale/future or incompatible capture, invalid display values, profile mismatch, and no-network behavior","pass focused and full suites with protected hashes unchanged and no SimulationCraft invocation"],
   "express_exclusions":["addon code, WoW API access, SavedVariables acquisition, real character, realm, GUID, equipment, talent, item, combat, account, or raw observation data","desktop UI or CLI wiring, automatic import, polling, watcher, network, telemetry, synchronization, cloud backup, catalog, template, guidance, recommendation, comparison, run, result, baseline, SimulationCraft, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The authorization above was consumed only by the three listed desktop/document
+routes. It was committed as `9f12e716df825bf901dacf0f9420620a959c4222`
+(`feat: add manual addon profile transfer core`) and published to `main`.
+GitHub Actions run `33596022334` completed successfully across static and
+secret analysis, tools tests, policy and contract, and the functional suite.
+Local evidence recorded 5 focused tests, 1,246 functional tests (one expected
+skip), and 142 tools tests passing. This closure does not authorize addon
+changes, real capture, UI wiring, guidance, or SimulationCraft.
+
+## Approved design record — Local profile manual UI 0.1
+
+This design defines the first desktop surface that can make the already
+published protected-profile and manual-transfer cores usable without adding a
+background data path. It is design-only and does not modify the current
+desktop application, addon, transport, profile storage, catalog, or network.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_profile_manual_ui_design_0_1",
+  "title":"Design a consented desktop interface for one local character profile",
+  "baseline_commit":"9f12e716df825bf901dacf0f9420620a959c4222",
+  "authorization":{"status":"design_only","authorization_id":"local_profile_manual_ui_design_0_1-20260902-daniel","authorized_by":"Daniel","authorized_at":"2026-09-02T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/DESKTOP_INTERFACE_ARCHITECTURE.md","docs/ADDON_REAL_OBSERVATION.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478","desktop-app/src/dpslab/addon_profile_manual_transfer.py":"20296a592c4157396867efbd4587b790de37533d654e72c49025f3596ba19cf3"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define one selected-profile screen with explicit inspect, manual preview, create, replace, delete, and double-confirmed clear-all affordances","display name and realm only locally and only after protected inspection succeeds; never display raw transport, ciphertext, local paths, GUIDs, account data, equipment, talents, or guidance","require distinct user-visible confirmations for preview, create, replace, delete, and clear-all; disable actions for unavailable, stale, incompatible, malformed, or unconfirmed state","specify bounded non-sensitive status/reason mapping, no logging of profile values, no automatic retry, no background capture, and no network or telemetry","define synthetic UI-model fixtures and negative tests plus exact candidate implementation routes without creating an interface","preserve the separation between a valid profile and any future recommendation, template, catalog, simulation, or comparison"],
+  "express_exclusions":["desktop UI implementation, addon code, WoW API access, real character or profile data, SavedVariables acquisition, automatic import, network, telemetry, synchronization, catalog, template, guidance, recommendation, SimulationCraft, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+### Design direction
+
+The first screen is a local profile workspace, not a dashboard or combat
+advisor. It has three explicit states: `no_selected_profile`,
+`selected_profile_available`, and `profile_unavailable`. The screen may show
+local display identity and bounded compatibility/freshness labels only in the
+available state. It must never treat an unavailable profile as a partial
+profile or synthesize missing values.
+
+The manual-transfer entry begins with a user-provided identity snapshot source
+and local display fields, shows a non-durable preview, and presents either
+`Create selected profile` or `Replace selected profile` as a separate action.
+The delete action targets only the selected profile. Clear-all requires a
+second destructive confirmation and cannot be bundled with another action.
+No action discovers paths, starts WoW, changes addon state, reads a file in the
+background, or transmits data.
+
+The approved direction selects the standard-library Tk toolkit already used by
+the desktop package, a caller-supplied local root, and synthetic-only tests.
+It does not broaden into a recommendation UI.
+
+## Active implementation authorization — Local profile manual UI 0.1
+
+This implementation adds the first visible local workspace and a testable
+controller around the already published protected-profile and manual-transfer
+cores. It deliberately has no default source acquisition: a caller must inject
+an already parsed snapshot supplier after a future, separate source-binding
+authorization.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_profile_manual_ui_implementation_0_1",
+  "title":"Implement a local-only manual character-profile workspace",
+  "baseline_commit":"9f12e716df825bf901dacf0f9420620a959c4222",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"local_profile_manual_ui_implementation_0_1-20260902-daniel","authorized_by":"Daniel","authorized_at":"2026-09-02T00:00:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/local_profile_manual_ui.py","desktop-app/tests/test_local_profile_manual_ui.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/local_profile_manual_ui_implementation_0_1/implementation.json",".dpslab/quality-gates/local_profile_manual_ui_implementation_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","desktop-app/src/dpslab/addon_character_identity_transport.py","desktop-app/src/dpslab/addon_profile_manual_transfer.py","desktop-app/src/dpslab/local_character_context_profile.py","desktop-app/src/dpslab/__main__.py","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-p","test_local_profile_manual_ui.py","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1246,"minimum_test_count":1252},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478","desktop-app/src/dpslab/addon_profile_manual_transfer.py":"20296a592c4157396867efbd4587b790de37533d654e72c49025f3596ba19cf3"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["provide a visible Tk local workspace and a headless controller with no default data-source acquisition","show name and realm only after protected inspection succeeds, keeping profile identifiers opaque to the visible model","require exact, separate confirmations for preview, create, replace, delete, and clear-all; leave durable state unchanged on every rejected action","accept snapshots only through an injected in-memory supplier and explicit user action; do not read files, discover paths, call WoW APIs, invoke the addon, poll, retry, or use network or telemetry","map all errors to bounded non-sensitive state and reason values, and keep raw observations, ciphertext, paths, GUIDs, account data, equipment, talents, and guidance out of the UI model","cover synthetic-only inspection, unavailable profile, preview, create/replace, destructive confirmations, and source absence; pass focused and full suites with protected hashes unchanged and no SimulationCraft invocation"],
+  "express_exclusions":["addon code, WoW API access, SavedVariables acquisition, real character or profile data, automatic import, network, telemetry, synchronization, catalog, template, guidance, recommendation, comparison, run, result, baseline, SimulationCraft, commit, push, release, or any path outside the allowlist"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
