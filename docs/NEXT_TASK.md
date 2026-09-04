@@ -9617,7 +9617,7 @@ If approved for implementation, the exact allowlist will be
 will be limited to synthetic tests and must still exclude transport, addon,
 filesystem persistence, UI, engine execution, commits, and pushes.
 
-## Active implementation authorization — Núcleo de sesión local de análisis 0.1
+## Consumed implementation authorization — Núcleo de sesión local de análisis 0.1
 
 Daniel approved the closed synthetic-only implementation. It creates an
 in-memory model for current equipment, explicitly selected candidates, and
@@ -9626,7 +9626,7 @@ when the user selects it, one designated equipment bag. It will keep only
 current-expansion candidate items eligible for durable saving; this first core
 does not read, retain, or classify any real item.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9642,4 +9642,81 @@ does not read, retain, or classify any real item.
   "express_exclusions":["WoW API access, addon mutation, SavedVariables acquisition, text-paste parsing, installation discovery, real character or inventory data, persistence, UI changes, telemetry, network, catalog mutation, guidance, recommendation, simulation engine, SimulationCraft execution, commit, push, release, or any path outside the allowlist"]
 }
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The implementation was committed and published as
+`17ed52710bed036ee516dec82a3782f4348ad207` (`feat: add bounded local
+analysis session core`). Local and remote verification confirmed that
+`main` and `origin/main` point to that commit. GitHub Actions run
+`33836971408` passed Static analysis and secret scanning, Policy and contract,
+Functional suite, and Tools tests. This closure does not authorize a source
+transport, addon mutation, UI, persistence, analysis execution, or any next
+block.
+
+## Active design authorization — Exportación manual viva de análisis 0.1
+
+Daniel authorized a design-only contract for the primary route that keeps WoW
+open: the addon renders a bounded export chosen by the player, and the desktop
+application later accepts only a manually pasted copy. This is deliberately
+separate from the historical SavedVariables checkpoint route, whose disk read
+continues to require WoW to be stopped.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"live_manual_analysis_export_design_0_1",
+  "title":"Design the live manual addon-to-desktop analysis export",
+  "baseline_commit":"17ed52710bed036ee516dec82a3782f4348ad207",
+  "authorization":{"status":"design_only","authorization_id":"live_manual_analysis_export_design_0_1-20260903-daniel","authorized_by":"Daniel","authorized_at":"2026-09-03T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/live_manual_analysis_export_design_0_1/design.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_OBSERVATION_TRANSPORT.md","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_analysis_session.py":"a7c1d3e9eb99a47ba3131f4792fd064324254074c5168277b5ef6c081cd00b7d"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define a versioned bounded manual export that the addon may render only after an explicit player command while WoW remains open; it must never write an arbitrary desktop file, transmit data, poll, observe automatically, or invoke an analysis","define the observation envelope as canonical text with an exact schema tag, payload digest, product/interface/build evidence, class and specialization identifiers, level, role, selected context, equipped-item observations, and an optional one user-designated equipment bag; exclude character name, realm, GUID, account identifiers, chat, combat log, location, raw addon environment, filesystem paths, code, commands, and secrets","require the later desktop parser to treat every pasted value as untrusted, validate structure and resource bounds before use, and bind eligibility to independently trusted compatibility and current-content evidence; an export may not self-certify an item as current-expansion","limit the future live export to at most 19 equipped observations and at most 12 explicitly selected candidate observations from one designated bag; no exhaustive bag scan, automatic bag selection, automatic candidate selection, or combination generation","require item observations to be descriptive inputs only: stable item identifier, occupied slot or chosen bag position, item level and stat/modifier fields exposed by WoW when available; missing, ambiguous, stale, incompatible, or oversized data returns a bounded unavailable state rather than a partial analysis request","define virtual gem, enchantment, and modifier choices as desktop-only copies that target explicitly selected candidates after import; they must remain hypothetical, cannot mutate the game, and require a later user-selected bounded batch","keep the parsed session in memory by default and discard it on close; later optional encrypted retention may contain only current-expansion candidate items and requires its own authorization","define one concise first-use notice: installing or using both components permits their requested local character-data exchange; no telemetry or background collection is implied","name exact future implementation and synthetic-test routes without authorizing code, addon changes, real observations, persistence, UI, simulation engine, SimulationCraft, commit, or push","pass focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["implementation code, addon mutation, WoW API access, real character or inventory capture, manual text parsing, SavedVariables mutation or acquisition, file discovery, persistence, UI changes, telemetry, network, catalog mutation, guidance, recommendation, simulation engine, SimulationCraft execution, commit, push, release, or any path outside the allowlist"]
+}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design output — live manual export boundary
+
+The player remains in control of every transfer. A future addon command may
+render one copyable, player-selectable text payload for the current character;
+it must not emit the payload through chat, automatically access the clipboard,
+or split a partial payload across messages. A plain export
+contains only equipped observations; the optional form takes one explicitly
+chosen bag as its candidate source. Selecting that bag is a request for a
+bounded candidate list, not permission to inspect every bag, retain a bag
+choice, or choose items on the player's behalf.
+
+The payload is a transport envelope, not a trusted profile. It will include a
+schema version, canonical payload digest, observed compatibility facts, and
+only the game-exposed fields necessary to reconstruct equipment choices. The
+desktop side must parse it strictly and establish trusted compatibility outside
+the pasted data. It will reject an unknown game build, a missing content
+classification, duplicate item/slot identity, noncanonical structure, excess
+items, incomplete modifier fields, or an attempt to mark a candidate as
+current-expansion solely from the export.
+
+The future primary interaction is therefore: player explicitly requests an
+export while still playing, copies the rendered text, pastes it into DpsLab,
+and selects at most twelve relevant candidates and hypothetical variants. It
+does not require closing or restarting WoW. The checkpoint route remains a
+separate opt-in convenience after `/reload`; it must not be weakened or made a
+background reader merely because the primary manual route is live.
+
+The next implementation proposal, if later authorized, is limited to:
+
+- `addon/DpsLab/CharacterEquipmentObservation.lua`;
+- `addon/DpsLab/DpsLab.lua` and `addon/DpsLab/DpsLab.toc`;
+- `desktop-app/src/dpslab/addon_live_analysis_transport.py`;
+- `desktop-app/tests/test_addon_live_analysis_transport.py`;
+- `tools/tests/test_addon_live_analysis_export.py`;
+- `docs/ADDON_LIVE_ANALYSIS_EXPORT.md`; and
+- `docs/NEXT_TASK.md`.
+
+It must be split from any desktop UI, local retention, current-content catalog,
+recommendation, simulation-engine, or SimulationCraft work. A later human
+authorization must set the final schema byte limits and WoW API compatibility
+matrix after an evidence-only API review.
