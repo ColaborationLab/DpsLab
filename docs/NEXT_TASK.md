@@ -9818,10 +9818,48 @@ serialized byte size, local discard rules, synthetic fixtures, and a player
 attended validation. It must not convert practice capture into background
 telemetry or permit use outside an explicit user-controlled session.
 
-## Active implementation authorization — Training dummy session capture 0.1
+## Historical implementation authorization — Training dummy session capture 0.1
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {"contract_version":"0.1","task_id":"training_dummy_session_capture_0_1","title":"Implement synthetic bounded training-dummy practice capture","baseline_commit":"ac8b883ec89936ed356b57c6f7f109dc9e208de5","authorization":{"status":"authorized_for_implementation","authorization_id":"training_dummy_session_capture_0_1-20260904-daniel","authorized_by":"Daniel","authorized_at":"2026-09-04T00:00:00-05:00"},"scope":{"allowed_paths":["addon/DpsLab/TrainingDummySession.lua","addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","desktop-app/src/dpslab/training_dummy_session_transport.py","desktop-app/tests/test_training_dummy_session_transport.py","tools/tests/test_training_dummy_session_capture.py","docs/TRAINING_DUMMY_SESSION_CAPTURE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/training_dummy_session_capture_0_1/implementation.json",".dpslab/quality-gates/training_dummy_session_capture_0_1/audit.json"],"forbidden_paths":[".github/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_training_dummy_session_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1270,"minimum_test_count":1274},"protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["implement only synthetic injected session inputs with prepared active completed cancelled and unconfirmed target outcomes","accept only bounded durations and aggregate action/resource/inactivity metrics","serialize and parse a closed canonical text envelope with no personal identifiers raw combat events persistence network recommendation or executable fields","keep all real WoW APIs absent and reject missing synthetic inputs","pass focused and full suites quality gate and protected-hash verification without SimulationCraft"],"express_exclusions":["real WoW API access, real capture, combat log, persistence, network, recommendation, simulation engine, SimulationCraft, commit, push, release, or any path outside the allowlist"]}
 ```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Published as `e3687dc0b5907ce9f33d51bd33d43d8d477ebb5c`; the authority-identity
+correction was published as `cd474efb64a9550b473a4888c377a6c0d165718b`.
+GitHub Actions run `33874546153` approved Policy and contract, Tools tests,
+Static analysis and secret scanning, and Functional suite. This closure does
+not authorize live WoW APIs, real practice capture, or Advisor functionality.
+
+## Active design authorization — Advisor guidance contract 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{"contract_version":"0.1","task_id":"dpslab_advisor_guidance_contract_0_1","title":"Design generic and personalized DpsLab Advisor guidance contract","baseline_commit":"cd474efb64a9550b473a4888c377a6c0d165718b","authorization":{"status":"design_only","authorization_id":"dpslab_advisor_guidance_contract_0_1-20260904-daniel","authorized_by":"Daniel","authorized_at":"2026-09-04T00:00:00-05:00"},"scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/dpslab_advisor_guidance_contract_0_1/design.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["define Core as capture/export only and Advisor as an optional local presentation consumer","define a generic, non-personalized base package with bounded statistic targets gear priorities and priority-display rules, all marked current-content pending review and non-actionable until a later evidence/review lifecycle","define a personalized calibration package generated by the desktop app only from compatible current inputs, with explicit class specialization role build interface schema content and freshness bindings","define advisor degradation: unknown stale incompatible unsigned or unsupported packages revert to a generic unavailable or non-personalized state and never expose a personalized recommendation","define gear suggestions as bounded presentation of desktop-selected candidates and virtual variants; Advisor never enumerates inventory, generates combinations, simulates, or mutates the game","define role safeguards: tanks retain survival thresholds before damage priorities, healers retain allied-healing safety before offensive priorities, and damage guidance never claims automation","define exact later implementation and synthetic-test routes without authorizing code, addon UI, real guidance data, current-content catalog changes, desktop UI, capture, SimulationCraft, commit, or push"],"express_exclusions":["implementation code, addon mutation, real rotation guidance, real source acquisition, catalog mutation, real character capture, UI, persistence, telemetry, network, simulation engine, SimulationCraft, commit, push, release, or any path outside the allowlist"]}
+```
 <!-- DPSLAB_TASK_CONTRACT_END -->
+
+### Design output — Advisor generic and personalized guidance boundary
+
+Advisor is an optional companion to Core. Core exports bounded voluntary
+observations only. Advisor may later render one generic local guidance view at
+installation and one personalized view only after receiving a desktop-created,
+compatible, current, and review-bound package. Neither view casts, queues, or
+automates abilities.
+
+The generic package is deliberately conservative: it can express bounded
+statistic targets, gear-priority labels, and priority-display rules for a
+class/specialization/role, but must state its content and evidence lifecycle.
+It cannot self-certify current applicability. A personalized package adds only
+desktop-derived calibration and explicitly selected gear candidates or virtual
+variants. Advisor must not inspect all bags, choose candidates, or calculate
+combinations in the game client.
+
+Every package binds schema, game product, build/interface range, content
+version, class, specialization, role, generation time, expiry, and source
+profile identity. Any unknown, stale, incompatible, incomplete, or unreviewed
+binding fails closed. Tank guidance places declared survival thresholds before
+damage; healer guidance preserves healing safety before offensive priorities.
+Later work must use synthetic fixtures before any real guidance, source data,
+or attended WoW validation.
