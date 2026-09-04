@@ -388,49 +388,46 @@ def document_digest(document: dict[str, Any]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def _resolve_git_dir(root: Path) -> Path:
-    marker = root / ".git"
-    if marker.is_dir():
-        return marker
-    if not marker.is_file():
-        raise GateError("git directory is indeterminate")
-    value = marker.read_text(encoding="utf-8").strip()
-    if not value.startswith("gitdir: "):
-        raise GateError("git directory is indeterminate")
-    candidate = Path(value[8:])
-    git_dir = candidate if candidate.is_absolute() else (root / candidate)
-    if not git_dir.is_dir() or git_dir.is_symlink():
-        raise GateError("git directory is indeterminate")
-    return git_dir.resolve()
-
-
-def _resolve_common_git_dir(git_dir: Path) -> Path:
-    marker = git_dir / "commondir"
-    if not marker.exists():
-        return git_dir
-    if not marker.is_file() or marker.is_symlink():
-        raise GateError("git directory is indeterminate")
-    value = marker.read_text(encoding="utf-8").strip()
+def _git_directory(root: Path, argument: str) -> Path:
+    value = run_git(root, ["rev-parse", argument]).strip()
     if not value:
         raise GateError("git directory is indeterminate")
-    common = Path(value)
-    common = common if common.is_absolute() else (git_dir / common)
-    if not common.is_dir() or common.is_symlink():
+    path = Path(value)
+    resolved = (path if path.is_absolute() else root / path).resolve()
+    if not resolved.is_dir() or resolved.is_symlink():
         raise GateError("git directory is indeterminate")
-    return common.resolve()
+    return resolved
+
+
+def _git_path(root: Path, name: str, directory: Path) -> Path:
+    value = run_git(root, ["rev-parse", "--git-path", name]).strip()
+    if not value:
+        raise GateError("git directory is indeterminate")
+    path = Path(value)
+    resolved = (path if path.is_absolute() else root / path).resolve()
+    try:
+        resolved.relative_to(directory)
+    except ValueError:
+        raise GateError("git directory is indeterminate") from None
+    if not resolved.is_file() or resolved.is_symlink():
+        raise GateError("git directory is indeterminate")
+    return resolved
 
 
 def real_repository_fingerprint(root: Path) -> dict[str, str | None]:
-    git_dir = _resolve_git_dir(root)
-    common_git_dir = _resolve_common_git_dir(git_dir)
-    head = git_dir / "HEAD"
+    git_dir = _git_directory(root, "--absolute-git-dir")
+    common_git_dir = _git_directory(root, "--git-common-dir")
+    head = _git_path(root, "HEAD", git_dir)
+    index = _git_path(root, "index", git_dir)
     config = common_git_dir / "config"
-    if not head.is_file() or not config.is_file():
-        raise GateError("git directory is indeterminate")
+    worktree_config = git_dir / "config.worktree"
+    if not config.is_file() or config.is_symlink(): raise GateError("git directory is indeterminate")
+    if worktree_config.exists() and (not worktree_config.is_file() or worktree_config.is_symlink()): raise GateError("git directory is indeterminate")
     return {
         "head": head.read_text(encoding="utf-8"),
-        "index_sha256": sha256_file(git_dir / "index") if (git_dir / "index").is_file() else None,
+        "index_sha256": sha256_file(index),
         "config_sha256": sha256_file(config),
+        "config_worktree_sha256": sha256_file(worktree_config) if worktree_config.is_file() else None,
     }
 
 

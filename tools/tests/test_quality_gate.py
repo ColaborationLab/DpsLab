@@ -324,12 +324,10 @@ class QualityGateTests(unittest.TestCase):
     def _candidate_root(self):
         temporary = tempfile.TemporaryDirectory()
         root = Path(temporary.name)
-        (root / ".git").mkdir()
-        (root / ".git" / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
-        (root / ".git" / "index").write_bytes(b"index")
-        (root / ".git" / "config").write_text("[core]\n", encoding="utf-8")
         (root / "allowed.txt").write_text("allowed", encoding="utf-8")
         (root / "protected.txt").write_text("protected", encoding="utf-8")
+        for args in (("init",), ("config", "user.email", "test@example.invalid"), ("config", "user.name", "test"), ("add", "allowed.txt", "protected.txt"), ("commit", "-m", "base")):
+            subprocess.run(["git", *args], cwd=root, check=True, capture_output=True)
         return temporary, root
 
     def test_temporary_workspace_created_exact_delta_and_ignored_excluded(self):
@@ -459,18 +457,18 @@ class QualityGateTests(unittest.TestCase):
             )
         self.assertEqual(gate.real_repository_fingerprint(root), before)
 
-    def test_fingerprint_supports_gitdir_file_and_detects_mutation(self):
+    def test_fingerprint_supports_real_worktree_and_detects_mutation(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        root = Path(temporary.name) / "root"; root.mkdir()
-        git_dir = Path(temporary.name) / "metadata"; git_dir.mkdir()
-        (root / ".git").write_text("gitdir: ../metadata\n", encoding="utf-8")
-        (git_dir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
-        (git_dir / "index").write_bytes(b"one")
-        (git_dir / "config").write_text("[core]\n", encoding="utf-8")
-        before = gate.real_repository_fingerprint(root)
-        (git_dir / "HEAD").write_text("changed\n", encoding="utf-8")
-        self.assertNotEqual(gate.real_repository_fingerprint(root), before)
+        source = Path(temporary.name) / "source"; source.mkdir()
+        worktree = Path(temporary.name) / "worktree"
+        for args in (("init",), ("config", "user.email", "test@example.invalid"), ("config", "user.name", "test"), ("commit", "--allow-empty", "-m", "base"), ("worktree", "add", "-b", "other", str(worktree))):
+            subprocess.run(["git", *args], cwd=source, check=True, capture_output=True)
+        before = gate.real_repository_fingerprint(worktree)
+        index = Path(gate.run_git(worktree, ["rev-parse", "--git-path", "index"]).strip())
+        if not index.is_absolute(): index = worktree / index
+        index.write_bytes(index.read_bytes() + b"x")
+        self.assertNotEqual(gate.real_repository_fingerprint(worktree), before)
 
     def test_audit_requires_valid_decision_and_integrity(self):
         value = contract()
