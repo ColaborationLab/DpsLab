@@ -10,4 +10,5 @@ CharacterIdentityObservation.lua
 CharacterSpecializationRegistryObservation.lua
 CharacterEquipmentObservation.lua
 TrainingDummySession.lua
+AdvisorSyntheticGuidance.lua
 DpsLab.lua

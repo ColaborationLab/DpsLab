@@ -122,6 +122,15 @@ function DpsLab.FinishSyntheticTraining(active, metrics, injected, cancelled)
   return module.Finish(active, metrics, injected, cancelled)
 end
 
+function DpsLab.GetSyntheticAdvisorGuidance(role)
+  local module = DpsLabAdvisorGuidance
+  local package = DpsLabAdvisorSyntheticGuidance
+  if type(module) ~= "table" or type(module.Validate) ~= "function" then return nil, "advisor_unavailable" end
+  local valid, reason = module.Validate(package, role)
+  if not valid then return nil, reason end
+  return package.roles[role], "validSyntheticAdvisorNonActionable"
+end
+
 local function showManualAnalysisExport(payload)
   local frame = CreateFrame("Frame", "DpsLabManualAnalysisExportFrame", UIParent, "BackdropTemplate")
   frame:SetSize(700, 180); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
