@@ -9409,7 +9409,7 @@ The approved direction selects the standard-library Tk toolkit already used by
 the desktop package, a caller-supplied local root, and synthetic-only tests.
 It does not broaden into a recommendation UI.
 
-## Active implementation authorization — Local profile manual UI 0.1
+## Published implementation record — Local profile manual UI 0.1
 
 This implementation adds the first visible local workspace and a testable
 controller around the already published protected-profile and manual-transfer
@@ -9417,7 +9417,7 @@ cores. It deliberately has no default source acquisition: a caller must inject
 an already parsed snapshot supplier after a future, separate source-binding
 authorization.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9431,6 +9431,88 @@ authorization.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["provide a visible Tk local workspace and a headless controller with no default data-source acquisition","show name and realm only after protected inspection succeeds, keeping profile identifiers opaque to the visible model","require exact, separate confirmations for preview, create, replace, delete, and clear-all; leave durable state unchanged on every rejected action","accept snapshots only through an injected in-memory supplier and explicit user action; do not read files, discover paths, call WoW APIs, invoke the addon, poll, retry, or use network or telemetry","map all errors to bounded non-sensitive state and reason values, and keep raw observations, ciphertext, paths, GUIDs, account data, equipment, talents, and guidance out of the UI model","cover synthetic-only inspection, unavailable profile, preview, create/replace, destructive confirmations, and source absence; pass focused and full suites with protected hashes unchanged and no SimulationCraft invocation"],
   "express_exclusions":["addon code, WoW API access, SavedVariables acquisition, real character or profile data, automatic import, network, telemetry, synchronization, catalog, template, guidance, recommendation, comparison, run, result, baseline, SimulationCraft, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The implementation above was committed as
+`2137c1d1468a100932206866fc4ae9893a1b197c`
+(`feat: add local profile manual workspace`) and published to `main`.
+GitHub Actions run `33706571913` passed static and secret analysis, tools
+tests, policy and contract, and the full functional suite. Local evidence was
+7 focused tests and 1,253 functional tests passing, with one expected skip.
+The workspace is intentionally not yet wired to an application command or a
+source supplier; this closure does not authorize either binding.
+
+## Consumed design authorization — Local profile workspace launcher 0.1
+
+This design makes the published local workspace reachable through a deliberate
+desktop command without turning it into an automatic importer. It is limited
+to launch and explicit root selection design; it does not acquire an addon
+snapshot, choose an operating-system path by itself, persist a new location,
+or create a profile automatically.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_profile_workspace_launcher_design_0_1",
+  "title":"Design an explicit launcher for the local profile workspace",
+  "baseline_commit":"2137c1d1468a100932206866fc4ae9893a1b197c",
+  "authorization":{"status":"design_only","authorization_id":"local_profile_workspace_launcher_design_0_1-20260903-daniel","authorized_by":"Daniel","authorized_at":"2026-09-03T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478","desktop-app/src/dpslab/addon_profile_manual_transfer.py":"20296a592c4157396867efbd4587b790de37533d654e72c49025f3596ba19cf3","desktop-app/src/dpslab/local_profile_manual_ui.py":"d79f3882ecb98e061e81eb2cf20def598112bd64f9de1e863a8f7ee5a6d94f3b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define one explicit command shape that requires a caller-supplied absolute profile root and has no default path discovery, registry lookup, AppData scan, or persisted location","define a launcher that creates the existing current-user DPAPI protector only after the user invokes the command and starts the existing Tk workspace with no snapshot supplier","specify the bounded launch outcomes for invalid root, unsupported desktop environment, unavailable protected profile, source unavailable, user cancellation, and window close","keep preview/create/replace unavailable until a separately authorized source-binding block; permit inspection and already-governed deletion/clear behavior only through the published workspace","propose synthetic CLI and controller seams with no display requirement in CI, no actual profile data, no source file read, no WoW API, no network, telemetry, automatic retry, or background process","identify exact future implementation routes and separate authorization requirements without implementing them"],
+  "express_exclusions":["implementation code, addon code, WoW API access, SavedVariables acquisition, real character or profile data, automatic import, default path discovery, persistent configuration, network, telemetry, synchronization, catalog, template, guidance, recommendation, SimulationCraft, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+### Design output — explicit local launcher
+
+The first launcher is a command rather than an auto-started desktop process:
+`python -m dpslab profile-workspace --profile-root <absolute-directory>`.
+The argument is mandatory. The launcher validates the supplied directory using
+the existing protected-profile boundary, instantiates the existing
+current-user DPAPI protector only after invocation, and opens the existing Tk
+workspace. It does not create a directory, scan candidate locations, remember
+the path, inspect a retail installation, or begin a background task.
+
+The initial launcher supplies no snapshot supplier. Consequently, the visible
+workspace can inspect an already selected protected profile and apply its
+existing user-confirmed delete or clear behavior, but its preview/create and
+replace flow remains unavailable with the bounded `source_unavailable` state.
+This is intentional: connecting an addon export or any local source remains a
+separate trust-boundary authorization.
+
+The prospective implementation routes are
+`desktop-app/src/dpslab/__main__.py`, a new focused CLI/launcher test, and
+`docs/NEXT_TASK.md`. It must not alter the workspace, profile core, transport,
+addon, configuration store, or any path outside that future allowlist.
+
+## Active implementation authorization — Local profile workspace launcher 0.1
+
+Daniel authorized the closed implementation after reviewing the design. This
+adds an explicit, local-only command that opens the published workspace with
+no source supplier. It does not connect a WoW installation, an addon export,
+or any form of automatic import.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_profile_workspace_launcher_0_1",
+  "title":"Implement the explicit local profile workspace launcher",
+  "baseline_commit":"2137c1d1468a100932206866fc4ae9893a1b197c",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"local_profile_workspace_launcher_0_1-20260903-daniel","authorized_by":"Daniel","authorized_at":"2026-09-03T00:00:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/__main__.py","desktop-app/tests/test_profile_workspace_launcher.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/local_profile_workspace_launcher_0_1/implementation.json",".dpslab/quality-gates/local_profile_workspace_launcher_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","desktop-app/src/dpslab/local_profile_manual_ui.py","desktop-app/src/dpslab/local_character_context_profile.py","desktop-app/src/dpslab/addon_profile_manual_transfer.py","desktop-app/src/dpslab/addon_character_identity_transport.py","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-p","test_profile_workspace_launcher.py","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1253,"minimum_test_count":1257},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478","desktop-app/src/dpslab/addon_profile_manual_transfer.py":"20296a592c4157396867efbd4587b790de37533d654e72c49025f3596ba19cf3","desktop-app/src/dpslab/local_profile_manual_ui.py":"d79f3882ecb98e061e81eb2cf20def598112bd64f9de1e863a8f7ee5a6d94f3b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["require the exact profile-workspace command and a caller-supplied absolute existing root without discovery, creation, registry lookup, AppData scan, or durable configuration","instantiate the current-user DPAPI protector only after command invocation and reject unavailable Windows protection or an unsafe root with bounded non-sensitive errors","open the existing Tk workspace only after root validation, inject no snapshot supplier, and retain source_unavailable for preview/create/replace","provide headless synthetic CLI tests for required arguments, invalid root, unavailable protector, safe workspace construction, and no source supplier; do not require a display in CI","preserve protected hashes, pass focused and full suites, run the quality gate, and do not invoke SimulationCraft"],
+  "express_exclusions":["WoW API access, SavedVariables acquisition, real character or profile data, automatic import, default path discovery, persistent configuration, network, telemetry, synchronization, catalog, template, guidance, recommendation, SimulationCraft, commit, push, release, or any path outside the allowlist"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

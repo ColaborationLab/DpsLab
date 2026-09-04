@@ -6,6 +6,7 @@ import argparse
 import json
 import math
 import sys
+import time
 from importlib.metadata import PackageNotFoundError
 from pathlib import Path
 from typing import Sequence
@@ -28,6 +29,15 @@ from .retail_installation import RetailInstallationError, validate_retail_instal
 from .retail_installation_store import (
     RetailInstallationStoreError,
     store_retail_installation,
+)
+from .local_character_context_profile import (
+    CharacterContextProfileError,
+    WindowsProfileProtector,
+    inspect_profile,
+)
+from .local_profile_manual_ui import (
+    LocalProfileManualController,
+    TkLocalProfileManualWorkspace,
 )
 from .runner import SimulationRunError, run_simulation
 from .scenario import ScenarioError, load_scenario
@@ -121,6 +131,12 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="Importa una observación admitida mediante una acción explícita",
     )
     addon_import.add_argument("--config-root", type=Path, required=True)
+
+    profile_workspace = commands.add_parser(
+        "profile-workspace",
+        help="Abre un espacio local de perfil sin importación automática",
+    )
+    profile_workspace.add_argument("--profile-root", type=Path, required=True)
     return parser.parse_args(argv)
 
 
@@ -331,6 +347,33 @@ def _addon_import(args: argparse.Namespace) -> int:
     return 2 if result.state == "rejected" else 0
 
 
+def _profile_workspace(args: argparse.Namespace) -> int:
+    root = args.profile_root
+    if not root.is_absolute():
+        raise CharacterContextProfileError("profile_workspace_root_invalid")
+    try:
+        protector = WindowsProfileProtector()
+    except Exception:
+        raise CharacterContextProfileError("profile_workspace_protection_unavailable") from None
+    try:
+        inspect_profile(root, protector)
+    except Exception:
+        raise CharacterContextProfileError("profile_workspace_unavailable") from None
+    controller = LocalProfileManualController(
+        root,
+        protector,
+        expected_build=0,
+        expected_interface_version=0,
+        now_epoch=lambda: int(time.time()),
+        snapshot_supplier=None,
+    )
+    try:
+        TkLocalProfileManualWorkspace(controller).run()
+    except Exception:
+        raise CharacterContextProfileError("profile_workspace_desktop_unavailable") from None
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _arguments(argv)
     try:
@@ -346,10 +389,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _addon_configure(args)
         if args.command == "addon-import":
             return _addon_import(args)
+        if args.command == "profile-workspace":
+            return _profile_workspace(args)
         return _summarize(args)
     except (
         ComparisonReadinessError,
         ComparisonExecutionError,
+        CharacterContextProfileError,
         ComparisonSpecError,
         ConfigurationError,
         ProfileParseError,
