@@ -9755,10 +9755,73 @@ Published as `2e5f2f3056e89b411fe06e301627ffb035380bbe`. Its first CI run expose
 historical test conflict around the manually invoked copy surface. This does
 not authorize a functional expansion beyond the corrective task below.
 
-## Active corrective authorization — Manual copy surface test compatibility 0.1
+## Historical corrective authorization — Manual copy surface test compatibility 0.1
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
+```json
+{"contract_version":"0.1","task_id":"live_manual_analysis_export_test_compatibility_0_1","title":"Constrain historical addon tests around the manual copy surface","baseline_commit":"2e5f2f3056e89b411fe06e301627ffb035380bbe","authorization":{"status":"authorized_for_implementation","authorization_id":"live_manual_analysis_export_test_compatibility_0_1-20260904-daniel","authorized_by":"Daniel","authorized_at":"2026-09-04T00:00:00-05:00"},"scope":{"allowed_paths":["tools/tests/test_addon_character_identity_observation.py","tools/tests/test_addon_specialization_registry_observation.py","tools/tests/test_addon_synthetic_persistence.py","tools/tests/test_addon_synthetic_renderer.py","tools/tests/test_addon_live_analysis_export.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/live_manual_analysis_export_test_compatibility_0_1/implementation.json",".dpslab/quality-gates/live_manual_analysis_export_test_compatibility_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_addon_character_identity_observation","tools.tests.test_addon_specialization_registry_observation","tools.tests.test_addon_synthetic_persistence","tools.tests.test_addon_synthetic_renderer","tools.tests.test_addon_live_analysis_export","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":143,"minimum_test_count":143},"protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["preserve identity and registry capture checks","permit only the declared manually invoked copy frame","continue rejecting events timers updates network chat payload emission and SavedVariables mutation","pass focused and full tools suites"],"express_exclusions":["functional addon changes, real observations, SimulationCraft, commit outside allowed paths, push"]}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Published as `ac8b883ec89936ed356b57c6f7f109dc9e208de5`. GitHub Actions run
+`33840942824` approved Policy and contract, Tools tests, Static analysis and
+secret scanning, and Functional suite. This closure does not authorize a
+functional addon change, live observation, or a subsequent block.
+
+## Historical design authorization — Training dummy session capture 0.1
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"training_dummy_session_capture_0_1",
+  "title":"Design voluntary bounded training-dummy practice capture",
+  "baseline_commit":"ac8b883ec89936ed356b57c6f7f109dc9e208de5",
+  "authorization":{"status":"design_only","authorization_id":"training_dummy_session_capture_0_1-20260904-daniel","authorized_by":"Daniel","authorized_at":"2026-09-04T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/training_dummy_session_capture_0_1/design.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define a player-invoked start and finish flow for one practice session, with a default suggested duration of 180 seconds, suggested 120/180/300 second presets, and a bounded user-selected duration","define a bounded target-context record that may attempt to classify the current target from a game-exposed stable identifier, records an explicit unknown or unconfirmed state on ambiguity, and never relies on localized display text as an authority","define only aggregated permitted practice metrics sufficient for later desktop calibration: declared session timing, declared class/specialization/role compatibility, bounded action/resource summaries, bounded inactivity summaries, and target classification status","exclude automatic observation, background polling, arbitrary combat-log retention, player name, realm, personal GUID, account information, chat, location, PvP, dungeon, raid, party, currency, achievement, and history collection","define an explicit incomplete or cancelled outcome that preserves neither invented duration nor a partial recommendation","keep Core as a voluntary capture/export boundary; the desktop app evaluates a received session and Advisor consumes only a later compatible and current profile or calibration","define compatibility, freshness, byte, count, duration, and retention boundaries for a future versioned transport; unknown or incompatible data must fail closed to unavailable rather than become personalized guidance","name exact future implementation, synthetic-test, documentation, and attended-validation routes without authorizing code, addon changes, API access, capture, tests, commit, push, or SimulationCraft"],
+  "express_exclusions":["implementation code, addon mutation, WoW API access, real practice capture, combat-log retention, manual command implementation, parsing, persistence, UI changes, telemetry, network, catalog mutation, recommendation generation, simulation engine, SimulationCraft execution, tests, audit execution, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+### Design output — Training dummy practice boundary
+
+Core may later create one session only after the player explicitly starts it
+against their selected target. The suggested default is 180 seconds; the UI
+may later offer 120, 180, and 300 seconds plus a bounded custom value. A user
+can finish early, which produces a plainly incomplete outcome rather than a
+comparable practice result.
+
+Target identification is a convenience check, not a source of authority.
+Later code may read a game-exposed target identifier and compare it with an
+approved local dummy classification table. It must return `unconfirmed_target`
+when the identifier is missing, unknown, incompatible, or ambiguous; it must
+not infer classification from a localized target name. The player may export
+an unconfirmed practice record only as such, and the desktop must not treat it
+as a validated training-dummy calibration.
+
+The later transport is an aggregated practice envelope, not a raw combat-log
+archive. It may contain bounded counts, timing buckets, resource deltas or
+caps, action identifiers/counts, and declared compatibility facts needed to
+assess execution. It excludes raw event streams and all identity, account,
+location, chat, social, content-activity, and historical fields. Core neither
+simulates nor recommends. The desktop may compare the imported aggregate with
+a compatible local analysis profile and issue a calibration candidate; Advisor
+uses it only after compatibility and freshness checks.
+
+The future implementation must remain a separate task and define exact API
+allowlists, target-classification provenance, maximum duration, action count,
+serialized byte size, local discard rules, synthetic fixtures, and a player
+attended validation. It must not convert practice capture into background
+telemetry or permit use outside an explicit user-controlled session.
+
+## Active implementation authorization — Training dummy session capture 0.1
 
 <!-- DPSLAB_TASK_CONTRACT_BEGIN -->
 ```json
-{"contract_version":"0.1","task_id":"live_manual_analysis_export_test_compatibility_0_1","title":"Constrain historical addon tests around the manual copy surface","baseline_commit":"2e5f2f3056e89b411fe06e301627ffb035380bbe","authorization":{"status":"authorized_for_implementation","authorization_id":"live_manual_analysis_export_test_compatibility_0_1-20260904-daniel","authorized_by":"Daniel","authorized_at":"2026-09-04T00:00:00-05:00"},"scope":{"allowed_paths":["tools/tests/test_addon_character_identity_observation.py","tools/tests/test_addon_specialization_registry_observation.py","tools/tests/test_addon_synthetic_persistence.py","tools/tests/test_addon_synthetic_renderer.py","tools/tests/test_addon_live_analysis_export.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/live_manual_analysis_export_test_compatibility_0_1/implementation.json",".dpslab/quality-gates/live_manual_analysis_export_test_compatibility_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_addon_character_identity_observation","tools.tests.test_addon_specialization_registry_observation","tools.tests.test_addon_synthetic_persistence","tools.tests.test_addon_synthetic_renderer","tools.tests.test_addon_live_analysis_export","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":143,"minimum_test_count":143},"protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["preserve identity and registry capture checks","permit only the declared manually invoked copy frame","continue rejecting events timers updates network chat payload emission and SavedVariables mutation","pass focused and full tools suites"],"express_exclusions":["functional addon changes, real observations, SimulationCraft, commit outside allowed paths, push"]}
+{"contract_version":"0.1","task_id":"training_dummy_session_capture_0_1","title":"Implement synthetic bounded training-dummy practice capture","baseline_commit":"ac8b883ec89936ed356b57c6f7f109dc9e208de5","authorization":{"status":"authorized_for_implementation","authorization_id":"training_dummy_session_capture_0_1-20260904-daniel","authorized_by":"Daniel","authorized_at":"2026-09-04T00:00:00-05:00"},"scope":{"allowed_paths":["addon/DpsLab/TrainingDummySession.lua","addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","desktop-app/src/dpslab/training_dummy_session_transport.py","desktop-app/tests/test_training_dummy_session_transport.py","tools/tests/test_training_dummy_session_capture.py","docs/TRAINING_DUMMY_SESSION_CAPTURE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/training_dummy_session_capture_0_1/implementation.json",".dpslab/quality-gates/training_dummy_session_capture_0_1/audit.json"],"forbidden_paths":[".github/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_training_dummy_session_transport","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1270,"minimum_test_count":1274},"protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["implement only synthetic injected session inputs with prepared active completed cancelled and unconfirmed target outcomes","accept only bounded durations and aggregate action/resource/inactivity metrics","serialize and parse a closed canonical text envelope with no personal identifiers raw combat events persistence network recommendation or executable fields","keep all real WoW APIs absent and reject missing synthetic inputs","pass focused and full suites quality gate and protected-hash verification without SimulationCraft"],"express_exclusions":["real WoW API access, real capture, combat log, persistence, network, recommendation, simulation engine, SimulationCraft, commit, push, release, or any path outside the allowlist"]}
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->

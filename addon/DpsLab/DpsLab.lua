@@ -110,6 +110,18 @@ local function handleAnalysisExport(bag)
   return module.Capture(bag)
 end
 
+function DpsLab.StartSyntheticTraining(config, injected)
+  local module = DpsLabTrainingDummySession
+  if type(module) ~= "table" or type(module.Start) ~= "function" then return nil, "training_synthetic_input_unavailable" end
+  return module.Start(config, injected)
+end
+
+function DpsLab.FinishSyntheticTraining(active, metrics, injected, cancelled)
+  local module = DpsLabTrainingDummySession
+  if type(module) ~= "table" or type(module.Finish) ~= "function" then return nil, "training_synthetic_input_unavailable" end
+  return module.Finish(active, metrics, injected, cancelled)
+end
+
 local function showManualAnalysisExport(payload)
   local frame = CreateFrame("Frame", "DpsLabManualAnalysisExportFrame", UIParent, "BackdropTemplate")
   frame:SetSize(700, 180); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
