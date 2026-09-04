@@ -393,8 +393,24 @@ def _git_directory(root: Path, argument: str) -> Path:
     if not value:
         raise GateError("git directory is indeterminate")
     path = Path(value)
-    resolved = (path if path.is_absolute() else root / path).resolve()
-    if not resolved.is_dir() or resolved.is_symlink():
+    candidate = path if path.is_absolute() else root / path
+    if candidate.is_symlink():
+        raise GateError("git directory is indeterminate")
+    resolved = candidate.resolve()
+    if not resolved.is_dir():
+        raise GateError("git directory is indeterminate")
+    return resolved
+
+
+def _regular_git_file(path: Path, directory: Path) -> Path:
+    if path.is_symlink():
+        raise GateError("git directory is indeterminate")
+    resolved = path.resolve()
+    try:
+        resolved.relative_to(directory)
+    except ValueError:
+        raise GateError("git directory is indeterminate") from None
+    if not resolved.is_file():
         raise GateError("git directory is indeterminate")
     return resolved
 
@@ -404,14 +420,8 @@ def _git_path(root: Path, name: str, directory: Path) -> Path:
     if not value:
         raise GateError("git directory is indeterminate")
     path = Path(value)
-    resolved = (path if path.is_absolute() else root / path).resolve()
-    try:
-        resolved.relative_to(directory)
-    except ValueError:
-        raise GateError("git directory is indeterminate") from None
-    if not resolved.is_file() or resolved.is_symlink():
-        raise GateError("git directory is indeterminate")
-    return resolved
+    candidate = path if path.is_absolute() else root / path
+    return _regular_git_file(candidate, directory)
 
 
 def real_repository_fingerprint(root: Path) -> dict[str, str | None]:
@@ -419,15 +429,22 @@ def real_repository_fingerprint(root: Path) -> dict[str, str | None]:
     common_git_dir = _git_directory(root, "--git-common-dir")
     head = _git_path(root, "HEAD", git_dir)
     index = _git_path(root, "index", git_dir)
-    config = common_git_dir / "config"
-    worktree_config = git_dir / "config.worktree"
-    if not config.is_file() or config.is_symlink(): raise GateError("git directory is indeterminate")
-    if worktree_config.exists() and (not worktree_config.is_file() or worktree_config.is_symlink()): raise GateError("git directory is indeterminate")
+    config = _regular_git_file(common_git_dir / "config", common_git_dir)
+    worktree_config_path = git_dir / "config.worktree"
+    if worktree_config_path.is_symlink():
+        raise GateError("git directory is indeterminate")
+    worktree_config = (
+        _regular_git_file(worktree_config_path, git_dir)
+        if worktree_config_path.exists()
+        else None
+    )
     return {
         "head": head.read_text(encoding="utf-8"),
         "index_sha256": sha256_file(index),
         "config_sha256": sha256_file(config),
-        "config_worktree_sha256": sha256_file(worktree_config) if worktree_config.is_file() else None,
+        "config_worktree_sha256": (
+            sha256_file(worktree_config) if worktree_config is not None else None
+        ),
     }
 
 
