@@ -4,7 +4,9 @@
 
 - Fundación técnica y de seguridad interna: **aproximadamente 80 %**.
 - Producto integral distribuible para usuarios: **aproximadamente 35 %**.
-- Vertical slice de producto para una clase prototipo: **0 % iniciado**.
+- Vertical slice de producto para una clase prototipo: **aproximadamente 20 %
+  desarrollado de forma sintética; 0 % validado como recorrido vigente para
+  usuarios**.
 
 Estas cifras son estimaciones de planificación, no estados aprobatorios. La
 primera mide componentes internos implementados y verificados; la segunda
@@ -119,16 +121,26 @@ seguridad, compatibilidad o defectos demostrados. No se ampliará por sí misma.
 
 ### Fase B — Vertical slice del Druida (siguiente prioridad)
 
-- [ ] Definir el contrato de contexto de función para Balance, Feral, Guardian
-  y Restauración.
+- [x] Modelo semántico sintético de contexto de función para Balance, Feral,
+  Guardian y Restauración, con prioridades diferenciadas y denegación ante
+  especialización o rol incompatibles.
 - [ ] Definir una plantilla inicial por especialización con parámetros vigentes
   y procedencia explícita, sin base de datos ni valores históricos como
   sustituto de actualidad.
 - [ ] Definir reglas de prioridad: DPS para Balance/Feral; supervivencia,
   mitigación y amenaza para Guardian; curación y seguridad del grupo para
   Restauración, con daño solo como objetivo secundario.
-- [ ] Construir un recorrido sintético completo de identidad → contexto →
-  conocimiento vigente → recomendación explicada.
+- [x] Coordinador sintético de identidad → contexto → catálogo gobernado,
+  todavía sin hechos actuales ni salida de usuario.
+- [ ] Convertir esa base en un recorrido vigente y explicable para usuarios,
+  solo tras vinculación local manual, conocimiento aprobado y controles de
+  vigencia.
+- [ ] Definir una sesión local de análisis con estado actual, inventario y
+  variantes seleccionadas por el usuario; no generar combinaciones
+  indiscriminadas ni conservar historial de resultados por defecto.
+- [ ] Permitir variantes virtuales explícitas —por ejemplo, encantamientos o
+  gemas ausentes— para estimar mejora potencial sin afirmar que modifican el
+  personaje ni que estén disponibles en el juego.
 - [ ] Verificar que una observación incompatible o desactualizada suprima la
   recomendación en lugar de adivinar la especialización o usar la plantilla
   más cercana.
@@ -150,8 +162,9 @@ comparaciones reales ni una guía automática de rotación.
 
 ### Fase D — Aplicación de escritorio y experiencia de usuario
 
-- [ ] Interfaz local para seleccionar instalación, importar manualmente y
-  mostrar estado, procedencia, vigencia y limitaciones.
+- [ ] Interfaz local para detectar o permitir seleccionar explícitamente la
+  instalación Retail, importar manualmente por texto copiado o por checkpoint
+  `SavedVariables`, y mostrar estado, procedencia, vigencia y limitaciones.
 - [ ] Presentar recomendaciones diferenciadas por función y explicar qué
   prioridad domina en cada caso.
 - [ ] Mantener los campos de personaje locales y minimizar lo que se conserva.

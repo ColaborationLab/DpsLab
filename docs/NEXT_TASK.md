@@ -9492,14 +9492,14 @@ The prospective implementation routes are
 `docs/NEXT_TASK.md`. It must not alter the workspace, profile core, transport,
 addon, configuration store, or any path outside that future allowlist.
 
-## Active implementation authorization — Local profile workspace launcher 0.1
+## Published implementation record — Local profile workspace launcher 0.1
 
 Daniel authorized the closed implementation after reviewing the design. This
 adds an explicit, local-only command that opens the published workspace with
 no source supplier. It does not connect a WoW installation, an addon export,
 or any form of automatic import.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9513,6 +9513,133 @@ or any form of automatic import.
   "audit":{"required":true,"independence":"declared_and_procedural"},
   "acceptance_criteria":["require the exact profile-workspace command and a caller-supplied absolute existing root without discovery, creation, registry lookup, AppData scan, or durable configuration","instantiate the current-user DPAPI protector only after command invocation and reject unavailable Windows protection or an unsafe root with bounded non-sensitive errors","open the existing Tk workspace only after root validation, inject no snapshot supplier, and retain source_unavailable for preview/create/replace","provide headless synthetic CLI tests for required arguments, invalid root, unavailable protector, safe workspace construction, and no source supplier; do not require a display in CI","preserve protected hashes, pass focused and full suites, run the quality gate, and do not invoke SimulationCraft"],
   "express_exclusions":["WoW API access, SavedVariables acquisition, real character or profile data, automatic import, default path discovery, persistent configuration, network, telemetry, synchronization, catalog, template, guidance, recommendation, SimulationCraft, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+The launcher implementation was committed as
+`2af26080bd426806e1137b93c5514f82a76be2e0`
+(`feat: add explicit local profile workspace launcher`) and published to
+`main`. GitHub Actions run `33831182000` passed Tools tests, Functional suite,
+Policy and contract, and Static analysis and secret scanning. The command
+accepts only an explicit absolute profile root and starts the existing local
+workspace without a snapshot supplier. This closure does not authorize source
+binding, observation acquisition, profile creation, recommendation work, or a
+later block.
+
+## Consumed design authorization — Sesión local de análisis y doble transporte 0.1
+
+This design replaces the narrow profile-source proposal with a practical local
+analysis session. It defines two user-facing intake routes, selected inventory
+candidates, optional virtual variants, and optional local retention. It does
+not implement source access, execute a simulation, or modify game files.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_analysis_session_dual_transport_design_0_1",
+  "title":"Design a local analysis session with manual text and checkpoint transport",
+  "baseline_commit":"2af26080bd426806e1137b93c5514f82a76be2e0",
+  "authorization":{"status":"design_only","authorization_id":"local_analysis_session_dual_transport_design_0_1-20260903-daniel","authorized_by":"Daniel","authorized_at":"2026-09-03T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md","docs/ROADMAP.md"],"generated_paths":[".dpslab/quality-gates/local_analysis_session_dual_transport_design_0_1/design.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478","desktop-app/src/dpslab/addon_profile_manual_transfer.py":"20296a592c4157396867efbd4587b790de37533d654e72c49025f3596ba19cf3","desktop-app/src/dpslab/local_profile_manual_ui.py":"d79f3882ecb98e061e81eb2cf20def598112bd64f9de1e863a8f7ee5a6d94f3b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define a concise installation and first-use notice stating that the addon and desktop app exchange selected character data locally for the requested analysis; ordinary use accepts that local processing while durable session retention remains an explicit optional choice","define two manual routes: pasted export text as the primary live route and a user-invoked checkpoint written by WoW after /reload as the optional SavedVariables route; neither route may alter game files or run in the background","allow the desktop app to offer an explicit user-invoked search for plausible Retail locations and an explicit path chooser; do not silently select a candidate, poll folders, watch files, capture on login, or retry automatically","define one bounded in-memory analysis session that may contain current equipment, user-selected inventory candidates, talents and contextual inputs needed for analysis; discard it on application close unless the user explicitly chooses encrypted local retention","define virtual variant checks for absent enchantments, gems, and comparable chosen modifiers, clearly labeled as hypothetical; require the user to select candidates and a bounded batch before any future analysis, with no exhaustive inventory search and no persistent simulation-history feature","define compatibility across addon schema, game build, current knowledge, and any future analysis engine independently from an untrusted export's self-declared values; return unavailable rather than present a current result on uncertainty","specify bounded unavailable states for absent or malformed source, unfinished checkpoint, ambiguous installation, stale or incompatible data, cancellation, protection failure, and unavailable selected variant","propose exact future code and synthetic-test routes without implementing source access, UI changes, persistence wiring, recommendation logic, a simulation engine, or live data handling","pass focused and complete tools suites with protected hashes unchanged"],
+  "express_exclusions":["implementation code, addon mutation, WoW API access, SavedVariables acquisition, real character or profile data, automatic background import, automatic game-path selection, telemetry, synchronization, catalog mutation, guidance, recommendation, SimulationCraft execution, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+### Design output — pending human review
+
+The primary route is a manual text export: the addon displays an exact bounded
+payload and the user pastes it into DpsLab while WoW remains open. The optional
+checkpoint route asks the user to run `/reload`, after which WoW writes its
+dedicated addon SavedVariables checkpoint and DpsLab may read the selected
+installation's copy. A single imported session supports multiple selected
+variant analyses; neither route requires closing or restarting WoW for each
+candidate.
+
+The app may help locate plausible Retail installations only after the user
+presses a search action, and must present any candidate for confirmation. A
+manual path chooser remains available. The addon can write only its dedicated
+SavedVariables location under WoW's managed data area; it cannot write a
+separate arbitrary desktop folder.
+
+An analysis session is richer than the protected identity profile. It holds
+only the currently requested analysis inputs in memory and is discarded when
+the app closes unless the user explicitly selects encrypted local retention.
+The UI will offer selected inventory candidates and hypothetical variant
+checks, such as adding a missing gem or enchantment to a copy of an item. It
+will label those variants as virtual and never claim to change game state or
+that a requested modifier is available.
+
+The future DpsLab analysis engine remains a DpsLab-owned interface. Existing
+simulation tools and websites may inform requirements and test comparisons,
+but their software and architecture are not adopted. A separately authorized
+adapter can be evaluated later, while a native engine remains a valid path.
+The exact future implementation allowlist, data schema, batch limits, and
+engine decision require a new human authorization.
+
+## Consumed design authorization — Contrato de implementación del núcleo de sesión 0.1
+
+Daniel approved the product design. This records the closed implementation
+contract for later review; it does not yet authorize code. The proposed first
+slice is a synthetic-only, in-memory session model that establishes boundaries
+for selected equipment candidates and hypothetical variants without adding
+addon transport, installation discovery, persistence, a GUI change, or an
+analysis engine.
+
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_analysis_session_core_design_0_1",
+  "title":"Prepare the implementation contract for the local analysis-session core",
+  "baseline_commit":"2af26080bd426806e1137b93c5514f82a76be2e0",
+  "authorization":{"status":"design_only","authorization_id":"local_analysis_session_core_design_0_1-20260903-daniel","authorized_by":"Daniel","authorized_at":"2026-09-03T00:00:00-05:00"},
+  "scope":{"allowed_paths":["docs/NEXT_TASK.md","docs/ROADMAP.md"],"generated_paths":[".dpslab/quality-gates/local_analysis_session_core_design_0_1/design.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_github_automation","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":142,"minimum_test_count":142},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478","desktop-app/src/dpslab/addon_profile_manual_transfer.py":"20296a592c4157396867efbd4587b790de37533d654e72c49025f3596ba19cf3","desktop-app/src/dpslab/local_profile_manual_ui.py":"d79f3882ecb98e061e81eb2cf20def598112bd64f9de1e863a8f7ee5a6d94f3b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define closed immutable in-memory types for an explicitly trusted compatibility basis, current equipped items, user-selected inventory candidates, and virtual modifier choices","accept only bounded synthetic values with unique item and variant identities, an explicit slot relationship, canonical role/context tokens, and no character name, realm, GUID, account, raw export, source path, code, or command field","require each virtual modifier to target an explicitly selected item copy and label it hypothetical; preserve the immutable base equipment and never assert availability or alter game state","require the user-selected candidate set and requested variant set to stay within fixed small limits; reject ambiguous duplicate, out-of-scope, or exhaustive-combination requests instead of generating them","produce a session result that is ephemeral, non-actionable, non-persistent, non-networked, and has no history or simulation invocation surface","cover valid synthetic session construction plus missing compatibility, invalid bounds, boolean-as-integer, duplicate identities, invalid slot mapping, virtual-variant isolation, capacity excess, and absence of filesystem/process/network imports","pass focused and full suites, quality gate, procedural audit, protected-hash verification, and no SimulationCraft invocation"],
+  "express_exclusions":["implementation code, WoW API access, addon mutation, SavedVariables acquisition, text-paste parsing, installation discovery, real character or inventory data, persistence, UI changes, telemetry, network, catalog mutation, guidance, recommendation, simulation engine, SimulationCraft execution, commit, push, release, or any path outside the allowlist"]
+}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+If approved for implementation, the exact allowlist will be
+`desktop-app/src/dpslab/local_analysis_session.py`,
+`desktop-app/tests/test_local_analysis_session.py`, `docs/NEXT_TASK.md`, and
+`docs/ROADMAP.md`; all other paths remain forbidden. That future authorization
+will be limited to synthetic tests and must still exclude transport, addon,
+filesystem persistence, UI, engine execution, commits, and pushes.
+
+## Active implementation authorization — Núcleo de sesión local de análisis 0.1
+
+Daniel approved the closed synthetic-only implementation. It creates an
+in-memory model for current equipment, explicitly selected candidates, and
+hypothetical modifiers. The later transport will read equipped items and, only
+when the user selects it, one designated equipment bag. It will keep only
+current-expansion candidate items eligible for durable saving; this first core
+does not read, retain, or classify any real item.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{
+  "contract_version":"0.1",
+  "task_id":"local_analysis_session_core_0_1",
+  "title":"Implement the synthetic local analysis-session core",
+  "baseline_commit":"2af26080bd426806e1137b93c5514f82a76be2e0",
+  "authorization":{"status":"authorized_for_implementation","authorization_id":"local_analysis_session_core_0_1-20260903-daniel","authorized_by":"Daniel","authorized_at":"2026-09-03T00:00:00-05:00"},
+  "scope":{"allowed_paths":["desktop-app/src/dpslab/local_analysis_session.py","desktop-app/tests/test_local_analysis_session.py","docs/NEXT_TASK.md","docs/ROADMAP.md"],"generated_paths":[".dpslab/quality-gates/local_analysis_session_core_0_1/implementation.json",".dpslab/quality-gates/local_analysis_session_core_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*","desktop-app/src/dpslab/__main__.py","desktop-app/src/dpslab/local_profile_manual_ui.py","desktop-app/src/dpslab/local_character_context_profile.py","desktop-app/src/dpslab/addon_profile_manual_transfer.py","desktop-app/src/dpslab/addon_observation_import.py","desktop-app/src/dpslab/addon_observation_acquisition.py","docs/ADDON_REAL_OBSERVATION.md","docs/DESKTOP_INTERFACE_ARCHITECTURE.md"],"allow_deletions":false,"allow_renames":false},
+  "tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-p","test_local_analysis_session.py","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1257,"minimum_test_count":1264},
+  "protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b","desktop-app/src/dpslab/local_character_context_profile.py":"553217c0687fc6a9891bd95e6362868234b9c417e76a9b520bb1f0bc2c3c1478","desktop-app/src/dpslab/addon_profile_manual_transfer.py":"20296a592c4157396867efbd4587b790de37533d654e72c49025f3596ba19cf3","desktop-app/src/dpslab/local_profile_manual_ui.py":"d79f3882ecb98e061e81eb2cf20def598112bd64f9de1e863a8f7ee5a6d94f3b"},
+  "audit":{"required":true,"independence":"declared_and_procedural"},
+  "acceptance_criteria":["define closed immutable in-memory types for an explicitly trusted compatibility basis, current equipped items, user-selected inventory candidates, and virtual modifier choices","accept only bounded synthetic values with unique item and variant identities, an explicit slot relationship, canonical role/context tokens, and no character name, realm, GUID, account, raw export, source path, code, or command field","require each virtual modifier to target an explicitly selected item copy and label it hypothetical; preserve the immutable base equipment and never assert availability or alter game state","require the user-selected candidate set and requested variant set to stay within fixed small limits; reject ambiguous duplicate, out-of-scope, or exhaustive-combination requests instead of generating them","produce a session result that is ephemeral, non-actionable, non-persistent, non-networked, and has no history or simulation invocation surface","cover valid synthetic session construction plus missing compatibility, invalid bounds, boolean-as-integer, duplicate identities, invalid slot mapping, virtual-variant isolation, capacity excess, and absence of filesystem/process/network imports","pass focused and full suites, quality gate, procedural audit, protected-hash verification, and no SimulationCraft invocation"],
+  "express_exclusions":["WoW API access, addon mutation, SavedVariables acquisition, text-paste parsing, installation discovery, real character or inventory data, persistence, UI changes, telemetry, network, catalog mutation, guidance, recommendation, simulation engine, SimulationCraft execution, commit, push, release, or any path outside the allowlist"]
 }
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
