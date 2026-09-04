@@ -388,12 +388,49 @@ def document_digest(document: dict[str, Any]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
+def _resolve_git_dir(root: Path) -> Path:
+    marker = root / ".git"
+    if marker.is_dir():
+        return marker
+    if not marker.is_file():
+        raise GateError("git directory is indeterminate")
+    value = marker.read_text(encoding="utf-8").strip()
+    if not value.startswith("gitdir: "):
+        raise GateError("git directory is indeterminate")
+    candidate = Path(value[8:])
+    git_dir = candidate if candidate.is_absolute() else (root / candidate)
+    if not git_dir.is_dir() or git_dir.is_symlink():
+        raise GateError("git directory is indeterminate")
+    return git_dir.resolve()
+
+
+def _resolve_common_git_dir(git_dir: Path) -> Path:
+    marker = git_dir / "commondir"
+    if not marker.exists():
+        return git_dir
+    if not marker.is_file() or marker.is_symlink():
+        raise GateError("git directory is indeterminate")
+    value = marker.read_text(encoding="utf-8").strip()
+    if not value:
+        raise GateError("git directory is indeterminate")
+    common = Path(value)
+    common = common if common.is_absolute() else (git_dir / common)
+    if not common.is_dir() or common.is_symlink():
+        raise GateError("git directory is indeterminate")
+    return common.resolve()
+
+
 def real_repository_fingerprint(root: Path) -> dict[str, str | None]:
-    git_dir = root / ".git"
+    git_dir = _resolve_git_dir(root)
+    common_git_dir = _resolve_common_git_dir(git_dir)
+    head = git_dir / "HEAD"
+    config = common_git_dir / "config"
+    if not head.is_file() or not config.is_file():
+        raise GateError("git directory is indeterminate")
     return {
-        "head": (git_dir / "HEAD").read_text(encoding="utf-8"),
+        "head": head.read_text(encoding="utf-8"),
         "index_sha256": sha256_file(git_dir / "index") if (git_dir / "index").is_file() else None,
-        "config_sha256": sha256_file(git_dir / "config"),
+        "config_sha256": sha256_file(config),
     }
 
 

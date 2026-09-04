@@ -459,6 +459,19 @@ class QualityGateTests(unittest.TestCase):
             )
         self.assertEqual(gate.real_repository_fingerprint(root), before)
 
+    def test_fingerprint_supports_gitdir_file_and_detects_mutation(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name) / "root"; root.mkdir()
+        git_dir = Path(temporary.name) / "metadata"; git_dir.mkdir()
+        (root / ".git").write_text("gitdir: ../metadata\n", encoding="utf-8")
+        (git_dir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
+        (git_dir / "index").write_bytes(b"one")
+        (git_dir / "config").write_text("[core]\n", encoding="utf-8")
+        before = gate.real_repository_fingerprint(root)
+        (git_dir / "HEAD").write_text("changed\n", encoding="utf-8")
+        self.assertNotEqual(gate.real_repository_fingerprint(root), before)
+
     def test_audit_requires_valid_decision_and_integrity(self):
         value = contract()
         with self.assertRaisesRegex(gate.GateError, "invalid audit decision"):
