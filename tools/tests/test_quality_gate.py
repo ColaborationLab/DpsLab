@@ -457,18 +457,116 @@ class QualityGateTests(unittest.TestCase):
             )
         self.assertEqual(gate.real_repository_fingerprint(root), before)
 
+    def test_git_metadata_rejects_textual_symlink_before_resolution(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            target_dir = root / "actual-git-dir"
+            target_dir.mkdir()
+            target_file = target_dir / "HEAD"
+            target_file.write_text("ref: refs/heads/main\n", encoding="utf-8")
+            textual_link = root / "textual-link"
+            original_resolve = Path.resolve
+
+            def resolve_to_directory(path, *args, **kwargs):
+                if path == textual_link:
+                    return target_dir
+                return original_resolve(path, *args, **kwargs)
+
+            def resolve_to_file(path, *args, **kwargs):
+                if path == textual_link:
+                    return target_file
+                return original_resolve(path, *args, **kwargs)
+
+            def simulated_symlink(path):
+                return path == textual_link
+
+            with patch.object(Path, "resolve", resolve_to_directory), patch.object(
+                Path, "is_symlink", simulated_symlink
+            ), patch.object(gate, "run_git", return_value=str(textual_link)):
+                with self.assertRaisesRegex(gate.GateError, "indeterminate"):
+                    gate._git_directory(root, "--absolute-git-dir")
+
+            with patch.object(Path, "resolve", resolve_to_file), patch.object(
+                Path, "is_symlink", simulated_symlink
+            ), patch.object(gate, "run_git", return_value=str(textual_link)):
+                with self.assertRaisesRegex(gate.GateError, "indeterminate"):
+                    gate._git_path(root, "HEAD", target_dir)
+
     def test_fingerprint_supports_real_worktree_and_detects_mutation(self):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
-        source = Path(temporary.name) / "source"; source.mkdir()
+        source = Path(temporary.name) / "source"
+        source.mkdir()
         worktree = Path(temporary.name) / "worktree"
-        for args in (("init",), ("config", "user.email", "test@example.invalid"), ("config", "user.name", "test"), ("commit", "--allow-empty", "-m", "base"), ("worktree", "add", "-b", "other", str(worktree))):
+        for args in (
+            ("init",),
+            ("config", "user.email", "test@example.invalid"),
+            ("config", "user.name", "test"),
+            ("commit", "--allow-empty", "-m", "base"),
+            ("config", "extensions.worktreeConfig", "true"),
+            ("worktree", "add", "-b", "other", str(worktree)),
+        ):
             subprocess.run(["git", *args], cwd=source, check=True, capture_output=True)
-        before = gate.real_repository_fingerprint(worktree)
+        subprocess.run(
+            ["git", "config", "--worktree", "dpslab.fingerprint", "initial"],
+            cwd=worktree, check=True, capture_output=True,
+        )
+
+        git_dir = Path(
+            gate.run_git(worktree, ["rev-parse", "--absolute-git-dir"]).strip()
+        ).resolve()
+        common_git_dir_value = gate.run_git(
+            worktree, ["rev-parse", "--git-common-dir"]
+        ).strip()
+        common_git_dir_path = Path(common_git_dir_value)
+        common_git_dir = (
+            common_git_dir_path
+            if common_git_dir_path.is_absolute()
+            else worktree / common_git_dir_path
+        ).resolve()
+        head = Path(gate.run_git(worktree, ["rev-parse", "--git-path", "HEAD"]).strip())
         index = Path(gate.run_git(worktree, ["rev-parse", "--git-path", "index"]).strip())
-        if not index.is_absolute(): index = worktree / index
-        index.write_bytes(index.read_bytes() + b"x")
-        self.assertNotEqual(gate.real_repository_fingerprint(worktree), before)
+        head = (head if head.is_absolute() else worktree / head).resolve()
+        index = (index if index.is_absolute() else worktree / index).resolve()
+
+        self.assertNotEqual(git_dir, common_git_dir)
+        self.assertEqual(head.parent, git_dir)
+        self.assertEqual(index.parent, git_dir)
+        self.assertTrue((common_git_dir / "config").is_file())
+        self.assertTrue((git_dir / "config.worktree").is_file())
+
+        before = gate.real_repository_fingerprint(worktree)
+        self.assertIsNotNone(before["config_worktree_sha256"])
+
+        subprocess.run(
+            ["git", "config", "--worktree", "dpslab.fingerprint", "updated"],
+            cwd=worktree, check=True, capture_output=True,
+        )
+        after_worktree_config = gate.real_repository_fingerprint(worktree)
+        self.assertEqual(after_worktree_config["head"], before["head"])
+        self.assertEqual(after_worktree_config["index_sha256"], before["index_sha256"])
+        self.assertEqual(after_worktree_config["config_sha256"], before["config_sha256"])
+        self.assertNotEqual(
+            after_worktree_config["config_worktree_sha256"],
+            before["config_worktree_sha256"],
+        )
+
+        (worktree / "tracked.txt").write_text("tracked\n", encoding="utf-8")
+        subprocess.run(
+            ["git", "add", "tracked.txt"], cwd=worktree,
+            check=True, capture_output=True,
+        )
+        after_index = gate.real_repository_fingerprint(worktree)
+        self.assertNotEqual(
+            after_index["index_sha256"], after_worktree_config["index_sha256"]
+        )
+        self.assertEqual(
+            after_index["config_sha256"], after_worktree_config["config_sha256"]
+        )
+        self.assertEqual(
+            after_index["config_worktree_sha256"],
+            after_worktree_config["config_worktree_sha256"],
+        )
 
     def test_audit_requires_valid_decision_and_integrity(self):
         value = contract()
