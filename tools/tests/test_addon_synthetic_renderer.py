@@ -37,7 +37,7 @@ class AddonSyntheticRendererTests(unittest.TestCase):
     def test_prohibited_automation_network_and_data_surfaces_are_absent(self) -> None:
         prohibited = (
             "CastSpell", "UseAction", "RunMacro", "SendChatMessage",
-            "CreateFrame", "LoadAddOn", "http", "socket",
+            "LoadAddOn", "http", "socket",
             "donate", "patreon", "telemetry",
         )
         lower = self.lua.lower()

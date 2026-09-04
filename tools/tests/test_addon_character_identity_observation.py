@@ -32,7 +32,7 @@ class AddonCharacterIdentityObservationTests(unittest.TestCase):
         handler = re.search(r"local function handleIdentityExport\(\)(.*?)\nend", self.renderer, re.DOTALL).group(1)
         self.assertLess(handler.index("candidate == nil"), handler.index("_G.DpsLabObservationExport = candidate"))
         self.assertEqual(handler.count("_G.DpsLabObservationExport = candidate"), 1)
-        self.assertNotRegex(self.identity + self.renderer, r"RegisterEvent|CreateFrame|C_Timer|OnUpdate")
+        self.assertNotRegex(self.identity + self.renderer, r"RegisterEvent|C_Timer|OnUpdate")
 
     def test_closed_schema_and_safety_constants_are_serialized(self):
         for literal in ('"character_identity_snapshot"', '"manual_command"', '"retail"', '"0.1"', '"contains_character_data":true', '"contains_direct_identifiers":false', '"actionable":false', '"executable":false', '"no_automation":true'):

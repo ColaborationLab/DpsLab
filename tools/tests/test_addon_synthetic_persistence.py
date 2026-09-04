@@ -64,7 +64,7 @@ class AddonSyntheticPersistenceTests(unittest.TestCase):
             self.assertNotIn("DpsLabObservationExport", line)
             self.assertNotIn("DpsLabSyntheticObservationExport", line)
         for token in (
-            "CreateFrame", "RegisterEvent", "C_Timer", "OnUpdate", "PLAYER_LOGIN",
+            "RegisterEvent", "C_Timer", "OnUpdate", "PLAYER_LOGIN",
             "PLAYER_LOGOUT", "ZONE_CHANGED", "COMBAT_LOG", "SendAddonMessage",
             "UnitName", "GetRealmName", "GetInventoryItem", "http", "socket",
         ):

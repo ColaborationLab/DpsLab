@@ -9725,7 +9725,7 @@ recommendation, simulation-engine, or SimulationCraft work. A later human
 authorization must set the final schema byte limits and WoW API compatibility
 matrix after an evidence-only API review.
 
-## Active implementation authorization — Exportación manual viva de análisis 0.1
+## Published implementation authorization — Exportación manual viva de análisis 0.1
 
 Daniel authorized an implementation that is constrained to one player-invoked
 addon export and one strict desktop parser. The local API review is limited to
@@ -9733,7 +9733,7 @@ the declared calls, simulated in tests and observed only when the player later
 chooses to invoke the addon command. No live player data is committed, logged,
 or retained by the repository.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {
   "contract_version":"0.1",
@@ -9748,5 +9748,17 @@ or retained by the repository.
   "acceptance_criteria":["implement a closed canonical text envelope for a manual live export and a desktop parser that rejects noncanonical, oversized, duplicate, nonfinite, missing, or unknown fields without evaluating Lua or item links","collect only from declared WoW APIs behind an injectable API table: identity compatibility, equipped slots, and one caller-selected bag; protect each call and return static unavailable reasons on any missing or failed API","render the complete payload only in a player-selectable addon text surface after `/dpslab export analysis` or `/dpslab export analysis <bag_index>`; do not print payload content, send chat, access clipboard, write SavedVariables, scan other bags, create a background loop, or invoke an analysis","bound live observations to 19 equipped items, one bag index, 40 occupied bag positions, canonical opaque item links, integer item ids and levels, and static source/slot labels; do not collect name, realm, GUID, account, location, combat, chat, currencies, achievements, or history","compute a SHA-256 receipt only in the desktop parser and return an immutable snapshot without a source path, raw input accessor, persistence, network, recommendation, simulation, or execution method","cover canonical valid synthetic input, every declared unavailable reason, malformed transport, bounds, duplicate identities, boolean-as-integer, noncanonical payload, module load order, exact manual command surface, and absence of forbidden automation/network/persistence surfaces","pass focused and full suites, quality gate, procedural audit, protected-hash verification, and no SimulationCraft invocation"],
   "express_exclusions":["desktop UI, automatic import, SavedVariables acquisition or mutation, persistence, local retention, current-content classification, candidate selection, virtual variants, guidance, recommendation, simulation engine, SimulationCraft execution, commit, push, release, or any path outside the allowlist"]
 }
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+Published as `2e5f2f3056e89b411fe06e301627ffb035380bbe`. Its first CI run exposed a
+historical test conflict around the manually invoked copy surface. This does
+not authorize a functional expansion beyond the corrective task below.
+
+## Active corrective authorization — Manual copy surface test compatibility 0.1
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{"contract_version":"0.1","task_id":"live_manual_analysis_export_test_compatibility_0_1","title":"Constrain historical addon tests around the manual copy surface","baseline_commit":"2e5f2f3056e89b411fe06e301627ffb035380bbe","authorization":{"status":"authorized_for_implementation","authorization_id":"live_manual_analysis_export_test_compatibility_0_1-20260904-daniel","authorized_by":"Daniel","authorized_at":"2026-09-04T00:00:00-05:00"},"scope":{"allowed_paths":["tools/tests/test_addon_character_identity_observation.py","tools/tests/test_addon_specialization_registry_observation.py","tools/tests/test_addon_synthetic_persistence.py","tools/tests/test_addon_synthetic_renderer.py","tools/tests/test_addon_live_analysis_export.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/live_manual_analysis_export_test_compatibility_0_1/implementation.json",".dpslab/quality-gates/live_manual_analysis_export_test_compatibility_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","desktop-app/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":".","argv":["python","-m","unittest","tools.tests.test_addon_character_identity_observation","tools.tests.test_addon_specialization_registry_observation","tools.tests.test_addon_synthetic_persistence","tools.tests.test_addon_synthetic_renderer","tools.tests.test_addon_live_analysis_export","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":".","argv":["python","-m","unittest","discover","-s","tools/tests","-v"],"environment":{"PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":143,"minimum_test_count":143},"protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"c15c97baba056911b5838c55af45f8e2053bb1c51ab3fc3033b89a99b9cdc6d7","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["preserve identity and registry capture checks","permit only the declared manually invoked copy frame","continue rejecting events timers updates network chat payload emission and SavedVariables mutation","pass focused and full tools suites"],"express_exclusions":["functional addon changes, real observations, SimulationCraft, commit outside allowed paths, push"]}
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
