@@ -9863,3 +9863,12 @@ binding fails closed. Tank guidance places declared survival thresholds before
 damage; healer guidance preserves healing safety before offensive priorities.
 Later work must use synthetic fixtures before any real guidance, source data,
 or attended WoW validation.
+
+The external privacy-review assignment
+`local_character_context_profile_privacy_review_0_1` produced no report and
+is not evidence of independent review. Its unresolved concern is retained by
+the primary project: before any real Core capture, imported practice session,
+or personalized Advisor package, perform a current privacy/retention review
+against the active schema, trust boundary, and exact fields. The prior local
+profile protection implementation is relevant context, not a substitute for
+that future review.
