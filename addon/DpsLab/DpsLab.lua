@@ -95,7 +95,28 @@ local EXPORT_STATUS = {
   cleared = "Synthetic export cleared.",
   unavailable = "Synthetic export unavailable.",
   unsupported = "Synthetic export command unavailable.",
+  analysis_export_ready = "Manual analysis export is ready to copy.",
+  analysis_api_unavailable = "Manual analysis export unavailable: required API unavailable.",
+  analysis_api_failed = "Manual analysis export unavailable: API call failed.",
+  analysis_context_invalid = "Manual analysis export unavailable: context invalid.",
+  analysis_items_unavailable = "Manual analysis export unavailable: equipment unavailable.",
+  analysis_bag_invalid = "Manual analysis export unavailable: selected bag invalid.",
+  analysis_payload_invalid = "Manual analysis export unavailable: payload invalid.",
 }
+
+local function handleAnalysisExport(bag)
+  local module = DpsLabCharacterEquipmentObservation
+  if type(module) ~= "table" or type(module.Capture) ~= "function" then return nil, "analysis_api_unavailable" end
+  return module.Capture(bag)
+end
+
+local function showManualAnalysisExport(payload)
+  local frame = CreateFrame("Frame", "DpsLabManualAnalysisExportFrame", UIParent, "BackdropTemplate")
+  frame:SetSize(700, 180); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
+  local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
+  box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(660, 140); box:SetPoint("CENTER")
+  box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
+end
 
 local function syntheticExportCandidate()
   if type(DpsLabSyntheticObservationExport) ~= "string" then return nil end
@@ -147,8 +168,14 @@ end
 
 SLASH_DPSLAB1 = "/dpslab"
 SlashCmdList["DPSLAB"] = function(message)
-  local command, role = message:match("^(%S*)%s*(%S*)$")
+  local command, role, argument = message:match("^(%S*)%s*(%S*)%s*(%S*)$")
   if command == "export" then
+    if role == "analysis" then
+      local payload, status = handleAnalysisExport(argument == "" and nil or tonumber(argument))
+      if payload ~= nil then showManualAnalysisExport(payload) end
+      print("[DpsLab] " .. EXPORT_STATUS[status])
+      return
+    end
     local status = role == "identity" and handleIdentityExport()
       or role == "specialization-registry" and handleSpecializationRegistryExport()
       or handleSyntheticExport(role)

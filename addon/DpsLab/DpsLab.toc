@@ -8,4 +8,5 @@ SyntheticExchange.lua
 SyntheticObservation.lua
 CharacterIdentityObservation.lua
 CharacterSpecializationRegistryObservation.lua
+CharacterEquipmentObservation.lua
 DpsLab.lua
