@@ -105,3 +105,35 @@ The immutable result is evidence only: it does not assert that the class is a
 Druid, bind semantic names to specialization identifiers, approve a catalog,
 or enable guidance. Those transitions require an attended observation followed
 by a separate human review and current-source evidence.
+
+## Current-template evidence boundary 0.1
+
+The next Druid slice is not a new rotation, item, spell, or balance-data
+catalog. It is a controlled boundary for deciding whether a later template may
+claim to be current and applicable. Until that boundary has all required
+evidence, Advisor must remain synthetic or unavailable.
+
+A candidate needs four independent bindings before it can become eligible for
+human review:
+
+1. an attended, validated local specialization-registry observation matching
+   the current Retail build and interface;
+2. a reviewed semantic mapping from that observed class/specialization shape to
+   the Druid policy token, with no mapping inferred from a display name;
+3. primary-source evidence from Blizzard for the product/build applicability;
+   a fansite may corroborate a discrepancy but cannot replace the primary
+   source; and
+4. a closed template envelope whose role and safety ordering agree with the
+   Druid role policy.
+
+The future selector must reject, rather than partially apply, absent or stale
+evidence, a build/interface mismatch, conflicting mappings, unreviewed source
+coverage, unsupported content context, or a tank/healer template that places
+damage ahead of its safety constraints. A valid mapping never turns a
+synthetic placeholder into live advice by itself.
+
+Any later implementation will use synthetic fixtures first. It may represent
+only evidence identifiers, hashes, reviewed status, compatibility ranges and
+unavailable reasons. It must not acquire live pages, retain source text,
+hardcode current specialization IDs, publish a template, render a rotation,
+enumerate inventory, perform simulation, or communicate with the game client.
