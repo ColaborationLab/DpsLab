@@ -7,6 +7,12 @@ import unittest
 
 from dpslab.addon_character_identity_transport import CharacterIdentitySnapshot
 from dpslab.druid_guidance_coordinator import coordinate_druid_guidance
+from dpslab.druid_current_template_evidence import (
+    CompatibilityReceipt,
+    DruidTemplateEvidence,
+    SemanticMappingReceipt,
+    TemplateReceipt,
+)
 from dpslab.druid_identity_context import (
     DruidIdentityRegistry,
     DruidSpecializationBinding,
@@ -17,6 +23,7 @@ from dpslab.static_template_catalog import ApprovalEvidence, calculate_catalog_s
 ROOT = Path(__file__).parents[2]
 CATALOG = ROOT / "knowledge/catalogs/static_template_catalog_synthetic_0_1.json"
 NOW = datetime(2026, 8, 1, tzinfo=timezone.utc)
+HASH = "a" * 64
 
 
 def registry() -> DruidIdentityRegistry:
@@ -68,6 +75,25 @@ def approval(document):
     )
 
 
+def template_evidence(role="damage", specialization="balance"):
+    receipt = lambda identifier: CompatibilityReceipt(
+        identifier, HASH, 120500, 120500, 120500, 120500, True, True
+    )
+    safety = {
+        "damage": "damage_primary",
+        "tank": "survival_first",
+        "healer": "healing_safety_first",
+    }[role]
+    return DruidTemplateEvidence(
+        receipt("synthetic.registry.001"),
+        SemanticMappingReceipt(
+            "synthetic.mapping.001", HASH, specialization, role, True, True
+        ),
+        receipt("synthetic.primary.001"),
+        TemplateReceipt("synthetic.template.001", HASH, role, safety, True, True),
+    )
+
+
 class DruidGuidanceCoordinatorTests(unittest.TestCase):
     def decide(self, **changes):
         document = changes.pop("catalog", approved_catalog())
@@ -85,6 +111,7 @@ class DruidGuidanceCoordinatorTests(unittest.TestCase):
             "content_context": "synthetic_single_target",
             "observed_at": NOW,
             "approval": evidence,
+            "template_evidence": template_evidence(),
         }
         values.update(changes)
         return coordinate_druid_guidance(**values)
@@ -104,6 +131,15 @@ class DruidGuidanceCoordinatorTests(unittest.TestCase):
         document = approved_catalog()
         self.assertEqual(
             "approval_missing", self.decide(catalog=document, approval=None).reason
+        )
+
+    def test_missing_or_incompatible_evidence_short_circuits_catalog(self):
+        self.assertEqual(
+            "evidence_invalid", self.decide(template_evidence=None, catalog={}).reason
+        )
+        self.assertEqual(
+            "mapping_evidence_unavailable",
+            self.decide(template_evidence=template_evidence(specialization="feral"), catalog={}).reason,
         )
 
     def test_mismatched_approval_fails_closed(self):
@@ -130,7 +166,10 @@ class DruidGuidanceCoordinatorTests(unittest.TestCase):
         self.assertEqual((), result.statements)
 
     def test_guardian_policy_remains_available_but_damage_catalog_does_not(self):
-        result = self.decide(snapshot=snapshot(81003, "tank"))
+        result = self.decide(
+            snapshot=snapshot(81003, "tank"),
+            template_evidence=template_evidence("tank", "guardian"),
+        )
         self.assertEqual(
             ("guidance_unavailable", "no_eligible_entry"),
             (result.status, result.reason),

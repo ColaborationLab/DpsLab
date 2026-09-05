@@ -24,3 +24,8 @@ statistics, rotations, or balance claims.
 This gate is deliberately insufficient to make Advisor available. Real
 evidence acquisition, human approval, current-content catalogs, game capture,
 and user-facing presentation each remain separately governed work.
+
+The Druid guidance coordinator consumes this result before it can ask the
+catalog for statements. Even a valid synthetic catalog and identity context
+remain `guidance_unavailable` if the supplied evidence is absent or does not
+return `review_eligible`.

@@ -15,6 +15,7 @@ import re
 from typing import Any
 
 from .addon_character_identity_transport import CharacterIdentitySnapshot
+from .druid_current_template_evidence import evaluate_druid_template_evidence
 from .druid_identity_context import DruidIdentityRegistry, bind_druid_identity_context
 from .druid_role_context import DruidRolePolicy
 from .knowledge_envelope import CompatibilityContext, KnowledgeEnvelopeError
@@ -53,8 +54,9 @@ def coordinate_druid_guidance(
     content_context: object,
     observed_at: object,
     approval: object,
+    template_evidence: object,
 ) -> DruidGuidanceDecision:
-    """Select synthetic guidance only after identity and catalog validation."""
+    """Select synthetic guidance only after identity, evidence, and catalog validation."""
 
     identity = bind_druid_identity_context(snapshot, registry)
     if identity.status != "context_available" or identity.policy is None:
@@ -80,6 +82,12 @@ def coordinate_druid_guidance(
         return _unavailable("observed_at_invalid", identity.policy)
     if approval is not None and not isinstance(approval, ApprovalEvidence):
         return _unavailable("approval_invalid", identity.policy)
+
+    evidence = evaluate_druid_template_evidence(
+        identity.policy, template_evidence, snapshot.build, snapshot.interface_version
+    )
+    if evidence.status != "review_eligible":
+        return _unavailable(evidence.reason or "template_evidence_unavailable", identity.policy)
 
     context = CompatibilityContext(
         wow_product="retail",
