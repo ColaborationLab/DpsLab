@@ -54,22 +54,13 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 
 ## Seguridad transversal obligatoria
 
-- Aplicar `security/security_baseline_0_1.json` y
-  `docs/SECURITY_ARCHITECTURE.md` a todo diseño, implementación, prueba,
-  publicación y operación futura.
-- Tratar red, perfiles importados, SavedVariables, procesos externos, paquetes
-  de conocimiento y rutas elegidas por el usuario como entradas no confiables.
-- Los datos nunca pueden convertirse en código, comandos, módulos o Lua
-  ejecutable. Denegar por defecto ante ambigüedad, incompatibilidad, exceso de
-  recursos, procedencia insuficiente o vigencia desconocida.
-- Todo contrato debe declarar límites de confianza, privilegios, secretos,
-  persistencia, red, datos personales, degradación segura y pruebas negativas.
-- Ninguna clave privada, contraseña, token o credencial de producción puede
-  entrar al repositorio, CI, addon, logs, artefactos o configuración distribuida.
-- Una beta externa requiere cerrar las puertas enumeradas en la baseline de
-  seguridad; CI verde y firma criptográfica no sustituyen esa revisión.
-- Los hallazgos de seguridad se diagnostican, corrigen, auditan, publican y
-  activan mediante decisiones separadas. No divulgar secretos en Issues.
+- Mantener las prácticas de seguridad ya integradas (validación de entradas
+  no confiables, prohibición de convertir datos en código ejecutable,
+  prohibición de credenciales en el repositorio) sin ampliarlas. No iniciar
+  trabajo nuevo de SBOM, firma de releases, modelo de amenazas formal o
+  adquisición automática de fuentes salvo autorización nueva y explícita de
+  Daniel que mencione esa característica por nombre. Ver
+  `SCOPE_CORRECTION_0_1.md`, sección 3.
 
 ## Restricciones de alcance
 
@@ -77,6 +68,10 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - No ejecutar matrices ni generar combinaciones automáticamente sin aprobación.
 - No implementar GUI, addon de WoW, módulos multiclase o entrenador de combate sin alcance aprobado.
 - No procesar todavía Weekly Reward Choices, currencies, high watermarks o achievements.
+- Alcance aprobado para el ciclo actual: pantalla mínima de ejecución en la
+  app y visualización del resultado real en el addon, para Druida
+  Restauración, según `SCOPE_CORRECTION_0_1.md`. Ninguna otra clase, GUI
+  adicional o módulo nuevo sin nueva aprobación explícita de Daniel.
 
 ## Verificación
 
@@ -104,6 +99,14 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - El cierre preservó `block_2_2_b1_approved` y no modificó código productivo.
 
 ## Quality gate y autorizaciones
+
+- Mientras `SCOPE_CORRECTION_0_1.md` esté vigente, el cierre de alcance para
+  tareas dentro de su objetivo único NO requiere contrato formal, `task_id`,
+  ni "auditoría independiente declarada y procedimental". Basta una entrada
+  breve en el archivo de tareas activo con: qué se hizo, qué archivo(s) se
+  tocaron, y el resultado de la prueba de valor (sección 2 de la corrección de
+  alcance). La revisión directa de Daniel sustituye la auditoría formal durante
+  este ciclo.
 
 ## Protocolo de agentes subordinados y trabajo remoto
 

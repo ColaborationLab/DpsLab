@@ -76,6 +76,14 @@ function DpsLab.IsActionable(view)
   return view ~= nil and view.status == "approved"
 end
 
+local function realRecommendation()
+  local value = DpsLabRealRecommendation
+  if type(value) ~= "table" or value.schema_version ~= "0.1"
+    or value.state ~= "ready" or type(value.message) ~= "string"
+    or #value.message < 1 or #value.message > 240 then return nil end
+  return value.message
+end
+
 local SYNTHETIC_EXPORT_REASON = "validSyntheticObservationTransportNonActionable"
 local EXPORT_STATUS = {
   retained = "Synthetic export retained for WoW-managed persistence.",
@@ -99,15 +107,19 @@ local EXPORT_STATUS = {
   analysis_api_unavailable = "Manual analysis export unavailable: required API unavailable.",
   analysis_api_failed = "Manual analysis export unavailable: API call failed.",
   analysis_context_invalid = "Manual analysis export unavailable: context invalid.",
+  analysis_restoration_required = "Manual analysis export requires Restoration Druid.",
+  analysis_talents_unavailable = "Manual analysis export unavailable: talent loadouts unavailable.",
+  analysis_comparison_loadout_unavailable = "Manual analysis export needs another saved Restoration loadout.",
+  analysis_item_info_unavailable = "Manual analysis export unavailable: item information unavailable.",
   analysis_items_unavailable = "Manual analysis export unavailable: equipment unavailable.",
   analysis_bag_invalid = "Manual analysis export unavailable: selected bag invalid.",
   analysis_payload_invalid = "Manual analysis export unavailable: payload invalid.",
 }
 
-local function handleAnalysisExport(bag)
+local function handleAnalysisExport(selectedLoadout)
   local module = DpsLabCharacterEquipmentObservation
   if type(module) ~= "table" or type(module.Capture) ~= "function" then return nil, "analysis_api_unavailable" end
-  return module.Capture(bag)
+  return module.Capture(selectedLoadout)
 end
 
 function DpsLab.StartSyntheticTraining(config, injected)
@@ -190,6 +202,11 @@ end
 SLASH_DPSLAB1 = "/dpslab"
 SlashCmdList["DPSLAB"] = function(message)
   local command, role, argument = message:match("^(%S*)%s*(%S*)%s*(%S*)$")
+  if command == "result" then
+    local recommendation = realRecommendation()
+    print("[DpsLab] " .. (recommendation or "No real recommendation is available."))
+    return
+  end
   if command == "export" then
     if role == "analysis" then
       local payload, status = handleAnalysisExport(argument == "" and nil or tonumber(argument))

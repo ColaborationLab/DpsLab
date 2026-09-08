@@ -39,6 +39,8 @@ from .local_profile_manual_ui import (
     LocalProfileManualController,
     TkLocalProfileManualWorkspace,
 )
+from .druid_restoration_recommendation import DruidRestorationRecommendationError
+from .druid_restoration_ui import TkDruidRestorationWorkspace
 from .runner import SimulationRunError, run_simulation
 from .scenario import ScenarioError, load_scenario
 from .variant import VariantError, load_variant
@@ -137,6 +139,10 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="Abre un espacio local de perfil sin importación automática",
     )
     profile_workspace.add_argument("--profile-root", type=Path, required=True)
+    commands.add_parser(
+        "restoration",
+        help="Abre la comparación real mínima de Druida Restauración",
+    )
     return parser.parse_args(argv)
 
 
@@ -374,6 +380,14 @@ def _profile_workspace(args: argparse.Namespace) -> int:
     return 0
 
 
+def _restoration(_: argparse.Namespace) -> int:
+    try:
+        TkDruidRestorationWorkspace(project_root()).run()
+    except Exception:
+        raise DruidRestorationRecommendationError("restoration_desktop_unavailable") from None
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _arguments(argv)
     try:
@@ -391,11 +405,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _addon_import(args)
         if args.command == "profile-workspace":
             return _profile_workspace(args)
+        if args.command == "restoration":
+            return _restoration(args)
         return _summarize(args)
     except (
         ComparisonReadinessError,
         ComparisonExecutionError,
         CharacterContextProfileError,
+        DruidRestorationRecommendationError,
         ComparisonSpecError,
         ConfigurationError,
         ProfileParseError,

@@ -1,12 +1,17 @@
-# Live manual analysis export 0.1
+# Exportación real de Druida Restauración 0.4
 
-`/dpslab export analysis` renders current equipped observations in a selectable
-addon text box. `/dpslab export analysis <0-4>` additionally describes one
-chosen bag. The player copies the text and pastes it into the desktop parser.
-The addon does not print the payload, use the clipboard, write SavedVariables,
-or send data over the network. A parsed desktop snapshot is not an analysis,
-recommendation, simulation, or durable record.
+`/dpslab export analysis` abre un texto para copiar con el equipo equipado,
+especialización Restauración activa y dos loadouts de talentos reales: el
+activo y el primer loadout guardado alternativo. El jugador puede usar
+`/dpslab export analysis 2` para escoger el segundo alternativo disponible.
+No se leen mochilas, inventario, candidatos ni datos sintéticos.
 
-The desktop parser accepts only the canonical `DPSLAB-LIVE-ANALYSIS-0.1`
-envelope and computes an intake SHA-256 receipt. Compatibility and expansion
-eligibility remain separate future controls.
+La exportación se rechaza si el personaje no es Druida Restauración, si falta
+información real de un objeto o si no existe otro loadout guardado de la misma
+especialización. El addon usa las APIs del cliente para el nivel de objeto y
+la cadena de talentos; no inventa configuraciones.
+
+La aplicación acepta el sobre canónico `DPSLAB-LIVE-ANALYSIS-0.1` con esquema
+`0.4` y crea en memoria dos perfiles de SimulationCraft con el mismo equipo
+real y talentos distintos. Aún no ejecuta esos perfiles ni muestra una
+recomendación: esas son las siguientes etapas del slice.
