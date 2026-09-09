@@ -11,8 +11,7 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, de punta a punta,
-con datos reales (no sintéticos), una sola cadena de valor:
+El único trabajo autorizado a partir de ahora es completar, la pantalla de la app detecta la exportación reciente sola; ya no copias/pegas texto a mano:
 
 1. El addon lee el equipo, talentos y especialización reales del personaje
    (no un fixture sintético).
