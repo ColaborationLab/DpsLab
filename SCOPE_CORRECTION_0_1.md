@@ -13,18 +13,11 @@ explícitamente por escrito.
 
 El único trabajo autorizado a partir de ahora es completar, la pantalla de la app detecta la exportación reciente sola; ya no copias/pegas texto a mano:
 
-1. El addon lee el equipo, talentos y especialización reales del personaje
-   (no un fixture sintético).
-2. La app de escritorio usa esos datos reales para correr o comparar
-   simulaciones ya existentes (parser, runner, comparador — componentes ya
-   implementados y reutilizables).
-3. El addon muestra al jugador, dentro del juego, una recomendación concreta
-   basada en ese resultado real (aunque sea texto simple, sin interfaz
-   elaborada).
+1. El addon da una ventana la opción de exportar la información de su personaje y advierte que la acción ocasionará un /reload.
+2. La app brinda instrucciones dinámicas sencillas de lo que el usuario debe hacer, según la etapa del proceso, facilitando un poco el paso de WoW al simulador.
+3. La app muestra un selector de las builds detectadas para permitirle observar detalles de la simulación
+4. La app de escritorio incluye una distribución de simc.exe para facilitar el uso de la suite, evitando de un .exe externo o programa de terceros.
 
-La cadena de Restauración ya está cerrada. Balance de Druida queda autorizado
-como la segunda especialización para replicar exactamente esta misma cadena.
-Ninguna otra clase, rol o especialización queda incluida.
 
 ### 1.1 Decisión de dirección (2026-09-08): empaquetar, no reconstruir
 
@@ -51,8 +44,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador reciba hoy una recomendación real
-> (no sintética, no de diseño, no de gobernanza) que no tenía antes?"
+> "¿Esta tarea hace que un jugador disponga de la opción de usar un solo instalador y una sola aplicación de escritorio abierta en paralelo al juego?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
