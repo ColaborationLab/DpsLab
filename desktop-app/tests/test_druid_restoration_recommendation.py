@@ -46,7 +46,7 @@ class DruidRestorationRecommendationTests(unittest.TestCase):
             (addon / "DpsLab.toc").write_text("", encoding="utf-8")
             (addon / "DpsLab.lua").write_text("", encoding="utf-8")
             written = write_addon_recommendation(addon, compare_druid_restoration_runs(summary(100), summary(110)))
-            self.assertEqual(written, addon / "DpsLabRealRecommendation.lua")
+            self.assertEqual(written, (addon / "DpsLabRealRecommendation.lua").resolve())
             self.assertIn('state = "ready"', written.read_text(encoding="utf-8"))
 
     @patch("dpslab.druid_restoration_recommendation.build_druid_restoration_profiles")
