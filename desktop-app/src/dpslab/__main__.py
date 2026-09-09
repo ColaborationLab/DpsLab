@@ -40,7 +40,7 @@ from .local_profile_manual_ui import (
     TkLocalProfileManualWorkspace,
 )
 from .druid_restoration_recommendation import DruidRestorationRecommendationError
-from .druid_restoration_ui import TkDruidRestorationWorkspace
+from .druid_restoration_ui import TkDruidBalanceWorkspace, TkDruidRestorationWorkspace
 from .runner import SimulationRunError, run_simulation
 from .scenario import ScenarioError, load_scenario
 from .variant import VariantError, load_variant
@@ -142,6 +142,10 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
     commands.add_parser(
         "restoration",
         help="Abre la comparación real mínima de Druida Restauración",
+    )
+    commands.add_parser(
+        "balance",
+        help="Abre la comparación real mínima de Druida Balance",
     )
     return parser.parse_args(argv)
 
@@ -388,6 +392,14 @@ def _restoration(_: argparse.Namespace) -> int:
     return 0
 
 
+def _balance(_: argparse.Namespace) -> int:
+    try:
+        TkDruidBalanceWorkspace(project_root()).run()
+    except Exception:
+        raise DruidRestorationRecommendationError("balance_desktop_unavailable") from None
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _arguments(argv)
     try:
@@ -407,6 +419,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _profile_workspace(args)
         if args.command == "restoration":
             return _restoration(args)
+        if args.command == "balance":
+            return _balance(args)
         return _summarize(args)
     except (
         ComparisonReadinessError,

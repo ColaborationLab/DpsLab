@@ -105,18 +105,19 @@ Runner = Callable[[Path, SimulationConfig], RunResult]
 SummaryLoader = Callable[[Path], RunSummary]
 
 
-def run_druid_restoration_recommendation(
+def run_druid_recommendation(
     export_text: str,
     simc_exe: Path,
     addon_directory: Path,
     *,
     root: Path,
+    profile_builder: Callable[[object], object],
     runner: Runner = run_simulation,
     summary_loader: SummaryLoader = summarize_run,
 ) -> DruidRestorationRecommendation:
     """Run two real pasted-loadout profiles without retaining their artifacts."""
     snapshot = parse_live_analysis_export(export_text)
-    profiles = build_druid_restoration_profiles(snapshot)
+    profiles = profile_builder(snapshot)
     executable = simc_exe.resolve()
     if not executable.is_file():
         raise DruidRestorationRecommendationError("restoration_simc_unavailable")
@@ -142,3 +143,19 @@ def run_druid_restoration_recommendation(
         recommendation = compare_druid_restoration_runs(active_summary, comparison_summary)
     write_addon_recommendation(addon_directory, recommendation)
     return recommendation
+
+
+def run_druid_restoration_recommendation(
+    export_text: str,
+    simc_exe: Path,
+    addon_directory: Path,
+    *,
+    root: Path,
+    runner: Runner = run_simulation,
+    summary_loader: SummaryLoader = summarize_run,
+) -> DruidRestorationRecommendation:
+    return run_druid_recommendation(
+        export_text, simc_exe, addon_directory, root=root,
+        profile_builder=build_druid_restoration_profiles,
+        runner=runner, summary_loader=summary_loader,
+    )

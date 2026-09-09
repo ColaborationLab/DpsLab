@@ -1,8 +1,10 @@
 local Equipment = {}
 
-local RESTORATION_CLASS_ID = 11
-local RESTORATION_SPEC_ID = 105
-local RESTORATION_ROLE = "HEALER"
+local DRUID_CLASS_ID = 11
+local SUPPORTED_SPECS = {
+  [105] = { role = "HEALER", subject_role = "healer" },
+  [102] = { role = "DAMAGER", subject_role = "damage" },
+}
 
 local function api()
   return {
@@ -97,8 +99,10 @@ function Equipment.Capture(selectedLoadout, injected)
   if not (build and number(interface, 1, 9999999) and number(classId, 1, 1000)
     and number(specializationId, 1, 100000) and number(level, 1, 1000)
     and number(raceId, 1, 1000)) then return nil, "analysis_context_invalid" end
-  if classId ~= RESTORATION_CLASS_ID or specializationId ~= RESTORATION_SPEC_ID
-    or role ~= RESTORATION_ROLE then return nil, "analysis_restoration_required" end
+  local supported = SUPPORTED_SPECS[specializationId]
+  if classId ~= DRUID_CLASS_ID or supported == nil or role ~= supported.role then
+    return nil, "analysis_druid_specialization_required"
+  end
   local talentContext, talentReason = loadouts(a, specializationId, selectedLoadout)
   if talentContext == nil then return nil, talentReason end
   local equipped = {}
@@ -113,7 +117,7 @@ function Equipment.Capture(selectedLoadout, injected)
     .. ',"wow_product":"retail"},"equipment":{"equipped":[' .. table.concat(equipped, ",")
     .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":false,"executable":false,"no_automation":true},"schema_version":"0.4","subject":{"class_id":'
     .. classId .. ',"level":' .. level .. ',"race_id":' .. raceId
-    .. ',"role":"healer","specialization_id":105}}\n'
+    .. ',"role":"' .. supported.subject_role .. '","specialization_id":' .. specializationId .. '}}\n'
   if #text > 65536 then return nil, "analysis_payload_invalid" end
   return "DPSLAB-LIVE-ANALYSIS-0.1\n" .. text, "analysis_export_ready"
 end

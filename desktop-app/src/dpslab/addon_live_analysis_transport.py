@@ -36,7 +36,7 @@ class TalentLoadoutContext:
 
 
 @dataclass(frozen=True, repr=False)
-class RestorationTalentLoadouts:
+class TalentLoadouts:
     active_config_id: int
     active_talent_string: str
     comparison_config_id: int
@@ -58,7 +58,11 @@ class LiveAnalysisSnapshot:
     item_eligibility_basis: str | None = None
     current_expansion_id: int | None = None
     talent_loadout: TalentLoadoutContext | None = None
-    restoration_talent_loadouts: RestorationTalentLoadouts | None = None
+    talent_loadouts: TalentLoadouts | None = None
+
+    @property
+    def restoration_talent_loadouts(self) -> TalentLoadouts | None:
+        return self.talent_loadouts
 
 
 def _fail(reason: str) -> None:
@@ -137,7 +141,7 @@ def _legacy_talent_context(value: Any) -> TalentLoadoutContext:
     return TalentLoadoutContext("available", closed["loadout_token"], values, None)
 
 
-def _restoration_loadouts(value: Any) -> RestorationTalentLoadouts:
+def _talent_loadouts(value: Any) -> TalentLoadouts:
     context = _closed(value, {"talent_loadouts"}, "analysis_context")
     loadouts = _closed(context["talent_loadouts"], {"active", "comparison"}, "talent_loadouts")
 
@@ -152,7 +156,7 @@ def _restoration_loadouts(value: Any) -> RestorationTalentLoadouts:
     comparison_id, comparison = read("comparison")
     if active_id == comparison_id or active == comparison:
         _fail("live_analysis_talent_loadout_invalid")
-    return RestorationTalentLoadouts(active_id, active, comparison_id, comparison)
+    return TalentLoadouts(active_id, active, comparison_id, comparison)
 
 
 def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
@@ -206,7 +210,7 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
         eligibility_basis = eligibility["basis"]
         current_expansion_id = _integer(eligibility["current_expansion_id"], "current_expansion_id", 1, 100)
     legacy = _legacy_talent_context(root["analysis_context"]) if schema_version == "0.3" else None
-    restoration = _restoration_loadouts(root["analysis_context"]) if schema_version == "0.4" else None
+    loadouts = _talent_loadouts(root["analysis_context"]) if schema_version == "0.4" else None
     return LiveAnalysisSnapshot(
         _integer(compatibility["build"], "build", 1, 9_999_999),
         _integer(compatibility["interface_version"], "interface_version", 1, 9_999_999),
@@ -215,5 +219,5 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
         subject["role"], _integer(subject["level"], "level", 1, 1000),
         _integer(subject["race_id"], "race_id", 1, 1000), equipped, bag,
         hashlib.sha256(raw).hexdigest(), eligibility_basis, current_expansion_id,
-        legacy, restoration,
+        legacy, loadouts,
     )

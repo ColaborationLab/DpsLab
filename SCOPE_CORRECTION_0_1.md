@@ -23,9 +23,9 @@ con datos reales (no sintéticos), una sola cadena de valor:
    basada en ese resultado real (aunque sea texto simple, sin interfaz
    elaborada).
 
-Se aplica a una sola especialización (la más avanzada actualmente: Druida).
-Ninguna otra clase, rol o especialización se toca hasta que esta cadena
-funcione de extremo a extremo.
+La cadena de Restauración ya está cerrada. Balance de Druida queda autorizado
+como la segunda especialización para replicar exactamente esta misma cadena.
+Ninguna otra clase, rol o especialización queda incluida.
 
 ### 1.1 Decisión de dirección (2026-09-08): empaquetar, no reconstruir
 
@@ -78,7 +78,7 @@ autorización nueva y explícita de Daniel:
 - Cualquier nuevo esquema de "conocimiento gobernado", catálogo, propuesta,
   revisión o candidato que no sea parte directa del objetivo de la sección 1.
 - Cualquier addon/funcionalidad adicional marcada como "synthetic".
-- Cualquier expansión a otra clase, especialización o rol.
+- Cualquier expansión a otra clase, especialización o rol fuera de Balance de Druida.
 
 Nada de esto se borra — se archiva. Puede retomarse más adelante si alguna
 vez el proyecto se distribuye a terceros, que hoy no es el caso.
@@ -100,8 +100,8 @@ infraestructura.
 ## 5. Vigencia
 
 Esta corrección se mantiene activa hasta que el objetivo de la sección 1
-esté funcionando de extremo a extremo con datos reales para la
-especialización Druida. Solo Daniel puede cerrarla, extenderla o modificarla.
+esté funcionando de extremo a extremo con datos reales para Restauración y
+Balance de Druida. Solo Daniel puede cerrarla, extenderla o modificarla.
 
 ## 6. Coordinación entre dos cuentas del agente
 

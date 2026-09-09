@@ -15,11 +15,11 @@ class LiveAnalysisExportAddonTests(unittest.TestCase):
         for fragment in ("RegisterEvent", "C_Timer", "OnUpdate", "SendChatMessage", "DpsLabObservationExport = payload", "http"):
             self.assertNotIn(fragment, lua + module)
 
-    def test_restoration_export_uses_real_equipment_and_two_client_loadouts(self):
+    def test_druid_export_uses_real_equipment_and_two_client_loadouts(self):
         root = Path(__file__).parents[2]
         module = (root / "addon/DpsLab/CharacterEquipmentObservation.lua").read_text()
         for fragment in (
-            "RESTORATION_SPEC_ID = 105", "GetDetailedItemLevelInfo",
+            "[105]", "[102]", "GetDetailedItemLevelInfo",
             "GetActiveConfigID", "GetConfigIDsBySpecID", "GenerateImportString",
             '"schema_version":"0.4"',
         ):

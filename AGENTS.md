@@ -70,8 +70,8 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 - No procesar todavía Weekly Reward Choices, currencies, high watermarks o achievements.
 - Alcance aprobado para el ciclo actual: pantalla mínima de ejecución en la
   app y visualización del resultado real en el addon, para Druida
-  Restauración, según `SCOPE_CORRECTION_0_1.md`. Ninguna otra clase, GUI
-  adicional o módulo nuevo sin nueva aprobación explícita de Daniel.
+  Restauración y Balance, según `SCOPE_CORRECTION_0_1.md`. Ninguna otra clase,
+  GUI adicional o módulo nuevo sin nueva aprobación explícita de Daniel.
 
 ## Verificación
 
