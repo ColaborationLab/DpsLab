@@ -43,7 +43,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de la opción de usar un solo instalador y una sola aplicación de escritorio abierta en paralelo al juego?"
+> "¿Esta tarea hace que un jugador disponga de la opción de comparar loadouts de su personaje con loadouts importadas de otras fuentes mediante el string de importacion de talentos, una junto a otra y tener los pesos de las estadísticas de su personaje según el equipamiento?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
