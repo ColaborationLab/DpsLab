@@ -71,13 +71,22 @@ local function loadouts(a, specializationId, selected)
     if configId ~= activeId then alternatives[#alternatives + 1] = configId end
   end
   table.sort(alternatives)
-  if selected == nil then selected = 1 end
-  if not number(selected, 1, #alternatives) then
-    return nil, "analysis_comparison_loadout_unavailable"
+  local active = loadout(a, activeId)
+  if active == nil then return nil, "analysis_talents_unavailable" end
+  if selected ~= nil then
+    if not number(selected, 1, #alternatives) then return nil, "analysis_comparison_loadout_unavailable" end
+    local comparison = loadout(a, alternatives[selected])
+    if comparison == nil then return nil, "analysis_talents_unavailable" end
+    return '{"talent_loadouts":{"active":' .. active .. ',"comparison":' .. comparison .. '}}', "0.4"
   end
-  local active, comparison = loadout(a, activeId), loadout(a, alternatives[selected])
-  if active == nil or comparison == nil then return nil, "analysis_talents_unavailable" end
-  return '{"talent_loadouts":{"active":' .. active .. ',"comparison":' .. comparison .. '}}'
+  local values = { active }
+  for index = 1, math.min(#alternatives, 3) do
+    local value = loadout(a, alternatives[index])
+    if value == nil then return nil, "analysis_talents_unavailable" end
+    values[#values + 1] = value
+  end
+  if #values < 2 then return nil, "analysis_comparison_loadout_unavailable" end
+  return '{"talent_loadouts":[' .. table.concat(values, ",") .. ']}', "0.5"
 end
 
 function Equipment.Capture(selectedLoadout, injected)
@@ -103,8 +112,8 @@ function Equipment.Capture(selectedLoadout, injected)
   if classId ~= DRUID_CLASS_ID or supported == nil or role ~= supported.role then
     return nil, "analysis_druid_specialization_required"
   end
-  local talentContext, talentReason = loadouts(a, specializationId, selectedLoadout)
-  if talentContext == nil then return nil, talentReason end
+  local talentContext, talentSchema = loadouts(a, specializationId, selectedLoadout)
+  if talentContext == nil then return nil, talentSchema end
   local equipped = {}
   for location = 1, 19 do
     local entry, reason = item(a, a.GetInventoryItemLink("player", location), location)
@@ -118,6 +127,7 @@ function Equipment.Capture(selectedLoadout, injected)
     .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":false,"executable":false,"no_automation":true},"schema_version":"0.4","subject":{"class_id":'
     .. classId .. ',"level":' .. level .. ',"race_id":' .. raceId
     .. ',"role":"' .. supported.subject_role .. '","specialization_id":' .. specializationId .. '}}\n'
+  text = text:gsub('"schema_version":"0.4"', '"schema_version":"' .. talentSchema .. '"')
   if #text > 65536 then return nil, "analysis_payload_invalid" end
   return "DPSLAB-LIVE-ANALYSIS-0.1\n" .. text, "analysis_export_ready"
 end

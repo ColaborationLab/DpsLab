@@ -74,6 +74,7 @@ class TkDruidRecommendationWorkspace:
         self._root = root
         self._settings = _settings_path()
         self._recommendation_runner = recommendation_runner
+        self._multi_select = specialization == "Balance"
         self._filedialog = filedialog
         self._tk = tk
         self._window = tk.Tk()
@@ -87,6 +88,8 @@ class TkDruidRecommendationWorkspace:
         self._addon = tk.StringVar(value=saved[1] if saved else _default_addon_path())
         self._remember = tk.BooleanVar(value=saved is not None)
         self._export_text = ""
+        self._build_ids: tuple[int, ...] = ()
+        self._imports = tk.StringVar(value="")
         self._build = tk.StringVar(value="Sin exportación detectada")
         self._status = tk.StringVar(value="En WoW usa /dpslab export app, confirma /reload y luego vuelve aquí.")
         frame = ttk.Frame(self._window, padding=18)
@@ -106,11 +109,18 @@ class TkDruidRecommendationWorkspace:
         ttk.Button(frame, text="Elegir", command=self._choose_addon).grid(column=2, row=2, padx=(8, 0), pady=4)
         ttk.Checkbutton(frame, text="Recordar estas rutas en este equipo", variable=self._remember).grid(column=0, row=3, columnspan=3, pady=4, sticky="w")
         ttk.Label(frame, text="Builds detectadas").grid(column=0, row=5, pady=(12, 4), sticky="w")
-        self._builds = ttk.Combobox(frame, textvariable=self._build, state="readonly")
-        self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
-        ttk.Button(frame, text="Detectar exportación", command=self._detect).grid(column=0, row=6, pady=(8, 4), sticky="w")
-        ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=1, row=6, pady=(8, 4), sticky="w")
-        ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=7, columnspan=3, sticky="w")
+        if self._multi_select:
+            self._builds = tk.Listbox(frame, selectmode="extended", height=4, exportselection=False)
+            self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
+            ttk.Label(frame, text="Cadenas importadas (separa con ;)").grid(column=0, row=6, pady=(4, 0), sticky="w")
+            ttk.Entry(frame, textvariable=self._imports).grid(column=1, row=6, columnspan=2, pady=(4, 0), sticky="ew")
+        else:
+            self._builds = ttk.Combobox(frame, textvariable=self._build, state="readonly")
+            self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
+        action_row = 7 if self._multi_select else 6
+        ttk.Button(frame, text="Detectar exportación", command=self._detect).grid(column=0, row=action_row, pady=(8, 4), sticky="w")
+        ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=1, row=action_row, pady=(8, 4), sticky="w")
+        ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=action_row + 1, columnspan=3, sticky="w")
         if self._addon.get():
             self._detect()
 
@@ -129,31 +139,48 @@ class TkDruidRecommendationWorkspace:
             addon = Path(self._addon.get()).resolve()
             retail = addon.parents[2]
             export = acquire_recent_live_analysis_export(retail)
-            loadouts = export.snapshot.talent_loadouts
-            if loadouts is None:
+            loadouts = export.snapshot.balance_talent_loadouts if self._multi_select else export.snapshot.talent_loadouts
+            if not loadouts:
                 raise ValueError("loadouts_unavailable")
         except (AddonObservationAcquisitionError, IndexError, OSError, ValueError):
             self._export_text = ""
-            self._builds["values"] = ()
+            if self._multi_select:
+                self._builds.delete(0, "end")
+            else:
+                self._builds["values"] = ()
             self._build.set("Sin exportación detectada")
             self._status.set("No hay una exportación válida. En WoW usa /dpslab export app y confirma /reload.")
             return
-        choices = (f"Activa ({loadouts.active_config_id})", f"Comparación ({loadouts.comparison_config_id})")
+        choices = tuple(f"Loadout {item.config_id}" for item in loadouts) if self._multi_select else (f"Activa ({loadouts.active_config_id})", f"Comparación ({loadouts.comparison_config_id})")
         self._export_text = export.text
-        self._builds["values"] = choices
-        self._build.set(choices[0])
-        self._status.set("Exportación reciente detectada en los datos de WoW (no guardada por DpsLab). Revisa las dos builds y ejecuta la comparación.")
+        if self._multi_select:
+            self._build_ids = tuple(item.config_id for item in loadouts)
+            self._builds.delete(0, "end")
+            for choice in choices:
+                self._builds.insert("end", choice)
+            self._builds.select_set(0, "end")
+        else:
+            self._builds["values"] = choices
+            self._build.set(choices[0])
+        self._status.set("Exportación reciente detectada en los datos de WoW (no guardada por DpsLab). Selecciona de dos a cuatro builds y ejecuta la comparación.")
 
     def _run(self) -> None:
-        self._status.set("Ejecutando las dos simulaciones reales…")
+        selected = ()
+        imported = ()
+        if self._multi_select:
+            selected = tuple(self._build_ids[index] for index in self._builds.curselection())
+            imported = tuple(item.strip() for item in self._imports.get().split(";") if item.strip())
+            if not 2 <= len(selected) + len(imported) <= 4:
+                self._status.set("Selecciona entre dos y cuatro builds.")
+                return
+        self._status.set("Ejecutando las simulaciones reales…")
         self._window.update_idletasks()
         try:
-            result = self._recommendation_runner(
-                self._export_text,
-                Path(self._simc.get()),
-                Path(self._addon.get()),
-                root=self._root,
-            )
+            options = {"root": self._root}
+            if self._multi_select:
+                options["selected_config_ids"] = selected
+                options["imported_talent_strings"] = imported
+            result = self._recommendation_runner(self._export_text, Path(self._simc.get()), Path(self._addon.get()), **options)
         except (DruidRestorationRecommendationError, OSError, ValueError) as exc:
             self._status.set(f"No se generó recomendación: {exc}")
             return
