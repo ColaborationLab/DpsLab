@@ -74,7 +74,9 @@ hacer coincidir un hash.
    de pesos para la build seleccionada y su equipo/escenario; conservar valores
    absolutos y normalizados cuando SimC los ofrezca. No calcular pesos a partir
    de porcentajes DPS ni inventar valores. Exportar resultados JSON/CSV y un
-   string Pawn válido, con copia/archivo a elección del usuario.
+   estructura compatible con Pawn, visible en la app, con copia/archivo a
+   elección del usuario. La estructura sirve para compatibilidad, no exige
+   exportar un formato Pawn concreto.
    Entregar también los pesos y el contexto al addon DpsLab para que Advisor
    pueda consumirlos y mostrar sugerencias de equipo vinculadas a ese caso.
    No basta con un archivo que el addon no lea. Validar contexto y datos;
@@ -127,7 +129,8 @@ la funcionalidad nueva es Balance. No borrar ni renombrar trabajo ajeno.
   ocultar fallos. Reportar pruebas, subtests y códigos de salida por separado.
 - Verificación real: abrir paquete extraído, exportar Balance desde WoW,
   seleccionar tres y cuatro builds incluyendo una importada, comparar,
-  inspeccionar detalles, guardar/reabrir, exportar Pawn y ver el caso/pesos en
+  inspeccionar detalles, guardar/reabrir, visualizar pesos compatibles con Pawn
+  y ver el caso/pesos en
   Advisor. Verificar que los números coinciden con los artefactos de SimC.
 - Las invocaciones reales de SimC y la modificación de la instalación de WoW
   se coordinan con Daniel para esa prueba concreta, conforme a AGENTS.md.
