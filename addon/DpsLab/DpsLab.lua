@@ -151,6 +151,29 @@ local function showManualAnalysisExport(payload)
   box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
 end
 
+local function lowerHex(payload)
+  return (payload:gsub(".", function(byte) return string.format("%02x", string.byte(byte)) end))
+end
+
+local function confirmAppExport(payload)
+  local frame = CreateFrame("Frame", nil, UIParent, "BasicFrameTemplateWithInset")
+  frame:SetSize(460, 150); frame:SetPoint("CENTER"); frame:Show()
+  frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText("Exportar a la app de DpsLab")
+  frame.detail = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  frame.detail:SetPoint("TOP", 0, -62); frame.detail:SetWidth(400)
+  frame.detail:SetText("Esto guarda solo el análisis actual y recarga la interfaz. La app podrá detectarlo sin copiar texto.")
+  frame.accept = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.accept:SetSize(180, 24); frame.accept:SetPoint("BOTTOM", -96, 18); frame.accept:SetText("Exportar y /reload")
+  frame.cancel = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.cancel:SetSize(100, 24); frame.cancel:SetPoint("BOTTOM", 96, 18); frame.cancel:SetText("Cancelar")
+  frame.accept:SetScript("OnClick", function()
+    _G.DpsLabObservationExport = "live_analysis:" .. lowerHex(payload)
+    ReloadUI()
+  end)
+  frame.cancel:SetScript("OnClick", function() frame:Hide() end)
+end
+
 local function syntheticExportCandidate()
   if type(DpsLabSyntheticObservationExport) ~= "string" then return nil end
   if DpsLabSyntheticObservationExportReason ~= SYNTHETIC_EXPORT_REASON then return nil end
@@ -208,6 +231,12 @@ SlashCmdList["DPSLAB"] = function(message)
     return
   end
   if command == "export" then
+    if role == "app" then
+      local payload, status = handleAnalysisExport(nil)
+      if payload ~= nil then confirmAppExport(payload) end
+      print("[DpsLab] " .. EXPORT_STATUS[status])
+      return
+    end
     if role == "analysis" then
       local payload, status = handleAnalysisExport(argument == "" and nil or tonumber(argument))
       if payload ~= nil then showManualAnalysisExport(payload) end

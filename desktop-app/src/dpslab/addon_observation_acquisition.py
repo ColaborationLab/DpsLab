@@ -26,6 +26,12 @@ from .addon_observation_transport import (
     SyntheticAddonObservation,
     parse_synthetic_saved_variable,
 )
+from .addon_live_analysis_saved_variable import (
+    LiveAnalysisSavedVariableError,
+    decode_live_analysis_saved_variable,
+    parse_live_analysis_saved_variable,
+)
+from .addon_live_analysis_transport import LiveAnalysisSnapshot, MAX_BYTES as MAX_LIVE_ANALYSIS_BYTES
 from .wow_process_state import probe_wow_process_state
 from .retail_installation import (
     RetailInstallationSelection,
@@ -41,6 +47,7 @@ SupportedAddonObservation = (
     SyntheticAddonObservation
     | CharacterIdentitySnapshot
     | ClassSpecializationRegistrySnapshot
+    | LiveAnalysisSnapshot
 )
 
 
@@ -53,6 +60,12 @@ class AddonObservationAcquisition:
     observation_type: str | None = None
 
 
+@dataclass(frozen=True, repr=False)
+class RecentLiveAnalysisExport:
+    text: str
+    snapshot: LiveAnalysisSnapshot
+
+
 # Compatibility name retained for callers of the original synthetic-only API.
 SyntheticObservationAcquisition = AddonObservationAcquisition
 
@@ -61,6 +74,7 @@ MAX_TRANSPORT_BYTES = 2 * max(
     MAX_SYNTHETIC_PAYLOAD_BYTES,
     MAX_IDENTITY_PAYLOAD_BYTES,
     MAX_REGISTRY_PAYLOAD_BYTES,
+    MAX_LIVE_ANALYSIS_BYTES,
 ) + 64
 _CLEARED_ASSIGNMENT = b"\r\nDpsLabObservationExport = nil\r\n"
 _REPARSE_ATTRIBUTE = getattr(stat_module, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
@@ -208,6 +222,10 @@ def _parse_supported_observation(
         )
     except SpecializationRegistryTransportError:
         pass
+    try:
+        matches.append(("live_analysis", parse_live_analysis_saved_variable(raw)))
+    except LiveAnalysisSavedVariableError:
+        pass
     if len(matches) != 1:
         _fail("addon_observation_acquisition_transport_invalid")
     return matches[0]
@@ -235,6 +253,21 @@ def acquire_addon_observation(
     return AddonObservationAcquisition(
         "available", len(raw), digest, observation, observation_type
     )
+
+
+def acquire_recent_live_analysis_export(retail_root: Path) -> RecentLiveAnalysisExport:
+    """Read one player-requested live export after its attended UI reload."""
+    if not isinstance(retail_root, Path) or not retail_root.is_absolute():
+        _fail("live_analysis_acquisition_root_invalid")
+    _directory(retail_root, "live_analysis_acquisition_root_invalid")
+    candidates = _candidate_files(retail_root)
+    if len(candidates) != 1:
+        _fail("live_analysis_acquisition_ambiguous")
+    try:
+        text, snapshot = decode_live_analysis_saved_variable(_read_bounded(candidates[0]))
+        return RecentLiveAnalysisExport(text, snapshot)
+    except LiveAnalysisSavedVariableError as exc:
+        raise AddonObservationAcquisitionError("live_analysis_acquisition_unavailable") from exc
 
 
 def acquire_addon_observation_with_probe(

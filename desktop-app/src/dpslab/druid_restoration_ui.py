@@ -6,9 +6,25 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import sys
 
+from .addon_observation_acquisition import AddonObservationAcquisitionError, acquire_recent_live_analysis_export
 from .druid_balance_recommendation import run_druid_balance_recommendation
 from .druid_restoration_recommendation import DruidRestorationRecommendationError, run_druid_restoration_recommendation
+
+
+def _bundled_simc() -> str:
+    root = Path(getattr(sys, "_MEIPASS", ""))
+    candidate = root / "simc" / "simc.exe"
+    return str(candidate) if candidate.is_file() else ""
+
+
+def _default_addon_path() -> str:
+    program_files = os.environ.get("ProgramFiles(x86)")
+    if not program_files:
+        return ""
+    candidate = Path(program_files) / "World of Warcraft" / "_retail_" / "Interface" / "AddOns" / "DpsLab"
+    return str(candidate) if candidate.is_dir() else ""
 
 
 def _settings_path() -> Path:
@@ -49,7 +65,7 @@ def _clear_paths(path: Path) -> None:
 
 
 class TkDruidRecommendationWorkspace:
-    """The player explicitly pastes the export and chooses both local paths."""
+    """Detect one attended addon export and compare its two saved loadouts."""
 
     def __init__(self, root: Path, specialization: str, recommendation_runner: object) -> None:
         import tkinter as tk
@@ -65,16 +81,17 @@ class TkDruidRecommendationWorkspace:
         self._window.geometry("760x560")
         self._window.minsize(620, 440)
         saved = _remembered_paths(self._settings)
-        self._simc = tk.StringVar(value=saved[0] if saved else "")
-        self._addon = tk.StringVar(value=saved[1] if saved else "")
+        self._simc = tk.StringVar(value=saved[0] if saved else _bundled_simc())
+        self._addon = tk.StringVar(value=saved[1] if saved else _default_addon_path())
         self._remember = tk.BooleanVar(value=saved is not None)
-        self._status = tk.StringVar(value="Pega la exportación real y elige SimulationCraft y el addon instalado.")
+        self._export_text = ""
+        self._build = tk.StringVar(value="Sin exportación detectada")
+        self._status = tk.StringVar(value="En WoW usa /dpslab export app, confirma /reload y luego vuelve aquí.")
         frame = ttk.Frame(self._window, padding=18)
         frame.grid(sticky="nsew")
         self._window.columnconfigure(0, weight=1)
         self._window.rowconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
-        frame.rowconfigure(6, weight=1)
         ttk.Label(frame, text=f"Comparación real — Druida {specialization}", font=("Segoe UI", 14, "bold")).grid(column=0, row=0, columnspan=3, sticky="w")
         ttk.Label(frame, text="SimulationCraft (simc.exe)").grid(column=0, row=1, pady=(14, 4), sticky="w")
         ttk.Entry(frame, textvariable=self._simc).grid(column=1, row=1, pady=(14, 4), sticky="ew")
@@ -83,11 +100,14 @@ class TkDruidRecommendationWorkspace:
         ttk.Entry(frame, textvariable=self._addon).grid(column=1, row=2, pady=4, sticky="ew")
         ttk.Button(frame, text="Elegir", command=self._choose_addon).grid(column=2, row=2, padx=(8, 0), pady=4)
         ttk.Checkbutton(frame, text="Recordar estas rutas en este equipo", variable=self._remember).grid(column=0, row=3, columnspan=3, pady=4, sticky="w")
-        ttk.Label(frame, text="Exportación manual de DpsLab").grid(column=0, row=5, columnspan=3, pady=(12, 4), sticky="w")
-        self._export = tk.Text(frame, height=16, wrap="word")
-        self._export.grid(column=0, row=6, columnspan=3, sticky="nsew")
-        ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=0, row=7, pady=(12, 4), sticky="w")
-        ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=8, columnspan=3, sticky="w")
+        ttk.Label(frame, text="Builds detectadas").grid(column=0, row=5, pady=(12, 4), sticky="w")
+        self._builds = ttk.Combobox(frame, textvariable=self._build, state="readonly")
+        self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
+        ttk.Button(frame, text="Detectar exportación", command=self._detect).grid(column=0, row=6, pady=(8, 4), sticky="w")
+        ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=1, row=6, pady=(8, 4), sticky="w")
+        ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=7, columnspan=3, sticky="w")
+        if self._addon.get():
+            self._detect()
 
     def _choose_simc(self) -> None:
         selected = self._filedialog.askopenfilename(title="Selecciona simc.exe", filetypes=[("SimulationCraft", "simc.exe"), ("Todos", "*")])
@@ -99,12 +119,32 @@ class TkDruidRecommendationWorkspace:
         if selected:
             self._addon.set(selected)
 
+    def _detect(self) -> None:
+        try:
+            addon = Path(self._addon.get()).resolve()
+            retail = addon.parents[2]
+            export = acquire_recent_live_analysis_export(retail)
+            loadouts = export.snapshot.talent_loadouts
+            if loadouts is None:
+                raise ValueError("loadouts_unavailable")
+        except (AddonObservationAcquisitionError, IndexError, OSError, ValueError):
+            self._export_text = ""
+            self._builds["values"] = ()
+            self._build.set("Sin exportación detectada")
+            self._status.set("No hay una exportación válida. En WoW usa /dpslab export app y confirma /reload.")
+            return
+        choices = (f"Activa ({loadouts.active_config_id})", f"Comparación ({loadouts.comparison_config_id})")
+        self._export_text = export.text
+        self._builds["values"] = choices
+        self._build.set(choices[0])
+        self._status.set("Exportación detectada. Revisa las dos builds y ejecuta la comparación.")
+
     def _run(self) -> None:
         self._status.set("Ejecutando las dos simulaciones reales…")
         self._window.update_idletasks()
         try:
             result = self._recommendation_runner(
-                self._export.get("1.0", "end-1c"),
+                self._export_text,
                 Path(self._simc.get()),
                 Path(self._addon.get()),
                 root=self._root,
