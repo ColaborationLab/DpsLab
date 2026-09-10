@@ -142,7 +142,7 @@ class TkDruidRecommendationWorkspace:
         self._export_text = export.text
         self._builds["values"] = choices
         self._build.set(choices[0])
-        self._status.set("Exportación detectada. Revisa las dos builds y ejecuta la comparación.")
+        self._status.set("Exportación reciente detectada en los datos de WoW (no guardada por DpsLab). Revisa las dos builds y ejecuta la comparación.")
 
     def _run(self) -> None:
         self._status.set("Ejecutando las dos simulaciones reales…")

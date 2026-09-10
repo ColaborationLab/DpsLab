@@ -7,6 +7,7 @@ from hashlib import sha256
 import os
 from pathlib import Path
 import stat as stat_module
+import time
 
 from .addon_character_identity_transport import (
     CharacterIdentitySnapshot,
@@ -76,6 +77,7 @@ MAX_TRANSPORT_BYTES = 2 * max(
     MAX_REGISTRY_PAYLOAD_BYTES,
     MAX_LIVE_ANALYSIS_BYTES,
 ) + 64
+MAX_LIVE_ANALYSIS_AGE_SECONDS = 15 * 60
 _CLEARED_ASSIGNMENT = b"\r\nDpsLabObservationExport = nil\r\n"
 _REPARSE_ATTRIBUTE = getattr(stat_module, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
 
@@ -263,6 +265,10 @@ def acquire_recent_live_analysis_export(retail_root: Path) -> RecentLiveAnalysis
     candidates = _candidate_files(retail_root)
     if len(candidates) != 1:
         _fail("live_analysis_acquisition_ambiguous")
+    modified = _lstat(candidates[0], "live_analysis_acquisition_unavailable").st_mtime_ns
+    age = time.time_ns() - modified
+    if age < -5_000_000_000 or age > MAX_LIVE_ANALYSIS_AGE_SECONDS * 1_000_000_000:
+        _fail("live_analysis_acquisition_stale")
     try:
         text, snapshot = decode_live_analysis_saved_variable(_read_bounded(candidates[0]))
         return RecentLiveAnalysisExport(text, snapshot)
