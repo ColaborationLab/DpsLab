@@ -11,12 +11,11 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, la pantalla de la app detecta la exportación reciente sola; ya no copias/pegas texto a mano:
+El único trabajo autorizado a partir de ahora es completar, puedes comparar 3-4 loadouts a la vez, no solo 2:
 
-1. El addon da una ventana la opción de exportar la información de su personaje y advierte que la acción ocasionará un /reload.
-2. La app brinda instrucciones dinámicas sencillas de lo que el usuario debe hacer, según la etapa del proceso, facilitando un poco el paso de WoW al simulador.
-3. La app muestra un selector de las builds detectadas para permitirle observar detalles de la simulación
-4. La app de escritorio incluye una distribución de simc.exe para facilitar el uso de la suite, evitando de un .exe externo o programa de terceros.
+1. La app da la opcion de comparar las loadouts que estan presentes como parte de la exportacion del personaje, pero de aumentar tambien loadouts que quieran incluir como lo que se suele encontrar en las guias de fansites, desde el string de importación del talentos
+2. La app muestra la cantidad de detalles que normalmente se encuentran en otros simuladores pero a su vez, muestra una sección comparativa de loadouts, similar a los comparadores de características similares como el caso de los comparadores de productos como laptops, que se observan en las distintas tiendas online. Esto llevado al simulador en su interface.
+3. La app nos da la oportunidad de guardar las comparativas en una bilbioteca interna de casos de simulacion del usuario y nos da la opcion de exportar resultados, pesos de stats de personajes para llevar a addons como Pawn, o que lo use el mismo addon advisor para poder afinar las sugerencias de equipamiento
 
 
 ### 1.1 Decisión de dirección (2026-09-08): empaquetar, no reconstruir
@@ -44,7 +43,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de la opción de usar un solo instalador y una sola aplicación de escritorio abierta en paralelo al juego?"
+> "¿Esta tarea hace que un jugador disponga de la opción de comparar loadouts de su personaje con loadouts importadas de otras fuentes mediante el string de importacion de talentos, una junto a otra y tener los pesos de las estadísticas de su personaje según el equipamiento?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
