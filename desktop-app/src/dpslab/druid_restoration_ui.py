@@ -9,6 +9,7 @@ import tempfile
 import sys
 
 from .addon_observation_acquisition import AddonObservationAcquisitionError, acquire_recent_live_analysis_export
+from .balance_comparison_library import BalanceComparisonLibraryError, list_cases, save_case
 from .druid_balance_recommendation import run_druid_balance_recommendation
 from .druid_restoration_recommendation import DruidRestorationRecommendationError, run_druid_restoration_recommendation
 
@@ -90,6 +91,10 @@ class TkDruidRecommendationWorkspace:
         self._export_text = ""
         self._build_ids: tuple[int, ...] = ()
         self._imports = tk.StringVar(value="")
+        self._case_title = tk.StringVar(value="Comparación Balance")
+        self._last_comparison = None
+        self._saved_cases = ()
+        self._case_choice = tk.StringVar(value="")
         self._build = tk.StringVar(value="Sin exportación detectada")
         self._status = tk.StringVar(value="En WoW usa /dpslab export app, confirma /reload y luego vuelve aquí.")
         frame = ttk.Frame(self._window, padding=18)
@@ -114,15 +119,24 @@ class TkDruidRecommendationWorkspace:
             self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
             ttk.Label(frame, text="Cadenas importadas (separa con ;)").grid(column=0, row=6, pady=(4, 0), sticky="w")
             ttk.Entry(frame, textvariable=self._imports).grid(column=1, row=6, columnspan=2, pady=(4, 0), sticky="ew")
+            ttk.Label(frame, text="Nombre del caso").grid(column=0, row=7, pady=(4, 0), sticky="w")
+            ttk.Entry(frame, textvariable=self._case_title).grid(column=1, row=7, pady=(4, 0), sticky="ew")
+            ttk.Button(frame, text="Guardar caso", command=self._save_case).grid(column=2, row=7, padx=(8, 0), pady=(4, 0))
+            ttk.Label(frame, text="Casos guardados").grid(column=0, row=8, pady=(4, 0), sticky="w")
+            self._saved_case_choices = ttk.Combobox(frame, textvariable=self._case_choice, state="readonly")
+            self._saved_case_choices.grid(column=1, row=8, pady=(4, 0), sticky="ew")
+            ttk.Button(frame, text="Abrir caso", command=self._open_case).grid(column=2, row=8, padx=(8, 0), pady=(4, 0))
         else:
             self._builds = ttk.Combobox(frame, textvariable=self._build, state="readonly")
             self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
-        action_row = 7 if self._multi_select else 6
+        action_row = 9 if self._multi_select else 6
         ttk.Button(frame, text="Detectar exportación", command=self._detect).grid(column=0, row=action_row, pady=(8, 4), sticky="w")
         ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=1, row=action_row, pady=(8, 4), sticky="w")
         ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=action_row + 1, columnspan=3, sticky="w")
         if self._addon.get():
             self._detect()
+        if self._multi_select:
+            self._refresh_cases()
 
     def _choose_simc(self) -> None:
         selected = self._filedialog.askopenfilename(title="Selecciona simc.exe", filetypes=[("SimulationCraft", "simc.exe"), ("Todos", "*")])
@@ -184,6 +198,7 @@ class TkDruidRecommendationWorkspace:
         except (DruidRestorationRecommendationError, OSError, ValueError) as exc:
             self._status.set(f"No se generó recomendación: {exc}")
             return
+        self._last_comparison = result
         try:
             if self._remember.get():
                 _save_paths(self._settings, "bundled" if self._uses_bundled_simc else self._simc.get(), self._addon.get())
@@ -193,6 +208,45 @@ class TkDruidRecommendationWorkspace:
             self._status.set(f"{result.message} No se pudieron recordar las rutas.")
             return
         self._status.set(f"{result.message} Ejecuta /reload y luego /dpslab result en WoW.")
+
+    def _save_case(self) -> None:
+        if not self._multi_select or self._last_comparison is None:
+            self._status.set("Ejecuta una comparación de Balance antes de guardar el caso.")
+            return
+        try:
+            save_case(self._root, self._case_title.get(), self._export_text, self._last_comparison)
+        except BalanceComparisonLibraryError:
+            self._status.set("No se pudo guardar el caso.")
+            return
+        self._refresh_cases()
+        self._status.set("Caso guardado. Podrás reabrirlo sin ejecutar SimC de nuevo.")
+
+    def _refresh_cases(self) -> None:
+        try:
+            self._saved_cases = list_cases(self._root)
+        except BalanceComparisonLibraryError:
+            self._saved_cases = ()
+        values = tuple(f"{case.title} ({case.saved_at})" for case in self._saved_cases)
+        self._saved_case_choices["values"] = values
+        if values:
+            self._case_choice.set(values[0])
+
+    def _open_case(self) -> None:
+        try:
+            index = self._saved_case_choices.current()
+            case = self._saved_cases[index]
+        except (IndexError, ValueError):
+            self._status.set("Selecciona un caso guardado.")
+            return
+        self._export_text = case.export_text
+        from .druid_balance_recommendation import DruidBalanceComparison
+        self._last_comparison = DruidBalanceComparison(case.message, case.loadouts, case.preferred_loadout)
+        self._build_ids = tuple(identifier for identifier, _ in case.loadouts if identifier > 0)
+        self._builds.delete(0, "end")
+        for identifier, dps in case.loadouts:
+            label = f"Importada {-identifier}" if identifier < 0 else f"Loadout {identifier}"
+            self._builds.insert("end", f"{label}: {dps:.0f} DPS")
+        self._status.set("Caso guardado abierto sin ejecutar SimC. Puedes revisar sus resultados o exportarlos.")
 
     def run(self) -> None:
         self._window.mainloop()
