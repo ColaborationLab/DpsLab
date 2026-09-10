@@ -20,6 +20,7 @@ class DruidBalanceProfile:
     config_id: int
     talent_string: str
     profile: str
+    name: str = ""
 
 
 @dataclass(frozen=True, repr=False)
@@ -66,7 +67,7 @@ def build_druid_balance_profiles(
     if selected_config_ids is None:
         selected = available
     else:
-        if not 2 <= len(selected_config_ids) <= 4 or len(set(selected_config_ids)) != len(selected_config_ids):
+        if not 1 <= len(selected_config_ids) <= 4 or len(set(selected_config_ids)) != len(selected_config_ids):
             raise DruidBalanceProfileError("balance_selection_invalid")
         by_id = {item.config_id: item for item in available}
         try:
@@ -77,9 +78,9 @@ def build_druid_balance_profiles(
         raise DruidBalanceProfileError("balance_import_invalid")
     if len(set(imported_talent_strings)) != len(imported_talent_strings) or set(imported_talent_strings) & {item.talent_string for item in selected}:
         raise DruidBalanceProfileError("balance_import_invalid")
-    if not 2 <= len(selected) + len(imported_talent_strings) <= 4:
+    if not 1 <= len(selected) + len(imported_talent_strings) <= 4:
         raise DruidBalanceProfileError("balance_selection_invalid")
-    profiles = tuple(DruidBalanceProfile(item.config_id, item.talent_string, _profile(snapshot, item.talent_string)) for item in selected) + tuple(DruidBalanceProfile(-index, item, _profile(snapshot, item)) for index, item in enumerate(imported_talent_strings, 1))
+    profiles = tuple(DruidBalanceProfile(item.config_id, item.talent_string, _profile(snapshot, item.talent_string), item.name or f"Loadout {item.config_id}") for item in selected) + tuple(DruidBalanceProfile(-index, item, _profile(snapshot, item), f"Importada {index}") for index, item in enumerate(imported_talent_strings, 1))
     if len({item.profile for item in profiles}) != len(profiles):
         raise DruidBalanceProfileError("balance_comparison_invalid")
     return DruidBalanceProfileSet(profiles, snapshot.receipt_sha256)

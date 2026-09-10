@@ -32,6 +32,8 @@ class DruidBalanceComparison:
 
 def _recommendation(results: tuple[tuple[int, float], ...]) -> DruidBalanceComparison:
     reference_id, reference_dps = results[0]
+    if len(results) == 1:
+        return DruidBalanceComparison(f"Simulación individual del loadout {reference_id}: {reference_dps:.0f} DPS.", results, reference_id)
     preferred_id, preferred_dps = max(results, key=lambda item: item[1])
     preferred_label = f"la build importada {-preferred_id}" if preferred_id < 0 else f"el loadout {preferred_id}"
     if preferred_dps <= reference_dps:

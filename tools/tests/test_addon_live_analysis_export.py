@@ -24,7 +24,7 @@ class LiveAnalysisExportAddonTests(unittest.TestCase):
         for fragment in (
             "[105]", "[102]", "GetDetailedItemLevelInfo",
             "GetActiveConfigID", "GetConfigIDsBySpecID", "GenerateImportString",
-            'math.min(#alternatives, 3)', '"0.5"', 'GetItemStats', '"0.6"',
+            'for index = 1, #alternatives do', 'GetConfigInfo', '"0.7"', 'GetItemStats',
         ):
             self.assertIn(fragment, module)
         self.assertNotIn("C_Container", module)

@@ -62,11 +62,17 @@ local function item(a, link, location, includeStats)
     .. ',"slot":"slot_' .. location .. '","source":"equipped"' .. suffix .. '}'
 end
 
-local function loadout(a, configId)
+local function loadout(a, configId, includeName)
   local ok, value = pcall(a.C_Traits.GenerateImportString, configId)
   if not ok or type(value) ~= "string" or #value < 1 or #value > 2048
     or value:match("^[A-Za-z0-9+/=]+$") == nil then return nil end
-  return '{"config_id":' .. configId .. ',"talent_string":"' .. json(value) .. '"}'
+  if not includeName then return '{"config_id":' .. configId .. ',"talent_string":"' .. json(value) .. '"}' end
+  local name = "Loadout " .. configId
+  if type(a.C_Traits.GetConfigInfo) == "function" then
+    local infoOk, info = pcall(a.C_Traits.GetConfigInfo, configId)
+    if infoOk and type(info) == "table" and type(info.name) == "string" and #info.name > 0 and #info.name <= 80 then name = info.name end
+  end
+  return '{"config_id":' .. configId .. ',"name":"' .. json(name) .. '","talent_string":"' .. json(value) .. '"}'
 end
 
 local function loadouts(a, specializationId, selected)
@@ -90,17 +96,17 @@ local function loadouts(a, specializationId, selected)
     if configId ~= activeId then alternatives[#alternatives + 1] = configId end
   end
   table.sort(alternatives)
-  local active = loadout(a, activeId)
+  local active = loadout(a, activeId, selected == nil)
   if active == nil then return nil, "analysis_talents_unavailable" end
   if selected ~= nil then
     if not number(selected, 1, #alternatives) then return nil, "analysis_comparison_loadout_unavailable" end
-    local comparison = loadout(a, alternatives[selected])
+    local comparison = loadout(a, alternatives[selected], false)
     if comparison == nil then return nil, "analysis_talents_unavailable" end
     return '{"talent_loadouts":{"active":' .. active .. ',"comparison":' .. comparison .. '}}', "0.4"
   end
   local values = { active }
-  for index = 1, math.min(#alternatives, 3) do
-    local value = loadout(a, alternatives[index])
+  for index = 1, #alternatives do
+    local value = loadout(a, alternatives[index], true)
     if value == nil then return nil, "analysis_talents_unavailable" end
     values[#values + 1] = value
   end
@@ -147,7 +153,7 @@ function Equipment.Capture(selectedLoadout, injected)
     .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":false,"executable":false,"no_automation":true},"schema_version":"0.4","subject":{"class_id":'
     .. classId .. ',"level":' .. level .. ',"race_id":' .. raceId
     .. ',"role":"' .. supported.subject_role .. '","specialization_id":' .. specializationId .. '}}\n'
-  text = text:gsub('"schema_version":"0.4"', '"schema_version":"' .. (talentSchema == "0.5" and "0.6" or talentSchema) .. '"')
+  text = text:gsub('"schema_version":"0.4"', '"schema_version":"' .. (talentSchema == "0.5" and "0.7" or talentSchema) .. '"')
   if #text > 65536 then return nil, "analysis_payload_invalid" end
   return "DPSLAB-LIVE-ANALYSIS-0.1\n" .. text, "analysis_export_ready"
 end

@@ -92,6 +92,7 @@ class TkDruidRecommendationWorkspace:
         self._remember = tk.BooleanVar(value=saved is not None)
         self._export_text = ""
         self._build_ids: tuple[int, ...] = ()
+        self._loadout_names: dict[int, str] = {}
         self._imports = tk.StringVar(value="")
         self._case_title = tk.StringVar(value="Comparación Balance")
         self._last_comparison = None
@@ -120,7 +121,7 @@ class TkDruidRecommendationWorkspace:
         if self._multi_select:
             self._builds = tk.Listbox(frame, selectmode="extended", height=4, exportselection=False)
             self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
-            ttk.Label(frame, text="Cadenas importadas (separa con ;)").grid(column=0, row=6, pady=(4, 0), sticky="w")
+            ttk.Label(frame, text="Importaciones fijadas (Nombre|cadena; ...)").grid(column=0, row=6, pady=(4, 0), sticky="w")
             ttk.Entry(frame, textvariable=self._imports).grid(column=1, row=6, columnspan=2, pady=(4, 0), sticky="ew")
             ttk.Label(frame, text="Nombre del caso").grid(column=0, row=7, pady=(4, 0), sticky="w")
             ttk.Entry(frame, textvariable=self._case_title).grid(column=1, row=7, pady=(4, 0), sticky="ew")
@@ -132,10 +133,12 @@ class TkDruidRecommendationWorkspace:
             ttk.Label(frame, text="Resultados y pesos").grid(column=0, row=9, pady=(8, 0), sticky="nw")
             self._details = tk.Text(frame, height=7, wrap="word", state="disabled")
             self._details.grid(column=1, row=9, columnspan=2, pady=(8, 0), sticky="ew")
+            self._progress = ttk.Progressbar(frame, mode="indeterminate")
+            self._progress.grid(column=1, row=10, columnspan=2, pady=(6, 0), sticky="ew")
         else:
             self._builds = ttk.Combobox(frame, textvariable=self._build, state="readonly")
             self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
-        action_row = 10 if self._multi_select else 6
+        action_row = 11 if self._multi_select else 6
         ttk.Button(frame, text="Detectar exportación", command=self._detect).grid(column=0, row=action_row, pady=(8, 4), sticky="w")
         ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=1, row=action_row, pady=(8, 4), sticky="w")
         ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=action_row + 1, columnspan=3, sticky="w")
@@ -172,15 +175,16 @@ class TkDruidRecommendationWorkspace:
             self._build.set("Sin exportación detectada")
             self._status.set("No hay una exportación válida. En WoW usa /dpslab export app y confirma /reload.")
             return
-        choices = tuple(f"Loadout {item.config_id}" for item in loadouts) if self._multi_select else (f"Activa ({loadouts.active_config_id})", f"Comparación ({loadouts.comparison_config_id})")
+        choices = tuple(item.name or f"Loadout {item.config_id}" for item in loadouts) if self._multi_select else (f"Activa ({loadouts.active_config_id})", f"Comparación ({loadouts.comparison_config_id})")
         self._export_text = export.text
         self._snapshot = export.snapshot
         if self._multi_select:
             self._build_ids = tuple(item.config_id for item in loadouts)
+            self._loadout_names = {item.config_id: item.name or f"Loadout {item.config_id}" for item in loadouts}
             self._builds.delete(0, "end")
             for choice in choices:
                 self._builds.insert("end", choice)
-            self._builds.select_set(0, "end")
+            self._builds.select_set(0, min(3, len(choices) - 1))
         else:
             self._builds["values"] = choices
             self._build.set(choices[0])
@@ -191,11 +195,19 @@ class TkDruidRecommendationWorkspace:
         imported = ()
         if self._multi_select:
             selected = tuple(self._build_ids[index] for index in self._builds.curselection())
-            imported = tuple(item.strip() for item in self._imports.get().split(";") if item.strip())
-            if not 2 <= len(selected) + len(imported) <= 4:
-                self._status.set("Selecciona entre dos y cuatro builds.")
+            imported_values = tuple(item.strip() for item in self._imports.get().split(";") if item.strip())
+            parsed_imports = tuple(item.partition("|") for item in imported_values)
+            if any(not name.strip() or not talent.strip() for name, separator, talent in parsed_imports if separator):
+                self._status.set("Cada importación fijada debe usar Nombre|cadena.")
+                return
+            imported = tuple((talent if separator else name).strip() for name, separator, talent in parsed_imports)
+            self._loadout_names.update({-index: (name.strip() if separator else f"Importada {index}") for index, (name, separator, _talent) in enumerate(parsed_imports, 1)})
+            if not 1 <= len(selected) + len(imported) <= 4:
+                self._status.set("Selecciona entre una y cuatro builds.")
                 return
         self._status.set("Ejecutando las simulaciones reales…")
+        if self._multi_select:
+            self._progress.start(12)
         self._window.update_idletasks()
         try:
             options = {"root": self._root}
@@ -206,6 +218,9 @@ class TkDruidRecommendationWorkspace:
         except (DruidRestorationRecommendationError, OSError, ValueError) as exc:
             self._status.set(f"No se generó recomendación: {exc}")
             return
+        finally:
+            if self._multi_select:
+                self._progress.stop()
         self._last_comparison = result
         if self._multi_select:
             self._render_balance_details(result)
@@ -220,7 +235,7 @@ class TkDruidRecommendationWorkspace:
         self._status.set(f"{result.message} Ejecuta /reload y luego /dpslab result en WoW.")
 
     def _render_balance_details(self, result) -> None:
-        lines = [f"{'Importada ' + str(-identifier) if identifier < 0 else 'Loadout ' + str(identifier)}: {dps:.0f} DPS" for identifier, dps in result.loadouts]
+        lines = [f"{self._loadout_names.get(identifier, 'Importada ' + str(-identifier) if identifier < 0 else 'Loadout ' + str(identifier))}: {dps:.0f} DPS" for identifier, dps in result.loadouts]
         weights = result.stat_weights
         if weights is None:
             lines.append("SimC no entregó pesos válidos; Advisor mantiene la guía estándar.")

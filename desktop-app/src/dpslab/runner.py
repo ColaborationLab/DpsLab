@@ -407,6 +407,7 @@ def run_simulation(
             text=True,
             timeout=config.timeout_seconds,
             shell=False,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
             check=False,
         )
         stdout = completed.stdout
