@@ -33,11 +33,12 @@ class DruidBalanceComparison:
 def _recommendation(results: tuple[tuple[int, float], ...]) -> DruidBalanceComparison:
     reference_id, reference_dps = results[0]
     preferred_id, preferred_dps = max(results, key=lambda item: item[1])
+    preferred_label = f"la build importada {-preferred_id}" if preferred_id < 0 else f"el loadout {preferred_id}"
     if preferred_dps <= reference_dps:
         message = f"El loadout activo ({reference_id}) sigue primero: {reference_dps:.0f} DPS."
     else:
         percent = (preferred_dps - reference_dps) / reference_dps * 100
-        message = f"Usa el loadout {preferred_id}: {preferred_dps:.0f} DPS frente a {reference_dps:.0f} DPS ({percent:.1f}% mejor)."
+        message = f"Usa {preferred_label}: {preferred_dps:.0f} DPS frente a {reference_dps:.0f} DPS ({percent:.1f}% mejor)."
     return DruidBalanceComparison(message, results, preferred_id)
 
 
