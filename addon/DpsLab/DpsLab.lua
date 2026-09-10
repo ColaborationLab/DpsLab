@@ -78,10 +78,23 @@ end
 
 local function realRecommendation()
   local value = DpsLabRealRecommendation
-  if type(value) ~= "table" or value.schema_version ~= "0.1"
+  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2")
     or value.state ~= "ready" or type(value.message) ~= "string"
     or #value.message < 1 or #value.message > 240 then return nil end
   return value.message
+end
+
+local function realAdvisorWeights(role)
+  local value = DpsLabRealRecommendation
+  if role ~= "damage" or type(value) ~= "table" or value.schema_version ~= "0.2" or value.state ~= "ready" then return nil end
+  local advisor = value.advisor
+  if type(advisor) ~= "table" or advisor.role ~= "damage" or advisor.specialization_id ~= 102 or type(advisor.weights) ~= "table" then return nil end
+  local allowed, result = { Intellect=true, CritRating=true, HasteRating=true, MasteryRating=true, VersatilityRating=true }, {}
+  for name, weight in pairs(advisor.weights) do
+    if allowed[name] ~= true or type(weight) ~= "number" or weight <= 0 or weight ~= weight or weight == math.huge then return nil end
+    result[name] = weight
+  end
+  return next(result) and result or nil
 end
 
 local SYNTHETIC_EXPORT_REASON = "validSyntheticObservationTransportNonActionable"
@@ -149,6 +162,12 @@ local function showManualAnalysisExport(payload)
   local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
   box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(660, 140); box:SetPoint("CENTER")
   box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
+end
+
+function DpsLab.GetAdvisorGuidance(role)
+  local weights = realAdvisorWeights(role)
+  if weights ~= nil then return { source="simulation", weights=weights }, "simulatedBalanceWeights" end
+  return DpsLab.GetSyntheticAdvisorGuidance(role)
 end
 
 local function lowerHex(payload)

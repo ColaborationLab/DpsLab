@@ -37,6 +37,7 @@ class SimulationConfig:
     scenario: LoadedScenario | None = None
     variant: LoadedVariant | None = None
     seed: int | None = None
+    calculate_scale_factors: bool = False
     executable_source: str = "local_config"
 
 

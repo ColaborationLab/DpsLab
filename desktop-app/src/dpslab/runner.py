@@ -365,6 +365,8 @@ def run_simulation(
         command.append(f"target_error={config.target_error:g}")
     if config.seed is not None:
         command.append(f"seed={config.seed}")
+    if config.calculate_scale_factors:
+        command.append("calculate_scale_factors=1")
     if html_file is not None:
         command.append(f"html={html_file.resolve()}")
     portable_argv = _portable_argv(command, root=root)

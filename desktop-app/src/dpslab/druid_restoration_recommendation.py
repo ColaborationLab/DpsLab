@@ -65,20 +65,26 @@ def compare_druid_restoration_runs(active: RunSummary, comparison: RunSummary) -
     )
 
 
-def _addon_document(recommendation: DruidRestorationRecommendation) -> str:
+def _addon_document(recommendation: DruidRestorationRecommendation, advisor_weights: tuple[tuple[str, float], ...] = ()) -> str:
     message = recommendation.message
     if not isinstance(message, str) or not 1 <= len(message) <= 240:
         raise DruidRestorationRecommendationError("restoration_result_invalid")
+    advisor = ""
+    if advisor_weights:
+        if not all(isinstance(name, str) and name in {"Intellect", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"} and isinstance(value, float) and math.isfinite(value) and value > 0 for name, value in advisor_weights):
+            raise DruidRestorationRecommendationError("restoration_result_invalid")
+        advisor = "  advisor = { role = \"damage\", specialization_id = 102, weights = { " + ", ".join(f"{name} = {value:.9g}" for name, value in advisor_weights) + " } },\n"
+    schema_version = "0.2" if advisor else "0.1"
     return (
         "DpsLabRealRecommendation = {\n"
-        '  schema_version = "0.1",\n'
-        '  state = "ready",\n'
-        f"  message = {json.dumps(message, ensure_ascii=True)},\n"
-        "}\n"
+        + f'  schema_version = "{schema_version}",\n'
+        + '  state = "ready",\n'
+        + f"  message = {json.dumps(message, ensure_ascii=True)},\n"
+        + advisor + "}\n"
     )
 
 
-def write_addon_recommendation(addon_directory: Path, recommendation: DruidRestorationRecommendation) -> Path:
+def write_addon_recommendation(addon_directory: Path, recommendation: DruidRestorationRecommendation, advisor_weights: tuple[tuple[str, float], ...] = ()) -> Path:
     """Replace only the dedicated data file in a user-selected installed addon."""
     directory = addon_directory.resolve()
     if not (directory / "DpsLab.toc").is_file() or not (directory / "DpsLab.lua").is_file():
@@ -88,7 +94,7 @@ def write_addon_recommendation(addon_directory: Path, recommendation: DruidResto
     try:
         with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=directory, prefix=".dpslab-result-", suffix=".tmp", delete=False) as temporary:
             temporary_name = temporary.name
-            temporary.write(_addon_document(recommendation))
+            temporary.write(_addon_document(recommendation, advisor_weights))
             temporary.flush()
             os.fsync(temporary.fileno())
         os.replace(temporary_name, destination)

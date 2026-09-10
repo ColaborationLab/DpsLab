@@ -49,6 +49,14 @@ class DruidRestorationRecommendationTests(unittest.TestCase):
             self.assertEqual(written, (addon / "DpsLabRealRecommendation.lua").resolve())
             self.assertIn('state = "ready"', written.read_text(encoding="utf-8"))
 
+    def test_balance_weights_are_written_only_when_provided(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            addon = Path(temporary) / "DpsLab"; addon.mkdir()
+            (addon / "DpsLab.toc").write_text("", encoding="utf-8"); (addon / "DpsLab.lua").write_text("", encoding="utf-8")
+            written = write_addon_recommendation(addon, compare_druid_restoration_runs(summary(100), summary(110)), (("Intellect", 1.0), ("CritRating", 0.5)))
+            self.assertIn('schema_version = "0.2"', written.read_text(encoding="utf-8"))
+            self.assertIn("CritRating = 0.5", written.read_text(encoding="utf-8"))
+
     @patch("dpslab.druid_restoration_recommendation.build_druid_restoration_profiles")
     @patch("dpslab.druid_restoration_recommendation.parse_live_analysis_export")
     def test_flow_runs_twice_then_writes_addon_result(self, parsed, built) -> None:

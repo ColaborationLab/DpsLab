@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Callable
 
 from .addon_live_analysis_transport import parse_live_analysis_export
+from .balance_stat_weights import BalanceStatWeights, load_balance_stat_weights
 from .druid_balance_profiles import build_druid_balance_profiles
 from .druid_restoration_recommendation import (
     DruidRestorationRecommendation,
@@ -26,6 +27,7 @@ class DruidBalanceComparison:
     message: str
     loadouts: tuple[tuple[int, float], ...]
     preferred_loadout: int
+    stat_weights: BalanceStatWeights | None = None
 
 
 def _recommendation(results: tuple[tuple[int, float], ...]) -> DruidBalanceComparison:
@@ -58,13 +60,17 @@ def run_druid_balance_recommendation(
     import tempfile
     with tempfile.TemporaryDirectory(prefix="dpslab-balance-") as workspace:
         directory = Path(workspace)
-        config = SimulationConfig(simc_exe=executable, runs_dir=directory / "runs", threads=4, iterations=1000, max_time=300, fight_style="Patchwerk", generate_html=False)
+        config = SimulationConfig(simc_exe=executable, runs_dir=directory / "runs", threads=4, iterations=1000, max_time=300, fight_style="Patchwerk", generate_html=False, calculate_scale_factors=True)
         results = []
+        weights_by_loadout = {}
         for loadout in profiles.loadouts:
             profile = directory / f"loadout-{loadout.config_id}.simc"
             profile.write_text(loadout.profile, encoding="utf-8")
             run = runner(profile, config, root=root)
             results.append((loadout.config_id, _mean(summary_loader(run.artifacts.run_dir, root=root))))
+            weights_by_loadout[loadout.config_id] = load_balance_stat_weights(run.artifacts.run_dir)
         comparison = _recommendation(tuple(results))
-    write_addon_recommendation(addon_directory, DruidRestorationRecommendation(comparison.message, results[0][1], max(results, key=lambda item: item[1])[1], "comparison"))
+        comparison = DruidBalanceComparison(comparison.message, comparison.loadouts, comparison.preferred_loadout, weights_by_loadout.get(comparison.preferred_loadout))
+    advisor_weights = comparison.stat_weights.values if comparison.stat_weights is not None else ()
+    write_addon_recommendation(addon_directory, DruidRestorationRecommendation(comparison.message, results[0][1], max(results, key=lambda item: item[1])[1], "comparison"), advisor_weights)
     return comparison
