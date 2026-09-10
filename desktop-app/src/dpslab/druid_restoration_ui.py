@@ -81,7 +81,9 @@ class TkDruidRecommendationWorkspace:
         self._window.geometry("760x560")
         self._window.minsize(620, 440)
         saved = _remembered_paths(self._settings)
-        self._simc = tk.StringVar(value=saved[0] if saved else _bundled_simc())
+        bundled_simc = _bundled_simc()
+        self._uses_bundled_simc = bool(bundled_simc)
+        self._simc = tk.StringVar(value=bundled_simc or (saved[0] if saved else ""))
         self._addon = tk.StringVar(value=saved[1] if saved else _default_addon_path())
         self._remember = tk.BooleanVar(value=saved is not None)
         self._export_text = ""
@@ -93,9 +95,12 @@ class TkDruidRecommendationWorkspace:
         self._window.rowconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
         ttk.Label(frame, text=f"Comparación real — Druida {specialization}", font=("Segoe UI", 14, "bold")).grid(column=0, row=0, columnspan=3, sticky="w")
-        ttk.Label(frame, text="SimulationCraft (simc.exe)").grid(column=0, row=1, pady=(14, 4), sticky="w")
-        ttk.Entry(frame, textvariable=self._simc).grid(column=1, row=1, pady=(14, 4), sticky="ew")
-        ttk.Button(frame, text="Elegir", command=self._choose_simc).grid(column=2, row=1, padx=(8, 0), pady=(14, 4))
+        ttk.Label(frame, text="SimulationCraft").grid(column=0, row=1, pady=(14, 4), sticky="w")
+        if self._uses_bundled_simc:
+            ttk.Label(frame, text="Incluido con DpsLab").grid(column=1, row=1, columnspan=2, pady=(14, 4), sticky="w")
+        else:
+            ttk.Entry(frame, textvariable=self._simc).grid(column=1, row=1, pady=(14, 4), sticky="ew")
+            ttk.Button(frame, text="Elegir", command=self._choose_simc).grid(column=2, row=1, padx=(8, 0), pady=(14, 4))
         ttk.Label(frame, text="Carpeta del addon DpsLab").grid(column=0, row=2, pady=4, sticky="w")
         ttk.Entry(frame, textvariable=self._addon).grid(column=1, row=2, pady=4, sticky="ew")
         ttk.Button(frame, text="Elegir", command=self._choose_addon).grid(column=2, row=2, padx=(8, 0), pady=4)
@@ -154,7 +159,7 @@ class TkDruidRecommendationWorkspace:
             return
         try:
             if self._remember.get():
-                _save_paths(self._settings, self._simc.get(), self._addon.get())
+                _save_paths(self._settings, "bundled" if self._uses_bundled_simc else self._simc.get(), self._addon.get())
             else:
                 _clear_paths(self._settings)
         except OSError:
