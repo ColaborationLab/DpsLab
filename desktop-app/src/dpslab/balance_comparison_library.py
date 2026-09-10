@@ -70,7 +70,7 @@ def _read(path: Path) -> BalanceComparisonCase:
         else:
             if set(value) != {"case_id", "export_text", "loadouts", "message", "preferred_loadout", "saved_at", "schema_version", "stat_weights", "title"} or not isinstance(value["stat_weights"], list):
                 raise ValueError
-            allowed = {"Intellect", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}
+            allowed = {"Intellect", "Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}
             raw_weights = tuple(value["stat_weights"])
             if not all(isinstance(entry, list) and len(entry) == 2 and isinstance(entry[0], str) and entry[0] in allowed and isinstance(entry[1], (int, float)) and not isinstance(entry[1], bool) and math.isfinite(entry[1]) and entry[1] > 0 for entry in raw_weights):
                 raise ValueError

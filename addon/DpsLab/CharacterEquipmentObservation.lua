@@ -13,7 +13,7 @@ local function api()
     UnitLevel = UnitLevel, UnitRace = UnitRace,
     GetInventoryItemLink = GetInventoryItemLink,
     GetDetailedItemLevelInfo = GetDetailedItemLevelInfo,
-    GetItemStats = GetItemStats,
+    GetItemStats = GetItemStats, C_Item = C_Item,
     C_ClassTalents = C_ClassTalents, C_Traits = C_Traits,
   }
 end
@@ -41,9 +41,11 @@ local function item(a, link, location, includeStats)
   if not ok or not number(itemLevel, 1, 9999) then return nil, "analysis_item_info_unavailable" end
   local suffix = ""
   if includeStats then
-    local statsOk, rawStats = pcall(a.GetItemStats, link)
+    local getStats = type(a.C_Item) == "table" and a.C_Item.GetItemStats or a.GetItemStats
+    if type(getStats) ~= "function" then return nil, "analysis_api_unavailable" end
+    local statsOk, rawStats = pcall(getStats, link)
     if not statsOk or type(rawStats) ~= "table" then return nil, "analysis_item_info_unavailable" end
-    local names = { ITEM_MOD_INTELLECT_SHORT="Intellect", ITEM_MOD_CRIT_RATING_SHORT="CritRating", ITEM_MOD_HASTE_RATING_SHORT="HasteRating", ITEM_MOD_MASTERY_RATING_SHORT="MasteryRating", ITEM_MOD_VERSATILITY="VersatilityRating" }
+    local names = { ITEM_MOD_INTELLECT_SHORT="Intellect", ITEM_MOD_AGILITY_SHORT="Agility", ITEM_MOD_CRIT_RATING_SHORT="CritRating", ITEM_MOD_HASTE_RATING_SHORT="HasteRating", ITEM_MOD_MASTERY_RATING_SHORT="MasteryRating", ITEM_MOD_VERSATILITY="VersatilityRating" }
     local stats = {}
     for source, target in pairs(names) do
       local value = rawStats[source]
@@ -132,7 +134,6 @@ function Equipment.Capture(selectedLoadout, injected)
   local talentContext, talentSchema = loadouts(a, specializationId, selectedLoadout)
   if talentContext == nil then return nil, talentSchema end
   local includeStats = talentSchema == "0.5"
-  if includeStats and type(a.GetItemStats) ~= "function" then return nil, "analysis_api_unavailable" end
   local equipped = {}
   for location = 1, 19 do
     local entry, reason = item(a, a.GetInventoryItemLink("player", location), location, includeStats)

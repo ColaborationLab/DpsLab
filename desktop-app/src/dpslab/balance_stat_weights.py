@@ -12,7 +12,7 @@ class BalanceStatWeightsError(ValueError):
     pass
 
 
-_KEYS = (("intellect", "Intellect"), ("int", "Intellect"), ("crit_rating", "CritRating"), ("haste_rating", "HasteRating"), ("mastery_rating", "MasteryRating"), ("versatility_rating", "VersatilityRating"))
+_KEYS = (("Intellect", "Intellect"), ("intellect", "Intellect"), ("int", "Intellect"), ("Agi", "Agility"), ("Agility", "Agility"), ("agi", "Agility"), ("Crit", "CritRating"), ("crit_rating", "CritRating"), ("Haste", "HasteRating"), ("haste_rating", "HasteRating"), ("Mastery", "MasteryRating"), ("mastery_rating", "MasteryRating"), ("Vers", "VersatilityRating"), ("versatility_rating", "VersatilityRating"))
 
 
 @dataclass(frozen=True, repr=False)

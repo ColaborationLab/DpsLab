@@ -71,7 +71,7 @@ def _addon_document(recommendation: DruidRestorationRecommendation, advisor_weig
         raise DruidRestorationRecommendationError("restoration_result_invalid")
     advisor = ""
     if advisor_weights:
-        if not all(isinstance(name, str) and name in {"Intellect", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"} and isinstance(value, float) and math.isfinite(value) and value > 0 for name, value in advisor_weights):
+        if not all(isinstance(name, str) and name in {"Intellect", "Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"} and isinstance(value, float) and math.isfinite(value) and value > 0 for name, value in advisor_weights):
             raise DruidRestorationRecommendationError("restoration_result_invalid")
         advisor = "  advisor = { role = \"damage\", specialization_id = 102, weights = { " + ", ".join(f"{name} = {value:.9g}" for name, value in advisor_weights) + " } },\n"
     schema_version = "0.2" if advisor else "0.1"
