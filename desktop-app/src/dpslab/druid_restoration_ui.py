@@ -10,6 +10,8 @@ import sys
 
 from .addon_observation_acquisition import AddonObservationAcquisitionError, acquire_recent_live_analysis_export
 from .balance_comparison_library import BalanceComparisonLibraryError, list_cases, save_case
+from .balance_stat_weights import BalanceStatWeights
+from .addon_live_analysis_transport import LiveAnalysisTransportError, parse_live_analysis_export
 from .druid_balance_recommendation import run_druid_balance_recommendation
 from .druid_restoration_recommendation import DruidRestorationRecommendationError, run_druid_restoration_recommendation
 
@@ -93,6 +95,7 @@ class TkDruidRecommendationWorkspace:
         self._imports = tk.StringVar(value="")
         self._case_title = tk.StringVar(value="Comparación Balance")
         self._last_comparison = None
+        self._snapshot = None
         self._saved_cases = ()
         self._case_choice = tk.StringVar(value="")
         self._build = tk.StringVar(value="Sin exportación detectada")
@@ -126,10 +129,13 @@ class TkDruidRecommendationWorkspace:
             self._saved_case_choices = ttk.Combobox(frame, textvariable=self._case_choice, state="readonly")
             self._saved_case_choices.grid(column=1, row=8, pady=(4, 0), sticky="ew")
             ttk.Button(frame, text="Abrir caso", command=self._open_case).grid(column=2, row=8, padx=(8, 0), pady=(4, 0))
+            ttk.Label(frame, text="Resultados y pesos").grid(column=0, row=9, pady=(8, 0), sticky="nw")
+            self._details = tk.Text(frame, height=7, wrap="word", state="disabled")
+            self._details.grid(column=1, row=9, columnspan=2, pady=(8, 0), sticky="ew")
         else:
             self._builds = ttk.Combobox(frame, textvariable=self._build, state="readonly")
             self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
-        action_row = 9 if self._multi_select else 6
+        action_row = 10 if self._multi_select else 6
         ttk.Button(frame, text="Detectar exportación", command=self._detect).grid(column=0, row=action_row, pady=(8, 4), sticky="w")
         ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=1, row=action_row, pady=(8, 4), sticky="w")
         ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=action_row + 1, columnspan=3, sticky="w")
@@ -158,6 +164,7 @@ class TkDruidRecommendationWorkspace:
                 raise ValueError("loadouts_unavailable")
         except (AddonObservationAcquisitionError, IndexError, OSError, ValueError):
             self._export_text = ""
+            self._snapshot = None
             if self._multi_select:
                 self._builds.delete(0, "end")
             else:
@@ -167,6 +174,7 @@ class TkDruidRecommendationWorkspace:
             return
         choices = tuple(f"Loadout {item.config_id}" for item in loadouts) if self._multi_select else (f"Activa ({loadouts.active_config_id})", f"Comparación ({loadouts.comparison_config_id})")
         self._export_text = export.text
+        self._snapshot = export.snapshot
         if self._multi_select:
             self._build_ids = tuple(item.config_id for item in loadouts)
             self._builds.delete(0, "end")
@@ -199,6 +207,8 @@ class TkDruidRecommendationWorkspace:
             self._status.set(f"No se generó recomendación: {exc}")
             return
         self._last_comparison = result
+        if self._multi_select:
+            self._render_balance_details(result)
         try:
             if self._remember.get():
                 _save_paths(self._settings, "bundled" if self._uses_bundled_simc else self._simc.get(), self._addon.get())
@@ -208,6 +218,22 @@ class TkDruidRecommendationWorkspace:
             self._status.set(f"{result.message} No se pudieron recordar las rutas.")
             return
         self._status.set(f"{result.message} Ejecuta /reload y luego /dpslab result en WoW.")
+
+    def _render_balance_details(self, result) -> None:
+        lines = [f"{'Importada ' + str(-identifier) if identifier < 0 else 'Loadout ' + str(identifier)}: {dps:.0f} DPS" for identifier, dps in result.loadouts]
+        weights = result.stat_weights
+        if weights is None:
+            lines.append("SimC no entregó pesos válidos; Advisor mantiene la guía estándar.")
+        else:
+            lines.append(weights.pawn_compatible())
+            if self._snapshot is not None:
+                for item in self._snapshot.equipped:
+                    if item.stats:
+                        lines.append(f"Ítem {item.item_id}: {weights.score_item(item.stats):.1f} puntos")
+        self._details.configure(state="normal")
+        self._details.delete("1.0", "end")
+        self._details.insert("1.0", "\n".join(lines))
+        self._details.configure(state="disabled")
 
     def _save_case(self) -> None:
         if not self._multi_select or self._last_comparison is None:
@@ -240,12 +266,18 @@ class TkDruidRecommendationWorkspace:
             return
         self._export_text = case.export_text
         from .druid_balance_recommendation import DruidBalanceComparison
-        self._last_comparison = DruidBalanceComparison(case.message, case.loadouts, case.preferred_loadout)
+        weights = BalanceStatWeights(case.stat_weights) if case.stat_weights else None
+        self._last_comparison = DruidBalanceComparison(case.message, case.loadouts, case.preferred_loadout, weights)
+        try:
+            self._snapshot = parse_live_analysis_export(case.export_text)
+        except LiveAnalysisTransportError:
+            self._snapshot = None
         self._build_ids = tuple(identifier for identifier, _ in case.loadouts if identifier > 0)
         self._builds.delete(0, "end")
         for identifier, dps in case.loadouts:
             label = f"Importada {-identifier}" if identifier < 0 else f"Loadout {identifier}"
             self._builds.insert("end", f"{label}: {dps:.0f} DPS")
+        self._render_balance_details(self._last_comparison)
         self._status.set("Caso guardado abierto sin ejecutar SimC. Puedes revisar sus resultados o exportarlos.")
 
     def run(self) -> None:

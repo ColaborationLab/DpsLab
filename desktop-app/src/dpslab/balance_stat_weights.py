@@ -22,6 +22,10 @@ class BalanceStatWeights:
     def pawn_compatible(self) -> str:
         return "Pawn-compatible: " + ", ".join(f"{name}={value:.3f}" for name, value in self.values)
 
+    def score_item(self, stats: tuple[tuple[str, int], ...]) -> float:
+        factors = dict(self.values)
+        return sum(factors.get(name, 0.0) * amount for name, amount in stats)
+
 
 def load_balance_stat_weights(run_dir: Path) -> BalanceStatWeights | None:
     try:

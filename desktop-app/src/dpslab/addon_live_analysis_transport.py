@@ -25,6 +25,7 @@ class LiveAnalysisItem:
     slot: str
     source: str
     expansion_id: int | None = None
+    stats: tuple[tuple[str, int], ...] = ()
 
 
 @dataclass(frozen=True, repr=False)
@@ -123,18 +124,26 @@ def _item(value: Any, source: str, schema_version: str) -> LiveAnalysisItem:
     fields = {"item_id", "item_level", "item_link", "location", "slot", "source"}
     if schema_version in {"0.2", "0.3"}:
         fields.add("expansion_id")
+    if schema_version == "0.6":
+        fields.add("stats")
     item = _closed(value, fields, "item")
     if item["source"] != source or not isinstance(item["item_link"], str) or not 1 <= len(item["item_link"]) <= 2048:
         _fail("live_analysis_item_invalid")
     if not isinstance(item["slot"], str) or not item["slot"]:
         _fail("live_analysis_item_invalid")
-    expansion_id = None if schema_version in {"0.1", "0.4", "0.5"} else _integer(item["expansion_id"], "expansion_id", 0, 100)
+    expansion_id = _integer(item["expansion_id"], "expansion_id", 0, 100) if schema_version in {"0.2", "0.3"} else None
+    stats = ()
+    if schema_version == "0.6":
+        raw_stats = item["stats"]
+        if not isinstance(raw_stats, dict) or set(raw_stats) - {"Intellect", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}:
+            _fail("live_analysis_item_invalid")
+        stats = tuple(sorted((name, _integer(amount, "item_stat", 0, 999_999)) for name, amount in raw_stats.items()))
     return LiveAnalysisItem(
         _integer(item["item_id"], "item_id", 1, 9_999_999),
         _integer(item["item_level"], "item_level", 1, 9_999),
         item["item_link"],
         _integer(item["location"], "location", 0, 40),
-        item["slot"], source, expansion_id,
+        item["slot"], source, expansion_id, stats,
     )
 
 
@@ -204,13 +213,13 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
         document = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs, parse_constant=_nonfinite)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise LiveAnalysisTransportError("live_analysis_json_invalid") from exc
-    if not isinstance(document, dict) or document.get("schema_version") not in {"0.1", "0.2", "0.3", "0.4", "0.5"}:
+    if not isinstance(document, dict) or document.get("schema_version") not in {"0.1", "0.2", "0.3", "0.4", "0.5", "0.6"}:
         _fail("live_analysis_schema_incompatible")
     schema_version = document["schema_version"]
     root_fields = {"compatibility", "equipment", "observation_type", "safety", "schema_version", "subject"}
     if schema_version in {"0.2", "0.3"}:
         root_fields.add("item_eligibility")
-    if schema_version in {"0.3", "0.4", "0.5"}:
+    if schema_version in {"0.3", "0.4", "0.5", "0.6"}:
         root_fields.add("analysis_context")
     root = _closed(document, root_fields, "root")
     if root["observation_type"] != "live_manual_analysis_export":
@@ -223,11 +232,11 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
     subject = _closed(root["subject"], {"class_id", "level", "race_id", "role", "specialization_id"}, "subject")
     if subject["role"] not in {"damage", "healer", "tank"}:
         _fail("live_analysis_role_invalid")
-    equipment_fields = {"equipped"} if schema_version in {"0.4", "0.5"} else {"bag", "equipped"}
+    equipment_fields = {"equipped"} if schema_version in {"0.4", "0.5", "0.6"} else {"bag", "equipped"}
     equipment = _closed(root["equipment"], equipment_fields, "equipment")
     if not isinstance(equipment["equipped"], list) or not 1 <= len(equipment["equipped"]) <= 19:
         _fail("live_analysis_items_invalid")
-    bag_values = [] if schema_version in {"0.4", "0.5"} else equipment["bag"]
+    bag_values = [] if schema_version in {"0.4", "0.5", "0.6"} else equipment["bag"]
     if not isinstance(bag_values, list) or len(bag_values) > 40:
         _fail("live_analysis_items_invalid")
     equipped = tuple(_item(item, "equipped", schema_version) for item in equipment["equipped"])
@@ -246,7 +255,7 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
         current_expansion_id = _integer(eligibility["current_expansion_id"], "current_expansion_id", 1, 100)
     legacy = _legacy_talent_context(root["analysis_context"]) if schema_version == "0.3" else None
     loadouts = _talent_loadouts(root["analysis_context"]) if schema_version == "0.4" else None
-    multiple_loadouts = _multiple_talent_loadouts(root["analysis_context"]) if schema_version == "0.5" else ()
+    multiple_loadouts = _multiple_talent_loadouts(root["analysis_context"]) if schema_version in {"0.5", "0.6"} else ()
     return LiveAnalysisSnapshot(
         _integer(compatibility["build"], "build", 1, 9_999_999),
         _integer(compatibility["interface_version"], "interface_version", 1, 9_999_999),

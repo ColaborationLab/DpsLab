@@ -14,6 +14,7 @@ class BalanceStatWeightsTests(unittest.TestCase):
             weights = load_balance_stat_weights(path.parent)
             self.assertEqual((("Intellect", 1.2), ("CritRating", 0.8)), weights.values)
             self.assertIn("CritRating=0.800", weights.pawn_compatible())
+            self.assertEqual(16.0, weights.score_item((("Intellect", 10), ("CritRating", 5))))
 
     def test_missing_scale_factors_stays_unavailable(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -8,7 +8,7 @@ def payload(value=None): return PREFIX+canonical_live_analysis_bytes(value or do
 def restoration_document():
  return {"schema_version":"0.4","observation_type":"live_manual_analysis_export","compatibility":{"wow_product":"retail","build":69587,"interface_version":120100},"subject":{"class_id":11,"specialization_id":105,"role":"healer","level":90,"race_id":4},"analysis_context":{"talent_loadouts":{"active":{"config_id":1,"talent_string":"ABCD"},"comparison":{"config_id":2,"talent_string":"EFGH"}}},"equipment":{"equipped":[{"item_id":1,"item_level":100,"item_link":"item:1","location":1,"slot":"slot_1","source":"equipped"}]},"safety":{"contains_direct_identifiers":False,"executable":False,"no_automation":True}}
 def balance_document():
- return {"schema_version":"0.5","observation_type":"live_manual_analysis_export","compatibility":{"wow_product":"retail","build":69587,"interface_version":120100},"subject":{"class_id":11,"specialization_id":102,"role":"damage","level":90,"race_id":4},"analysis_context":{"talent_loadouts":[{"config_id":1,"talent_string":"ABCD"},{"config_id":2,"talent_string":"EFGH"},{"config_id":3,"talent_string":"IJKL"}]},"equipment":{"equipped":[{"item_id":1,"item_level":100,"item_link":"item:1","location":1,"slot":"slot_1","source":"equipped"}]},"safety":{"contains_direct_identifiers":False,"executable":False,"no_automation":True}}
+ return {"schema_version":"0.6","observation_type":"live_manual_analysis_export","compatibility":{"wow_product":"retail","build":69587,"interface_version":120100},"subject":{"class_id":11,"specialization_id":102,"role":"damage","level":90,"race_id":4},"analysis_context":{"talent_loadouts":[{"config_id":1,"talent_string":"ABCD"},{"config_id":2,"talent_string":"EFGH"},{"config_id":3,"talent_string":"IJKL"}]},"equipment":{"equipped":[{"item_id":1,"item_level":100,"item_link":"item:1","location":1,"slot":"slot_1","source":"equipped","stats":{"Intellect":10,"CritRating":5}}]},"safety":{"contains_direct_identifiers":False,"executable":False,"no_automation":True}}
 class LiveAnalysisTransportTests(unittest.TestCase):
  def test_valid(self):
   result=parse_live_analysis_export(payload()); self.assertEqual(1,len(result.equipped)); self.assertEqual(64,len(result.receipt_sha256))
@@ -35,6 +35,7 @@ class LiveAnalysisTransportTests(unittest.TestCase):
  def test_balance_export_accepts_three_client_loadouts(self):
   result=parse_live_analysis_export(payload(balance_document()))
   self.assertEqual((1,2,3),tuple(item.config_id for item in result.balance_talent_loadouts))
+  self.assertEqual((("CritRating", 5), ("Intellect", 10)), result.equipped[0].stats)
  def test_balance_export_rejects_duplicate_client_loadout(self):
   value=balance_document(); value["analysis_context"]["talent_loadouts"][2]={"config_id":2,"talent_string":"IJKL"}
   with self.assertRaisesRegex(LiveAnalysisTransportError,"talent_loadout_invalid"): parse_live_analysis_export(payload(value))

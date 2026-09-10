@@ -13,6 +13,7 @@ local function api()
     UnitLevel = UnitLevel, UnitRace = UnitRace,
     GetInventoryItemLink = GetInventoryItemLink,
     GetDetailedItemLevelInfo = GetDetailedItemLevelInfo,
+    GetItemStats = GetItemStats,
     C_ClassTalents = C_ClassTalents, C_Traits = C_Traits,
   }
 end
@@ -32,15 +33,31 @@ local function json(value)
     :gsub("\n", "\\n"):gsub("\r", "\\r"):gsub("\t", "\\t")
 end
 
-local function item(a, link, location)
+local function item(a, link, location, includeStats)
   if type(link) ~= "string" or #link < 1 or #link > 2048 then return nil end
   local itemId = tonumber(link:match("item:(%d+)"))
   if not number(itemId, 1, 9999999) then return nil end
   local ok, itemLevel = pcall(a.GetDetailedItemLevelInfo, link)
   if not ok or not number(itemLevel, 1, 9999) then return nil, "analysis_item_info_unavailable" end
+  local suffix = ""
+  if includeStats then
+    local statsOk, rawStats = pcall(a.GetItemStats, link)
+    if not statsOk or type(rawStats) ~= "table" then return nil, "analysis_item_info_unavailable" end
+    local names = { ITEM_MOD_INTELLECT_SHORT="Intellect", ITEM_MOD_CRIT_RATING_SHORT="CritRating", ITEM_MOD_HASTE_RATING_SHORT="HasteRating", ITEM_MOD_MASTERY_RATING_SHORT="MasteryRating", ITEM_MOD_VERSATILITY="VersatilityRating" }
+    local stats = {}
+    for source, target in pairs(names) do
+      local value = rawStats[source]
+      if value ~= nil then
+        if not number(value, 0, 999999) then return nil, "analysis_item_info_unavailable" end
+        stats[#stats + 1] = '"' .. target .. '":' .. value
+      end
+    end
+    table.sort(stats)
+    suffix = ',"stats":{' .. table.concat(stats, ",") .. '}'
+  end
   return '{"item_id":' .. itemId .. ',"item_level":' .. itemLevel
     .. ',"item_link":"' .. json(link) .. '","location":' .. location
-    .. ',"slot":"slot_' .. location .. '","source":"equipped"}'
+    .. ',"slot":"slot_' .. location .. '","source":"equipped"' .. suffix .. '}'
 end
 
 local function loadout(a, configId)
@@ -114,9 +131,11 @@ function Equipment.Capture(selectedLoadout, injected)
   end
   local talentContext, talentSchema = loadouts(a, specializationId, selectedLoadout)
   if talentContext == nil then return nil, talentSchema end
+  local includeStats = talentSchema == "0.5"
+  if includeStats and type(a.GetItemStats) ~= "function" then return nil, "analysis_api_unavailable" end
   local equipped = {}
   for location = 1, 19 do
-    local entry, reason = item(a, a.GetInventoryItemLink("player", location), location)
+    local entry, reason = item(a, a.GetInventoryItemLink("player", location), location, includeStats)
     if reason then return nil, reason end
     if entry then equipped[#equipped + 1] = entry end
   end
@@ -127,7 +146,7 @@ function Equipment.Capture(selectedLoadout, injected)
     .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":false,"executable":false,"no_automation":true},"schema_version":"0.4","subject":{"class_id":'
     .. classId .. ',"level":' .. level .. ',"race_id":' .. raceId
     .. ',"role":"' .. supported.subject_role .. '","specialization_id":' .. specializationId .. '}}\n'
-  text = text:gsub('"schema_version":"0.4"', '"schema_version":"' .. talentSchema .. '"')
+  text = text:gsub('"schema_version":"0.4"', '"schema_version":"' .. (talentSchema == "0.5" and "0.6" or talentSchema) .. '"')
   if #text > 65536 then return nil, "analysis_payload_invalid" end
   return "DPSLAB-LIVE-ANALYSIS-0.1\n" .. text, "analysis_export_ready"
 end

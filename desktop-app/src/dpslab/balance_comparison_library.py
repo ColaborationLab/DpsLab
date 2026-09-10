@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import math
 import os
 from pathlib import Path
 import tempfile
@@ -26,6 +27,7 @@ class BalanceComparisonCase:
     message: str
     loadouts: tuple[tuple[int, float], ...]
     preferred_loadout: int
+    stat_weights: tuple[tuple[str, float], ...] = ()
 
 
 def _directory(root: Path) -> Path:
@@ -35,7 +37,7 @@ def _directory(root: Path) -> Path:
 
 
 def _document(case: BalanceComparisonCase) -> dict[str, object]:
-    return {"case_id": case.case_id, "export_text": case.export_text, "loadouts": [[identifier, dps] for identifier, dps in case.loadouts], "message": case.message, "preferred_loadout": case.preferred_loadout, "saved_at": case.saved_at, "schema_version": "0.1", "title": case.title}
+    return {"case_id": case.case_id, "export_text": case.export_text, "loadouts": [[identifier, dps] for identifier, dps in case.loadouts], "message": case.message, "preferred_loadout": case.preferred_loadout, "saved_at": case.saved_at, "schema_version": "0.2", "stat_weights": [[name, value] for name, value in case.stat_weights], "title": case.title}
 
 
 def save_case(root: Path, title: str, export_text: str, comparison: DruidBalanceComparison, *, now: int | None = None) -> BalanceComparisonCase:
@@ -44,7 +46,8 @@ def save_case(root: Path, title: str, export_text: str, comparison: DruidBalance
     saved_at = int(time.time()) if now is None else now
     if not isinstance(saved_at, int) or isinstance(saved_at, bool) or saved_at < 1:
         raise BalanceComparisonLibraryError("balance_library_input_invalid")
-    case = BalanceComparisonCase(uuid4().hex, title.strip(), saved_at, export_text, comparison.message, comparison.loadouts, comparison.preferred_loadout)
+    weights = comparison.stat_weights.values if comparison.stat_weights is not None else ()
+    case = BalanceComparisonCase(uuid4().hex, title.strip(), saved_at, export_text, comparison.message, comparison.loadouts, comparison.preferred_loadout, weights)
     directory = _directory(root)
     directory.mkdir(parents=True, exist_ok=True)
     destination = directory / f"{case.case_id}.json"
@@ -58,12 +61,24 @@ def save_case(root: Path, title: str, export_text: str, comparison: DruidBalance
 def _read(path: Path) -> BalanceComparisonCase:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
-        if not isinstance(value, dict) or set(value) != {"case_id", "export_text", "loadouts", "message", "preferred_loadout", "saved_at", "schema_version", "title"} or value["schema_version"] != "0.1":
+        if not isinstance(value, dict) or value.get("schema_version") not in {"0.1", "0.2"}:
             raise ValueError
+        if value["schema_version"] == "0.1":
+            if set(value) != {"case_id", "export_text", "loadouts", "message", "preferred_loadout", "saved_at", "schema_version", "title"}:
+                raise ValueError
+            weights = ()
+        else:
+            if set(value) != {"case_id", "export_text", "loadouts", "message", "preferred_loadout", "saved_at", "schema_version", "stat_weights", "title"} or not isinstance(value["stat_weights"], list):
+                raise ValueError
+            allowed = {"Intellect", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}
+            raw_weights = tuple(value["stat_weights"])
+            if not all(isinstance(entry, list) and len(entry) == 2 and isinstance(entry[0], str) and entry[0] in allowed and isinstance(entry[1], (int, float)) and not isinstance(entry[1], bool) and math.isfinite(entry[1]) and entry[1] > 0 for entry in raw_weights):
+                raise ValueError
+            weights = tuple((name, float(weight)) for name, weight in raw_weights)
         loadouts = tuple((identifier, float(dps)) for identifier, dps in value["loadouts"])
         if not all(isinstance(identifier, int) and not isinstance(identifier, bool) and isinstance(dps, (int, float)) and not isinstance(dps, bool) and dps > 0 for identifier, dps in loadouts):
             raise ValueError
-        case = BalanceComparisonCase(value["case_id"], value["title"], value["saved_at"], value["export_text"], value["message"], loadouts, value["preferred_loadout"])
+        case = BalanceComparisonCase(value["case_id"], value["title"], value["saved_at"], value["export_text"], value["message"], loadouts, value["preferred_loadout"], weights)
         if not isinstance(case.case_id, str) or len(case.case_id) != 32 or not isinstance(case.title, str) or not 1 <= len(case.title) <= 80 or not isinstance(case.saved_at, int) or not isinstance(case.export_text, str) or not isinstance(case.message, str) or not isinstance(case.preferred_loadout, int) or len(case.loadouts) not in range(2, 5):
             raise ValueError
         return case
