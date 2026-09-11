@@ -5,8 +5,10 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from queue import Empty, Queue
 import tempfile
 import sys
+from threading import Thread
 
 from .addon_observation_acquisition import AddonObservationAcquisitionError, acquire_recent_live_analysis_export
 from .balance_comparison_library import BalanceComparisonLibraryError, list_cases, save_case
@@ -96,6 +98,7 @@ class TkDruidRecommendationWorkspace:
         self._imports = tk.StringVar(value="")
         self._case_title = tk.StringVar(value="Comparación Balance")
         self._last_comparison = None
+        self._running = False
         self._snapshot = None
         self._saved_cases = ()
         self._case_choice = tk.StringVar(value="")
@@ -140,7 +143,8 @@ class TkDruidRecommendationWorkspace:
             self._builds.grid(column=1, row=5, columnspan=2, pady=(12, 4), sticky="ew")
         action_row = 11 if self._multi_select else 6
         ttk.Button(frame, text="Detectar exportación", command=self._detect).grid(column=0, row=action_row, pady=(8, 4), sticky="w")
-        ttk.Button(frame, text="Ejecutar comparación real", command=self._run).grid(column=1, row=action_row, pady=(8, 4), sticky="w")
+        self._run_button = ttk.Button(frame, text="Ejecutar comparación real", command=self._run)
+        self._run_button.grid(column=1, row=action_row, pady=(8, 4), sticky="w")
         ttk.Label(frame, textvariable=self._status, wraplength=700).grid(column=0, row=action_row + 1, columnspan=3, sticky="w")
         if self._addon.get():
             self._detect()
@@ -191,6 +195,8 @@ class TkDruidRecommendationWorkspace:
         self._status.set("Exportación reciente detectada en los datos de WoW (no guardada por DpsLab). Selecciona de dos a cuatro builds y ejecuta la comparación.")
 
     def _run(self) -> None:
+        if self._running:
+            return
         selected = ()
         imported = ()
         if self._multi_select:
@@ -208,19 +214,38 @@ class TkDruidRecommendationWorkspace:
         self._status.set("Ejecutando las simulaciones reales…")
         if self._multi_select:
             self._progress.start(12)
-        self._window.update_idletasks()
+        options = {"root": self._root}
+        if self._multi_select:
+            options["selected_config_ids"] = selected
+            options["imported_talent_strings"] = imported
+        simc_path = Path(self._simc.get())
+        addon_path = Path(self._addon.get())
+        outcomes: Queue = Queue(maxsize=1)
+
+        def execute() -> None:
+            try:
+                outcomes.put((self._recommendation_runner(self._export_text, simc_path, addon_path, **options), None))
+            except Exception as exc:
+                outcomes.put((None, exc))
+
+        self._running = True
+        self._run_button.state(["disabled"])
+        Thread(target=execute, daemon=True).start()
+        self._wait_for_recommendation(outcomes)
+
+    def _wait_for_recommendation(self, outcomes: Queue) -> None:
         try:
-            options = {"root": self._root}
-            if self._multi_select:
-                options["selected_config_ids"] = selected
-                options["imported_talent_strings"] = imported
-            result = self._recommendation_runner(self._export_text, Path(self._simc.get()), Path(self._addon.get()), **options)
-        except (DruidRestorationRecommendationError, OSError, ValueError) as exc:
-            self._status.set(f"No se generó recomendación: {exc}")
+            result, error = outcomes.get_nowait()
+        except Empty:
+            self._window.after(50, self._wait_for_recommendation, outcomes)
             return
-        finally:
-            if self._multi_select:
-                self._progress.stop()
+        self._running = False
+        self._run_button.state(["!disabled"])
+        if self._multi_select:
+            self._progress.stop()
+        if error is not None:
+            self._status.set(f"No se generó recomendación: {error}")
+            return
         self._last_comparison = result
         if self._multi_select:
             self._render_balance_details(result)

@@ -79,7 +79,7 @@ def _addon_document(recommendation: DruidRestorationRecommendation, advisor_weig
         "DpsLabRealRecommendation = {\n"
         + f'  schema_version = "{schema_version}",\n'
         + '  state = "ready",\n'
-        + f"  message = {json.dumps(message, ensure_ascii=True)},\n"
+        + f"  message = {json.dumps(message, ensure_ascii=False)},\n"
         + advisor + "}\n"
     )
 

@@ -7,6 +7,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from dpslab.druid_restoration_recommendation import (
+    DruidRestorationRecommendation,
     DruidRestorationRecommendationError,
     compare_druid_restoration_runs,
     run_druid_restoration_recommendation,
@@ -48,6 +49,13 @@ class DruidRestorationRecommendationTests(unittest.TestCase):
             written = write_addon_recommendation(addon, compare_druid_restoration_runs(summary(100), summary(110)))
             self.assertEqual(written, (addon / "DpsLabRealRecommendation.lua").resolve())
             self.assertIn('state = "ready"', written.read_text(encoding="utf-8"))
+
+    def test_addon_result_keeps_utf8_accents_for_lua(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            addon = Path(temporary) / "DpsLab"; addon.mkdir()
+            (addon / "DpsLab.toc").write_text("", encoding="utf-8"); (addon / "DpsLab.lua").write_text("", encoding="utf-8")
+            written = write_addon_recommendation(addon, DruidRestorationRecommendation("Simulación individual de Eclipse: 100 DPS.", 100.0, 100.0, "active"))
+            self.assertIn("Simulación individual", written.read_text(encoding="utf-8"))
 
     def test_balance_weights_are_written_only_when_provided(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -30,17 +30,18 @@ class DruidBalanceComparison:
     stat_weights: BalanceStatWeights | None = None
 
 
-def _recommendation(results: tuple[tuple[int, float], ...]) -> DruidBalanceComparison:
+def _recommendation(results: tuple[tuple[int, float], ...], names: dict[int, str] | None = None) -> DruidBalanceComparison:
+    names = names or {}
+    label = lambda identifier: names.get(identifier, f"la build importada {-identifier}" if identifier < 0 else f"el loadout {identifier}")
     reference_id, reference_dps = results[0]
     if len(results) == 1:
-        return DruidBalanceComparison(f"Simulación individual del loadout {reference_id}: {reference_dps:.0f} DPS.", results, reference_id)
+        return DruidBalanceComparison(f"Simulación individual de {label(reference_id)}: {reference_dps:.0f} DPS.", results, reference_id)
     preferred_id, preferred_dps = max(results, key=lambda item: item[1])
-    preferred_label = f"la build importada {-preferred_id}" if preferred_id < 0 else f"el loadout {preferred_id}"
     if preferred_dps <= reference_dps:
-        message = f"El loadout activo ({reference_id}) sigue primero: {reference_dps:.0f} DPS."
+        message = f"{label(reference_id)} sigue primero: {reference_dps:.0f} DPS."
     else:
         percent = (preferred_dps - reference_dps) / reference_dps * 100
-        message = f"Usa {preferred_label}: {preferred_dps:.0f} DPS frente a {reference_dps:.0f} DPS ({percent:.1f}% mejor)."
+        message = f"Usa {label(preferred_id)}: {preferred_dps:.0f} DPS frente a {reference_dps:.0f} DPS ({percent:.1f}% mejor)."
     return DruidBalanceComparison(message, results, preferred_id)
 
 
@@ -72,7 +73,7 @@ def run_druid_balance_recommendation(
             run = runner(profile, config, root=root)
             results.append((loadout.config_id, _mean(summary_loader(run.artifacts.run_dir, root=root))))
             weights_by_loadout[loadout.config_id] = load_balance_stat_weights(run.artifacts.run_dir)
-        comparison = _recommendation(tuple(results))
+        comparison = _recommendation(tuple(results), {loadout.config_id: loadout.name for loadout in profiles.loadouts})
         comparison = DruidBalanceComparison(comparison.message, comparison.loadouts, comparison.preferred_loadout, weights_by_loadout.get(comparison.preferred_loadout))
     advisor_weights = comparison.stat_weights.values if comparison.stat_weights is not None else ()
     write_addon_recommendation(addon_directory, DruidRestorationRecommendation(comparison.message, results[0][1], max(results, key=lambda item: item[1])[1], "comparison"), advisor_weights)
