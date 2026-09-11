@@ -18,13 +18,13 @@ class LiveAnalysisExportAddonTests(unittest.TestCase):
         for fragment in ("RegisterEvent", "C_Timer", "OnUpdate", "SendChatMessage", "http"):
             self.assertNotIn(fragment, lua + module)
 
-    def test_druid_export_uses_real_equipment_and_up_to_four_client_loadouts(self):
+    def test_multiclass_export_uses_client_role_real_equipment_and_up_to_four_loadouts(self):
         root = Path(__file__).parents[2]
         module = (root / "addon/DpsLab/CharacterEquipmentObservation.lua").read_text()
         for fragment in (
-            "[105]", "[102]", "GetDetailedItemLevelInfo",
+            "ROLE_MAP", "analysis_role_unsupported", "GetDetailedItemLevelInfo",
             "GetActiveConfigID", "GetConfigIDsBySpecID", "GenerateImportString",
-            'for index = 1, #alternatives do', 'GetConfigInfo', '"0.7"', 'GetItemStats',
+            'for index = 1, #alternatives do', 'if #values < 1', 'GetConfigInfo', '"0.7"', 'GetItemStats',
         ):
             self.assertIn(fragment, module)
         self.assertNotIn("C_Container", module)

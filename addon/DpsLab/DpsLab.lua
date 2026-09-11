@@ -78,9 +78,15 @@ end
 
 local function realRecommendation()
   local value = DpsLabRealRecommendation
-  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2")
+  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2" and value.schema_version ~= "0.3")
     or value.state ~= "ready" or type(value.message) ~= "string"
     or #value.message < 1 or #value.message > 240 then return nil end
+  if value.schema_version == "0.3" then
+    local context = value.context
+    if type(context) ~= "table" or type(context.class_id) ~= "number"
+      or type(context.specialization_id) ~= "number" or type(context.metric) ~= "string"
+      or (context.role ~= "damage" and context.role ~= "tank" and context.role ~= "healer") then return nil end
+  end
   return value.message
 end
 
@@ -120,7 +126,7 @@ local EXPORT_STATUS = {
   analysis_api_unavailable = "Manual analysis export unavailable: required API unavailable.",
   analysis_api_failed = "Manual analysis export unavailable: API call failed.",
   analysis_context_invalid = "Manual analysis export unavailable: context invalid.",
-  analysis_druid_specialization_required = "Manual analysis export requires Balance or Restoration Druid.",
+  analysis_role_unsupported = "Manual analysis export unavailable: specialization role unsupported.",
   analysis_talents_unavailable = "Manual analysis export unavailable: talent loadouts unavailable.",
   analysis_comparison_loadout_unavailable = "Manual analysis export needs another saved loadout for the active specialization.",
   analysis_item_info_unavailable = "Manual analysis export unavailable: item information unavailable.",

@@ -6,6 +6,16 @@ from hashlib import sha256
 from pathlib import Path
 import subprocess
 import sys
+import tkinter
+
+
+def _require_tcl_runtime() -> None:
+    """Avoid producing a windowed package that cannot start its Tk UI."""
+    try:
+        runtime = tkinter.Tcl()
+        runtime.eval("info patchlevel")
+    except tkinter.TclError as exc:
+        raise SystemExit("Tcl/Tk build resources unavailable") from exc
 
 
 def main() -> int:
@@ -17,6 +27,7 @@ def main() -> int:
     simc = args.simc.resolve()
     if simc.name.lower() != "simc.exe" or not simc.is_file():
         raise SystemExit("simc.exe source invalid")
+    _require_tcl_runtime()
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=True)
     notice = output / "SIMULATIONCRAFT_NOTICE.txt"
     notice.write_text(
@@ -26,11 +37,10 @@ def main() -> int:
         encoding="utf-8",
     )
     root = Path(__file__).resolve().parents[1]
-    tcl = Path(sys.base_prefix) / "tcl"
-    if not (tcl / "tcl8.6").is_dir() or not (tcl / "tk8.6").is_dir():
-        raise SystemExit("Tcl/Tk build resources unavailable")
     window_mode = "--console" if args.console else "--windowed"
-    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{tcl / 'tcl8.6'};_tcl_data", "--add-data", f"{tcl / 'tk8.6'};_tk_data", str(root / "desktop-app" / "launch_dpslab.py")]
+    # PyInstaller's tkinter hook supports the runtime Tcl/Tk version selected
+    # by the host Python (including Tcl/Tk 9); do not hard-code 8.6 paths.
+    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", str(root / "desktop-app" / "launch_dpslab.py")]
     return subprocess.run(command, check=False).returncode
 
 

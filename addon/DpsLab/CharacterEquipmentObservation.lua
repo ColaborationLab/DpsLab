@@ -1,10 +1,6 @@
 local Equipment = {}
 
-local DRUID_CLASS_ID = 11
-local SUPPORTED_SPECS = {
-  [105] = { role = "HEALER", subject_role = "healer" },
-  [102] = { role = "DAMAGER", subject_role = "damage" },
-}
+local ROLE_MAP = { DAMAGER = "damage", TANK = "tank", HEALER = "healer" }
 
 local function api()
   return {
@@ -110,7 +106,7 @@ local function loadouts(a, specializationId, selected)
     if value == nil then return nil, "analysis_talents_unavailable" end
     values[#values + 1] = value
   end
-  if #values < 2 then return nil, "analysis_comparison_loadout_unavailable" end
+  if #values < 1 then return nil, "analysis_talents_unavailable" end
   return '{"talent_loadouts":[' .. table.concat(values, ",") .. ']}', "0.5"
 end
 
@@ -133,10 +129,8 @@ function Equipment.Capture(selectedLoadout, injected)
   if not (build and number(interface, 1, 9999999) and number(classId, 1, 1000)
     and number(specializationId, 1, 100000) and number(level, 1, 1000)
     and number(raceId, 1, 1000)) then return nil, "analysis_context_invalid" end
-  local supported = SUPPORTED_SPECS[specializationId]
-  if classId ~= DRUID_CLASS_ID or supported == nil or role ~= supported.role then
-    return nil, "analysis_druid_specialization_required"
-  end
+  local subjectRole = ROLE_MAP[role]
+  if subjectRole == nil then return nil, "analysis_role_unsupported" end
   local talentContext, talentSchema = loadouts(a, specializationId, selectedLoadout)
   if talentContext == nil then return nil, talentSchema end
   local includeStats = talentSchema == "0.5"
@@ -152,7 +146,7 @@ function Equipment.Capture(selectedLoadout, injected)
     .. ',"wow_product":"retail"},"equipment":{"equipped":[' .. table.concat(equipped, ",")
     .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":false,"executable":false,"no_automation":true},"schema_version":"0.4","subject":{"class_id":'
     .. classId .. ',"level":' .. level .. ',"race_id":' .. raceId
-    .. ',"role":"' .. supported.subject_role .. '","specialization_id":' .. specializationId .. '}}\n'
+    .. ',"role":"' .. subjectRole .. '","specialization_id":' .. specializationId .. '}}\n'
   text = text:gsub('"schema_version":"0.4"', '"schema_version":"' .. (talentSchema == "0.5" and "0.7" or talentSchema) .. '"')
   if #text > 65536 then return nil, "analysis_payload_invalid" end
   return "DPSLAB-LIVE-ANALYSIS-0.1\n" .. text, "analysis_export_ready"

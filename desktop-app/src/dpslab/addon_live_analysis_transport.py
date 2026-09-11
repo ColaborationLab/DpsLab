@@ -190,7 +190,7 @@ def _talent_loadouts(value: Any) -> TalentLoadouts:
 def _multiple_talent_loadouts(value: Any, named: bool = False) -> tuple[TalentLoadout, ...]:
     context = _closed(value, {"talent_loadouts"}, "analysis_context")
     values = context["talent_loadouts"]
-    if not isinstance(values, list) or not 2 <= len(values) <= (32 if named else 4):
+    if not isinstance(values, list) or not 1 <= len(values) <= (32 if named else 4):
         _fail("live_analysis_talent_loadout_invalid")
     result = []
     for value in values:

@@ -9927,3 +9927,22 @@ resultado breve para el addon. Se tocaron `addon/DpsLab/`,
 valor manual aprobó: la app y WoW mostraron exactamente “Usa el segundo
 loadout guardado: 41067 DPS frente a 20000 DPS (105.3% mejor).” tras
 `/reload` y `/dpslab result`.
+
+## Avance — Slice multiclase y multiespecialización
+
+La prueba de valor es sí: esta tarea permite que un jugador compare loadouts
+del mismo personaje para la clase y especialización exportadas. Se generalizó
+la captura del addon, el generador de perfiles, el resultado para el addon y
+la pantalla inicial; se conservó Balance y se impidió reutilizar sus pesos en
+otra especialización. La comparación mantiene una sola métrica, DPS, por lo
+que no presenta DPS como curación ni supervivencia.
+
+Se inspeccionó sin ejecutar `D:\Torrent Games\SimC\simc-1210.01.9839551-win64\simc.exe`:
+SHA-256 `8f3496cb10d8dd659b6384a6b551b450e0a89cb4b2f7f325ef55362ae3da82c7`.
+Su distribución incluye perfiles de CI y de clase/spec, incluido Druida
+Restauración, Balance, Feral y Guardián. La capacidad de ejecutar cada
+combinación permanece pendiente de una corrida autorizada de SimC; la app
+rechaza IDs de especialización no registrados y razas desconocidas. Devourer
+de Demon Hunter aparece en los perfiles de SimC, pero la distribución no
+incluye su ID de API de WoW, así que queda explícitamente no disponible hasta
+verificar esa correspondencia.

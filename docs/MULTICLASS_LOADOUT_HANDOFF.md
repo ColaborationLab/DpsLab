@@ -36,7 +36,18 @@ bloquean este plan. No editar el documento de Daniel para corregirlas.
 
 ## Evidencia actual y límites
 
-- El exportador contiene DRUID_CLASS_ID y SUPPORTED_SPECS limitados a 102/105.
+- Inspección local autorizada el 2026-09-10, sin ejecutar el motor:
+  `D:\Torrent Games\SimC\simc-1210.01.9839551-win64\simc.exe`, SHA-256
+  `8f3496cb10d8dd659b6384a6b551b450e0a89cb4b2f7f325ef55362ae3da82c7`.
+  El paquete contiene `profiles/CI.simc` y perfiles MID1/MID2. Es evidencia
+  de vocabulario/perfiles disponibles, no una ejecución válida de cada spec.
+- `profiles/CI.simc` muestra Demon Hunter Devourer, pero no aporta el ID de
+  especialización de la API de WoW. Mantener esa asociación no disponible
+  hasta una fuente o prueba autorizada; no adivinar el ID.
+
+- El exportador ya toma el rol que devuelve el cliente y no contiene un
+  allowlist de Druida; la app conserva un registro cerrado para validar la
+  correspondencia clase/spec antes de generar un perfil.
 - El transporte ya posee class_id, specialization_id y role.
 - Los generadores de perfiles y la pantalla son específicos de Druida.
 - El perfil de Restauración fuerza role=attack: el DPS obtenido no demuestra
@@ -155,4 +166,3 @@ Preserva pruebas de Balance y nombres, UTF-8, progreso y máximo de cuatro build
 Completa pruebas y paquete antes de pedir la prueba visual coordinada. Reporta
 limitaciones verificadas sin equiparar DPS con curación/supervivencia. No
 inicies otros agentes, despliegues, merges ni Releases.
-
