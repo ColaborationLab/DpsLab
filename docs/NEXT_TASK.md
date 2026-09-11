@@ -9897,24 +9897,26 @@ that future review.
 ```
 <!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
-## Tarea activa — Preparación de entrega Balance multiloadout
+## Tarea activa — Plan multiclase y multiespecialización
 
-El contrato synthetic anterior queda sustituido por el objetivo de Daniel.
-Plan completo y prompt: docs/BALANCE_MULTILOADOUT_HANDOFF.md.
-Código previo publicado en c42c5de; objetivo remoto integrado en 0897bbc.
-Hashes recalculados tras integrar la edición de Daniel. El ejecutor aún no
-está iniciado. Esta sesión prepara y publica el plan, sin cambiar código.
-
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
-```json
-{"contract_version":"0.1","task_id":"balance_multiloadout_delivery_0_1","title":"Deliver Balance multiloadout comparison, library, exports, and Advisor weights","baseline_commit":"531d880270597a5d41f3c14a2e6ea74ab3e14b26","authorization":{"status":"authorized_for_implementation","authorization_id":"balance_multiloadout_delivery_0_1-20260909-daniel","authorized_by":"Daniel","authorized_at":"2026-09-09T00:00:00-05:00"},"scope":{"allowed_paths":["addon/DpsLab/CharacterEquipmentObservation.lua","addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","addon/DpsLab/DpsLabRealRecommendation.lua","desktop-app/launch_dpslab.py","desktop-app/src/dpslab/addon_live_analysis_transport.py","desktop-app/src/dpslab/addon_live_analysis_saved_variable.py","desktop-app/src/dpslab/addon_observation_acquisition.py","desktop-app/src/dpslab/druid_balance_profiles.py","desktop-app/src/dpslab/druid_balance_recommendation.py","desktop-app/src/dpslab/druid_restoration_recommendation.py","desktop-app/src/dpslab/druid_restoration_ui.py","desktop-app/src/dpslab/balance_comparison_library.py","desktop-app/tests/test_addon_live_analysis_transport.py","desktop-app/tests/test_addon_live_analysis_saved_variable.py","desktop-app/tests/test_addon_observation_acquisition.py","desktop-app/tests/test_druid_balance_profiles.py","desktop-app/tests/test_druid_balance_recommendation.py","desktop-app/tests/test_druid_restoration_recommendation.py","desktop-app/tests/test_druid_workspace_paths.py","desktop-app/tests/test_balance_comparison_library.py","tools/tests/test_addon_live_analysis_export.py","tools/tests/test_addon_synthetic_renderer.py","installer/build_reduced.py","installer/README-WINDOWS.md","docs/BALANCE_MULTILOADOUT_HANDOFF.md","docs/NEXT_TASK.md","addon/DpsLab/AdvisorSyntheticGuidance.lua","desktop-app/src/dpslab/balance_stat_weights.py","desktop-app/tests/test_balance_stat_weights.py","tools/tests/test_balance_stat_weights_addon.py","desktop-app/src/dpslab/config.py","desktop-app/src/dpslab/runner.py","desktop-app/tests/test_runner.py"],"generated_paths":[".dpslab/quality-gates/balance_multiloadout_delivery_0_1/implementation.json",".dpslab/quality-gates/balance_multiloadout_delivery_0_1/audit.json","build/**"],"forbidden_paths":["AGENTS.md","SCOPE_CORRECTION_0_1.md",".github/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","flasil.simc","LICENSE","LICENSE.*","NOTICE","NOTICE.*","TRADEMARK*"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_addon_live_analysis_transport","tests.test_druid_balance_profiles","tests.test_druid_balance_recommendation","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1288,"minimum_test_count":1288},"protected_files":{"AGENTS.md":"d1b67f089fb267ef94390588785e892a1f1bdc6e84bdb6f3ccf0840813ad1495","SCOPE_CORRECTION_0_1.md":"3751ad5864ceb62cad2c82a8d4a0f2c384be1e0c0aa555d8a5eb3092d00f8bbf"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["Balance export accepts 2 to 4 distinct loadouts including player-entered talent strings","Each selected loadout uses the same exported equipment and produces a comparable result","The app presents per-build results, persists only player-requested cases, and reopens them without rerunning SimC","Shows actual SimC-supported weights in a Pawn-compatible structure, scores equipment from those weights, and sends bounded compatible calibration data to Advisor; the standard local suggestion remains available when no compatible analysis exists","Package includes SimC and begins without development paths, saved builds, or library cases","Focused, desktop functional, and tools tests pass; the player validates the complete Balance flow in WoW"],"express_exclusions":["Other class, specialization, or role expansion","External guide acquisition or automatic imports","New simulator engine, release signing, SBOM, network, telemetry, gameplay automation","Merge to main, GitHub Release, or real SimulationCraft invocation without a separate explicit authorization"]}
-```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+Preparación solicitada por Daniel el 2026-09-10. Implementación aún no iniciada.
+Plan y prompt: docs/MULTICLASS_LOADOUT_HANDOFF.md.
+Baseline de código publicado: aba066e77c46d02557b3a90fdb73e9c44c22d77d.
+Objetivo de Daniel recuperado de origin/main en 9c3410e2bb0e646d11645a0b69df00ec1e723740.
+El plan Balance anterior queda como antecedente; no autoriza el nuevo alcance.
+Daniel validó barra animada, nombres en WoW y tildes en el resultado individual.
+La suite completa anterior sigue pendiente de una ejecución concluyente con
+las dependencias del proyecto; 28 pruebas focales y la validación visual pasaron.
 
 <!-- DPSLAB_PROTECTED_FILES_BASELINE -->
 ```json
-{"protected_files":{"AGENTS.md":"d1b67f089fb267ef94390588785e892a1f1bdc6e84bdb6f3ccf0840813ad1495","SCOPE_CORRECTION_0_1.md":"3751ad5864ceb62cad2c82a8d4a0f2c384be1e0c0aa555d8a5eb3092d00f8bbf"}}
+{"protected_files":{"AGENTS.md":"d1b67f089fb267ef94390588785e892a1f1bdc6e84bdb6f3ccf0840813ad1495","SCOPE_CORRECTION_0_1.md":"52a980d27788bb9710722ce44b25f0011ea62356d1e68f7740877ba195981d30"}}
 ```
+
+Nueva línea base calculada sobre los bytes locales actuales. El cambio de
+objetivo se conserva literalmente; las restricciones antiguas contradictorias
+se interpretan conforme a la nueva sección 1 y la petición explícita de Daniel.
+La tarea de planificación no ejecuta SimC ni inicia al agente delegado.
 
 ## Cierre breve — Slice real de Druida Restauración
 
