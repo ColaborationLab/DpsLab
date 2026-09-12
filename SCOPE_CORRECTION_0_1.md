@@ -11,10 +11,12 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, la posibilidad de comparar distintas loadouts para cualquier clase y spec:
+El único trabajo autorizado a partir de ahora es completar, tener Score de item por spec, usando pesos generados vía SimC (perfil genérico) cuando no hay simulación guardada, con opción configurable de qué specs mostrar:
 
-1. El addon puede captar la información necesaria para cualquier especialización de cualquier clase del juego
-2. La app tiene la capacidad de simular la información captada desde el addon para cualquier spec y clase.
+1. El addon puede guardar perfiles de pesos para cada spec en cada personaje.
+2. El addon puede ser configurado para mostrar el score deuna o varias specs a discreción, de forma que el usuario pueda saber sin necesidad de cambiar de spec, si un item es mejor para una u otra spec, o build de talentos (también configurable).
+3. La app puede crear perfiles de personajes, donde se puede almacenar todas sus specs y builds dentro de cada spec, asi como las simulaciones junto con el gear exportado.
+4. Se tiene una interfaz visual más completa en ambos componentes, addon y app. Ya se debe ver interfaz de un menu de configuraciones de interfaz del addon y su comportamiento.
 
 
 
@@ -43,7 +45,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de la opción de comparar loadouts de cualquier personaje cualquiera que sea la especialización usada independientemente de su clase?"
+> "¿Esta tarea hace que un jugador disponga de la opción de comparar sus items mediante score en distintas specs y builds, segun el mismo usuario disponga mediante configuraciones del addony también crear perfiles para personajes en el simulador, donde se guarde la informacion de items, builds y pesos estadísticos, actualizable mediante exportaciones del addon?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
