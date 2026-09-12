@@ -9910,7 +9910,7 @@ las dependencias del proyecto; 28 pruebas focales y la validación visual pasaro
 
 <!-- DPSLAB_PROTECTED_FILES_BASELINE -->
 ```json
-{"protected_files":{"AGENTS.md":"d1b67f089fb267ef94390588785e892a1f1bdc6e84bdb6f3ccf0840813ad1495","SCOPE_CORRECTION_0_1.md":"52a980d27788bb9710722ce44b25f0011ea62356d1e68f7740877ba195981d30"}}
+{"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"c81c884362baa8ca757707b34291a36ee0d5649d77410a6b40b04ce4d51f0e56"}}
 ```
 
 Nueva línea base calculada sobre los bytes locales actuales. El cambio de
