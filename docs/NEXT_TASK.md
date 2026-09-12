@@ -9897,9 +9897,12 @@ that future review.
 ```
 <!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
-## Tarea activa — Plan multiclase y multiespecialización
+## Antecedente cerrado — Plan multiclase y multiespecialización
 
-Preparación solicitada por Daniel el 2026-09-10. Implementación aún no iniciada.
+Preparación solicitada por Daniel el 2026-09-10. Implementación publicada en
+d354f9c26272dd7500e48ad181cfcb8b1887bfef y objetivo cerrado el 2026-09-12
+por confirmación humana y sustitución del objetivo. Los pendientes descritos
+a continuación son el registro histórico de preparación, no la tarea activa.
 Plan y prompt: docs/MULTICLASS_LOADOUT_HANDOFF.md.
 Baseline de código publicado: aba066e77c46d02557b3a90fdb73e9c44c22d77d.
 Objetivo de Daniel recuperado de origin/main en 9c3410e2bb0e646d11645a0b69df00ec1e723740.
@@ -9910,7 +9913,7 @@ las dependencias del proyecto; 28 pruebas focales y la validación visual pasaro
 
 <!-- DPSLAB_PROTECTED_FILES_BASELINE -->
 ```json
-{"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"c81c884362baa8ca757707b34291a36ee0d5649d77410a6b40b04ce4d51f0e56"}}
+{"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"0ccaf35aadfb534a20748b036d35d806ec4a6502ca88d35335e8ab2eddf97b04"}}
 ```
 
 Nueva línea base calculada sobre los bytes locales actuales. El cambio de
@@ -9946,3 +9949,17 @@ rechaza IDs de especialización no registrados y razas desconocidas. Devourer
 de Demon Hunter aparece en los perfiles de SimC, pero la distribución no
 incluye su ID de API de WoW, así que queda explícitamente no disponible hasta
 verificar esa correspondencia.
+
+## Tarea activa — Scores por spec/build y perfiles de personajes
+
+Preparada el 2026-09-12 para Terra, sin iniciar implementación.
+Plan: `docs/ITEM_SCORE_CHARACTER_PROFILES_HANDOFF.md`.
+Baseline de código: `eeeba7e99033012481634943817d1baf16db99e6`.
+Objetivo recuperado de `origin/main` en `0145b7e0c93c0caaa91af7cd7a37ccc3cdc6fd3b`;
+se preservó el historial local y se añadió el cierre multiclase con fecha.
+El SHA real final del Scope figura en `protected_files` arriba.
+Prueba de valor: sí, permite preparar scores configurables entre specs/builds
+y guardar personajes, equipo y simulaciones actualizables desde el addon.
+Solo se modificaron Scope, este registro y el plan; no se ejecutó SimC ni
+se alteró código, instalaciones o resultados. La activación requiere conservar
+esta preparación en una baseline limpia y confirmar que no hay otro escritor.
