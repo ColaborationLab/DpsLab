@@ -78,10 +78,29 @@ end
 
 local function realRecommendation()
   local value = DpsLabRealRecommendation
-  if type(value) ~= "table" or value.schema_version ~= "0.1"
+  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2" and value.schema_version ~= "0.3")
     or value.state ~= "ready" or type(value.message) ~= "string"
     or #value.message < 1 or #value.message > 240 then return nil end
+  if value.schema_version == "0.3" then
+    local context = value.context
+    if type(context) ~= "table" or type(context.class_id) ~= "number"
+      or type(context.specialization_id) ~= "number" or type(context.metric) ~= "string"
+      or (context.role ~= "damage" and context.role ~= "tank" and context.role ~= "healer") then return nil end
+  end
   return value.message
+end
+
+local function realAdvisorWeights(role)
+  local value = DpsLabRealRecommendation
+  if role ~= "damage" or type(value) ~= "table" or value.schema_version ~= "0.2" or value.state ~= "ready" then return nil end
+  local advisor = value.advisor
+  if type(advisor) ~= "table" or advisor.role ~= "damage" or advisor.specialization_id ~= 102 or type(advisor.weights) ~= "table" then return nil end
+  local allowed, result = { Intellect=true, Agility=true, CritRating=true, HasteRating=true, MasteryRating=true, VersatilityRating=true }, {}
+  for name, weight in pairs(advisor.weights) do
+    if allowed[name] ~= true or type(weight) ~= "number" or weight <= 0 or weight ~= weight or weight == math.huge then return nil end
+    result[name] = weight
+  end
+  return next(result) and result or nil
 end
 
 local SYNTHETIC_EXPORT_REASON = "validSyntheticObservationTransportNonActionable"
@@ -107,7 +126,7 @@ local EXPORT_STATUS = {
   analysis_api_unavailable = "Manual analysis export unavailable: required API unavailable.",
   analysis_api_failed = "Manual analysis export unavailable: API call failed.",
   analysis_context_invalid = "Manual analysis export unavailable: context invalid.",
-  analysis_druid_specialization_required = "Manual analysis export requires Balance or Restoration Druid.",
+  analysis_role_unsupported = "Manual analysis export unavailable: specialization role unsupported.",
   analysis_talents_unavailable = "Manual analysis export unavailable: talent loadouts unavailable.",
   analysis_comparison_loadout_unavailable = "Manual analysis export needs another saved loadout for the active specialization.",
   analysis_item_info_unavailable = "Manual analysis export unavailable: item information unavailable.",
@@ -149,6 +168,35 @@ local function showManualAnalysisExport(payload)
   local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
   box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(660, 140); box:SetPoint("CENTER")
   box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
+end
+
+function DpsLab.GetAdvisorGuidance(role)
+  local weights = realAdvisorWeights(role)
+  if weights ~= nil then return { source="simulation", weights=weights }, "simulatedBalanceWeights" end
+  return DpsLab.GetSyntheticAdvisorGuidance(role)
+end
+
+local function lowerHex(payload)
+  return (payload:gsub(".", function(byte) return string.format("%02x", string.byte(byte)) end))
+end
+
+local function confirmAppExport(payload)
+  local frame = CreateFrame("Frame", nil, UIParent, "BasicFrameTemplateWithInset")
+  frame:SetSize(460, 150); frame:SetPoint("CENTER"); frame:Show()
+  frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText("Exportar a la app de DpsLab")
+  frame.detail = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  frame.detail:SetPoint("TOP", 0, -62); frame.detail:SetWidth(400)
+  frame.detail:SetText("Esto guarda solo el análisis actual y recarga la interfaz. La app podrá detectarlo sin copiar texto.")
+  frame.accept = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.accept:SetSize(180, 24); frame.accept:SetPoint("BOTTOM", -96, 18); frame.accept:SetText("Exportar y /reload")
+  frame.cancel = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.cancel:SetSize(100, 24); frame.cancel:SetPoint("BOTTOM", 96, 18); frame.cancel:SetText("Cancelar")
+  frame.accept:SetScript("OnClick", function()
+    _G.DpsLabObservationExport = "live_analysis:" .. lowerHex(payload)
+    ReloadUI()
+  end)
+  frame.cancel:SetScript("OnClick", function() frame:Hide() end)
 end
 
 local function syntheticExportCandidate()
@@ -208,6 +256,12 @@ SlashCmdList["DPSLAB"] = function(message)
     return
   end
   if command == "export" then
+    if role == "app" then
+      local payload, status = handleAnalysisExport(nil)
+      if payload ~= nil then confirmAppExport(payload) end
+      print("[DpsLab] " .. EXPORT_STATUS[status])
+      return
+    end
     if role == "analysis" then
       local payload, status = handleAnalysisExport(argument == "" and nil or tonumber(argument))
       if payload ~= nil then showManualAnalysisExport(payload) end

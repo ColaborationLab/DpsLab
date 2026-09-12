@@ -9,6 +9,10 @@ nueva puede aprobarse ni implementarse sin pasar primero la prueba de la
 sección 2. Esta corrección permanece vigente hasta que Daniel la levante
 explícitamente por escrito.
 
+## Historial breve de objetivos cumplidos
+
+- 2026-09-10 — Comparación de loadouts de Druida Balance y Restauración, con simulación individual o comparativa, nombres y resultados en WoW: cumplido.
+
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
 El único trabajo autorizado a partir de ahora es completar, la posibilidad de comparar distintas loadouts para cualquier clase y spec:

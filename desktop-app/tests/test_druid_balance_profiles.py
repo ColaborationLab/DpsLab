@@ -21,10 +21,19 @@ def snapshot(specification_id=102, role="damage"):
 
 class DruidBalanceProfileTests(unittest.TestCase):
     def test_real_balance_loadouts_become_two_balance_profiles(self):
-        pair = build_druid_balance_profiles(snapshot())
-        self.assertIn("spec=balance", pair.active_profile)
-        self.assertIn("talents=ABCD", pair.active_profile)
-        self.assertIn("talents=EFGH", pair.comparison_profile)
+        profiles = build_druid_balance_profiles(snapshot())
+        self.assertIn("spec=balance", profiles.active_profile)
+        self.assertIn("talents=ABCD", profiles.active_profile)
+        self.assertIn("talents=EFGH", profiles.comparison_profile)
+
+    def test_selected_balance_loadouts_are_limited_to_four(self):
+        document = snapshot()
+        result = build_druid_balance_profiles(document, (1, 2))
+        self.assertEqual((1, 2), tuple(item.config_id for item in result.loadouts))
+
+    def test_imported_string_becomes_a_third_profile(self):
+        result = build_druid_balance_profiles(snapshot(), (1, 2), ("IJKL",))
+        self.assertEqual((1, 2, -1), tuple(item.config_id for item in result.loadouts))
 
     def test_other_specialization_is_rejected(self):
         with self.assertRaisesRegex(DruidBalanceProfileError, "balance_required"):

@@ -197,6 +197,12 @@ class SimulationRunnerTests(unittest.TestCase):
         self.assertFalse(any(argument.startswith("target_error=") for argument in command))
 
     @patch("dpslab.runner.subprocess.run")
+    def test_scale_factor_request_is_an_individual_argument(self, process: object) -> None:
+        process.side_effect = self._successful_process  # type: ignore[attr-defined]
+        run_simulation(self.profile, SimulationConfig(self.exe, self.runs_dir, calculate_scale_factors=True), root=self.root)
+        self.assertIn("calculate_scale_factors=1", process.call_args.args[0])  # type: ignore[attr-defined]
+
+    @patch("dpslab.runner.subprocess.run")
     def test_seed_and_invocation_hashes_are_recorded_without_real_argv(self, process: object) -> None:
         process.side_effect = self._successful_process  # type: ignore[attr-defined]
         config = SimulationConfig(

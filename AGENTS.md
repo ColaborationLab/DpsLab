@@ -100,6 +100,7 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 
 ## Quality gate y autorizaciones
 
+- Cuando Daniel cambie el objetivo de la sección 1 de `SCOPE_CORRECTION_0_1.md`, tratar el objetivo anterior como cumplido, añadir una línea breve y fechada en su historial de objetivos cumplidos, recalcular el SHA-256 real del documento y actualizar `protected_files` antes de iniciar el objetivo nuevo.
 - Mientras `SCOPE_CORRECTION_0_1.md` esté vigente, el cierre de alcance para
   tareas dentro de su objetivo único NO requiere contrato formal, `task_id`,
   ni "auditoría independiente declarada y procedimental". Basta una entrada

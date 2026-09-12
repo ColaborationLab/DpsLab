@@ -9897,13 +9897,27 @@ that future review.
 ```
 <!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
-## Active implementation authorization — Druid evidence-gated guidance coordination 0.1
+## Tarea activa — Plan multiclase y multiespecialización
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+Preparación solicitada por Daniel el 2026-09-10. Implementación aún no iniciada.
+Plan y prompt: docs/MULTICLASS_LOADOUT_HANDOFF.md.
+Baseline de código publicado: aba066e77c46d02557b3a90fdb73e9c44c22d77d.
+Objetivo de Daniel recuperado de origin/main en 9c3410e2bb0e646d11645a0b69df00ec1e723740.
+El plan Balance anterior queda como antecedente; no autoriza el nuevo alcance.
+Daniel validó barra animada, nombres en WoW y tildes en el resultado individual.
+La suite completa anterior sigue pendiente de una ejecución concluyente con
+las dependencias del proyecto; 28 pruebas focales y la validación visual pasaron.
+
+<!-- DPSLAB_PROTECTED_FILES_BASELINE -->
 ```json
-{"contract_version":"0.1","task_id":"druid_evidence_gated_guidance_0_1","title":"Require compatible synthetic evidence before Druid guidance coordination","baseline_commit":"262918f677dda6569645b6177896c395d4effb1a","authorization":{"status":"authorized_for_implementation","authorization_id":"druid_evidence_gated_guidance_0_1-20260905-daniel-continuation","authorized_by":"Daniel","authorized_at":"2026-09-05T00:00:00-05:00"},"scope":{"allowed_paths":["desktop-app/src/dpslab/druid_guidance_coordinator.py","desktop-app/tests/test_druid_guidance_coordinator.py","docs/DRUID_CURRENT_TEMPLATE_EVIDENCE.md","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/druid_evidence_gated_guidance_0_1/implementation.json",".dpslab/quality-gates/druid_evidence_gated_guidance_0_1/audit.json"],"forbidden_paths":[".github/**","addon/**","knowledge/**","security/**","tools/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_druid_guidance_coordinator","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1287,"minimum_test_count":1288},"protected_files":{".github/workflows/dpslab-ci.yml":"17677d962db150a8ecbe043da31d353428fe85afc00bc4e46cc60a2719b88348","AGENTS.md":"d1b67f089fb267ef94390588785e892a1f1bdc6e84bdb6f3ccf0840813ad1495","SCOPE_CORRECTION_0_1.md":"abbf436dc956aaad053537bffeba24cf699b0dd7efd7c61fae363ce6afe11955","SECURITY.md":"b00e680630009bfd062a58b5a8d3129b9c68e45fb8aa284f05133f173fe2daf5","security/security_baseline_0_1.json":"a052db44ed119988fe5e40d244cd08e0f346ffcbe2dc1a7098488af88be88b6b"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["require a supplied DruidTemplateEvidence before catalog selection can return guidance_available","evaluate evidence only after identity and role validation and before catalog access","map every non-eligible evidence result to guidance_unavailable while retaining only the semantic role policy and a bounded reason","preserve the synthetic-only boundary and never add current-content facts source acquisition addon UI persistence telemetry network simulation or SimulationCraft","cover valid synthetic evidence and absent incompatible or mismatched-role evidence with focused tests","pass focused full functional and tools suites quality gate and protected-hash verification without SimulationCraft"],"express_exclusions":["real source acquisition or retention","current game facts specialization IDs spells rotations talents items statistics coefficients or balance claims","catalog mutation","addon desktop UI code outside the allowlist","live observation persistence network telemetry simulation SimulationCraft","commit push release or any path outside the allowlist"]}
+{"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"c81c884362baa8ca757707b34291a36ee0d5649d77410a6b40b04ce4d51f0e56"}}
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+
+Nueva línea base calculada sobre los bytes locales actuales. El cambio de
+objetivo se conserva literalmente; las restricciones antiguas contradictorias
+se interpretan conforme a la nueva sección 1 y la petición explícita de Daniel.
+La tarea de planificación no ejecuta SimC ni inicia al agente delegado.
+
 ## Cierre breve — Slice real de Druida Restauración
 
 Se completó la cadena con datos reales: el addon exporta equipo y dos
@@ -9913,3 +9927,22 @@ resultado breve para el addon. Se tocaron `addon/DpsLab/`,
 valor manual aprobó: la app y WoW mostraron exactamente “Usa el segundo
 loadout guardado: 41067 DPS frente a 20000 DPS (105.3% mejor).” tras
 `/reload` y `/dpslab result`.
+
+## Avance — Slice multiclase y multiespecialización
+
+La prueba de valor es sí: esta tarea permite que un jugador compare loadouts
+del mismo personaje para la clase y especialización exportadas. Se generalizó
+la captura del addon, el generador de perfiles, el resultado para el addon y
+la pantalla inicial; se conservó Balance y se impidió reutilizar sus pesos en
+otra especialización. La comparación mantiene una sola métrica, DPS, por lo
+que no presenta DPS como curación ni supervivencia.
+
+Se inspeccionó sin ejecutar `D:\Torrent Games\SimC\simc-1210.01.9839551-win64\simc.exe`:
+SHA-256 `8f3496cb10d8dd659b6384a6b551b450e0a89cb4b2f7f325ef55362ae3da82c7`.
+Su distribución incluye perfiles de CI y de clase/spec, incluido Druida
+Restauración, Balance, Feral y Guardián. La capacidad de ejecutar cada
+combinación permanece pendiente de una corrida autorizada de SimC; la app
+rechaza IDs de especialización no registrados y razas desconocidas. Devourer
+de Demon Hunter aparece en los perfiles de SimC, pero la distribución no
+incluye su ID de API de WoW, así que queda explícitamente no disponible hasta
+verificar esa correspondencia.
