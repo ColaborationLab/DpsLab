@@ -16,7 +16,7 @@ class AddonSyntheticObservationTests(unittest.TestCase):
         self.assertIn("SyntheticObservation.lua", lines)
         self.assertLess(lines.index("SyntheticObservation.lua"), lines.index("DpsLab.lua"))
         saved = [line for line in TOC.read_text(encoding="utf-8").splitlines() if line.startswith("## SavedVariables:")]
-        self.assertEqual(saved, ["## SavedVariables: DpsLabObservationExport"])
+        self.assertEqual(saved, ["## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences"])
 
     def test_closed_validator_covers_identity_subject_payload_and_safety(self) -> None:
         self.assertIn("function Observation.Validate(value)", self.text)

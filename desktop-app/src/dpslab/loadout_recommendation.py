@@ -15,6 +15,8 @@ from .druid_restoration_recommendation import _mean
 from .loadout_profiles import LoadoutProfileError, build_loadout_profiles
 from .result_parser import summarize_run
 from .runner import run_simulation
+from .balance_stat_weights import load_balance_stat_weights
+from .item_score_profiles import CharacterScoreProfile, ScoreWeights, effective_weights
 
 
 class LoadoutRecommendationError(ValueError):
@@ -30,6 +32,7 @@ class LoadoutComparison:
     specialization_id: int
     role: str
     metric: str = "DPS"
+    score_weights: tuple[ScoreWeights, ...] = ()
 
 
 def _comparison(profiles, results: tuple[tuple[int, float], ...]) -> LoadoutComparison:
@@ -62,6 +65,20 @@ def _addon_document(comparison: LoadoutComparison) -> str:
     )
 
 
+def _item_scores_document(character: CharacterScoreProfile, selected: tuple[tuple[int, int], ...]) -> str:
+    profiles = []
+    for specialization_id, build_id in selected:
+        build_name = next((build.name for spec_id, builds in character.specs if spec_id == specialization_id for build in builds if build.build_id == build_id), None)
+        if build_id < 1 or build_name is None:
+            continue
+        weight = effective_weights(character, specialization_id, build_id)
+        if weight is None:
+            continue
+        values = ", ".join(f"{name} = {value:g}" for name, value in weight.values)
+        profiles.append("{ id = " + json.dumps(f"{specialization_id}:{build_id}") + ", name = " + json.dumps(f"Spec {specialization_id} — {build_name}", ensure_ascii=False) + ", source = " + json.dumps(weight.source) + ", weights = { " + values + " } }")
+    return "DpsLabRealRecommendation = {\n  schema_version = \"0.4\",\n  state = \"ready\",\n  message = \"Scores de equipo actualizados en DpsLab.\",\n  character_id = " + json.dumps(character.character_id) + ",\n  item_scores = { profiles = { " + ", ".join(profiles) + " } },\n}\n"
+
+
 def write_loadout_recommendation(addon_directory: Path, comparison: LoadoutComparison) -> Path:
     directory = addon_directory.resolve()
     if not (directory / "DpsLab.toc").is_file() or not (directory / "DpsLab.lua").is_file():
@@ -84,6 +101,24 @@ def write_loadout_recommendation(addon_directory: Path, comparison: LoadoutCompa
     return destination
 
 
+def write_item_score_profiles(addon_directory: Path, character: CharacterScoreProfile, selected: tuple[tuple[int, int], ...]) -> Path:
+    """Transfer selected local weights to the addon; it does not invoke SimC."""
+    directory = addon_directory.resolve()
+    if not (directory / "DpsLab.toc").is_file() or not (directory / "DpsLab.lua").is_file():
+        raise LoadoutRecommendationError("loadout_addon_unavailable")
+    destination = directory / "DpsLabRealRecommendation.lua"
+    temporary_name: str | None = None
+    try:
+        with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=directory, prefix=".dpslab-scores-", suffix=".tmp", delete=False) as temporary:
+            temporary_name = temporary.name; temporary.write(_item_scores_document(character, selected)); temporary.flush(); os.fsync(temporary.fileno())
+        os.replace(temporary_name, destination); temporary_name = None
+    except OSError as exc:
+        raise LoadoutRecommendationError("loadout_addon_write_failed") from exc
+    finally:
+        if temporary_name is not None: Path(temporary_name).unlink(missing_ok=True)
+    return destination
+
+
 def run_loadout_recommendation(export_text: str, simc_exe: Path, addon_directory: Path, *, root: Path, selected_config_ids: tuple[int, ...] | None = None, imported_loadouts: tuple[tuple[str, str], ...] = (), runner: Callable = run_simulation, summary_loader: Callable = summarize_run) -> LoadoutComparison:
     try:
         profiles = build_loadout_profiles(parse_live_analysis_export(export_text), selected_config_ids, imported_loadouts)
@@ -94,15 +129,22 @@ def run_loadout_recommendation(export_text: str, simc_exe: Path, addon_directory
         raise LoadoutRecommendationError("loadout_simc_unavailable")
     with tempfile.TemporaryDirectory(prefix="dpslab-loadout-") as workspace:
         directory = Path(workspace)
-        config = SimulationConfig(simc_exe=executable, runs_dir=directory / "runs", threads=4, iterations=1000, max_time=300, fight_style="Patchwerk", generate_html=False)
+        config = SimulationConfig(simc_exe=executable, runs_dir=directory / "runs", threads=4, iterations=1000, max_time=300, fight_style="Patchwerk", generate_html=False, calculate_scale_factors=True)
         results = []
+        weights = []
         for loadout in profiles.loadouts:
             profile = directory / f"loadout-{loadout.config_id}.simc"
             profile.write_text(loadout.profile, encoding="utf-8")
-            value = _mean(summary_loader(runner(profile, config, root=root).artifacts.run_dir, root=root))
+            run = runner(profile, config, root=root)
+            value = _mean(summary_loader(run.artifacts.run_dir, root=root))
             if not math.isfinite(value) or value <= 0:
                 raise LoadoutRecommendationError("loadout_result_unavailable")
             results.append((loadout.config_id, value))
-        comparison = _comparison(profiles, tuple(results))
+            parsed = load_balance_stat_weights(run.artifacts.run_dir)
+            version = getattr(run, "simc_version", None)
+            if parsed is not None and isinstance(version, str) and version.strip():
+                weights.append(ScoreWeights("personalized", profiles.capability.class_id, profiles.capability.specialization_id, loadout.config_id, parsed.values, version.strip(), "Patchwerk", __import__("hashlib").sha256(loadout.profile.encode("utf-8")).hexdigest()))
+        base = _comparison(profiles, tuple(results))
+        comparison = LoadoutComparison(base.message, base.loadouts, base.preferred_loadout, base.class_id, base.specialization_id, base.role, base.metric, tuple(weights))
     write_loadout_recommendation(addon_directory, comparison)
     return comparison

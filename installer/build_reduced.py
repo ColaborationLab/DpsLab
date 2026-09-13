@@ -40,7 +40,7 @@ def main() -> int:
     window_mode = "--console" if args.console else "--windowed"
     # PyInstaller's tkinter hook supports the runtime Tcl/Tk version selected
     # by the host Python (including Tcl/Tk 9); do not hard-code 8.6 paths.
-    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", str(root / "desktop-app" / "launch_dpslab.py")]
+    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{root / 'addon' / 'DpsLab'};DpsLabAddon", str(root / "desktop-app" / "launch_dpslab.py")]
     return subprocess.run(command, check=False).returncode
 
 

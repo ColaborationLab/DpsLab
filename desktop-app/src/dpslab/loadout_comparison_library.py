@@ -11,6 +11,7 @@ import time
 from uuid import uuid4
 
 from .loadout_recommendation import LoadoutComparison
+from .item_score_profiles import CharacterScoreProfile, load_profiles, save_profiles
 
 
 class LoadoutComparisonLibraryError(ValueError):
@@ -75,3 +76,12 @@ def list_cases(root: Path) -> tuple[LoadoutComparisonCase, ...]:
         return tuple(sorted((_read(path) for path in directory.glob("*.json")), key=lambda case: case.saved_at, reverse=True))
     except OSError as exc:
         raise LoadoutComparisonLibraryError("loadout_library_unavailable") from exc
+
+
+def list_character_profiles(root: Path) -> tuple[CharacterScoreProfile, ...]:
+    """Keep the player library alongside saved comparisons without merging identities."""
+    return load_profiles(root)
+
+
+def save_character_profiles(root: Path, profiles: tuple[CharacterScoreProfile, ...]) -> None:
+    save_profiles(root, profiles)

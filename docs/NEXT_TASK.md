@@ -9963,3 +9963,23 @@ y guardar personajes, equipo y simulaciones actualizables desde el addon.
 Solo se modificaron Scope, este registro y el plan; no se ejecutó SimC ni
 se alteró código, instalaciones o resultados. La activación requiere conservar
 esta preparación en una baseline limpia y confirmar que no hay otro escritor.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{"contract_version":"0.1","task_id":"item_score_character_profiles_0_1","title":"Implement configurable item scores and local character profiles","baseline_commit":"296a33961e4d0a99833ab3fb61cad4f9e1d9131c","authorization":{"status":"authorized_for_implementation","authorization_id":"item_score_character_profiles_0_1-20260912-daniel","authorized_by":"Daniel","authorized_at":"2026-09-12T00:00:00-05:00"},"scope":{"allowed_paths":["addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","addon/DpsLab/ItemScoreProfiles.lua","desktop-app/src/dpslab/__main__.py","desktop-app/src/dpslab/item_score_profiles.py","desktop-app/src/dpslab/loadout_comparison_library.py","desktop-app/src/dpslab/loadout_recommendation.py","desktop-app/src/dpslab/loadout_ui.py","desktop-app/tests/test_item_score_profiles.py","installer/README-WINDOWS.md","installer/build_reduced.py","tools/tests/test_addon_character_identity_observation.py","tools/tests/test_addon_item_score_profiles.py","tools/tests/test_addon_specialization_registry_observation.py","tools/tests/test_addon_synthetic_observation.py","tools/tests/test_addon_synthetic_persistence.py","tools/tests/test_addon_synthetic_renderer.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/item_score_character_profiles_0_1/implementation.json",".dpslab/quality-gates/item_score_character_profiles_0_1/audit.json"],"forbidden_paths":[".github/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SCOPE_CORRECTION_0_1.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_item_score_profiles","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1145,"minimum_test_count":1145},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"0ccaf35aadfb534a20748b036d35d806ec4a6502ca88d35335e8ab2eddf97b04"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["store isolated local characters specs builds equipment simulations and compatible weights","prefer compatible personalized weights and otherwise accept only real SimC-derived generic weights","show configurable numeric scores for selected specs/builds without changing active specialization","package the updated addon with the app and preserve loadout comparison behavior","pass focused and full suites plus quality gate without SimulationCraft"],"express_exclusions":["SimulationCraft execution without a separate concrete authorization","invented generic weights","global Python repair","installation modification","commit push release","engine implementation","SBOM signing source acquisition","paths outside the allowlist"]}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+El bloque activo se conserva únicamente porque el quality gate histórico lo
+requiere; no añade autoridad ni sustituye la revisión directa de Daniel prevista
+por la corrección de alcance.
+
+## Cierre breve — Scores, perfiles y simulación local
+
+Se completaron perfiles locales por personaje, spec y build con equipo, nivel,
+raza, pesos y resultados de SimC; el addon muestra scores configurables y la
+app conserva y simula loadouts reales o importados sin volver a abrir WoW. Se
+tocaron `addon/DpsLab/`, `desktop-app/src/dpslab/`, pruebas, empaquetado y este
+registro. La prueba de valor fue aprobada visualmente por Daniel: perfiles con
+equipo guardado comparan builds reales y externas, y la limpieza de interfaz
+elimina datos no guardados tras confirmación.

@@ -27,3 +27,11 @@ class SavedVariableTests(unittest.TestCase):
     def test_unexpected_assignment_is_rejected(self) -> None:
         with self.assertRaises(LiveAnalysisSavedVariableError):
             parse_live_analysis_saved_variable(b'DpsLabObservationExport = "other"\n')
+
+    def test_export_is_decoded_with_unrelated_score_preferences(self) -> None:
+        raw = transport() + b'DpsLabItemScorePreferences = { ["enabled"] = true }\n'
+        self.assertEqual(parse_live_analysis_saved_variable(raw).specialization_id, 102)
+
+    def test_duplicate_live_exports_are_rejected(self) -> None:
+        with self.assertRaises(LiveAnalysisSavedVariableError):
+            parse_live_analysis_saved_variable(transport() + transport())

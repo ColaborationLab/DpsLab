@@ -24,7 +24,7 @@ class LiveAnalysisExportAddonTests(unittest.TestCase):
         for fragment in (
             "ROLE_MAP", "analysis_role_unsupported", "GetDetailedItemLevelInfo",
             "GetActiveConfigID", "GetConfigIDsBySpecID", "GenerateImportString",
-            'for index = 1, #alternatives do', 'if #values < 1', 'GetConfigInfo', '"0.7"', 'GetItemStats',
+            'for index = 1, #alternatives do', 'if #values < 1', 'GetConfigInfo', '"0.9"', 'GetItemStats', 'UnitFullName', 'realm_name', 'IsConfigPopulated', 'GetMaxLevelForPlayerExpansion',
         ):
             self.assertIn(fragment, module)
         self.assertNotIn("C_Container", module)

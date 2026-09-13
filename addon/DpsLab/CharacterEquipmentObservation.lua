@@ -7,6 +7,8 @@ local function api()
     GetBuildInfo = GetBuildInfo, UnitClass = UnitClass,
     GetSpecialization = GetSpecialization, GetSpecializationInfo = GetSpecializationInfo,
     UnitLevel = UnitLevel, UnitRace = UnitRace,
+    UnitFullName = UnitFullName, GetRealmName = GetRealmName,
+    GetMaxLevelForPlayerExpansion = GetMaxLevelForPlayerExpansion,
     GetInventoryItemLink = GetInventoryItemLink,
     GetDetailedItemLevelInfo = GetDetailedItemLevelInfo,
     GetItemStats = GetItemStats, C_Item = C_Item,
@@ -58,17 +60,24 @@ local function item(a, link, location, includeStats)
     .. ',"slot":"slot_' .. location .. '","source":"equipped"' .. suffix .. '}'
 end
 
-local function loadout(a, configId, includeName)
+local function loadoutStatus(a, configId)
+  if type(a.C_ClassTalents.IsConfigPopulated) ~= "function" then return false, "talent_state_unavailable" end
+  local ok, populated = pcall(a.C_ClassTalents.IsConfigPopulated, configId)
+  if not ok or type(populated) ~= "boolean" then return false, "talent_state_unavailable" end
+  return populated, populated and "" or "talents_unassigned"
+end
+
+local function loadout(a, configId)
   local ok, value = pcall(a.C_Traits.GenerateImportString, configId)
   if not ok or type(value) ~= "string" or #value < 1 or #value > 2048
     or value:match("^[A-Za-z0-9+/=]+$") == nil then return nil end
-  if not includeName then return '{"config_id":' .. configId .. ',"talent_string":"' .. json(value) .. '"}' end
   local name = "Loadout " .. configId
   if type(a.C_Traits.GetConfigInfo) == "function" then
     local infoOk, info = pcall(a.C_Traits.GetConfigInfo, configId)
     if infoOk and type(info) == "table" and type(info.name) == "string" and #info.name > 0 and #info.name <= 80 then name = info.name end
   end
-  return '{"config_id":' .. configId .. ',"name":"' .. json(name) .. '","talent_string":"' .. json(value) .. '"}'
+  local simulatable, reason = loadoutStatus(a, configId)
+  return '{"config_id":' .. configId .. ',"name":"' .. json(name) .. '","simulatable":' .. (simulatable and "true" or "false") .. ',"talent_string":"' .. json(value) .. '","unavailable_reason":"' .. reason .. '"}'
 end
 
 local function loadouts(a, specializationId, selected)
@@ -92,17 +101,17 @@ local function loadouts(a, specializationId, selected)
     if configId ~= activeId then alternatives[#alternatives + 1] = configId end
   end
   table.sort(alternatives)
-  local active = loadout(a, activeId, selected == nil)
+  local active = loadout(a, activeId)
   if active == nil then return nil, "analysis_talents_unavailable" end
   if selected ~= nil then
     if not number(selected, 1, #alternatives) then return nil, "analysis_comparison_loadout_unavailable" end
-    local comparison = loadout(a, alternatives[selected], false)
+    local comparison = loadout(a, alternatives[selected])
     if comparison == nil then return nil, "analysis_talents_unavailable" end
-    return '{"talent_loadouts":{"active":' .. active .. ',"comparison":' .. comparison .. '}}', "0.4"
+    return '{"talent_loadouts":[' .. active .. ',' .. comparison .. ']}', "0.5"
   end
   local values = { active }
   for index = 1, #alternatives do
-    local value = loadout(a, alternatives[index], true)
+    local value = loadout(a, alternatives[index])
     if value == nil then return nil, "analysis_talents_unavailable" end
     values[#values + 1] = value
   end
@@ -114,23 +123,33 @@ function Equipment.Capture(selectedLoadout, injected)
   local a = injected or api()
   for _, name in ipairs({ "GetBuildInfo", "UnitClass", "GetSpecialization",
     "GetSpecializationInfo", "UnitLevel", "UnitRace", "GetInventoryItemLink",
-    "GetDetailedItemLevelInfo" }) do
+    "GetDetailedItemLevelInfo", "UnitFullName", "GetRealmName", "GetMaxLevelForPlayerExpansion" }) do
     if type(a[name]) ~= "function" then return nil, "analysis_api_unavailable" end
   end
   local buildOk, _, build, _, interface = pcall(a.GetBuildInfo)
   local classOk, _, _, classId = pcall(a.UnitClass, "player")
   local specOk, specIndex = pcall(a.GetSpecialization)
   local levelOk, level = pcall(a.UnitLevel, "player")
+  local maxLevelOk, maxLevel = pcall(a.GetMaxLevelForPlayerExpansion)
   local raceOk, _, _, raceId = pcall(a.UnitRace, "player")
-  if not (buildOk and classOk and specOk and levelOk and raceOk) then return nil, "analysis_api_failed" end
+  local identityOk, characterName, realmName = pcall(a.UnitFullName, "player")
+  if identityOk and (type(realmName) ~= "string" or #realmName == 0) then
+    local realmOk, realm = pcall(a.GetRealmName)
+    if realmOk then realmName = realm end
+  end
+  if not (buildOk and classOk and specOk and levelOk and maxLevelOk and raceOk and identityOk) then return nil, "analysis_api_failed" end
   local infoOk, specializationId, _, _, _, role = pcall(a.GetSpecializationInfo, specIndex)
   if not infoOk then return nil, "analysis_api_failed" end
   build = buildNumber(build)
   if not (build and number(interface, 1, 9999999) and number(classId, 1, 1000)
-    and number(specializationId, 1, 100000) and number(level, 1, 1000)
+    and number(specializationId, 1, 100000) and number(level, 1, 1000) and number(maxLevel, 1, 1000) and level <= maxLevel
     and number(raceId, 1, 1000)) then return nil, "analysis_context_invalid" end
   local subjectRole = ROLE_MAP[role]
   if subjectRole == nil then return nil, "analysis_role_unsupported" end
+  if type(characterName) ~= "string" or #characterName < 1 or #characterName > 80
+    or type(realmName) ~= "string" or #realmName < 1 or #realmName > 80 then
+    return nil, "analysis_character_identity_unavailable"
+  end
   local talentContext, talentSchema = loadouts(a, specializationId, selectedLoadout)
   if talentContext == nil then return nil, talentSchema end
   local includeStats = talentSchema == "0.5"
@@ -144,10 +163,9 @@ function Equipment.Capture(selectedLoadout, injected)
   local text = '{"analysis_context":' .. talentContext
     .. ',"compatibility":{"build":' .. build .. ',"interface_version":' .. interface
     .. ',"wow_product":"retail"},"equipment":{"equipped":[' .. table.concat(equipped, ",")
-    .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":false,"executable":false,"no_automation":true},"schema_version":"0.4","subject":{"class_id":'
-    .. classId .. ',"level":' .. level .. ',"race_id":' .. raceId
-    .. ',"role":"' .. subjectRole .. '","specialization_id":' .. specializationId .. '}}\n'
-  text = text:gsub('"schema_version":"0.4"', '"schema_version":"' .. (talentSchema == "0.5" and "0.7" or talentSchema) .. '"')
+    .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":true,"executable":false,"no_automation":true},"schema_version":"0.9","subject":{"character_name":"' .. json(characterName) .. '","class_id":'
+    .. classId .. ',"level":' .. level .. ',"max_level":' .. maxLevel .. ',"race_id":' .. raceId
+    .. ',"realm_name":"' .. json(realmName) .. '","role":"' .. subjectRole .. '","specialization_id":' .. specializationId .. '}}\n'
   if #text > 65536 then return nil, "analysis_payload_invalid" end
   return "DPSLAB-LIVE-ANALYSIS-0.1\n" .. text, "analysis_export_ready"
 end

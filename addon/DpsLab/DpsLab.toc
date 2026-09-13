@@ -2,7 +2,7 @@
 ## Title: DpsLab
 ## Notes: Local synthetic guidance renderer. No automation or network access.
 ## Version: 0.1.0-synthetic
-## SavedVariables: DpsLabObservationExport
+## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences
 SyntheticGuidance.lua
 SyntheticExchange.lua
 SyntheticObservation.lua
@@ -13,3 +13,4 @@ TrainingDummySession.lua
 AdvisorSyntheticGuidance.lua
 DpsLabRealRecommendation.lua
 DpsLab.lua
+ItemScoreProfiles.lua

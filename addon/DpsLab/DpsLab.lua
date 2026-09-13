@@ -78,7 +78,7 @@ end
 
 local function realRecommendation()
   local value = DpsLabRealRecommendation
-  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2" and value.schema_version ~= "0.3")
+  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2" and value.schema_version ~= "0.3" and value.schema_version ~= "0.4")
     or value.state ~= "ready" or type(value.message) ~= "string"
     or #value.message < 1 or #value.message > 240 then return nil end
   if value.schema_version == "0.3" then
@@ -253,6 +253,14 @@ SlashCmdList["DPSLAB"] = function(message)
   if command == "result" then
     local recommendation = realRecommendation()
     print("[DpsLab] " .. (recommendation or "No real recommendation is available."))
+    return
+  end
+  if command == "scores" then
+    if type(DpsLabItemScores) == "table" and type(DpsLabItemScores.Show) == "function" then DpsLabItemScores.Show() else print("[DpsLab] Los scores todavía no están disponibles.") end
+    return
+  end
+  if command == "config" then
+    if type(DpsLabItemScores) == "table" and type(DpsLabItemScores.ShowConfig) == "function" then DpsLabItemScores.ShowConfig() else print("[DpsLab] El menú de scores todavía no está disponible.") end
     return
   end
   if command == "export" then
