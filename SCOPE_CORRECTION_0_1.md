@@ -11,12 +11,12 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, tener Score de item por spec, usando pesos generados vía SimC (perfil genérico) cuando no hay simulación guardada, con opción configurable de qué specs mostrar:
+El único trabajo autorizado a partir de ahora es completar, el score usa tus propios pesos ya simulados en vez del default, cuando existan para esa spec y se muestran en los items en su respectivo tooltip tras la simulacion.:
 
-1. El addon puede guardar perfiles de pesos para cada spec en cada personaje.
-2. El addon puede ser configurado para mostrar el score deuna o varias specs a discreción, de forma que el usuario pueda saber sin necesidad de cambiar de spec, si un item es mejor para una u otra spec, o build de talentos (también configurable).
-3. La app puede crear perfiles de personajes, donde se puede almacenar todas sus specs y builds dentro de cada spec, asi como las simulaciones junto con el gear exportado.
-4. Se tiene una interfaz visual más completa en ambos componentes, addon y app. Ya se debe ver interfaz de un menu de configuraciones de interfaz del addon y su comportamiento.
+1. El addon sugiere una build por defecto para iniciados, así como una base de pesos estadísticos por defecto como valores sugeridos iniciales. Estos valores pueden ser cambiados por el usuarios a gusto y deben ser actualizados tras la importación de los resultados del simulador.
+2. El addon puede importar y crear perfiles específicos de pesos estadídticos tras la simulación y al importar, se debe preguntar si se desea reemplazar los actuales o crear un nuevo perfil de pesos, puesto que esto cambiara el score de los items.
+3. La app puede exportar pesos propios según el loadout escogido por el usuario. Es decir, una vez simulado y realizada la comparación, el usuario puede elegir exactamente los resultados de un loadout específico a ser exportado al addon, no necesariamente se exportarán resultados del mejor loadout, sino que el usuario escogerá segun sus propios criterios. 
+4. El addon muestra una visualización directa del score en los items dentro del juego, similar a lo que hace pawn, dentro del tooltip del item con su respectiva distinción de si la mejora es sustancial, marginal o no hay mejora (igual o peor)
 
 
 
@@ -45,7 +45,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de la opción de comparar sus items mediante score en distintas specs y builds, segun el mismo usuario disponga mediante configuraciones del addony también crear perfiles para personajes en el simulador, donde se guarde la informacion de items, builds y pesos estadísticos, actualizable mediante exportaciones del addon?"
+> "¿Esta tarea hace que un jugador disponga de la opción de comparar sus items mediante score en distintas specs y builds, según criterio del usuario mediante configuraciones del addon, donde se guarde la informacion de items, builds y pesos estadísticos?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
