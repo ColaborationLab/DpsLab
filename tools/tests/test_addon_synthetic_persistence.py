@@ -22,7 +22,7 @@ class AddonSyntheticPersistenceTests(unittest.TestCase):
 
     def test_one_account_wide_saved_variable_is_declared(self) -> None:
         declarations = [line for line in self.toc.splitlines() if line.startswith("## SavedVariables")]
-        self.assertEqual(declarations, ["## SavedVariables: DpsLabObservationExport"])
+        self.assertEqual(declarations, ["## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences"])
 
     def test_only_two_exact_manual_export_actions_are_implemented(self) -> None:
         self.assertIn('if action == "clear" then', self.handler)

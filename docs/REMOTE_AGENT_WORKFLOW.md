@@ -20,17 +20,30 @@ un Issue y un contrato cerrado aprobado por N0-GOV.
 
 1. N0-GOV publica un Issue con `task_id`, baseline, rutas permitidas,
    rutas prohibidas, pruebas y criterio de cierre.
-2. Con permiso `Read`, el colaborador crea un fork privado y abre allí
-   `agent/<task_id>/<slug>` desde la baseline indicada. Solo una autorización
-   posterior de `Write` permite crear la rama directamente en el repositorio.
+2. Aplica el modo de permiso y entrega indicado en la sección siguiente.
 3. Trabaja solo dentro de la allowlist, sin secretos ni datos reales.
-4. Ejecuta las pruebas indicadas y abre un PR con la plantilla del repositorio.
+4. Ejecuta las pruebas indicadas y abre el PR obligatorio con la plantilla del
+   repositorio cuando esté disponible; su ausencia se declara como limitación,
+   no se crea implícitamente.
 5. Codex principal revisa diff, hashes protegidos, pruebas y límites.
 6. La aprobación humana, el merge y el push son decisiones separadas; no se
    usa el PR como autorización implícita.
 
 Nunca se trabaja directamente sobre `main`, se hace force-push, se cambia el
 remoto, se crean releases ni se habilitan workflows desde una tarea delegada.
+
+## Modos de permiso y entrega
+
+- **Read**: permite auditoría y entrega lectoras dentro de un Issue cerrado.
+  Un fork privado y un PR solo pueden usarse si la política de forks privados
+  lo permite y existe acceso autenticado autorizado. `Read` no autoriza crear
+  una rama directamente en el repositorio, hacer commit, push, merge ni
+  publicación.
+- **Write**: requiere una decisión humana posterior de mínimo privilegio. Solo
+  permite crear la rama `agent/<task_id>/<slug>` indicada por un Issue cerrado,
+  desde la baseline declarada. Nunca permite trabajar sobre `main`; el PR es
+  obligatorio y ninguna capacidad técnica, prueba o PR equivale a merge,
+  publicación o aprobación humana.
 
 ## Trabajo mediante Codex Cloud
 
@@ -39,11 +52,13 @@ completa de su contrato aprobado. Esa copia no sustituye el Issue canónico ni
 amplía la autoridad concedida. La rama aislada `work` y la ausencia de
 `origin` en la terminal tampoco autorizan acceso directo a `main`.
 
-No se añaden `GH_TOKEN`, PAT, claves de firma, secretos ni credenciales solo
-para consultar el Issue. El agente entrega un resumen, las pruebas y el diff;
-Codex principal revisa ese diff antes de que una persona decida si crea un
-pull request. Crear el PR, aprobarlo, fusionarlo y publicar son transiciones
-separadas, y ningún resultado técnico equivale a aprobación humana.
+Codex Cloud sin una sesión de repositorio preautorizada debe detenerse y
+entregar el bloqueo. No se añaden `GH_TOKEN`, PAT, claves de firma, secretos
+ni credenciales solo para consultar el Issue. El agente entrega un resumen,
+las pruebas y el diff; Codex principal revisa ese diff antes de que una
+persona decida si crea un pull request. Crear el PR, aprobarlo, fusionarlo y
+publicar son transiciones separadas, y ningún resultado técnico equivale a
+aprobación humana.
 
 ## Matriz de propiedad
 
@@ -70,11 +85,12 @@ auditoría → aprobación.
 ## Invitación de colaboradores
 
 La invitación se realiza en GitHub, no desde una conversación de Work/Codex:
-repositorio `dpcs90/DpsLab` → **Settings** → **Collaborators** (o
+repositorio `ColaborationLab/DpsLab` → **Settings** → **Collaborators** (o
 **Collaborators and teams**) → **Add people** → escribir el nombre exacto de
 la cuenta → asignar inicialmente **Read**. Tras aceptar, se configura el
-alcance del conector para `DpsLab` y se mantiene la regla de fork, rama y PR.
-No se debe compartir una contraseña, token personal ni clave de firma.
+alcance del conector para `DpsLab`; el modo Read sigue la entrega lectora y
+solo usa fork/PR cuando la política y el acceso autorizado lo permiten. No se
+debe compartir una contraseña, token personal ni clave de firma.
 
 Para elevar permisos a Write/Maintain/Admin hace falta una decisión humana
 posterior y una justificación de necesidad mínima. Sin el nombre exacto de la

@@ -41,6 +41,7 @@ from .local_profile_manual_ui import (
 )
 from .druid_restoration_recommendation import DruidRestorationRecommendationError
 from .druid_restoration_ui import TkDruidBalanceWorkspace, TkDruidRestorationWorkspace
+from .loadout_ui import TkLoadoutWorkspace
 from .runner import SimulationRunError, run_simulation
 from .scenario import ScenarioError, load_scenario
 from .variant import VariantError, load_variant
@@ -147,6 +148,7 @@ def _arguments(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "balance",
         help="Abre la comparación real mínima de Druida Balance",
     )
+    commands.add_parser("loadouts", help="Abre perfiles, scores y comparación de loadouts")
     return parser.parse_args(argv)
 
 
@@ -400,6 +402,11 @@ def _balance(_: argparse.Namespace) -> int:
     return 0
 
 
+def _loadouts(_: argparse.Namespace) -> int:
+    TkLoadoutWorkspace(project_root()).run()
+    return 0
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = _arguments(argv)
     try:
@@ -421,6 +428,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _restoration(args)
         if args.command == "balance":
             return _balance(args)
+        if args.command == "loadouts":
+            return _loadouts(args)
         return _summarize(args)
     except (
         ComparisonReadinessError,

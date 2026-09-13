@@ -25,7 +25,7 @@ class AddonCharacterIdentityObservationTests(unittest.TestCase):
     def test_identity_module_loads_before_the_renderer(self):
         lines = self.toc.splitlines()
         self.assertLess(lines.index("CharacterIdentityObservation.lua"), lines.index("DpsLab.lua"))
-        self.assertEqual([line for line in lines if line.startswith("## SavedVariables:")], ["## SavedVariables: DpsLabObservationExport"])
+        self.assertEqual([line for line in lines if line.startswith("## SavedVariables:")], ["## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences"])
 
     def test_capture_is_manual_only_and_assigns_after_success(self):
         self.assertIn('role == "identity" and handleIdentityExport()', self.renderer)

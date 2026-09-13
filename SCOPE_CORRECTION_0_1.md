@@ -9,6 +9,11 @@ nueva puede aprobarse ni implementarse sin pasar primero la prueba de la
 sección 2. Esta corrección permanece vigente hasta que Daniel la levante
 explícitamente por escrito.
 
+## Historial breve de objetivos cumplidos
+
+- 2026-09-10 — Comparación de loadouts de Druida Balance y Restauración, con simulación individual o comparativa, nombres y resultados en WoW: cumplido.
+- 2026-09-12 — Exportación y comparación multiclase y multiespecialización, con limpieza manual de la interfaz: cumplido por confirmación de Daniel y cambio de objetivo; implementación publicada en d354f9c. Fecha de cierre registrada al recibir el objetivo nuevo.
+
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
 El único trabajo autorizado a partir de ahora es completar, tener Score de item por spec, usando pesos generados vía SimC (perfil genérico) cuando no hay simulación guardada, con opción configurable de qué specs mostrar:

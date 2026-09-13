@@ -8,9 +8,11 @@ from unittest.mock import patch
 
 from dpslab.addon_observation_acquisition import (
     AddonObservationAcquisitionError,
+    MAX_LIVE_ANALYSIS_AGE_SECONDS,
     MAX_TRANSPORT_BYTES,
     SyntheticObservationAcquisition,
     acquire_addon_observation,
+    acquire_recent_live_analysis_export,
     acquire_synthetic_observation,
     acquire_synthetic_observation_from_installation,
     acquire_synthetic_observation_with_probe,
@@ -27,6 +29,7 @@ from tests.test_addon_specialization_registry_transport import (
     document as registry_document,
     transport as registry_transport,
 )
+from tests.test_addon_live_analysis_saved_variable import transport as live_analysis_transport
 
 
 class AddonObservationAcquisitionTests(unittest.TestCase):
@@ -153,6 +156,19 @@ class AddonObservationAcquisitionTests(unittest.TestCase):
             self.root,
             wow_process_state="stopped",
         )
+
+    def test_live_export_must_be_recent(self) -> None:
+        target = self.write_candidate("live-account", live_analysis_transport())
+        modified = target.stat().st_mtime_ns
+        with patch(
+            "dpslab.addon_observation_acquisition.time.time_ns",
+            return_value=modified + (MAX_LIVE_ANALYSIS_AGE_SECONDS * 1_000_000_000) + 1,
+        ):
+            self.assert_reason(
+                "live_analysis_acquisition_stale",
+                acquire_recent_live_analysis_export,
+                self.root,
+            )
 
     def test_nonregular_and_oversized_candidates_are_rejected(self) -> None:
         target = self.write_candidate("synthetic-account", b"x" * (MAX_TRANSPORT_BYTES + 1))
