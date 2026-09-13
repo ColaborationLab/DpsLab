@@ -1,5 +1,62 @@
 # Next Task — DpsLab
 
+## Preparación vigente — Defaults, perfiles de pesos y tooltips (2026-09-12)
+
+El objetivo anterior fue cerrado por Daniel y publicado en dd61f94ba697b46b4f977f87ff9d7c03917377c6.
+Su base genérica pendiente se incorpora al nuevo Scope de origin/main
+adc01eccde429f3b8e4e5355697c16dd81bca0b8, integrado sin perder el historial.
+Plan completo y prompt para Terra: `docs/DEFAULT_WEIGHTS_TERRA_PLAN.md`.
+Esta preparación sustituye como tarea futura al plan de perfiles anterior;
+los contratos inferiores son antecedentes, no autorizaciones de este objetivo.
+
+Prueba de valor: sí, permitirá comparar ítems entre specs y builds elegidas
+por el usuario, configurar sus scores en el addon y conservar ítems, builds
+y pesos actualizables desde la app.
+
+```json
+{"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"13b3edea86fe94cc4b9e4e0b4cc7dc0068c6fb9c145afb2834d7ec2902ac60f3"}}
+```
+
+Preparación documental únicamente: no se inicia Terra ni SimC. La conciliación
+y su commit/push en la rama de trabajo están autorizados por Daniel.
+La activación debe comprobar exclusividad de escritura y fijar los hashes
+de esta preparación sobre la baseline indicada en el plan.
+
+### Conciliación — 2026-09-12
+
+Se actualizó Scope desde la edición de Daniel, conservando cierres fechados;
+se archivó el plan anterior y su contrato, y se limitó el gate activo a los
+cuatro documentos de preparación. No hay cambios de código ni nuevas funciones.
+Pruebas focales: 11 aprobadas; suite completa: 1345 ejecutadas, 1344 aprobadas,
+1 omitida, 0 fallos, salida 0; sin SimC. El gate validó el candidato temporal.
+La evidencia local ignorada vive en
+`.dpslab/quality-gates/default_weights_preparation_0_1/implementation.json`.
+Su etiqueta histórica de auditoría pendiente no exige una auditoría nueva:
+aplica la excepción explícita de Scope/AGENTS y no acredita aprobación visual.
+
+El fallo inicial se debió a que `python` hijo resolvía al intérprete base sin
+SciPy/cryptography. Se verificaron ambas dependencias en el entorno existente;
+el runner del gate se ejecutó resolviendo `python` a `sys.executable`, sin
+alterar pruebas ni mínimos. Reproducción desde la raíz (PowerShell):
+
+```powershell
+@'
+from pathlib import Path
+import sys
+from tools import quality_gate as q
+def run(argv, cwd, env):
+    command = [sys.executable, *argv[1:]] if argv[0] == 'python' else argv
+    return q.default_runner(command, cwd, env)
+result = q.run_gate(Path.cwd(), q.load_contract(Path.cwd()), runner=run)
+print(result['status'])
+'@ | & build/installer-py313/Scripts/python.exe -
+```
+
+Continuar desde `codex/live-export-balance-package`, no desde el `main` local
+divergente. No se modifica ese checkout ni se fuerza una fusión; la integración
+a main sigue por PR y aprobación. Antes de código, adaptar la allowlist del
+gate al lote de implementación de Terra; esta preparación no lo activa.
+
 ## Consumed design authorization — Comparison result productization 0.1
 
 The completed collar experiment is evidence for one frozen case, not a
@@ -9950,7 +10007,7 @@ de Demon Hunter aparece en los perfiles de SimC, pero la distribución no
 incluye su ID de API de WoW, así que queda explícitamente no disponible hasta
 verificar esa correspondencia.
 
-## Tarea activa — Scores por spec/build y perfiles de personajes
+## Antecedente cerrado — Scores por spec/build y perfiles de personajes
 
 Preparada el 2026-09-12 para Terra, sin iniciar implementación.
 Plan: `docs/ITEM_SCORE_CHARACTER_PROFILES_HANDOFF.md`.
@@ -9964,9 +10021,19 @@ Solo se modificaron Scope, este registro y el plan; no se ejecutó SimC ni
 se alteró código, instalaciones o resultados. La activación requiere conservar
 esta preparación en una baseline limpia y confirmar que no hay otro escritor.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {"contract_version":"0.1","task_id":"item_score_character_profiles_0_1","title":"Implement configurable item scores and local character profiles","baseline_commit":"296a33961e4d0a99833ab3fb61cad4f9e1d9131c","authorization":{"status":"authorized_for_implementation","authorization_id":"item_score_character_profiles_0_1-20260912-daniel","authorized_by":"Daniel","authorized_at":"2026-09-12T00:00:00-05:00"},"scope":{"allowed_paths":["addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","addon/DpsLab/ItemScoreProfiles.lua","desktop-app/src/dpslab/__main__.py","desktop-app/src/dpslab/item_score_profiles.py","desktop-app/src/dpslab/loadout_comparison_library.py","desktop-app/src/dpslab/loadout_recommendation.py","desktop-app/src/dpslab/loadout_ui.py","desktop-app/tests/test_item_score_profiles.py","installer/README-WINDOWS.md","installer/build_reduced.py","tools/tests/test_addon_character_identity_observation.py","tools/tests/test_addon_item_score_profiles.py","tools/tests/test_addon_specialization_registry_observation.py","tools/tests/test_addon_synthetic_observation.py","tools/tests/test_addon_synthetic_persistence.py","tools/tests/test_addon_synthetic_renderer.py","docs/NEXT_TASK.md"],"generated_paths":[".dpslab/quality-gates/item_score_character_profiles_0_1/implementation.json",".dpslab/quality-gates/item_score_character_profiles_0_1/audit.json"],"forbidden_paths":[".github/**","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SCOPE_CORRECTION_0_1.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_item_score_profiles","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1145,"minimum_test_count":1145},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"0ccaf35aadfb534a20748b036d35d806ec4a6502ca88d35335e8ab2eddf97b04"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["store isolated local characters specs builds equipment simulations and compatible weights","prefer compatible personalized weights and otherwise accept only real SimC-derived generic weights","show configurable numeric scores for selected specs/builds without changing active specialization","package the updated addon with the app and preserve loadout comparison behavior","pass focused and full suites plus quality gate without SimulationCraft"],"express_exclusions":["SimulationCraft execution without a separate concrete authorization","invented generic weights","global Python repair","installation modification","commit push release","engine implementation","SBOM signing source acquisition","paths outside the allowlist"]}
+```
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
+
+## Validación de preparación vigente
+
+Solo conciliación documental; no activa implementación. Main local se preserva.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{"contract_version":"0.1","task_id":"default_weights_preparation_0_1","title":"Reconcile defaults preparation","baseline_commit":"dd61f94ba697b46b4f977f87ff9d7c03917377c6","authorization":{"status":"authorized_for_implementation","authorization_id":"documentation-reconciliation-20260912-daniel","authorized_by":"Daniel","authorized_at":"2026-09-12T00:00:00-05:00"},"scope":{"allowed_paths":["SCOPE_CORRECTION_0_1.md","docs/NEXT_TASK.md","docs/DEFAULT_WEIGHTS_TERRA_PLAN.md","docs/ITEM_SCORE_CHARACTER_PROFILES_HANDOFF.md"],"generated_paths":[".dpslab/quality-gates/default_weights_preparation_0_1/implementation.json",".dpslab/quality-gates/default_weights_preparation_0_1/audit.json"],"forbidden_paths":["addon/**","desktop-app/**","tools/**",".github/**","results/**"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_item_score_profiles","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1345,"minimum_test_count":1345},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"13b3edea86fe94cc4b9e4e0b4cc7dc0068c6fb9c145afb2834d7ec2902ac60f3"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["Validate documentary preparation and protected hashes"],"express_exclusions":["Runtime changes and SimulationCraft"]}
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 

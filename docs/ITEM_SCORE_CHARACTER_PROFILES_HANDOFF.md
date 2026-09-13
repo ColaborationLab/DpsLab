@@ -1,6 +1,7 @@
 # Scores de equipo y perfiles de personajes — preparación para Terra
 
-Fecha: 2026-09-12. Estado: `ready_for_human_activation`.
+Fecha: 2026-09-12. Estado: histórico, cerrado en dd61f94.
+Sustituido por docs/DEFAULT_WEIGHTS_TERRA_PLAN.md; no activar este plan.
 Esta preparación no inicia implementación, simulaciones ni publicación.
 
 ## Autoridad, baseline y responsable
