@@ -13,4 +13,5 @@ TrainingDummySession.lua
 AdvisorSyntheticGuidance.lua
 DpsLabRealRecommendation.lua
 DpsLab.lua
+DefaultItemScoreProfiles.lua
 ItemScoreProfiles.lua

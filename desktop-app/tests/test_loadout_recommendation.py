@@ -6,7 +6,8 @@ import unittest
 from types import SimpleNamespace
 
 from dpslab.addon_live_analysis_transport import PREFIX, canonical_live_analysis_bytes
-from dpslab.loadout_recommendation import run_loadout_recommendation
+from dpslab.item_score_profiles import ScoreWeights
+from dpslab.loadout_recommendation import decode_weight_transfer, encode_weight_transfer, run_loadout_recommendation
 from dpslab.result_models import DpsResult, ExecutionResult, RunDiagnostics, RunIdentification, RunScenario, RunSummary, RunVariant, SummaryGeneration
 
 
@@ -20,14 +21,25 @@ def summary(value: float):
 
 
 class LoadoutRecommendationTests(unittest.TestCase):
+    def test_manual_weight_transfer_round_trip(self):
+        weight = ScoreWeights("personalized", 1, 72, 5, (("CritRating", 1.25), ("HasteRating", 2.5)), "simc", "Patchwerk", "a" * 64)
+        name, imported = decode_weight_transfer(encode_weight_transfer(weight, "Furia rápida"), class_id=1, build_id=9)
+        self.assertEqual("Furia rápida", name)
+        self.assertEqual(("manual", 1, 72, 9, weight.values), (imported.source, imported.class_id, imported.specialization_id, imported.build_id, imported.values))
+
     def test_two_non_druid_loadouts_use_one_metric_and_write_context(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary); addon = root / "DpsLab"; addon.mkdir()
             for name in ("DpsLab.toc", "DpsLab.lua"): (addon / name).write_text("", encoding="utf-8")
             executable = root / "simc.exe"; executable.write_bytes(b"synthetic")
             runs = iter((SimpleNamespace(artifacts=SimpleNamespace(run_dir=root / "one")), SimpleNamespace(artifacts=SimpleNamespace(run_dir=root / "two"))))
-            result = run_loadout_recommendation(export_text(), executable, addon, root=root, runner=lambda *_args, **_kwargs: next(runs), summary_loader=lambda directory, **_kwargs: summary(100 if directory.name == "one" else 120))
+            configs = []
+            def runner(_profile, config, **_kwargs):
+                configs.append(config); return next(runs)
+            result = run_loadout_recommendation(export_text(), executable, addon, root=root, runner=runner, summary_loader=lambda directory, **_kwargs: summary(100 if directory.name == "one" else 120))
             self.assertEqual((1, 72, "damage", "DPS"), (result.class_id, result.specialization_id, result.role, result.metric))
+            self.assertTrue(all(config.target_error == 0.1 and config.iterations == 1_000_000 and config.runs_dir == root / "weight-runs" for config in configs))
+            self.assertEqual(((1, "one"), (2, "two")), result.run_ids)
             rendered = (addon / "DpsLabRealRecommendation.lua").read_text(encoding="utf-8")
             self.assertIn('schema_version = "0.3"', rendered)
             self.assertIn("specialization_id = 72", rendered)

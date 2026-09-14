@@ -1,6 +1,7 @@
 # Plan completo para Terra — Base sugerida y scores configurables
 
-Fecha: 2026-09-12. Estado: preparado para activación; ejecución no iniciada.
+Fecha: 2026-09-12. Estado: lote real ejecutado el 2026-09-13; integración y
+prueba visual de addon pendientes.
 Responsable previsto: Terra (gpt-5.6-terra), un único implementador en serie;
 el principal mantiene documentos protegidos, integración y revisión final.
 No delegar a otros agentes ni reutilizar autorizaciones de publicación consumidas.
@@ -130,6 +131,40 @@ Continuar implementación y pruebas independientes mientras se resuelve el lote.
 Si falta fuente actual o soporte de spec, señalar la entrada afectada y no
 rellenarla con pesos de otra spec. No basta empaquetar registros vacíos.
 
+### Manifiesto preparado, pendiente de autorización de ejecución
+
+- Binario localizado: `D:\Torrent Games\SimC\simc-1210.01.9839551-win64\simc.exe`;
+  SHA-256 `8f3496cb10d8dd659b6384a6b551b450e0a89cb4b2f7f325ef55362ae3da82c7`.
+- Referencia Balance disponible: `profiles/MID1/MID1_Druid_Balance.simc`, nivel
+  90, talento `CYG...`; debe copiarse al directorio nuevo de salida y ejecutarse
+  una vez con `calculate_scale_factors=1`, `iterations=1000`, `max_time=300`,
+  `fight_style=Patchwerk`, cuatro hilos y artefactos nuevos.
+- Restauración: esta distribución no contiene un perfil `*Restoration*.simc`.
+  No se puede declarar una base genérica de Restauración a partir de Balance ni
+  de un perfil personal. Hace falta que Daniel autorice una fuente de referencia
+  apta para Restauración o acepte que aparezca explícitamente como no disponible
+  hasta contar con dicha fuente.
+- Daniel autorizó el 2026-09-13 ejecutar el lote inicial de Balance y ampliar
+  después la cobertura a todas las clases y especializaciones existentes. El
+  primer lote conserva exactamente los parámetros de arriba y escribe solo en
+  una carpeta nueva fuera de resultados históricos. Cada spec posterior debe
+  tener su propio perfil fuente, hash y resultado antes de convertirse en
+  default; no se rellenan huecos con datos de otra spec.
+
+### Resultado comprobado del lote (2026-09-13)
+
+- Se ejecutaron corridas reales con el binario y parámetros del manifiesto en
+  directorios locales nuevos e ignorados. Se incorporaron 31 perfiles genéricos
+  trazables al addon, uno para cada fuente compatible hallada en el registro.
+- Quedan explícitamente sin default, sin reutilizar pesos de otra spec:
+  Druida Restauración (105), Paladín Sagrado (65), Sacerdote Disciplina (256),
+  Sacerdote Sagrado (257), Chamán Restauración (264), Monje Tejedor de niebla
+  (270), Evocador Preservación (1468) y Evocador Aumentación (1473). La
+  distribución local no aportó un perfil genérico válido para esas fuentes.
+- También fallaron por cadenas de talentos no válidas tres fuentes MID1 de
+  Cazador, Arcano y Devastación iniciales; fueron sustituidas únicamente cuando
+  existía una fuente MID2 independiente y válida para la misma spec.
+
 ## Rutas y responsabilidades
 
 Terra al activar: lectura de repositorio, perfiles de referencia seleccionados
@@ -173,6 +208,78 @@ de otro personaje -> perfil offline con nueva importación.
 Cierre solo tras matriz completa, evidencia real de defaults y aprobación
 visual de Daniel. La delegación termina al entregar o cambiar el objetivo.
 No iniciar otro objetivo.
+
+## Revisión de precisión y correcciones del addon — 2026-09-13
+
+Petición de Daniel: corregir los scores comparativos, mostrar el icono de spec
+en cada fila, usar solo `(b)` para la referencia beginner, consultar los pesos
+y determinar qué falta para equiparar una simulación completa de SimC.
+
+Hechos comprobados en el código actual:
+
+- `loadout_recommendation.py` llama al motor real con
+  `calculate_scale_factors=1`, 1.000 iteraciones, 300 segundos, Patchwerk,
+  cuatro threads y sin objetivo explícito de error. El timeout es 600 segundos.
+  Esto sí solicita simulaciones perturbadas por stat; no son pesos inventados.
+- `loadout_profiles.py` emite `role=attack` incluso para tanks/healers. Por ello
+  los resultados de Blood son pesos de DPS, no una evaluación de supervivencia.
+- El equipo se reconstruye como `id` e `ilevel`; no se transfieren desde el
+  enlace los bonus IDs, gemas ni encantamientos. La duración y el escenario
+  tampoco representan automáticamente combate de mazmorra por llamar M+ al loadout.
+- El lector de factores conserva valores positivos, pero no guarda sus errores
+  ni distingue un cero/negativo medido de un peso ausente. Se descartan los
+  informes temporales al terminar. No hay comprobación de convergencia.
+- Un score es una suma ponderada de stats visibles. No modela por sí solo
+  procs, efectos de abalorios, conjuntos, armas ni viabilidad del tipo de armadura.
+  No es una predicción de mejora porcentual de DPS ni debe presentarse como tal.
+
+Procedimiento de precisión propuesto (todavía no implementado):
+
+1. Fidelidad de entrada: conservar equipo completo, bonus IDs, gemas y
+   encantamientos; contrastar las estadísticas resultantes con una exportación
+   oficial SimC del mismo personaje, talentos y equipo. Fijar versión del motor,
+   APL, buffs, escenario, número de objetivos y métrica. Si faltan datos,
+   mostrar que la simulación es aproximada antes de llamarla personalizada precisa.
+2. Calcular pesos locales con el escalado nativo de SimC. Un peso estima
+   `(DPS(stats + delta) - DPS(stats)) / delta`; no es un optimizador que cambie
+   pesos hasta encontrar un máximo global. Los pesos se vuelven a calcular
+   cuando cambian equipo/talentos/escenario. Evaluar diferencias centradas y
+   varios deltas solo cuando ayuden a estudiar sensibilidad o no linealidad.
+3. Sustituir el límite fijo de 1.000 por ejecución adaptativa acotada. Punto de
+   partida propuesto: `target_error=0.1`, máximo 1.000.000 iteraciones y presupuesto
+   de tiempo visible/cancelable. El umbral debe verificarse en el informe;
+   alcanzar timeout o límite de iteraciones no acredita haberlo alcanzado.
+4. Guardar informe, error de DPS, error y delta de cada factor, versión y
+   configuración. El error del DPS medio no garantiza por sí solo pesos precisos:
+   una diferencia pequeña entre dos DPS puede tener mucha incertidumbre relativa.
+   Repetir con semillas independientes para comprobar estabilidad cuando la
+   decisión sea estrecha. No usar un seed fijo como prueba de precisión.
+5. Para decidir equipamiento real, simular las alternativas completas con
+   presupuesto equivalente, incluidos sus efectos. Si la diferencia no es
+   resoluble con la incertidumbre observada, mostrar resultado inconcluso.
+   Para optimizar distribuciones, explorar candidatos acotados y validar
+   finalistas; una pendiente local no garantiza el óptimo global.
+6. Validación de equivalencia: mismo binario, entrada efectiva y opciones en
+   DpsLab y SimC; resultados compatibles con el error reportado. DpsLab puede
+   mejorar la configuración, trazabilidad y elección de candidatos frente a una
+   ejecución rápida, pero no superar la fidelidad del motor que está utilizando.
+
+Fuentes primarias consultadas (algunas páginas incluyen ejemplos antiguos;
+los valores/opciones concretos se validarán contra el binario empaquetado):
+
+- https://github.com/simulationcraft/simc/wiki/StatsScaling
+- https://github.com/simulationcraft/simc/wiki/StatisticalBehaviour
+- https://github.com/simulationcraft/simc/wiki/Equipment
+
+Corrección implementada del addon: el renderizador ya no exige `GetItem`
+cuando recibe el enlace por `TooltipUtil`; mantiene una sola sección tras
+PostCall/ProcessInfo y reconstrucciones. Icono de spec por fila, sin icono en
+el título ni palabra sugerida. `/dpslab scores` abre pesos editables por build,
+con copia nombrada y activación persistida; config ofrece acceso directo.
+Reimportar un mismo loadout compara contenido y respeta aceptar/cancelar.
+Prueba Lua 5.1 cubre tooltips sin GetItem, reconstrucción, ventana, copias,
+activación tras recarga y cambio de pesos conservando ID. La verificación en
+WoW sigue pendiente de Daniel: el entorno simulado no acredita el resultado visual.
 
 ## Prompt para Terra
 

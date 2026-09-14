@@ -10,11 +10,21 @@ from .addon_observation_acquisition import AddonObservationAcquisitionError, acq
 from .druid_restoration_ui import _bundled_simc, _clear_paths, _default_addon_path, _remembered_paths, _save_paths, _settings_path
 from .loadout_capabilities import capability_for
 from .loadout_comparison_library import LoadoutComparisonLibraryError, list_cases, save_case
-from .loadout_recommendation import LoadoutComparison, run_loadout_recommendation
+from .loadout_recommendation import LoadoutComparison, LoadoutRecommendationError, decode_weight_transfer, encode_weight_transfer, run_loadout_recommendation
 from .addon_live_analysis_transport import parse_live_analysis_export
 from .item_score_profiles import BuildScoreProfile, ItemScoreProfileError, create_character, profile_details, profile_export, profile_simulation_id, remove_builds, rename_profile, store_imported_build, store_simulation_results, store_weight, update_from_export
 from .loadout_comparison_library import list_character_profiles, save_character_profiles
 from .loadout_recommendation import write_item_score_profiles
+
+
+def _simulation_selection(selected_ids, unavailable, character, specialization_id):
+    """Separate live loadouts from saved imports without requiring a profile."""
+    selected = tuple(value for value in selected_ids if value > 0 and value not in unavailable)
+    imported_builds = () if character is None else tuple(
+        build for build in dict(character.specs).get(specialization_id, ())
+        if build.build_id in selected_ids and build.build_id < 0
+    )
+    return selected, imported_builds
 
 
 class _ToolTip:
@@ -42,7 +52,7 @@ class TkLoadoutWorkspace:
         import tkinter as tk
         from tkinter import filedialog, messagebox, ttk
         self._root, self._runner, self._filedialog, self._messagebox = root, recommendation_runner, filedialog, messagebox
-        self._window = tk.Tk(); self._window.title("DpsLab — Comparación de loadouts"); self._window.geometry("780x590")
+        self._window = tk.Tk(); self._window.title("DpsLab — Comparación de loadouts"); self._window.geometry("780x650")
         self._window.columnconfigure(0, weight=1)
         saved = _remembered_paths(_settings_path()); bundled = _bundled_simc()
         self._uses_bundled = bool(bundled); self._simc = tk.StringVar(value=bundled or (saved[0] if saved and saved[0] != "bundled" else "")); self._addon = tk.StringVar(value=saved[1] if saved else _default_addon_path()); self._remember = tk.BooleanVar(value=saved is not None)
@@ -67,8 +77,12 @@ class TkLoadoutWorkspace:
         self._progress = ttk.Progressbar(frame, mode="indeterminate"); self._progress.grid(column=1, row=11, columnspan=2, sticky="ew")
         self._detect_button = ttk.Button(frame, text="Detectar exportación", command=self._detect); self._detect_button.grid(column=0, row=12, pady=(8, 4), sticky="w"); _ToolTip(self._detect_button, "Lee la última exportación confirmada por el addon desde SavedVariables locales.")
         self._run_button = ttk.Button(frame, text="Ejecutar comparación real", command=self._run); self._run_button.grid(column=1, row=12, pady=(8, 4), sticky="w"); _ToolTip(self._run_button, "Ejecuta SimulationCraft para las builds seleccionadas y guarda los pesos obtenidos.")
-        self._clear_button = ttk.Button(frame, text="Limpiar interfaz", command=self._clear_workspace); self._clear_button.grid(column=2, row=13, padx=(8, 0), pady=(2, 4), sticky="e"); _ToolTip(self._clear_button, "Limpia la comparación actual sin borrar perfiles, casos ni rutas recordadas.")
-        ttk.Label(frame, textvariable=self._status, wraplength=720).grid(column=0, row=14, columnspan=3, sticky="w")
+        self._export_scores_button = ttk.Button(frame, text="Exportar pesos elegidos", command=self._export_chosen_scores); self._export_scores_button.grid(column=2, row=12, padx=(8, 0), pady=(8, 4), sticky="e"); _ToolTip(self._export_scores_button, "Envía al addon solo los pesos de las builds simuladas que selecciones. No elige automáticamente la build ganadora.")
+        self._paste_export_button = ttk.Button(frame, text="Pegar exportación", command=self._paste_export); self._paste_export_button.grid(column=0, row=13, pady=4, sticky="w"); _ToolTip(self._paste_export_button, "Lee del portapapeles la exportación manual mostrada por /dpslab export analysis.")
+        self._copy_weights_button = ttk.Button(frame, text="Copiar pesos", command=self._copy_weights); self._copy_weights_button.grid(column=1, row=13, pady=4, sticky="w"); _ToolTip(self._copy_weights_button, "Copia los pesos simulados de una única build seleccionada para importarlos manualmente en el addon.")
+        self._paste_weights_button = ttk.Button(frame, text="Pegar pesos", command=self._paste_weights); self._paste_weights_button.grid(column=2, row=13, pady=4, sticky="e"); _ToolTip(self._paste_weights_button, "Guarda en la build seleccionada una cadena de pesos editada en el addon.")
+        self._clear_button = ttk.Button(frame, text="Limpiar interfaz", command=self._clear_workspace); self._clear_button.grid(column=2, row=14, padx=(8, 0), pady=(2, 4), sticky="e"); _ToolTip(self._clear_button, "Limpia la comparación actual sin borrar perfiles, casos ni rutas recordadas.")
+        ttk.Label(frame, textvariable=self._status, wraplength=720).grid(column=0, row=15, columnspan=3, sticky="w")
         self._refresh_profiles()
         if self._addon.get(): self._detect()
 
@@ -216,20 +230,28 @@ class TkLoadoutWorkspace:
             self._status.set("No se pudieron eliminar las builds seleccionadas."); return
         self._status.set(f"{len(selected)} build(s) eliminada(s) del perfil. Las demás specs y el personaje se conservaron.")
 
+    def _show_export(self, text):
+        snapshot = parse_live_analysis_export(text); capability = capability_for(snapshot.class_id, snapshot.specialization_id, snapshot.role)
+        if capability is None or not snapshot.balance_talent_loadouts: raise ValueError
+        self._export = text; self._saved_id_map = {}; self._saved_profile_mode = False; self._ids = tuple(item.config_id for item in snapshot.balance_talent_loadouts); self._title.set(f"DpsLab — {capability.label}")
+        if snapshot.character_name and snapshot.realm_name:
+            self._character_name.set(snapshot.character_name); self._realm.set(snapshot.realm_name)
+            if self._character is None: self._profile_name.set(f"{snapshot.character_name} — {snapshot.realm_name}")
+        self._show_builds(snapshot)
+        self._details.configure(state="normal"); self._details.delete("1.0", "end"); self._details.insert("1.0", f"Equipo exportado: {len(snapshot.equipped)} pieza(s).\nGuarda el perfil para conservar este equipo junto a sus specs y builds."); self._details.configure(state="disabled")
+        if self._build_ids: self._builds.select_set(0, min(3, len(self._build_ids) - 1))
+
+    def _paste_export(self):
+        try: self._show_export(self._window.clipboard_get())
+        except Exception:
+            self._status.set("El portapapeles no contiene una exportación DpsLab válida."); return
+        self._status.set("Exportación manual pegada. Selecciona de una a cuatro builds para simular.")
+
     def _detect(self):
         try:
-            addon = Path(self._addon.get()).resolve(); export = acquire_recent_live_analysis_export(addon.parents[2]); capability = capability_for(export.snapshot.class_id, export.snapshot.specialization_id, export.snapshot.role)
-            if capability is None or not export.snapshot.balance_talent_loadouts: raise ValueError
+            addon = Path(self._addon.get()).resolve(); export = acquire_recent_live_analysis_export(addon.parents[2]); self._show_export(export.text)
         except (AddonObservationAcquisitionError, IndexError, OSError, ValueError):
             self._export = ""; self._ids = (); self._names = {}; self._builds.delete(0, "end"); self._status.set("No hay una exportación compatible. En WoW usa /dpslab export app y confirma /reload."); return
-        self._export = export.text; self._saved_id_map = {}; self._saved_profile_mode = False; self._ids = tuple(item.config_id for item in export.snapshot.balance_talent_loadouts); self._title.set(f"DpsLab — {capability.label}")
-        if export.snapshot.character_name and export.snapshot.realm_name:
-            self._character_name.set(export.snapshot.character_name); self._realm.set(export.snapshot.realm_name)
-            if self._character is None:
-                self._profile_name.set(f"{export.snapshot.character_name} — {export.snapshot.realm_name}")
-        self._show_builds(export.snapshot)
-        self._details.configure(state="normal"); self._details.delete("1.0", "end"); self._details.insert("1.0", f"Equipo exportado: {len(export.snapshot.equipped)} pieza(s).\nGuarda el perfil para conservar este equipo junto a sus specs y builds."); self._details.configure(state="disabled")
-        if self._build_ids: self._builds.select_set(0, min(3, len(self._build_ids) - 1))
         self._status.set("Exportación reciente detectada. Selecciona una a cuatro builds, o guarda una cadena importada para simularla sola.")
 
     def _imports_value(self):
@@ -257,8 +279,9 @@ class TkLoadoutWorkspace:
                 self._persist_profile(); self._show_builds(snapshot)
                 selected_ids += tuple(build.build_id for build in dict(self._character.specs)[snapshot.specialization_id] if build.build_id < 0 and (build.name, build.talent_string) in typed and build.build_id not in selected_ids)
             blocked = tuple(value for value in selected_ids if value in self._unavailable)
-            selected = tuple(value for value in selected_ids if value > 0 and value not in self._unavailable)
-            imported_builds = tuple(build for build in dict(self._character.specs).get(snapshot.specialization_id, ()) if build.build_id in selected_ids and build.build_id < 0)
+            selected, imported_builds = _simulation_selection(
+                selected_ids, self._unavailable, self._character, snapshot.specialization_id
+            )
             imported = tuple((build.name, build.talent_string) for build in imported_builds)
             if blocked and not selected and not imported:
                 self._status.set("No se simulará " + ", ".join(self._names[value] for value in blocked) + ": " + ("talentos sin asignar." if all(self._unavailable[value] == "talents_unassigned" for value in blocked) else "estado de talentos no disponible.")); return
@@ -267,7 +290,7 @@ class TkLoadoutWorkspace:
         self._skipped = "" if not blocked else "No se simuló " + ", ".join(self._names[value] for value in blocked) + ": " + ("talentos sin asignar. " if all(self._unavailable[value] == "talents_unassigned" for value in blocked) else "estado de talentos no disponible. ")
         self._import_targets = tuple(build.build_id for build in imported_builds); self._names.update({build.build_id: build.name for build in imported_builds})
         simc_path, addon_path = Path(self._simc.get()), Path(self._addon.get())
-        self._running = True; self._run_button.state(["disabled"]); self._progress.start(12); self._status.set("Ejecutando simulaciones de la misma métrica (DPS)…")
+        self._running = True; self._run_button.state(["disabled"]); self._progress.start(12); self._status.set("Simulando con error objetivo de 0.1%; puede tardar varios minutos por build…")
         outcomes: Queue = Queue(maxsize=1)
         def execute():
             try: outcomes.put((self._runner(self._export, simc_path, addon_path, root=self._root, selected_config_ids=selected, imported_loadouts=imported), None))
@@ -281,16 +304,16 @@ class TkLoadoutWorkspace:
         if error is not None: self._status.set(f"No se generó comparación: {error}"); return
         if self._import_targets:
             generated = tuple(identifier for identifier, _ in result.loadouts if identifier < 0); mapping = dict(zip(generated, self._import_targets))
-            result = replace(result, loadouts=tuple((mapping.get(identifier, identifier), value) for identifier, value in result.loadouts), preferred_loadout=mapping.get(result.preferred_loadout, result.preferred_loadout), score_weights=tuple(replace(weight, build_id=mapping.get(weight.build_id, weight.build_id)) for weight in result.score_weights))
+            result = replace(result, loadouts=tuple((mapping.get(identifier, identifier), value) for identifier, value in result.loadouts), preferred_loadout=mapping.get(result.preferred_loadout, result.preferred_loadout), score_weights=tuple(replace(weight, build_id=mapping.get(weight.build_id, weight.build_id)) for weight in result.score_weights), relative_errors=tuple((mapping.get(identifier, identifier), value) for identifier, value in result.relative_errors), run_ids=tuple((mapping.get(identifier, identifier), value) for identifier, value in result.run_ids))
         if self._saved_id_map:
             self._names.update({original: self._names.get(generated, f"Build {original}") for generated, original in self._saved_id_map.items()})
-            result = replace(result, loadouts=tuple((self._saved_id_map.get(identifier, identifier), value) for identifier, value in result.loadouts), preferred_loadout=self._saved_id_map.get(result.preferred_loadout, result.preferred_loadout), score_weights=tuple(replace(weight, build_id=self._saved_id_map.get(weight.build_id, weight.build_id)) for weight in result.score_weights))
+            result = replace(result, loadouts=tuple((self._saved_id_map.get(identifier, identifier), value) for identifier, value in result.loadouts), preferred_loadout=self._saved_id_map.get(result.preferred_loadout, result.preferred_loadout), score_weights=tuple(replace(weight, build_id=self._saved_id_map.get(weight.build_id, weight.build_id)) for weight in result.score_weights), relative_errors=tuple((self._saved_id_map.get(identifier, identifier), value) for identifier, value in result.relative_errors), run_ids=tuple((self._saved_id_map.get(identifier, identifier), value) for identifier, value in result.run_ids))
         self._comparison = result; self._render(result); self._save_character_scores(result)
         try:
             if self._remember.get(): _save_paths(_settings_path(), "bundled" if self._uses_bundled else self._simc.get(), self._addon.get())
             else: _clear_paths(_settings_path())
         except OSError: pass
-        self._status.set(f"{self._skipped}{result.message} Ejecuta /reload y luego /dpslab result en WoW.")
+        self._status.set(f"{self._skipped}{result.message} Los resultados se guardaron localmente; selecciona una build simulada y usa ‘Exportar pesos elegidos’ para actualizar sus scores en WoW.")
 
     def _save_character_scores(self, result):
         try:
@@ -300,15 +323,62 @@ class TkLoadoutWorkspace:
             elif self._character is None:
                 raise ItemScoreProfileError("character_profile_unavailable")
             for weight in result.score_weights: self._character = store_weight(self._character, weight)
-            self._character = store_simulation_results(self._character, result.specialization_id, result.loadouts, result.score_weights)
+            self._character = store_simulation_results(self._character, result.specialization_id, result.loadouts, result.score_weights, result.relative_errors, result.run_ids)
             self._persist_profile()
-            addon_weights = tuple(value for value in result.score_weights if value.build_id is not None and value.build_id > 0)
-            if addon_weights: write_item_score_profiles(Path(self._addon.get()), self._character, tuple((result.specialization_id, value.build_id) for value in addon_weights))
         except (ItemScoreProfileError, OSError, ValueError):
-            self._status.set("La comparación se mostró, pero no se pudo guardar el perfil local o transferir sus scores.")
+            self._status.set("La comparación se mostró, pero no se pudo guardar el perfil local.")
+
+    def _export_chosen_scores(self):
+        if self._comparison is None or self._character is None:
+            self._status.set("Ejecuta una simulación y guarda el perfil antes de exportar pesos."); return
+        selected = tuple(self._build_ids[index] for index in self._builds.curselection())
+        available = {weight.build_id for weight in self._comparison.score_weights if weight.build_id is not None and weight.build_id > 0}
+        chosen = tuple((self._comparison.specialization_id, build_id) for build_id in selected if build_id in available)
+        if not chosen:
+            self._status.set("Selecciona una build real que haya sido simulada; las cadenas externas no se pueden atribuir a un loadout de WoW."); return
+        try:
+            write_item_score_profiles(Path(self._addon.get()), self._character, chosen)
+        except (OSError, ValueError):
+            self._status.set("No se pudieron exportar los pesos al addon seleccionado."); return
+        names = ", ".join(self._names.get(build_id, f"Loadout {build_id}") for _, build_id in chosen)
+        self._status.set(f"Pesos exportados para {names}. En WoW usa /reload y revisa el tooltip del ítem.")
+
+    def _one_selected_real_build(self):
+        selected = tuple(self._build_ids[index] for index in self._builds.curselection())
+        return selected[0] if len(selected) == 1 and selected[0] > 0 else None
+
+    def _copy_weights(self):
+        build_id = self._one_selected_real_build()
+        if self._comparison is None or build_id is None:
+            self._status.set("Selecciona una sola build real ya simulada para copiar sus pesos."); return
+        weight = next((value for value in self._comparison.score_weights if value.build_id == build_id), None)
+        if weight is None:
+            self._status.set("La build seleccionada no tiene pesos simulados disponibles."); return
+        value = encode_weight_transfer(weight, self._names.get(build_id, f"Loadout {build_id}"))
+        self._window.clipboard_clear(); self._window.clipboard_append(value); self._window.update()
+        self._status.set("Pesos copiados. En WoW abre /dpslab scores y usa ‘Importar pegado’.")
+
+    def _paste_weights(self):
+        build_id = self._one_selected_real_build()
+        if not self._export or build_id is None:
+            self._status.set("Selecciona una sola build real para recibir los pesos pegados."); return
+        try:
+            snapshot = parse_live_analysis_export(self._export)
+            name, weight = decode_weight_transfer(self._window.clipboard_get(), class_id=snapshot.class_id, build_id=build_id)
+            if weight.specialization_id != snapshot.specialization_id: raise LoadoutRecommendationError("weight_transfer_invalid")
+            self._prepare_profile(snapshot); self._character = store_weight(self._character, weight); self._persist_profile()
+        except Exception:
+            self._status.set("El portapapeles no contiene pesos válidos para esta especialización."); return
+        self._status.set(f"Pesos manuales '{name}' guardados en {self._names.get(build_id, build_id)}.")
 
     def _render(self, result: LoadoutComparison):
-        self._details.configure(state="normal"); self._details.delete("1.0", "end"); self._details.insert("1.0", "\n".join(f"{self._names.get(identifier, f'Loadout {identifier}')}: {score:.0f} {result.metric}" for identifier, score in result.loadouts)); self._details.configure(state="disabled")
+        errors = dict(result.relative_errors)
+        lines = []
+        for identifier, score in result.loadouts:
+            error = errors.get(identifier)
+            precision = "" if error is None else f" · error {error:.3g}%"
+            lines.append(f"{self._names.get(identifier, f'Loadout {identifier}')}: {score:.0f} {result.metric}{precision}")
+        self._details.configure(state="normal"); self._details.delete("1.0", "end"); self._details.insert("1.0", "\n".join(lines)); self._details.configure(state="disabled")
 
     def _save_case(self):
         if self._comparison is None: self._status.set("Ejecuta una comparación antes de guardar el caso."); return

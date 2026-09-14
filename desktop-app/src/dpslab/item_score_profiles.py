@@ -20,14 +20,14 @@ class ItemScoreProfileError(ValueError):
     pass
 
 
-_STATS = {"Intellect", "Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}
+_STATS = {"Strength", "Intellect", "Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}
 _TALENT = re.compile(r"[A-Za-z0-9+/=]{1,2048}\Z")
 _PROFILE_IMPORT_OFFSET = 2_000_000_000
 
 
 @dataclass(frozen=True, repr=False)
 class ScoreWeights:
-    source: str  # personalized or generic; both originate in a completed SimC run.
+    source: str  # personalized/generic originate in SimC; manual is user-edited.
     class_id: int
     specialization_id: int
     build_id: int | None
@@ -44,6 +44,8 @@ class SimulationRecord:
     value: float
     simc_version: str | None
     scenario: str
+    relative_error_percent: float | None = None
+    run_id: str | None = None
 
 
 @dataclass(frozen=True, repr=False)
@@ -82,7 +84,7 @@ def _valid_text(value: object, maximum: int = 80) -> bool:
 
 def _valid_weights(value: ScoreWeights) -> bool:
     return (
-        value.source in {"personalized", "generic"}
+        value.source in {"personalized", "generic", "manual"}
         and isinstance(value.class_id, int) and not isinstance(value.class_id, bool) and value.class_id > 0
         and isinstance(value.specialization_id, int) and not isinstance(value.specialization_id, bool) and value.specialization_id > 0
         and (value.build_id is None or isinstance(value.build_id, int) and not isinstance(value.build_id, bool) and value.build_id != 0)
@@ -115,7 +117,7 @@ def effective_weights(character: CharacterScoreProfile, specialization_id: int, 
         for build in builds:
             if build.build_id == build_id:
                 for weight in build.weights:
-                    if weight.source == "personalized" and _valid_weights(weight):
+                    if weight.source in {"personalized", "manual"} and _valid_weights(weight):
                         return weight
         for build in builds:
             for weight in build.weights:
@@ -158,14 +160,18 @@ def _weight(value: ScoreWeights) -> dict[str, object]:
 
 
 def _simulation(value: SimulationRecord) -> dict[str, object]:
-    return {"build_id": value.build_id, "metric": value.metric, "value": value.value, "simc_version": value.simc_version, "scenario": value.scenario}
+    return {"build_id": value.build_id, "metric": value.metric, "value": value.value, "simc_version": value.simc_version, "scenario": value.scenario,
+            "relative_error_percent": value.relative_error_percent, "run_id": value.run_id}
 
 
 def _read_simulation(value: object) -> SimulationRecord:
-    if not isinstance(value, dict) or set(value) != {"build_id", "metric", "value", "simc_version", "scenario"}:
+    legacy = {"build_id", "metric", "value", "simc_version", "scenario"}
+    current = legacy | {"relative_error_percent", "run_id"}
+    if not isinstance(value, dict) or frozenset(value) not in {frozenset(legacy), frozenset(current)}:
         raise ValueError
-    result = SimulationRecord(value["build_id"], value["metric"], float(value["value"]), value["simc_version"], value["scenario"])
-    if not isinstance(result.build_id, int) or isinstance(result.build_id, bool) or result.build_id == 0 or result.metric != "DPS" or not math.isfinite(result.value) or result.value <= 0 or result.simc_version is not None and not _valid_text(result.simc_version, 160) or not _valid_text(result.scenario, 160):
+    error = value.get("relative_error_percent")
+    result = SimulationRecord(value["build_id"], value["metric"], float(value["value"]), value["simc_version"], value["scenario"], None if error is None else float(error), value.get("run_id"))
+    if not isinstance(result.build_id, int) or isinstance(result.build_id, bool) or result.build_id == 0 or result.metric != "DPS" or not math.isfinite(result.value) or result.value <= 0 or result.simc_version is not None and not _valid_text(result.simc_version, 160) or not _valid_text(result.scenario, 160) or result.relative_error_percent is not None and (not math.isfinite(result.relative_error_percent) or result.relative_error_percent < 0) or result.run_id is not None and not _valid_text(result.run_id, 160):
         raise ValueError
     return result
 
@@ -189,7 +195,7 @@ def _document(profiles: tuple[CharacterScoreProfile, ...]) -> dict[str, object]:
             ]})
         characters.append({"character_id": character.character_id, "name": character.name, "realm": character.realm, "profile_name": character.profile_name,
                            "class_id": character.class_id, "level": character.level, "race_id": character.race_id, "equipped": [_item(item) for item in character.equipped], "specs": specs})
-    return {"schema_version": "0.4", "characters": characters}
+    return {"schema_version": "0.5", "characters": characters}
 
 
 def load_profiles(root: Path) -> tuple[CharacterScoreProfile, ...]:
@@ -197,12 +203,12 @@ def load_profiles(root: Path) -> tuple[CharacterScoreProfile, ...]:
     if not path.exists(): return ()
     try:
         document = json.loads(path.read_text(encoding="utf-8"))
-        if not isinstance(document, dict) or set(document) != {"schema_version", "characters"} or document["schema_version"] not in {"0.1", "0.2", "0.3", "0.4"} or not isinstance(document["characters"], list): raise ValueError
+        if not isinstance(document, dict) or set(document) != {"schema_version", "characters"} or document["schema_version"] not in {"0.1", "0.2", "0.3", "0.4", "0.5"} or not isinstance(document["characters"], list): raise ValueError
         output = []
         for value in document["characters"]:
             character_fields = {"character_id", "name", "realm", "class_id", "equipped", "specs"}
-            if document["schema_version"] in {"0.3", "0.4"}: character_fields.add("profile_name")
-            if document["schema_version"] == "0.4": character_fields |= {"level", "race_id"}
+            if document["schema_version"] in {"0.3", "0.4", "0.5"}: character_fields.add("profile_name")
+            if document["schema_version"] in {"0.4", "0.5"}: character_fields |= {"level", "race_id"}
             if not isinstance(value, dict) or set(value) != character_fields or not isinstance(value["specs"], list) or not isinstance(value["equipped"], list): raise ValueError
             specs = []
             for spec in value["specs"]:
@@ -287,18 +293,23 @@ def store_weight(character: CharacterScoreProfile, weight: ScoreWeights) -> Char
     raise ItemScoreProfileError("character_profile_build_unavailable")
 
 
-def store_simulation_results(character: CharacterScoreProfile, specialization_id: int, results: tuple[tuple[int, float], ...], weights: tuple[ScoreWeights, ...]) -> CharacterScoreProfile:
+def store_simulation_results(character: CharacterScoreProfile, specialization_id: int, results: tuple[tuple[int, float], ...], weights: tuple[ScoreWeights, ...], relative_errors: tuple[tuple[int, float | None], ...] = (), run_ids: tuple[tuple[int, str], ...] = ()) -> CharacterScoreProfile:
     """Keep result values with their spec/build; no result is inferred from a score."""
     if not results or any(not isinstance(build_id, int) or isinstance(build_id, bool) or build_id == 0 or not isinstance(value, float) or not math.isfinite(value) or value <= 0 for build_id, value in results):
         raise ItemScoreProfileError("character_profile_simulation_invalid")
     versions = {value.build_id: value for value in weights if _valid_weights(value)}
+    errors = dict(relative_errors); runs = dict(run_ids)
+    if any(identifier not in {build_id for build_id, _ in results} or error is not None and (not isinstance(error, float) or not math.isfinite(error) or error < 0) for identifier, error in relative_errors):
+        raise ItemScoreProfileError("character_profile_simulation_invalid")
+    if any(identifier not in {build_id for build_id, _ in results} or not _valid_text(run_id, 160) for identifier, run_id in run_ids):
+        raise ItemScoreProfileError("character_profile_simulation_invalid")
     specs = dict(character.specs); builds = list(specs.get(specialization_id, ()))
     by_id = {build.build_id: index for index, build in enumerate(builds)}
     if any(build_id not in by_id for build_id, _ in results):
         raise ItemScoreProfileError("character_profile_build_unavailable")
     for build_id, value in results:
         weight = versions.get(build_id)
-        record = SimulationRecord(build_id, "DPS", value, weight.simc_version if weight else None, weight.scenario if weight else "Patchwerk")
+        record = SimulationRecord(build_id, "DPS", value, weight.simc_version if weight else None, weight.scenario if weight else "Patchwerk", errors.get(build_id), runs.get(build_id))
         build = builds[by_id[build_id]]
         builds[by_id[build_id]] = replace(build, simulations=(record,))
     specs[specialization_id] = tuple(builds)
@@ -313,7 +324,7 @@ def profile_details(character: CharacterScoreProfile) -> tuple[str, ...]:
     for specialization_id, builds in character.specs:
         output.append(f"Spec {specialization_id}")
         for build in builds:
-            simulations = ", ".join(f"{entry.value:.0f} {entry.metric}" for entry in build.simulations) or "sin simulación guardada"
+            simulations = ", ".join(f"{entry.value:.0f} {entry.metric}" + (f" · error {entry.relative_error_percent:.3g}%" if entry.relative_error_percent is not None else "") for entry in build.simulations) or "sin simulación guardada"
             sources = ", ".join(weight.source for weight in build.weights) or "sin pesos"
             output.append(f"  {build.name}: {simulations}; pesos: {sources}")
     return tuple(output) or ("Sin specs o builds guardadas.",)

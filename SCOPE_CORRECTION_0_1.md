@@ -76,7 +76,10 @@ autorización nueva y explícita de Daniel:
 - Cualquier nuevo esquema de "conocimiento gobernado", catálogo, propuesta,
   revisión o candidato que no sea parte directa del objetivo de la sección 1.
 - Cualquier addon/funcionalidad adicional marcada como "synthetic".
-- Cualquier expansión a otra clase, especialización o rol fuera de Balance de Druida.
+- Cualquier expansión a una clase o especialización que no exista ya en el
+  registro soportado de DpsLab. Daniel autorizó el 2026-09-13 ampliar, después
+  de validar el lote inicial de Balance, la base de pesos y builds sugeridas a
+  todas las clases y especializaciones ya presentes en ese registro.
 
 Nada de esto se borra — se archiva. Puede retomarse más adelante si alguna
 vez el proyecto se distribuye a terceros, que hoy no es el caso.

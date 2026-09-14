@@ -12,7 +12,7 @@ from dpslab.item_score_profiles import (
     load_profiles, profile_details, profile_export, profile_simulation_id, save_profiles, score_replacement, store_simulation_results, store_weight, update_from_export,
     weights_from_simc_run,
 )
-from dpslab.loadout_recommendation import write_item_score_profiles
+from dpslab.loadout_recommendation import LoadoutRecommendationError, write_item_score_profiles
 
 
 def snapshot() -> LiveAnalysisSnapshot:
@@ -25,6 +25,13 @@ def weight(source="personalized", build=1) -> ScoreWeights:
 
 
 class ItemScoreProfileTests(unittest.TestCase):
+    def test_workspace_exports_scores_only_through_the_explicit_choice(self):
+        source = (Path(__file__).resolve().parents[1] / "src" / "dpslab" / "loadout_ui.py").read_text(encoding="utf-8")
+        automatic = source.split("def _save_character_scores", 1)[1].split("def _export_chosen_scores", 1)[0]
+        self.assertNotIn("write_item_score_profiles", automatic)
+        self.assertIn("def _export_chosen_scores", source)
+        self.assertIn("loadout_score_selection_invalid", (Path(__file__).resolve().parents[1] / "src" / "dpslab" / "loadout_recommendation.py").read_text(encoding="utf-8"))
+
     def test_round_trip_keeps_two_same_named_characters_separate(self):
         first = update_from_export(create_character("Luna", "A", 11), snapshot())
         second = update_from_export(create_character("Luna", "B", 11), snapshot())
@@ -93,13 +100,24 @@ class ItemScoreProfileTests(unittest.TestCase):
             for name in ("DpsLab.toc", "DpsLab.lua"): (addon / name).write_text("", encoding="utf-8")
             write_item_score_profiles(addon, character, ((102, 1),))
             output = (addon / "DpsLabRealRecommendation.lua").read_text(encoding="utf-8")
-            self.assertIn('schema_version = "0.4"', output)
+            self.assertIn('schema_version = "0.5"', output)
             self.assertIn('source = "personalized"', output)
             self.assertIn("Eclipse", output)
+            self.assertIn('character = { name = "Luna", realm = "A", class_id = 11 }', output)
+
+    def test_score_export_requires_a_real_chosen_build(self):
+        character = store_weight(update_from_export(create_character("Luna", "A", 11), snapshot()), weight())
+        with tempfile.TemporaryDirectory() as temporary:
+            addon = Path(temporary) / "DpsLab"; addon.mkdir()
+            for name in ("DpsLab.toc", "DpsLab.lua"): (addon / name).write_text("", encoding="utf-8")
+            with self.assertRaisesRegex(LoadoutRecommendationError, "selection_invalid"):
+                write_item_score_profiles(addon, character, ())
 
     def test_saved_profile_browses_build_simulations_and_weight_source_after_reload(self):
         character = store_weight(update_from_export(create_character("Luna", "A", 11), snapshot()), weight())
-        character = store_simulation_results(character, 102, ((1, 123.0),), (weight(),))
+        character = store_simulation_results(character, 102, ((1, 123.0),), (weight(),), ((1, 0.08),), ((1, "run-123"),))
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve(); save_profiles(root, (character,)); restored = load_profiles(root)[0]
-            self.assertIn("  Eclipse: 123 DPS; pesos: personalized", profile_details(restored))
+            self.assertIn("  Eclipse: 123 DPS · error 0.08%; pesos: personalized", profile_details(restored))
+            record = dict(restored.specs)[102][0].simulations[0]
+            self.assertEqual((0.08, "run-123"), (record.relative_error_percent, record.run_id))

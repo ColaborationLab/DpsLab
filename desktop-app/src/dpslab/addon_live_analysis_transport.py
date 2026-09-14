@@ -141,7 +141,7 @@ def _item(value: Any, source: str, schema_version: str) -> LiveAnalysisItem:
     stats = ()
     if schema_version in {"0.6", "0.7", "0.8", "0.9"}:
         raw_stats = item["stats"]
-        if not isinstance(raw_stats, dict) or set(raw_stats) - {"Intellect", "Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}:
+        if not isinstance(raw_stats, dict) or set(raw_stats) - {"Strength", "Intellect", "Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}:
             _fail("live_analysis_item_invalid")
         stats = tuple(sorted((name, _integer(amount, "item_stat", 0, 999_999)) for name, amount in raw_stats.items()))
     return LiveAnalysisItem(

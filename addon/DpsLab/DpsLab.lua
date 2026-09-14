@@ -78,7 +78,7 @@ end
 
 local function realRecommendation()
   local value = DpsLabRealRecommendation
-  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2" and value.schema_version ~= "0.3" and value.schema_version ~= "0.4")
+  if type(value) ~= "table" or (value.schema_version ~= "0.1" and value.schema_version ~= "0.2" and value.schema_version ~= "0.3" and value.schema_version ~= "0.4" and value.schema_version ~= "0.5")
     or value.state ~= "ready" or type(value.message) ~= "string"
     or #value.message < 1 or #value.message > 240 then return nil end
   if value.schema_version == "0.3" then
@@ -168,6 +168,13 @@ local function showManualAnalysisExport(payload)
   local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
   box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(660, 140); box:SetPoint("CENTER")
   box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
+  if type(CopyToClipboard) == "function" then CopyToClipboard(payload) end
+end
+
+function DpsLab.ShowManualAnalysisExport()
+  local payload, status = handleAnalysisExport(nil)
+  if payload ~= nil then showManualAnalysisExport(payload) end
+  print("[DpsLab] " .. EXPORT_STATUS[status])
 end
 
 function DpsLab.GetAdvisorGuidance(role)
@@ -256,7 +263,7 @@ SlashCmdList["DPSLAB"] = function(message)
     return
   end
   if command == "scores" then
-    if type(DpsLabItemScores) == "table" and type(DpsLabItemScores.Show) == "function" then DpsLabItemScores.Show() else print("[DpsLab] Los scores todavía no están disponibles.") end
+    if type(DpsLabItemScores) == "table" and type(DpsLabItemScores.ShowWeights) == "function" then DpsLabItemScores.ShowWeights() else print("[DpsLab] Los scores todavía no están disponibles.") end
     return
   end
   if command == "config" then
@@ -271,9 +278,11 @@ SlashCmdList["DPSLAB"] = function(message)
       return
     end
     if role == "analysis" then
-      local payload, status = handleAnalysisExport(argument == "" and nil or tonumber(argument))
-      if payload ~= nil then showManualAnalysisExport(payload) end
-      print("[DpsLab] " .. EXPORT_STATUS[status])
+      if argument == "" then DpsLab.ShowManualAnalysisExport() else
+        local payload, status = handleAnalysisExport(tonumber(argument))
+        if payload ~= nil then showManualAnalysisExport(payload) end
+        print("[DpsLab] " .. EXPORT_STATUS[status])
+      end
       return
     end
     local status = role == "identity" and handleIdentityExport()

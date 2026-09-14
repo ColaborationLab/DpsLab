@@ -43,7 +43,7 @@ local function item(a, link, location, includeStats)
     if type(getStats) ~= "function" then return nil, "analysis_api_unavailable" end
     local statsOk, rawStats = pcall(getStats, link)
     if not statsOk or type(rawStats) ~= "table" then return nil, "analysis_item_info_unavailable" end
-    local names = { ITEM_MOD_INTELLECT_SHORT="Intellect", ITEM_MOD_AGILITY_SHORT="Agility", ITEM_MOD_CRIT_RATING_SHORT="CritRating", ITEM_MOD_HASTE_RATING_SHORT="HasteRating", ITEM_MOD_MASTERY_RATING_SHORT="MasteryRating", ITEM_MOD_VERSATILITY="VersatilityRating" }
+    local names = { ITEM_MOD_STRENGTH_SHORT="Strength", ITEM_MOD_INTELLECT_SHORT="Intellect", ITEM_MOD_AGILITY_SHORT="Agility", ITEM_MOD_CRIT_RATING_SHORT="CritRating", ITEM_MOD_HASTE_RATING_SHORT="HasteRating", ITEM_MOD_MASTERY_RATING_SHORT="MasteryRating", ITEM_MOD_VERSATILITY="VersatilityRating" }
     local stats = {}
     for source, target in pairs(names) do
       local value = rawStats[source]

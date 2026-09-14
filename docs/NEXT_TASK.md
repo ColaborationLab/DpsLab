@@ -10027,19 +10027,30 @@ esta preparación en una baseline limpia y confirmar que no hay otro escritor.
 ```
 <!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
-## Validación de preparación vigente
+## Tarea activa — Pesos elegidos, perfiles y scores de ítem
 
-Solo conciliación documental; no activa implementación. Main local se preserva.
+Implementación autorizada por Daniel dentro del objetivo vigente de Scope. La
+prueba de valor es afirmativa: este lote permite conservar pesos, elegir cuál
+loadout exportar y mostrar sus scores por spec/build. Daniel autorizó además
+el lote concreto de SimC de Balance descrito en el plan.
 
 <!-- DPSLAB_TASK_CONTRACT_BEGIN -->
 ```json
-{"contract_version":"0.1","task_id":"default_weights_preparation_0_1","title":"Reconcile defaults preparation","baseline_commit":"dd61f94ba697b46b4f977f87ff9d7c03917377c6","authorization":{"status":"authorized_for_implementation","authorization_id":"documentation-reconciliation-20260912-daniel","authorized_by":"Daniel","authorized_at":"2026-09-12T00:00:00-05:00"},"scope":{"allowed_paths":["SCOPE_CORRECTION_0_1.md","docs/NEXT_TASK.md","docs/DEFAULT_WEIGHTS_TERRA_PLAN.md","docs/ITEM_SCORE_CHARACTER_PROFILES_HANDOFF.md"],"generated_paths":[".dpslab/quality-gates/default_weights_preparation_0_1/implementation.json",".dpslab/quality-gates/default_weights_preparation_0_1/audit.json"],"forbidden_paths":["addon/**","desktop-app/**","tools/**",".github/**","results/**"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_item_score_profiles","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1345,"minimum_test_count":1345},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"13b3edea86fe94cc4b9e4e0b4cc7dc0068c6fb9c145afb2834d7ec2902ac60f3"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["Validate documentary preparation and protected hashes"],"express_exclusions":["Runtime changes and SimulationCraft"]}
+{"contract_version":"0.1","task_id":"default_weights_and_chosen_export_0_1","title":"Implement chosen score-weight export and default-weight plumbing","baseline_commit":"85bcc8f15c73111c1801e69b33e5ba78e9efdbac","authorization":{"status":"authorized_for_implementation","authorization_id":"scope-current-objective-20260913-daniel","authorized_by":"Daniel","authorized_at":"2026-09-13T00:00:00-05:00"},"scope":{"allowed_paths":[".gitignore","SCOPE_CORRECTION_0_1.md","addon/DpsLab/CharacterEquipmentObservation.lua","addon/DpsLab/DefaultItemScoreProfiles.lua","addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","addon/DpsLab/ItemScoreProfiles.lua","desktop-app/src/dpslab/addon_live_analysis_transport.py","desktop-app/src/dpslab/balance_stat_weights.py","desktop-app/src/dpslab/item_score_profiles.py","desktop-app/src/dpslab/loadout_profiles.py","desktop-app/src/dpslab/loadout_recommendation.py","desktop-app/src/dpslab/loadout_ui.py","desktop-app/tests/test_addon_live_analysis_transport.py","desktop-app/tests/test_balance_stat_weights.py","desktop-app/tests/test_item_score_profiles.py","desktop-app/tests/test_loadout_profiles.py","desktop-app/tests/test_loadout_recommendation.py","tools/tests/test_addon_item_score_profiles.py","docs/NEXT_TASK.md","docs/DEFAULT_WEIGHTS_TERRA_PLAN.md","desktop-app/tests/test_loadout_ui.py"],"generated_paths":[".dpslab/quality-gates/default_weights_and_chosen_export_0_1/implementation.json",".dpslab/quality-gates/default_weights_and_chosen_export_0_1/audit.json"],"forbidden_paths":[".github/**","addon/DpsLab/AdvisorSyntheticGuidance.lua","addon/DpsLab/SyntheticExchange.lua","addon/DpsLab/SyntheticGuidance.lua","addon/DpsLab/SyntheticObservation.lua","addon/DpsLab/TrainingDummySession.lua","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_item_score_profiles","tests.test_loadout_profiles","tests.test_loadout_recommendation","tests.test_balance_stat_weights","tests.test_addon_live_analysis_transport","tests.test_loadout_ui","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1345,"minimum_test_count":1345},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"874a64fcd98fb024a4c5235a61211952f71953032327027c1f7511af41fc5022"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["keep personalized weights preferred over compatible defaults","make addon transfer an explicit chosen-loadout action instead of an automatic winner export","generate and retain traceable scale-factor evidence for every compatible source in the existing registry","leave unsupported specializations explicitly unavailable","pass focal and complete application suites"],"express_exclusions":["invented generic weights","new class or specialization beyond the existing registry","installation modification","commit push release","paths outside the allowlist"]}
 ```
 <!-- DPSLAB_TASK_CONTRACT_END -->
 
-El bloque activo se conserva únicamente porque el quality gate histórico lo
-requiere; no añade autoridad ni sustituye la revisión directa de Daniel prevista
-por la corrección de alcance.
+Enmienda de alcance autorizada por la adopción explícita del procedimiento de
+precisión y transferencia manual (2026-09-13): se agregan
+`desktop-app/src/dpslab/loadout_profiles.py` y
+`desktop-app/tests/test_loadout_profiles.py` al allowlist de esta tarea. Son
+necesarios para conservar encantamientos, gemas y bonus IDs del equipo en el
+perfil que recibe SimulationCraft; no amplían clases, specs ni autoridad de
+ejecución.
+
+Este bloque delimita solo la implementación actual; no sustituye la revisión
+directa de Daniel. Solo autoriza la corrida de Balance identificada en el plan;
+cada corrida posterior requiere su propio perfil fuente y manifestación escrita.
 
 ## Cierre breve — Scores, perfiles y simulación local
 
@@ -10050,3 +10061,76 @@ tocaron `addon/DpsLab/`, `desktop-app/src/dpslab/`, pruebas, empaquetado y este
 registro. La prueba de valor fue aprobada visualmente por Daniel: perfiles con
 equipo guardado comparan builds reales y externas, y la limpieza de interfaz
 elimina datos no guardados tras confirmación.
+
+### 2026-09-13 — Scores comparativos y consulta de pesos
+
+Valor: el jugador puede consultar, ajustar y guardar pesos por build y usar
+esos scores al comparar equipo en los tooltips. Se corrigió el rechazo de
+tooltips sin GetItem, la repetición de líneas, icono de spec, texto beginner,
+la ventana `/dpslab scores` y la detección de pesos nuevos del mismo loadout.
+Archivos: ItemScoreProfiles.lua, DpsLab.lua, test_addon_item_score_profiles.py
+y DEFAULT_WEIGHTS_TERRA_PLAN.md. Se incorpora al gate test_loadout_ui.py,
+creado en la iteración anterior para el caso sin perfil guardado.
+Verificación: app 1351 ejecutadas, 1350 aprobadas y una omitida; herramientas
+160 aprobadas (incluyendo tres pruebas de ejecución Lua 5.1). Código de salida 0
+en ambas suites. Subtests sin conteo independiente. Pendiente confirmación visual
+en WoW; no se declara cerrado el objetivo. Análisis de precisión documentado;
+no se alteraron opciones de SimC ni se ejecutaron simulaciones en esta revisión.
+
+Despliegue final verificado: ItemScoreProfiles.lua tiene el mismo SHA-256
+`af01a53c7380232e5ae0f4e363950571a27c47a6999a901c1df0e197f5b3a5c4`
+en fuente, addon instalado y paquete reducido. Paquete generado:
+`build/item-score-package-tooltip-weights/DpsLab/`. Runtime de pruebas Lua:
+`build/lua-test-runtime/`; ambos ignorados por Git, igual que el resultado del
+gate en `.dpslab/quality-gates/default_weights_and_chosen_export_0_1/`.
+Gate final completado con salida 0; su etiqueta heredada de auditoría no
+sustituye la prueba visual de Daniel. Hashes protegidos conservados:
+AGENTS `59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f`;
+Scope `874a64fcd98fb024a4c5235a61211952f71953032327027c1f7511af41fc5022`.
+
+### 2026-09-13 — Usabilidad de perfiles y precisión de pesos
+
+Valor: el jugador elige perfiles de pesos desde listas desplegables, entiende
+qué ocurre al importar pesos nuevos y recibe una confirmación visible al
+guardar, activar o descartar. Puede seguir usando la detección automática o
+transferir explícitamente la exportación y los pesos por cadena entre WoW y la
+app. La simulación conserva su error relativo, run ID y el equipo con
+encantamientos, gemas y bonus IDs; los perfiles de SimC usan el rol correcto.
+Archivos: `ItemScoreProfiles.lua`, `DpsLab.lua`, `item_score_profiles.py`,
+`loadout_profiles.py`, `loadout_recommendation.py`, `loadout_ui.py` y sus
+pruebas. Verificación: 42 focales, 1354 completas (una omitida), 161 de
+herramientas, más las seis pruebas Lua 5.1, todas sin fallos; gate temporal
+limpio y sin SimC. Se generó el paquete local
+`build/item-score-package-usability-precision/DpsLab/` y se verificó el mismo
+SHA-256 de `ItemScoreProfiles.lua` en fuente, paquete y addon instalado.
+
+### 2026-09-13 — Integridad de Intelecto, trinkets y borrado local
+
+Valor: los pesos devueltos por SimulationCraft con la abreviatura `Int` se
+importan como `Intellect`; por tanto, los objetos de Intelecto vuelven a recibir
+score. Los trinkets con estadísticas directas usan esos pesos; los que solo
+tienen efectos no lineales se muestran como `N/D: efecto`, en vez de un cero
+falso. Desde `/dpslab scores`, el jugador puede eliminar una build guardada o
+un perfil de pesos guardado, sin afectar los loadouts de talentos de WoW.
+Verificación: 20 pruebas focales de la app, 1.355 completas (una omitida) y
+162 de herramientas, incluidas pruebas Lua 5.1, terminaron sin fallos. El
+paquete `build/item-score-package-intellect-trinket-fix/DpsLab/` contiene
+simc, el addon y la app; `ItemScoreProfiles.lua` coincide en fuente y addon
+instalado con SHA-256
+`fdd3e8646b263a9ae16b1d35db7b094712b6588fc90ba7c6c81a3dd2585bc115`.
+No se ejecutó SimulationCraft durante esta verificación.
+
+### 2026-09-13 — Cobertura completa del registro de especializaciones
+
+Valor: las 39 especializaciones registradas ahora se verifican en un solo
+recorrido: cada una genera un perfil de SimulationCraft con su clase, spec,
+rol y equipo correctos. Esto cubre la ruta que usa un personaje real desde su
+exportación hasta la simulación, pesos y scores. Verificación: 43 pruebas
+focales, 1.355 completas de la app (una omitida) y 162 de herramientas/Lua,
+sin fallos. No se ejecutó SimulationCraft.
+
+Los defaults trazables siguen disponibles para 31 specs. Paladin Holy, Priest
+Discipline/Holy, Shaman Restoration, Monk Mistweaver, Druid Restoration y
+Evoker Preservation/Augmentation no reciben un default inventado: requieren
+una corrida real de SimC autorizada por cada spec antes de añadirse. Sus
+perfiles y pesos personalizados sí atraviesan el flujo completo verificado.

@@ -9,6 +9,7 @@ from .loadout_capabilities import RACE_TOKENS, LoadoutCapability, capability_for
 
 _TALENT = re.compile(r"[A-Za-z0-9+/=]{1,2048}\Z")
 _SLOTS = {1: "head", 2: "neck", 3: "shoulder", 5: "chest", 6: "waist", 7: "legs", 8: "feet", 9: "wrist", 10: "hands", 11: "finger1", 12: "finger2", 13: "trinket1", 14: "trinket2", 15: "back", 16: "main_hand", 17: "off_hand"}
+_SIMC_ROLES = {"damage": "dps", "tank": "tank", "healer": "heal"}
 
 
 class LoadoutProfileError(ValueError):
@@ -37,14 +38,34 @@ def _profile(snapshot: LiveAnalysisSnapshot, capability: LoadoutCapability, tale
     lines = [
         "# DpsLab player-selected loadout; no gear is inferred.",
         f'{capability.class_token}="DpsLab_{capability.specialization_token}"',
-        f"level={snapshot.level}", f"race={race}", "role=attack",
+        f"level={snapshot.level}", f"race={race}", f"role={_SIMC_ROLES[capability.role]}",
         f"spec={capability.specialization_token}", f"talents={talent_string}",
     ]
     for item in snapshot.equipped:
         slot = _SLOTS.get(item.location)
         if slot is not None:
-            lines.append(f"{slot}=,id={item.item_id},ilevel={item.item_level}")
+            lines.append(f"{slot}=,id={item.item_id},ilevel={item.item_level}{_item_options(item.item_link)}")
     return "\n".join(lines) + "\n"
+
+
+def _item_options(link: str) -> str:
+    """Preserve SimC-supported customization encoded in a retail item link."""
+    match = re.search(r"item:([^|]+)", link)
+    if match is None:
+        return ""
+    fields = match.group(1).split(":")
+    options = []
+    if len(fields) > 1 and fields[1].isdigit() and int(fields[1]) > 0:
+        options.append("enchant_id=" + fields[1])
+    gems = [value for value in fields[2:6] if value.isdigit() and int(value) > 0]
+    if gems:
+        options.append("gem_id=" + "/".join(gems))
+    if len(fields) > 11 and fields[11].isdigit():
+        count = int(fields[11])
+        bonus = fields[12:12 + count]
+        if len(bonus) == count and bonus and all(value.isdigit() and int(value) > 0 for value in bonus):
+            options.append("bonus_id=" + "/".join(bonus))
+    return "" if not options else "," + ",".join(options)
 
 
 def build_loadout_profiles(

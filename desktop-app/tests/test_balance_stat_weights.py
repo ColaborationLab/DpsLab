@@ -28,3 +28,16 @@ class BalanceStatWeightsTests(unittest.TestCase):
             weights = load_balance_stat_weights(path.parent)
             self.assertEqual(("Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"), tuple(name for name, _ in weights.values))
             self.assertEqual(179.0, weights.score_item((("CritRating", 10),)))
+
+    def test_reads_short_intellect_name_used_by_simc(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            (Path(temporary) / "simc.json").write_text(json.dumps({"sim": {"players": [{"scale_factors": {"Int": 19.4, "Vers": 2.0}}]}}), encoding="utf-8")
+            weights = load_balance_stat_weights(Path(temporary))
+            self.assertEqual((("Intellect", 19.4), ("VersatilityRating", 2.0)), weights.values)
+
+    def test_reads_strength_for_plate_specializations(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            (Path(temporary) / "simc.json").write_text(json.dumps({"sim": {"players": [{"scale_factors": {"Str": 2.5, "Crit": 1.0}}]}}), encoding="utf-8")
+            weights = load_balance_stat_weights(Path(temporary))
+            self.assertEqual(("Strength", "CritRating"), tuple(name for name, _ in weights.values))
+            self.assertEqual(27.0, weights.score_item((("Strength", 10), ("CritRating", 2))))

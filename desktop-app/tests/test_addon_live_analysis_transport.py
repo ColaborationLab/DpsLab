@@ -42,6 +42,9 @@ class LiveAnalysisTransportTests(unittest.TestCase):
   result=parse_live_analysis_export(payload(balance_document()))
   self.assertEqual((1,2,3),tuple(item.config_id for item in result.balance_talent_loadouts))
   self.assertEqual((("CritRating", 5), ("Intellect", 10)), result.equipped[0].stats)
+ def test_export_accepts_strength_item_stats(self):
+  value=balance_document(); value["equipment"]["equipped"][0]["stats"]={"Strength":10,"CritRating":5}
+  self.assertEqual((("CritRating",5),("Strength",10)),parse_live_analysis_export(payload(value)).equipped[0].stats)
  def test_balance_export_keeps_named_loadouts_beyond_four(self):
   value=named_balance_document(); value["analysis_context"]["talent_loadouts"] += [{"config_id":4,"name":"Cuatro","talent_string":"MNOP"},{"config_id":5,"name":"Cinco","talent_string":"QRST"}]
   self.assertEqual("Cinco", parse_live_analysis_export(payload(value)).balance_talent_loadouts[-1].name)
