@@ -11,11 +11,10 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, La app muestra las builds comparadas (hasta 4) en una tabla lado a lado (estilo comparador de tiendas online): una columna por build, una fila por
-estadística relevante (crit, haste, mastery, versatility, DPS resultante), resaltando visualmente en qué estadísticas hay mayor diferencia entre builds y cómo cambia el peso de cada una según la build. Construida con QTableWidget/QTableView nativo de Qt y una sola hoja de estilo — sin editor de temas, sin animaciones, sin paneles flotantes:
+El único trabajo autorizado a partir de ahora es completar, la app y el addon estan disponibles en inglés y portugés para aumentar el target:
 
-1. El addon tiene una interfaz viual navegable. Intuitivamente sencilla de manejar y con ayudas adicionales mediante Tooltips. Un usuario iniciado debe poder usar el addon sin mayor dificultad y con mínimo esfuerzo. Mínimo esfuerzo no quiere decir mínimas opciones de configuracion.
-2. La app tiene una interfaz accesible para usuarios principiantes y muesrta una tabla comparativa de hasta 4 builds mediante tablas side by side.
+1. El addon está disponible en varios idiomas, expansión preparada para aumentar más idiomas. Documentación con indicaciones para traducciones o colaboraciones de traducción.
+2. La app está disponible en varios idiomas, expansión preparada para aumentar más idiomas. Documentación con indicaciones para traducciones o colaboraciones de traducción.
 
 
 ### 1.1 Decisión de dirección (2026-09-08): empaquetar, no reconstruir
@@ -43,7 +42,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de intefases que permiten el uso del addon y de la aplicación y presentan facilidad de comparar builds side by side en un formato tipo tabla?"
+> "¿Esta tarea hace que un jugador disponga de la suite completa en diferentes idiomas?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
