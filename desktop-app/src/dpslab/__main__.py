@@ -41,7 +41,7 @@ from .local_profile_manual_ui import (
 )
 from .druid_restoration_recommendation import DruidRestorationRecommendationError
 from .druid_restoration_ui import TkDruidBalanceWorkspace, TkDruidRestorationWorkspace
-from .loadout_ui import TkLoadoutWorkspace
+from .qt_loadout_ui import QtLoadoutWorkspace
 from .runner import SimulationRunError, run_simulation
 from .scenario import ScenarioError, load_scenario
 from .variant import VariantError, load_variant
@@ -403,7 +403,7 @@ def _balance(_: argparse.Namespace) -> int:
 
 
 def _loadouts(_: argparse.Namespace) -> int:
-    TkLoadoutWorkspace(project_root()).run()
+    QtLoadoutWorkspace(project_root()).run()
     return 0
 
 

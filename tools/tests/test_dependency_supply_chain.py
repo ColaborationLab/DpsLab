@@ -28,7 +28,7 @@ class DependencySupplyChainTests(unittest.TestCase):
         self.assertIn("--only-binary=:all:", self.lock_text)
         self.assertEqual(
             set(self.entries),
-            {"cffi", "cryptography", "numpy", "pycparser", "scipy", "setuptools"},
+            {"cffi", "cryptography", "numpy", "pycparser", "pyside6", "pyside6-addons", "pyside6-essentials", "scipy", "setuptools", "shiboken6"},
         )
         requirement_lines = [line for line in self.lock_text.splitlines() if line and not line.startswith(("#", "--"))]
         self.assertEqual(len(requirement_lines), len(self.entries))

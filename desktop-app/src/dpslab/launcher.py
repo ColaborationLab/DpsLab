@@ -3,11 +3,11 @@
 import os
 from pathlib import Path
 
-from .loadout_ui import TkLoadoutWorkspace
+from .qt_loadout_ui import QtLoadoutWorkspace
 
 
 def main() -> int:
     root = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local")) / "DpsLab"
     root.mkdir(parents=True, exist_ok=True)
-    TkLoadoutWorkspace(root).run()
+    QtLoadoutWorkspace(root).run()
     return 0

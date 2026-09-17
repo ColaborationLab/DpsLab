@@ -1,6 +1,33 @@
 # Next Task — DpsLab
 
-## Preparación vigente — Defaults, perfiles de pesos y tooltips (2026-09-12)
+## Preparación vigente — Comparador Qt y navegación del addon (2026-09-13)
+
+Esta entrada sustituye los planes y contratos de implementación inferiores,
+conservados como antecedentes. Objetivo anterior aprobado por Daniel y publicado
+en 11767d3a94a86de5fc23e1b035a231127c72324d. Nuevo Scope recuperado de GitHub,
+blob 4c4338192207b8df2e2a50f22797a615a0b9ed3f; se conserva su texto y se repone
+el historial local de cumplimiento, incluida la limitación de ocho defaults.
+
+Prueba de valor: sí, el jugador tendrá navegación sencilla en addon y app y
+una tabla para comparar hasta cuatro builds con sus estadísticas, pesos y DPS.
+
+```json
+{"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"a7551f48a938a2bc5128f25b8e0857a028ce17a0f9bab8ff9cfc3bd5416beb3c"}}
+```
+
+Plan y encargo preparado: docs/QT_COMPARISON_TERRA_PLAN.md.
+Estado: objetivo implementado, aprobado por Daniel y commit autorizado el 2026-09-17.
+Verificación de cierre y límites: docs/QT_COMPARISON_TERRA_PLAN.md, sección Cierre verificado.
+No se reactivan los contratos históricos ni sus permisos de ejecución.
+
+<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+```json
+{"contract_version":"0.1","task_id":"qt_comparison_navigation_0_1","title":"Implement native Qt build comparison and approachable addon navigation","baseline_commit":"11767d3a94a86de5fc23e1b035a231127c72324d","authorization":{"status":"authorized_for_implementation","authorization_id":"scope-qt-comparison-20260914-daniel","authorized_by":"Daniel","authorized_at":"2026-09-14T00:00:00-05:00"},"scope":{"allowed_paths":["SCOPE_CORRECTION_0_1.md","docs/NEXT_TASK.md","docs/QT_COMPARISON_TERRA_PLAN.md","desktop-app/pyproject.toml","desktop-app/requirements-ci-win-py313.lock","desktop-app/src/dpslab/__main__.py","desktop-app/src/dpslab/comparison_table.py","desktop-app/src/dpslab/launcher.py","desktop-app/src/dpslab/qt_loadout_ui.py","desktop-app/tests/test_comparison_table.py","desktop-app/tests/test_qt_loadout_ui.py","installer/build_reduced.py","security/sbom-runtime-win-py313.spdx.json","security/dependency_vulnerability_policy_0_1.json","tools/tests/test_dependency_supply_chain.py","tools/tests/test_dependency_vulnerability_audit.py"],"generated_paths":[".dpslab/quality-gates/qt_comparison_navigation_0_1/implementation.json",".dpslab/quality-gates/qt_comparison_navigation_0_1/audit.json"],"forbidden_paths":[".github/**","addon/DpsLab/AdvisorSyntheticGuidance.lua","addon/DpsLab/SyntheticExchange.lua","addon/DpsLab/SyntheticGuidance.lua","addon/DpsLab/SyntheticObservation.lua","addon/DpsLab/TrainingDummySession.lua","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_comparison_table","tests.test_qt_loadout_ui","tests.test_loadout_ui","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1","QT_QPA_PLATFORM":"offscreen"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1","QT_QPA_PLATFORM":"offscreen"}},"baseline_test_count":1363,"minimum_test_count":1363},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"a7551f48a938a2bc5128f25b8e0857a028ce17a0f9bab8ff9cfc3bd5416beb3c"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["open the complete Qt workspace from the packaged desktop entry and dpslab loadouts","compare one to four builds in native Qt table with stats weights DPS and safe N/D states","retain profile import export selection and background-run flows","pass focused and complete app and tools suites without SimulationCraft"],"express_exclusions":["SimulationCraft execution without a separate concrete authorization","new classes specializations or roles","new security program beyond exact runtime dependency synchronization","commit push release deployment","paths outside the allowlist"]}
+```
+<!-- DPSLAB_TASK_CONTRACT_END -->
+
+
+## Preparación histórica — Defaults, perfiles de pesos y tooltips (2026-09-12)
 
 El objetivo anterior fue cerrado por Daniel y publicado en dd61f94ba697b46b4f977f87ff9d7c03917377c6.
 Su base genérica pendiente se incorpora al nuevo Scope de origin/main
@@ -10034,11 +10061,11 @@ prueba de valor es afirmativa: este lote permite conservar pesos, elegir cuál
 loadout exportar y mostrar sus scores por spec/build. Daniel autorizó además
 el lote concreto de SimC de Balance descrito en el plan.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {"contract_version":"0.1","task_id":"default_weights_and_chosen_export_0_1","title":"Implement chosen score-weight export and default-weight plumbing","baseline_commit":"85bcc8f15c73111c1801e69b33e5ba78e9efdbac","authorization":{"status":"authorized_for_implementation","authorization_id":"scope-current-objective-20260913-daniel","authorized_by":"Daniel","authorized_at":"2026-09-13T00:00:00-05:00"},"scope":{"allowed_paths":[".gitignore","SCOPE_CORRECTION_0_1.md","addon/DpsLab/CharacterEquipmentObservation.lua","addon/DpsLab/DefaultItemScoreProfiles.lua","addon/DpsLab/DpsLab.lua","addon/DpsLab/DpsLab.toc","addon/DpsLab/ItemScoreProfiles.lua","desktop-app/src/dpslab/addon_live_analysis_transport.py","desktop-app/src/dpslab/balance_stat_weights.py","desktop-app/src/dpslab/item_score_profiles.py","desktop-app/src/dpslab/loadout_profiles.py","desktop-app/src/dpslab/loadout_recommendation.py","desktop-app/src/dpslab/loadout_ui.py","desktop-app/tests/test_addon_live_analysis_transport.py","desktop-app/tests/test_balance_stat_weights.py","desktop-app/tests/test_item_score_profiles.py","desktop-app/tests/test_loadout_profiles.py","desktop-app/tests/test_loadout_recommendation.py","tools/tests/test_addon_item_score_profiles.py","docs/NEXT_TASK.md","docs/DEFAULT_WEIGHTS_TERRA_PLAN.md","desktop-app/tests/test_loadout_ui.py"],"generated_paths":[".dpslab/quality-gates/default_weights_and_chosen_export_0_1/implementation.json",".dpslab/quality-gates/default_weights_and_chosen_export_0_1/audit.json"],"forbidden_paths":[".github/**","addon/DpsLab/AdvisorSyntheticGuidance.lua","addon/DpsLab/SyntheticExchange.lua","addon/DpsLab/SyntheticGuidance.lua","addon/DpsLab/SyntheticObservation.lua","addon/DpsLab/TrainingDummySession.lua","knowledge/**","security/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_item_score_profiles","tests.test_loadout_profiles","tests.test_loadout_recommendation","tests.test_balance_stat_weights","tests.test_addon_live_analysis_transport","tests.test_loadout_ui","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1"}},"baseline_test_count":1345,"minimum_test_count":1345},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"874a64fcd98fb024a4c5235a61211952f71953032327027c1f7511af41fc5022"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["keep personalized weights preferred over compatible defaults","make addon transfer an explicit chosen-loadout action instead of an automatic winner export","generate and retain traceable scale-factor evidence for every compatible source in the existing registry","leave unsupported specializations explicitly unavailable","pass focal and complete application suites"],"express_exclusions":["invented generic weights","new class or specialization beyond the existing registry","installation modification","commit push release","paths outside the allowlist"]}
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 Enmienda de alcance autorizada por la adopción explícita del procedimiento de
 precisión y transferencia manual (2026-09-13): se agregan

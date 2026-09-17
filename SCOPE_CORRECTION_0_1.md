@@ -15,15 +15,15 @@ explícitamente por escrito.
 - 2026-09-12 — Exportación y comparación multiclase y multiespecialización, con limpieza manual de la interfaz: cumplido por confirmación de Daniel; publicado en d354f9c.
 - 2026-09-12 — Perfiles locales con equipo, builds reales y externas, simulación desde perfiles y limpieza con confirmación: cierre aprobado por Daniel y publicado en dd61f94. La base genérica de pesos y builds sugeridas quedó pendiente y se incorpora explícitamente al objetivo actual; este cierre no acredita esa función.
 
+- 2026-09-13 — Perfiles de pesos editables, importación elegida y scores en tooltips mouseover y comparativos: aprobado visualmente por Daniel y publicado en 11767d3. Defaults trazables en 31 specs; ocho sin defaults permanecen como limitación documentada, sin acreditar simulación real de las 39.
+
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, el score usa tus propios pesos ya simulados en vez del default, cuando existan para esa spec y se muestran en los items en su respectivo tooltip tras la simulacion.:
+El único trabajo autorizado a partir de ahora es completar, La app muestra las builds comparadas (hasta 4) en una tabla lado a lado (estilo comparador de tiendas online): una columna por build, una fila por
+estadística relevante (crit, haste, mastery, versatility, DPS resultante), resaltando visualmente en qué estadísticas hay mayor diferencia entre builds y cómo cambia el peso de cada una según la build. Construida con QTableWidget/QTableView nativo de Qt y una sola hoja de estilo — sin editor de temas, sin animaciones, sin paneles flotantes:
 
-1. El addon sugiere una build por defecto para iniciados, así como una base de pesos estadísticos por defecto como valores sugeridos iniciales. Estos valores pueden ser cambiados por el usuarios a gusto y deben ser actualizados tras la importación de los resultados del simulador.
-2. El addon puede importar y crear perfiles específicos de pesos estadídticos tras la simulación y al importar, se debe preguntar si se desea reemplazar los actuales o crear un nuevo perfil de pesos, puesto que esto cambiara el score de los items.
-3. La app puede exportar pesos propios según el loadout escogido por el usuario. Es decir, una vez simulado y realizada la comparación, el usuario puede elegir exactamente los resultados de un loadout específico a ser exportado al addon, no necesariamente se exportarán resultados del mejor loadout, sino que el usuario escogerá segun sus propios criterios.
-4. El addon muestra una visualización directa del score en los items dentro del juego, similar a lo que hace pawn, dentro del tooltip del item con su respectiva distinción de si la mejora es sustancial, marginal o no hay mejora (igual o peor)
-
+1. El addon tiene una interfaz viual navegable. Intuitivamente sencilla de manejar y con ayudas adicionales mediante Tooltips. Un usuario iniciado debe poder usar el addon sin mayor dificultad y con mínimo esfuerzo. Mínimo esfuerzo no quiere decir mínimas opciones de configuracion.
+2. La app tiene una interfaz accesible para usuarios principiantes y muesrta una tabla comparativa de hasta 4 builds mediante tablas side by side.
 
 
 ### 1.1 Decisión de dirección (2026-09-08): empaquetar, no reconstruir
@@ -51,7 +51,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de la opción de comparar sus items mediante score en distintas specs y builds, según criterio del usuario mediante configuraciones del addon, donde se guarde la informacion de items, builds y pesos estadísticos?"
+> "¿Esta tarea hace que un jugador disponga de intefases que permiten el uso del addon y de la aplicación y presentan facilidad de comparar builds side by side en un formato tipo tabla?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
@@ -76,10 +76,7 @@ autorización nueva y explícita de Daniel:
 - Cualquier nuevo esquema de "conocimiento gobernado", catálogo, propuesta,
   revisión o candidato que no sea parte directa del objetivo de la sección 1.
 - Cualquier addon/funcionalidad adicional marcada como "synthetic".
-- Cualquier expansión a una clase o especialización que no exista ya en el
-  registro soportado de DpsLab. Daniel autorizó el 2026-09-13 ampliar, después
-  de validar el lote inicial de Balance, la base de pesos y builds sugeridas a
-  todas las clases y especializaciones ya presentes en ese registro.
+- Cualquier expansión a otra clase, especialización o rol fuera de Balance de Druida.
 
 Nada de esto se borra — se archiva. Puede retomarse más adelante si alguna
 vez el proyecto se distribuye a terceros, que hoy no es el caso.
