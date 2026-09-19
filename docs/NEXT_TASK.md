@@ -1,6 +1,18 @@
-# Next Task — DpsLab
+# Next Task — DpsFoundry
 
-## Preparación vigente — Publicación, actualizaciones y donativos (2026-09-18)
+## Tarea activa — Baseline de interfaz DpsFoundry (2026-09-19)
+
+Sí: define el primer bloque que hace DpsFoundry Core y DpsFoundry Link más fáciles de entender y usar para un jugador dentro de analizar → decidir → sincronizar → jugar → refinar.
+
+Por instrucción de Daniel, las cláusulas completas del borrador se incorporaron al archivo vigente `SCOPE_CORRECTION_0_1.md`, preservando su historial. La copia 0.2 creada localmente se retiró; no existen dos Scopes operativos. Marca: DpsFoundry. Distribución, actualizaciones y donativos siguen pausados, no cumplidos. La membresía organizacional de la cuenta externa sigue pendiente y no bloquea la UI; su permiso de escritura ya fue retirado.
+
+Dirección completa para Terra: `docs/DPSFOUNDRY_INTERFACE_TERRA_PLAN.md`. Secuencia A–F: sistema visual, shell Core, panel Link, cuatro temas, integración progresiva y recorrido real. Primer entregable: A+B, Foundry navegable con estados y datos controlados. Base de código `997648b301ba5b17fc95093b70c419229c7b8e74`; preparación documental local pendiente de commit antes de activar Terra. No se inició implementación ni ejecución real. Se verificaron referencias, cláusulas, hashes y diff; cambios solo documentales.
+
+```json
+{"protected_files":{"AGENTS.md":"9fbc856021bf328786e5a9ace451919f397bc6b8ce4fb5efb330775547a6a543","SCOPE_CORRECTION_0_1.md":"8c9feca445e7cff66645959170663e5bd5a2cf82025c2652b03bf4324b951d7c"}}
+```
+
+## Preparación histórica — Publicación, actualizaciones y donativos (2026-09-18)
 
 Sí: permite obtener la suite desde CurseForge/GitHub, mantenerla actualizada
 y apoyar voluntariamente la continuidad del proyecto.

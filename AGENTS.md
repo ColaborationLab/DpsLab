@@ -60,18 +60,19 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
   trabajo nuevo de SBOM, firma de releases, modelo de amenazas formal o
   adquisición automática de fuentes salvo autorización nueva y explícita de
   Daniel que mencione esa característica por nombre. Ver
-  `SCOPE_CORRECTION_0_1.md`, sección 3.
+  `SCOPE_CORRECTION_0_1.md`, sección 4.
 
 ## Restricciones de alcance
 
 - No iniciar comparaciones de equipo o talentos sin una tarea expresamente aprobada.
 - No ejecutar matrices ni generar combinaciones automáticamente sin aprobación.
-- No implementar GUI, addon de WoW, módulos multiclase o entrenador de combate sin alcance aprobado.
+- No implementar DpsFoundry Guide, entrenador de combate, motor de simulación
+  propio, matrices masivas ni nueva captura de combate sin alcance aprobado.
 - No procesar todavía Weekly Reward Choices, currencies, high watermarks o achievements.
-- Alcance aprobado para el ciclo actual: pantalla mínima de ejecución en la
-  app y visualización del resultado real en el addon, para Druida
-  Restauración y Balance, según `SCOPE_CORRECTION_0_1.md`. Ninguna otra clase,
-  GUI adicional o módulo nuevo sin nueva aprobación explícita de Daniel.
+- Alcance aprobado para el ciclo actual: interfaz funcional de DpsFoundry Core y
+  DpsFoundry Link, conforme a `SCOPE_CORRECTION_0_1.md`. La
+  generalización visual no autoriza expandir capacidades de clase/spec ni
+  implementar Guide.
 
 ## Verificación
 
@@ -100,7 +101,11 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
 
 ## Quality gate y autorizaciones
 
-- Cuando Daniel cambie el objetivo de la sección 1 de `SCOPE_CORRECTION_0_1.md`, tratar el objetivo anterior como cumplido, añadir una línea breve y fechada en su historial de objetivos cumplidos, recalcular el SHA-256 real del documento y actualizar `protected_files` antes de iniciar el objetivo nuevo.
+- Cuando Daniel cambie el objetivo de la sección 1 de
+  `SCOPE_CORRECTION_0_1.md`, tratar el objetivo anterior como
+  cumplido, añadir una línea breve y fechada en su historial de objetivos
+  cumplidos, recalcular el SHA-256 real del documento y actualizar
+  `protected_files` antes de iniciar el objetivo nuevo.
 - Mientras `SCOPE_CORRECTION_0_1.md` esté vigente, el cierre de alcance para
   tareas dentro de su objetivo único NO requiere contrato formal, `task_id`,
   ni "auditoría independiente declarada y procedimental". Basta una entrada
@@ -115,15 +120,10 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
   referencia, no requiere contrato completo ni auditoría, y nunca se resuelve
   revirtiendo la edición de Daniel para hacer coincidir el hash anterior.
 
-## Protocolo de agentes subordinados y trabajo remoto
+## Colaboración y ejecución
 
-- La colaboración remota se rige por `docs/REMOTE_AGENT_WORKFLOW.md` y las
-  plantillas de `.github/`; son guías operativas y no sustituyen una
-  autorización de N0-GOV.
-- Todo colaborador externo debe recibir un Issue con `task_id`, baseline,
-  allowlist, exclusiones, pruebas y criterio de cierre. Debe trabajar en una
-  rama `agent/<task_id>/<slug>` de su fork privado y entregar un PR; nunca
-  directamente en `main`. El acceso inicial recomendado es `Read`.
+- La colaboración externa está cerrada. No se asignan Issues, permisos ni ramas
+  a colaboradores externos sin una nueva autorización expresa de Daniel.
 - `desktop-app/src/**`, `addon/**`, `knowledge/**`, `security/**`, CI,
   settings, secretos, perfiles, escenarios, resultados, SimulationCraft,
   observación real, releases y claves permanecen bajo responsabilidad
