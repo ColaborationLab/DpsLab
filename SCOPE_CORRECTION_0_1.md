@@ -11,10 +11,11 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, la app y el addon estan disponibles en inglés y portugés para aumentar el target:
+El único trabajo autorizado a partir de ahora es completar, Publicación en CurseForge, donativos, auto-actualización:
 
-1. El addon está disponible en varios idiomas, expansión preparada para aumentar más idiomas. Documentación con indicaciones para traducciones o colaboraciones de traducción.
-2. La app está disponible en varios idiomas, expansión preparada para aumentar más idiomas. Documentación con indicaciones para traducciones o colaboraciones de traducción.
+1. El addon está disponible en la plataforma CurseForge.
+2. La app Esta lista para ser distribuida junto con instaladores mediante repositorios publicos de github.
+3. La suite tiene una adecuada metodologia de actualizaciones y recepcion de donaciones como colaboracion a la continuidad del proyecto
 
 
 ### 1.1 Decisión de dirección (2026-09-08): empaquetar, no reconstruir
@@ -42,7 +43,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de la suite completa en diferentes idiomas?"
+> "¿Esta tarea hace que un jugador disponga de la suite completa desde canales de distribucion conocidos y el propietario del proyecto, puede colectar donativos?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.
