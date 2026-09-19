@@ -19,6 +19,12 @@ class DruidWorkspacePathTests(unittest.TestCase):
             _clear_paths(path)
             self.assertIsNone(_remembered_paths(path))
 
+    def test_bundled_simc_marker_never_requires_an_external_path(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "workspace_paths.json"
+            _save_paths(path, "bundled", "C:/WoW/AddOns/DpsLab")
+            self.assertEqual(("bundled", "C:/WoW/AddOns/DpsLab"), _remembered_paths(path))
+
     def test_malformed_settings_are_ignored(self):
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "workspace_paths.json"

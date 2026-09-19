@@ -28,7 +28,7 @@ class AddonSpecializationRegistryObservationTests(unittest.TestCase):
         lines = self.toc.splitlines()
         self.assertLess(lines.index("CharacterIdentityObservation.lua"), lines.index(REGISTRY.name))
         self.assertLess(lines.index(REGISTRY.name), lines.index("DpsLab.lua"))
-        self.assertEqual([line for line in lines if line.startswith("## SavedVariables:")], ["## SavedVariables: DpsLabObservationExport"])
+        self.assertEqual([line for line in lines if line.startswith("## SavedVariables:")], ["## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences"])
 
     def test_capture_is_manual_only_and_assigns_after_success(self):
         self.assertIn('role == "specialization-registry" and handleSpecializationRegistryExport()', self.renderer)

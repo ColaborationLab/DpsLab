@@ -7,6 +7,14 @@ def document():
 def payload(value=None): return PREFIX+canonical_live_analysis_bytes(value or document()).decode()
 def restoration_document():
  return {"schema_version":"0.4","observation_type":"live_manual_analysis_export","compatibility":{"wow_product":"retail","build":69587,"interface_version":120100},"subject":{"class_id":11,"specialization_id":105,"role":"healer","level":90,"race_id":4},"analysis_context":{"talent_loadouts":{"active":{"config_id":1,"talent_string":"ABCD"},"comparison":{"config_id":2,"talent_string":"EFGH"}}},"equipment":{"equipped":[{"item_id":1,"item_level":100,"item_link":"item:1","location":1,"slot":"slot_1","source":"equipped"}]},"safety":{"contains_direct_identifiers":False,"executable":False,"no_automation":True}}
+def balance_document():
+ return {"schema_version":"0.6","observation_type":"live_manual_analysis_export","compatibility":{"wow_product":"retail","build":69587,"interface_version":120100},"subject":{"class_id":11,"specialization_id":102,"role":"damage","level":90,"race_id":4},"analysis_context":{"talent_loadouts":[{"config_id":1,"talent_string":"ABCD"},{"config_id":2,"talent_string":"EFGH"},{"config_id":3,"talent_string":"IJKL"}]},"equipment":{"equipped":[{"item_id":1,"item_level":100,"item_link":"item:1","location":1,"slot":"slot_1","source":"equipped","stats":{"Intellect":10,"CritRating":5}}]},"safety":{"contains_direct_identifiers":False,"executable":False,"no_automation":True}}
+def named_balance_document():
+ value=balance_document(); value["schema_version"]="0.7"; value["analysis_context"]["talent_loadouts"]=[{**item,"name":"Prueba " + str(item["config_id"])} for item in value["analysis_context"]["talent_loadouts"]]; return value
+def identified_balance_document():
+ value=named_balance_document(); value["schema_version"]="0.8"; value["subject"].update({"character_name":"Drena","realm_name":"Quel'Thalas"}); value["safety"]["contains_direct_identifiers"]=True; return value
+def eligible_balance_document():
+ value=identified_balance_document(); value["schema_version"]="0.9"; value["subject"]["max_level"]=90; value["analysis_context"]["talent_loadouts"]=[{**item,"simulatable":index != 2,"unavailable_reason":"" if index != 2 else "talents_unassigned"} for index,item in enumerate(value["analysis_context"]["talent_loadouts"], 1)]; return value
 class LiveAnalysisTransportTests(unittest.TestCase):
  def test_valid(self):
   result=parse_live_analysis_export(payload()); self.assertEqual(1,len(result.equipped)); self.assertEqual(64,len(result.receipt_sha256))
@@ -30,3 +38,26 @@ class LiveAnalysisTransportTests(unittest.TestCase):
  def test_restoration_export_rejects_same_loadout_twice(self):
   value=restoration_document(); value["analysis_context"]["talent_loadouts"]["comparison"]={"config_id":1,"talent_string":"ABCD"}
   with self.assertRaisesRegex(LiveAnalysisTransportError,"talent_loadout_invalid"): parse_live_analysis_export(payload(value))
+ def test_balance_export_accepts_three_client_loadouts(self):
+  result=parse_live_analysis_export(payload(balance_document()))
+  self.assertEqual((1,2,3),tuple(item.config_id for item in result.balance_talent_loadouts))
+  self.assertEqual((("CritRating", 5), ("Intellect", 10)), result.equipped[0].stats)
+ def test_export_accepts_strength_item_stats(self):
+  value=balance_document(); value["equipment"]["equipped"][0]["stats"]={"Strength":10,"CritRating":5}
+  self.assertEqual((("CritRating",5),("Strength",10)),parse_live_analysis_export(payload(value)).equipped[0].stats)
+ def test_balance_export_keeps_named_loadouts_beyond_four(self):
+  value=named_balance_document(); value["analysis_context"]["talent_loadouts"] += [{"config_id":4,"name":"Cuatro","talent_string":"MNOP"},{"config_id":5,"name":"Cinco","talent_string":"QRST"}]
+  self.assertEqual("Cinco", parse_live_analysis_export(payload(value)).balance_talent_loadouts[-1].name)
+ def test_balance_export_rejects_duplicate_client_loadout(self):
+  value=balance_document(); value["analysis_context"]["talent_loadouts"][2]={"config_id":2,"talent_string":"IJKL"}
+  with self.assertRaisesRegex(LiveAnalysisTransportError,"talent_loadout_invalid"): parse_live_analysis_export(payload(value))
+ def test_identified_export_keeps_character_and_realm_only_when_declared(self):
+  result=parse_live_analysis_export(payload(identified_balance_document()))
+  self.assertEqual(("Drena", "Quel'Thalas"), (result.character_name, result.realm_name))
+  value=identified_balance_document(); value["safety"]["contains_direct_identifiers"]=False
+  with self.assertRaisesRegex(LiveAnalysisTransportError,"safety_invalid"): parse_live_analysis_export(payload(value))
+ def test_export_marks_incomplete_build_and_client_max_level(self):
+  result=parse_live_analysis_export(payload(eligible_balance_document()))
+  self.assertEqual((90, False, "talents_unassigned"), (result.max_level, result.balance_talent_loadouts[1].simulatable, result.balance_talent_loadouts[1].unavailable_reason))
+  value=eligible_balance_document(); value["subject"]["level"]=91
+  with self.assertRaisesRegex(LiveAnalysisTransportError,"max_level_invalid"): parse_live_analysis_export(payload(value))

@@ -1,4 +1,6 @@
-"""DpsLab: herramientas locales para interpretar perfiles SimC."""
+"""DpsLab: local loadout comparison with bundled SimulationCraft."""
+
+__version__ = "0.2.0"
 
 from .models import Character, GearItem, SavedLoadout, Snapshot
 from .parser import ProfileParseError, parse_profile, parse_profile_text
@@ -9,6 +11,7 @@ from .scenario import PrecisionSettings, Scenario, ScenarioError, load_scenario
 
 __all__ = [
     "Character",
+    "__version__",
     "GearItem",
     "ProfileParseError",
     "SavedLoadout",

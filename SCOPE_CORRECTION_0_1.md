@@ -9,6 +9,18 @@ nueva puede aprobarse ni implementarse sin pasar primero la prueba de la
 sección 2. Esta corrección permanece vigente hasta que Daniel la levante
 explícitamente por escrito.
 
+## Historial breve de objetivos cumplidos
+
+- 2026-09-10 — Comparación de loadouts de Druida Balance y Restauración, con simulación individual o comparativa, nombres y resultados en WoW: cumplido.
+- 2026-09-12 — Exportación y comparación multiclase y multiespecialización, con limpieza manual de la interfaz: cumplido por confirmación de Daniel; publicado en d354f9c.
+- 2026-09-12 — Perfiles locales con equipo, builds reales y externas, simulación desde perfiles y limpieza con confirmación: cierre aprobado por Daniel y publicado en dd61f94. La base genérica de pesos y builds sugeridas quedó pendiente y se incorpora explícitamente al objetivo actual; este cierre no acredita esa función.
+
+- 2026-09-13 — Perfiles de pesos editables, importación elegida y scores en tooltips mouseover y comparativos: aprobado visualmente por Daniel y publicado en 11767d3. Defaults trazables en 31 specs; ocho sin defaults permanecen como limitación documentada, sin acreditar simulación real de las 39.
+
+- 2026-09-17 — Comparador Qt y navegación del addon: objetivo cerrado por cambio de objetivo de Daniel, tras aprobación visual del 2026-09-16; ajustes de tabla incorporados localmente. Commit local 49d88bb; push pendiente.
+
+- 2026-09-18 — Suite ES/EN/PT-BR y documentación: objetivo cerrado por cambio de objetivo de Daniel. Revisión técnica detecta localización parcial y pruebas/empaquetado pendientes; correcciones previas a distribución registradas en docs/PENDING_COMMIT_REVIEW_2026_09_18.md. Cambios todavía sin commit; no se acredita publicación ni validación visual multilingüe.
+
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
 El único trabajo autorizado a partir de ahora es completar, Publicación en CurseForge, donativos, auto-actualización:

@@ -24,3 +24,6 @@ DpsLab_migration_*.zip
 
 # Resultados locales del quality gate
 .dpslab/quality-gates/
+
+# Evidencia local reproducible de las corridas de pesos por defecto
+.dpslab/default-weight-runs/

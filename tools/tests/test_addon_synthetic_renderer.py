@@ -18,7 +18,7 @@ class AddonSyntheticRendererTests(unittest.TestCase):
         self.assertIn("DpsLab.lua", self.toc)
         self.assertEqual(
             [line for line in self.toc.splitlines() if line.startswith("## SavedVariables:")],
-            ["## SavedVariables: DpsLabObservationExport"],
+            ["## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences"],
         )
         self.assertNotIn("SavedVariablesPerCharacter", self.toc)
 
