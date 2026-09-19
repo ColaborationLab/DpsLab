@@ -1,0 +1,30 @@
+MESSAGES = {
+    "app.title": "DpsLab — Comparação de loadouts",
+    "app.subtitle": "Compare de uma a quatro builds. Dados ausentes ficam como N/D.",
+    "source.group": "Exportação do addon", "source.detect": "Detectar exportação", "source.paste": "Colar exportação",
+    "source.remember": "Lembrar estes caminhos neste computador", "profile.group": "Personagem e perfil local",
+    "profile.save": "Salvar perfil", "profile.open": "Abrir", "profile.delete": "Excluir perfil",
+    "builds.group": "Builds detectadas", "builds.remove": "Excluir builds", "simulation.run": "Executar comparação real",
+    "simulation.progress": "Simulando com SimulationCraft; o progresso será atualizado após cada build.",
+    "results.group": "Resultados e pesos", "imports.group": "Builds externas e casos", "imports.save": "Salvar build", "case.save": "Salvar caso",
+    "weights.export": "Exportar pesos escolhidos", "weights.copy": "Copiar pesos", "weights.paste": "Colar pesos", "interface.clear": "Limpar interface",
+    "table.stat": "Estatística", "table.dps": "DPS resultante", "table.equipment": "Equipamento", "table.weight": "Peso",
+    "table.highest_dps": "Maior DPS", "table.highest_weight": "Maior peso", "status.detected": "Exportação recente detectada.",
+    "status.saved": "Perfil '{name}' salvo.", "status.not_found": "Nenhuma exportação compatível encontrada.", "language.label": "Idioma", "language.auto": "Auto", "language.help": "Escolha Auto, espanhol, inglês ou português brasileiro. A preferência é salva localmente.", "language.changed": "Idioma atualizado. Reabra a janela para aplicar todos os rótulos.",
+}
+
+MESSAGES.update({
+    "simc.included": "Incluído com DpsLab", "source.addon_path": "Pasta do addon", "common.choose": "Escolher",
+    "source.addon_help": "Pasta DpsLab dentro de Interface/AddOns.", "source.simc_help": "O pacote inclui SimulationCraft. Fora do pacote, selecione simc.exe.",
+    "source.detect_help": "Lê a última exportação confirmada do addon.", "source.paste_help": "Lê uma exportação manual copiada do addon.",
+    "profile.help": "Perfis locais salvos com equipamento, builds, pesos e resultados.", "profile.save_help": "Salva personagem, equipamento, especializações e loadouts detectados. Não executa SimulationCraft.",
+    "profile.open_help": "Abre o perfil local selecionado.", "profile.delete_help": "Exclui apenas o perfil local selecionado; World of Warcraft não é alterado.",
+    "profile.character": "Personagem", "profile.realm": "Reino", "profile.name": "Nome do perfil", "profile.saved": "Perfil salvo",
+    "builds.help": "Selecione de uma a quatro builds. Builds inválidas permanecem visíveis, mas não executam.", "builds.remove_help": "Remove as builds selecionadas do perfil local sem excluir outras especializações nem loadouts do WoW.",
+    "simulation.run_help": "Executa SimulationCraft fora da thread da janela para as builds selecionadas.", "imports.help": "Use Nome|string ou string; separe builds com ponto e vírgula.",
+    "imports.save_help": "Salva uma build externa no perfil sem simulá-la.", "case.name": "Nome do caso", "case.save_help": "Salva a comparação e seus resultados localmente.",
+    "weights.export_help": "Envia ao addon apenas pesos de builds reais selecionadas e simuladas.", "weights.copy_help": "Copia pesos de uma build real simulada.", "weights.paste_help": "Salva uma string de pesos copiada do addon na build real selecionada.",
+    "interface.clear_help": "Limpa dados não salvos após confirmação; mantém perfis e caminhos.", "status.initial": "No WoW execute /dpslab export app, confirme /reload e volte aqui.",
+    "details.placeholder": "O equipamento e os resultados do perfil aparecem aqui.", "dialog.choose_simc": "Selecione simc.exe", "dialog.choose_addon": "Selecione a pasta DpsLab do addon", "dialog.all_files": "Todos (*)",
+    "status.no_export": "Nenhuma exportação compatível. No WoW, use /dpslab export app e confirme /reload.", "status.export_detected": "Exportação recente detectada. Selecione de uma a quatro builds, ou salve uma string importada para executá-la sozinha.", "status.manual_export": "Exportação manual colada. Selecione de uma a quatro builds para simular.", "status.invalid_export": "A área de transferência não contém uma exportação DpsLab válida.", "details.exported_gear": "Equipamento exportado: {count} peça(s).\nSalve o perfil para manter este equipamento com suas especializações e builds.", "builds.talents_unassigned": "{name} — talentos não atribuídos", "builds.talents_unknown": "{name} — estado dos talentos indisponível", "builds.unavailable_help": "Esta build é mantida, mas não poderá executar até que seus talentos estejam completos.", "status.need_export": "Detecte uma exportação antes de continuar.", "status.profile_saved": "Perfil '{name}' salvo: {specs} especialização(ões) e {builds} loadout(s).", "status.profile_opened": "Perfil aberto: selecione builds e simule usando seu equipamento salvo.", "status.profile_old": "Perfil antigo aberto: mantém equipamento e builds, mas não salvou nível e raça. Exporte uma vez para atualizá-lo antes de simular.", "status.simulating": "Simulando com SimulationCraft; o progresso será atualizado após cada build.", "status.results_saved": "Os resultados foram salvos localmente; selecione uma build simulada e use Exportar pesos escolhidos para atualizar os scores no WoW.", "details.comparison": "A tabela mostra DPS, equipamento exportado e o peso de cada build.", "status.no_simc": "simc.exe não foi encontrado. Abra o pacote DpsLab ou escolha um caminho válido.", "dialog.delete_profile_title": "Excluir perfil", "dialog.delete_profile_text": "O perfil local, suas builds, resultados e pesos serão excluídos. World of Warcraft não será alterado. Continuar?", "dialog.clear_title": "Limpar interface", "dialog.clear_text": "Personagem, reino, perfil, seleção, importações e resultados não salvos serão limpos. Perfis e caminhos salvos permanecem. Continuar?", "status.cleared": "Interface limpa. Perfis e caminhos salvos permanecem; detecte uma nova exportação quando quiser."
+})

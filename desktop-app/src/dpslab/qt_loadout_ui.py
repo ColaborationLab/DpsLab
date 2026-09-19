@@ -19,6 +19,7 @@ from .loadout_capabilities import capability_for
 from .loadout_comparison_library import LoadoutComparisonLibraryError, list_character_profiles, save_case, save_character_profiles
 from .loadout_recommendation import LoadoutComparison, LoadoutRecommendationError, decode_weight_transfer, encode_weight_transfer, run_loadout_recommendation, write_item_score_profiles
 from .item_score_profiles import BuildScoreProfile, ItemScoreProfileError, create_character, profile_details, profile_export, profile_simulation_id, remove_builds, rename_profile, store_imported_build, store_simulation_results, store_weight, update_from_export
+from .i18n import DEFAULT_LOCALE, SUPPORTED_LOCALES, messages, normalize_locale, tr
 
 
 def _bundled_simc() -> str:
@@ -66,6 +67,29 @@ def _clear_paths(path: Path) -> None:
     path.unlink(missing_ok=True)
 
 
+def _language_path() -> Path:
+    root = os.environ.get("LOCALAPPDATA")
+    return (Path(root) if root else Path.home() / "AppData" / "Local") / "DpsLab" / "language.json"
+
+
+def _load_language(path: Path) -> str:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+        raw = value.get("locale") if isinstance(value, dict) else "auto"
+        return raw if raw == "auto" else normalize_locale(raw)
+    except (OSError, ValueError):
+        return "auto"
+
+
+def _save_language(path: Path, locale: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as temporary:
+        selected = "auto" if locale == "auto" else normalize_locale(locale)
+        temporary.write(json.dumps({"schema_version": "0.1", "locale": selected}) + "\n")
+        temporary_name = temporary.name
+    os.replace(temporary_name, path)
+
+
 def _simulation_selection(selected_ids, unavailable, character, specialization_id):
     selected = tuple(value for value in selected_ids if value > 0 and value not in unavailable)
     imported_builds = () if character is None else tuple(
@@ -94,11 +118,11 @@ class ComparisonTableWidget(QtWidgets.QTableWidget):
         self.verticalHeader().setVisible(False)
         self.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
 
-    def show_table(self, table: ComparisonTable) -> None:
+    def show_table(self, table: ComparisonTable, statistic_label: str = "Estadística") -> None:
         self.clearContents()
         self.setColumnCount(1 + len(table.columns))
         self.setRowCount(len(table.rows))
-        self.setHorizontalHeaderLabels(("Estadística",) + table.columns)
+        self.setHorizontalHeaderLabels((statistic_label,) + table.columns)
         accent = QtGui.QColor("#fff0c2")
         for row_index, row in enumerate(table.rows):
             label = QtWidgets.QTableWidgetItem(row.label)
@@ -126,11 +150,24 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
         self._export = ""; self._snapshot = None; self._ids: tuple[int, ...] = (); self._build_ids: tuple[int, ...] = ()
         self._names: dict[int, str] = {}; self._unavailable: dict[int, str] = {}; self._running = False; self._comparison = None
         self._character = None; self._profile_ids: tuple[str, ...] = (); self._import_targets: tuple[int, ...] = (); self._saved_id_map: dict[int, int] = {}; self._saved_profile_mode = False; self._skipped = ""
-        self.setWindowTitle("DpsLab — Comparación de loadouts")
+        self._locale = _load_language(_language_path())
+        self.setWindowTitle(self._t("app.title", "DpsLab — Comparación de loadouts"))
         self.setMinimumSize(780, 570)
         self.resize(1050, 730)
         self.setStyleSheet(_STYLE)
         self._build_ui()
+
+    def _t(self, key: str, fallback: str) -> str:
+        locale = None if self._locale == "auto" else self._locale
+        return tr(key, locale, **({} if "{name}" not in fallback else {})) if key in messages(locale) else fallback
+
+    def _set_language(self, locale: str) -> None:
+        self._locale = locale if locale == "auto" else normalize_locale(locale)
+        try:
+            _save_language(_language_path(), self._locale)
+        except OSError:
+            pass
+        self._set_status(self._t("language.changed", "Idioma actualizado. Abre de nuevo la ventana para aplicar todas las etiquetas."))
 
     def _build_ui(self) -> None:
         scroll = QtWidgets.QScrollArea(self); scroll.setWidgetResizable(True)
@@ -138,81 +175,89 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
         scroll.setWidget(body)
         layout = QtWidgets.QVBoxLayout(body)
         layout.setContentsMargins(18, 18, 18, 18)
-        self._title = QtWidgets.QLabel("DpsLab — Comparación de loadouts")
+        self._title = QtWidgets.QLabel(self._t("app.title", "DpsLab — Comparación de loadouts"))
         self._title.setStyleSheet("font-size: 20px; font-weight: 700;")
         layout.addWidget(self._title)
-        layout.addWidget(QtWidgets.QLabel("Compara de una a cuatro builds. Las filas N/D no se inventan cuando falta un dato."))
-        source = QtWidgets.QGroupBox("Exportación del addon")
+        layout.addWidget(QtWidgets.QLabel(self._t("app.subtitle", "Compara de una a cuatro builds. Las filas N/D no se inventan cuando falta un dato.")))
+        source = QtWidgets.QGroupBox(self._t("source.group", "Exportación del addon"))
         source_layout = QtWidgets.QGridLayout(source)
         saved = _remembered_paths(_settings_path()); bundled = _bundled_simc()
         self._simc_path = QtWidgets.QLineEdit(bundled or (saved[0] if saved and saved[0] != "bundled" else ""))
         self._addon_path = QtWidgets.QLineEdit(saved[1] if saved else _default_addon_path())
-        self._remember = QtWidgets.QCheckBox("Recordar estas rutas en este equipo"); self._remember.setChecked(saved is not None)
-        self._addon_path.setToolTip("Carpeta DpsLab dentro de Interface/AddOns.")
-        self._simc_path.setToolTip("El paquete incluye SimulationCraft. Fuera del paquete, indica simc.exe.")
+        self._remember = QtWidgets.QCheckBox(self._t("source.remember", "Recordar estas rutas en este equipo")); self._remember.setChecked(saved is not None)
+        self._addon_path.setToolTip(self._t("source.addon_help", "Carpeta DpsLab dentro de Interface/AddOns."))
+        self._simc_path.setToolTip(self._t("source.simc_help", "El paquete incluye SimulationCraft. Fuera del paquete, indica simc.exe."))
         source_layout.addWidget(QtWidgets.QLabel("SimulationCraft"), 0, 0)
         if bundled:
-            source_layout.addWidget(QtWidgets.QLabel("Incluido con DpsLab"), 0, 1)
+            source_layout.addWidget(QtWidgets.QLabel(self._t("simc.included", "Incluido con DpsLab")), 0, 1)
         else:
             source_layout.addWidget(self._simc_path, 0, 1)
-            choose_simc = QtWidgets.QPushButton("Elegir"); choose_simc.clicked.connect(self._choose_simc); source_layout.addWidget(choose_simc, 0, 2)
-        source_layout.addWidget(QtWidgets.QLabel("Carpeta del addon"), 1, 0)
+            choose_simc = QtWidgets.QPushButton(self._t("common.choose", "Elegir")); choose_simc.clicked.connect(self._choose_simc); source_layout.addWidget(choose_simc, 0, 2)
+        source_layout.addWidget(QtWidgets.QLabel(self._t("source.addon_path", "Carpeta del addon")), 1, 0)
         source_layout.addWidget(self._addon_path, 1, 1)
-        choose_addon = QtWidgets.QPushButton("Elegir"); choose_addon.clicked.connect(self._choose_addon); source_layout.addWidget(choose_addon, 1, 2)
+        choose_addon = QtWidgets.QPushButton(self._t("common.choose", "Elegir")); choose_addon.clicked.connect(self._choose_addon); source_layout.addWidget(choose_addon, 1, 2)
         source_layout.addWidget(self._remember, 2, 0, 1, 3)
-        self._detect = QtWidgets.QPushButton("Detectar exportación")
-        self._detect.setToolTip("Lee la última exportación confirmada del addon.")
+        self._detect = QtWidgets.QPushButton(self._t("source.detect", "Detectar exportación"))
+        self._detect.setToolTip(self._t("source.detect_help", "Lee la última exportación confirmada del addon."))
         self._detect.clicked.connect(self._detect_export)
         source_layout.addWidget(self._detect, 3, 0)
-        paste_export = QtWidgets.QPushButton("Pegar exportación"); paste_export.setToolTip("Lee la exportación manual copiada desde el addon."); paste_export.clicked.connect(self._paste_export); source_layout.addWidget(paste_export, 3, 1)
+        paste_export = QtWidgets.QPushButton(self._t("source.paste", "Pegar exportación")); paste_export.setToolTip(self._t("source.paste_help", "Lee la exportación manual copiada desde el addon.")); paste_export.clicked.connect(self._paste_export); source_layout.addWidget(paste_export, 3, 1)
+        source_layout.addWidget(QtWidgets.QLabel(self._t("language.label", "Idioma")), 4, 0)
+        self._language_combo = QtWidgets.QComboBox()
+        self._language_combo.addItem(self._t("language.auto", "Auto"), "auto")
+        self._language_combo.addItem("ES", "es"); self._language_combo.addItem("EN", "en"); self._language_combo.addItem("PT-BR", "pt-BR")
+        self._language_combo.setToolTip(self._t("language.help", "Selecciona Auto, español, inglés o portugués brasileño. Se guarda como preferencia local."))
+        self._language_combo.setCurrentIndex(next((i for i in range(self._language_combo.count()) if self._language_combo.itemData(i) == self._locale), 0))
+        self._language_combo.currentIndexChanged.connect(lambda i: self._set_language(self._language_combo.itemData(i)))
+        source_layout.addWidget(self._language_combo, 4, 1)
         layout.addWidget(source)
-        profiles = QtWidgets.QGroupBox("Personaje y perfil local")
+        profiles = QtWidgets.QGroupBox(self._t("profile.group", "Personaje y perfil local"))
         profile_layout = QtWidgets.QGridLayout(profiles)
         self._character_name = QtWidgets.QLineEdit("Personaje local"); self._realm = QtWidgets.QLineEdit("Reino local"); self._profile_name = QtWidgets.QLineEdit()
-        self._profiles = QtWidgets.QComboBox(); self._profiles.setToolTip("Perfiles locales guardados con equipo, builds, pesos y resultados.")
-        save_profile = QtWidgets.QPushButton("Guardar perfil"); save_profile.setToolTip("Guarda personaje, equipo, especializaciones y loadouts detectados. No ejecuta SimulationCraft."); save_profile.clicked.connect(self._save_profile)
-        open_profile = QtWidgets.QPushButton("Abrir"); open_profile.setToolTip("Abre el perfil local seleccionado."); open_profile.clicked.connect(self._open_profile)
-        delete_profile = QtWidgets.QPushButton("Eliminar perfil"); delete_profile.setToolTip("Elimina solo el perfil local seleccionado; no modifica WoW."); delete_profile.clicked.connect(self._delete_profile)
-        profile_layout.addWidget(QtWidgets.QLabel("Personaje"), 0, 0); profile_layout.addWidget(self._character_name, 0, 1); profile_layout.addWidget(QtWidgets.QLabel("Reino"), 0, 2); profile_layout.addWidget(self._realm, 0, 3)
-        profile_layout.addWidget(QtWidgets.QLabel("Nombre del perfil"), 1, 0); profile_layout.addWidget(self._profile_name, 1, 1, 1, 2); profile_layout.addWidget(save_profile, 1, 3)
-        profile_layout.addWidget(QtWidgets.QLabel("Perfil guardado"), 2, 0); profile_layout.addWidget(self._profiles, 2, 1, 1, 2); profile_layout.addWidget(open_profile, 2, 3); profile_layout.addWidget(delete_profile, 2, 4)
+        self._profiles = QtWidgets.QComboBox(); self._profiles.setToolTip(self._t("profile.help", "Perfiles locales guardados con equipo, builds, pesos y resultados."))
+        save_profile = QtWidgets.QPushButton(self._t("profile.save", "Guardar perfil")); save_profile.setToolTip(self._t("profile.save_help", "Guarda personaje, equipo, especializaciones y loadouts detectados. No ejecuta SimulationCraft.")); save_profile.clicked.connect(self._save_profile)
+        open_profile = QtWidgets.QPushButton(self._t("profile.open", "Abrir")); open_profile.setToolTip(self._t("profile.open_help", "Abre el perfil local seleccionado.")); open_profile.clicked.connect(self._open_profile)
+        delete_profile = QtWidgets.QPushButton(self._t("profile.delete", "Eliminar perfil")); delete_profile.setToolTip(self._t("profile.delete_help", "Elimina solo el perfil local seleccionado; World of Warcraft no se modifica.")); delete_profile.clicked.connect(self._delete_profile)
+        profile_layout.addWidget(QtWidgets.QLabel(self._t("profile.character", "Personaje")), 0, 0); profile_layout.addWidget(self._character_name, 0, 1); profile_layout.addWidget(QtWidgets.QLabel(self._t("profile.realm", "Reino")), 0, 2); profile_layout.addWidget(self._realm, 0, 3)
+        profile_layout.addWidget(QtWidgets.QLabel(self._t("profile.name", "Nombre del perfil")), 1, 0); profile_layout.addWidget(self._profile_name, 1, 1, 1, 2); profile_layout.addWidget(save_profile, 1, 3)
+        profile_layout.addWidget(QtWidgets.QLabel(self._t("profile.saved", "Perfil guardado")), 2, 0); profile_layout.addWidget(self._profiles, 2, 1, 1, 2); profile_layout.addWidget(open_profile, 2, 3); profile_layout.addWidget(delete_profile, 2, 4)
         layout.addWidget(profiles)
         middle = QtWidgets.QHBoxLayout()
-        builds_group = QtWidgets.QGroupBox("Builds detectadas")
+        builds_group = QtWidgets.QGroupBox(self._t("builds.group", "Builds detectadas"))
         builds_layout = QtWidgets.QVBoxLayout(builds_group)
         self._builds = QtWidgets.QListWidget()
         self._builds.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
-        self._builds.setToolTip("Selecciona una, dos, tres o cuatro builds. Las inválidas se muestran pero no se ejecutan.")
+        self._builds.setToolTip(self._t("builds.help", "Selecciona una a cuatro builds. Las inválidas se muestran pero no se ejecutan."))
         builds_layout.addWidget(self._builds)
-        remove_builds_button = QtWidgets.QPushButton("Eliminar builds")
-        remove_builds_button.setToolTip("Quita las builds seleccionadas del perfil local, sin borrar otras specs ni loadouts de WoW.")
+        remove_builds_button = QtWidgets.QPushButton(self._t("builds.remove", "Eliminar builds"))
+        remove_builds_button.setToolTip(self._t("builds.remove_help", "Quita las builds seleccionadas del perfil local, sin borrar otras especializaciones ni loadouts de WoW."))
         remove_builds_button.clicked.connect(self._remove_selected_builds)
         builds_layout.addWidget(remove_builds_button)
-        self._run = QtWidgets.QPushButton("Ejecutar comparación real")
-        self._run.setToolTip("Ejecuta SimulationCraft fuera del hilo de la ventana para las builds seleccionadas.")
+        self._run = QtWidgets.QPushButton(self._t("simulation.run", "Ejecutar comparación real"))
+        self._run.setToolTip(self._t("simulation.run_help", "Ejecuta SimulationCraft fuera del hilo de la ventana para las builds seleccionadas."))
         self._run.clicked.connect(self._start_run)
         builds_layout.addWidget(self._run)
         middle.addWidget(builds_group, 1)
-        table_group = QtWidgets.QGroupBox("Resultados y pesos")
+        table_group = QtWidgets.QGroupBox(self._t("results.group", "Resultados y pesos"))
         table_layout = QtWidgets.QVBoxLayout(table_group)
         self._table = ComparisonTableWidget()
         table_layout.addWidget(self._table)
         middle.addWidget(table_group, 3)
         layout.addLayout(middle, 1)
-        imports = QtWidgets.QGroupBox("Builds externas y casos")
+        imports = QtWidgets.QGroupBox(self._t("imports.group", "Builds externas y casos"))
         imports_layout = QtWidgets.QGridLayout(imports)
-        self._imports = QtWidgets.QLineEdit(); self._imports.setToolTip("Usa Nombre|cadena o cadena; separa varias builds con punto y coma.")
-        save_import = QtWidgets.QPushButton("Guardar build"); save_import.setToolTip("Guarda una build externa en el perfil sin simularla."); save_import.clicked.connect(self._save_imports)
+        self._imports = QtWidgets.QLineEdit(); self._imports.setToolTip(self._t("imports.help", "Usa Nombre|cadena o cadena; separa builds con punto y coma."))
+        save_import = QtWidgets.QPushButton(self._t("imports.save", "Guardar build")); save_import.setToolTip(self._t("imports.save_help", "Guarda una build externa en el perfil sin simularla.")); save_import.clicked.connect(self._save_imports)
         self._case_title = QtWidgets.QLineEdit("Comparación de loadouts")
-        save_case_button = QtWidgets.QPushButton("Guardar caso"); save_case_button.setToolTip("Guarda la comparación y sus resultados localmente."); save_case_button.clicked.connect(self._save_case)
-        imports_layout.addWidget(QtWidgets.QLabel("Importaciones"), 0, 0); imports_layout.addWidget(self._imports, 0, 1); imports_layout.addWidget(save_import, 0, 2)
-        imports_layout.addWidget(QtWidgets.QLabel("Nombre del caso"), 1, 0); imports_layout.addWidget(self._case_title, 1, 1); imports_layout.addWidget(save_case_button, 1, 2)
+        save_case_button = QtWidgets.QPushButton(self._t("case.save", "Guardar caso")); save_case_button.setToolTip(self._t("case.save_help", "Guarda la comparación y sus resultados localmente.")); save_case_button.clicked.connect(self._save_case)
+        imports_layout.addWidget(QtWidgets.QLabel(self._t("imports.group", "Importaciones")), 0, 0); imports_layout.addWidget(self._imports, 0, 1); imports_layout.addWidget(save_import, 0, 2)
+        imports_layout.addWidget(QtWidgets.QLabel(self._t("case.name", "Nombre del caso")), 1, 0); imports_layout.addWidget(self._case_title, 1, 1); imports_layout.addWidget(save_case_button, 1, 2)
         layout.addWidget(imports)
         actions = QtWidgets.QHBoxLayout()
-        export_scores = QtWidgets.QPushButton("Exportar pesos elegidos"); export_scores.setToolTip("Envía al addon solo pesos de builds reales seleccionadas y simuladas."); export_scores.clicked.connect(self._export_chosen_scores)
-        copy_weights = QtWidgets.QPushButton("Copiar pesos"); copy_weights.setToolTip("Copia los pesos de una build real simulada."); copy_weights.clicked.connect(self._copy_weights)
-        paste_weights = QtWidgets.QPushButton("Pegar pesos"); paste_weights.setToolTip("Guarda en la build real seleccionada una cadena de pesos copiada del addon."); paste_weights.clicked.connect(self._paste_weights)
-        clear = QtWidgets.QPushButton("Limpiar interfaz"); clear.setToolTip("Limpia datos no guardados tras pedir confirmación; mantiene perfiles y rutas."); clear.clicked.connect(self._clear_workspace)
+        export_scores = QtWidgets.QPushButton(self._t("weights.export", "Exportar pesos elegidos")); export_scores.setToolTip(self._t("weights.export_help", "Envía al addon solo pesos de builds reales seleccionadas y simuladas.")); export_scores.clicked.connect(self._export_chosen_scores)
+        copy_weights = QtWidgets.QPushButton(self._t("weights.copy", "Copiar pesos")); copy_weights.setToolTip(self._t("weights.copy_help", "Copia los pesos de una build real simulada.")); copy_weights.clicked.connect(self._copy_weights)
+        paste_weights = QtWidgets.QPushButton(self._t("weights.paste", "Pegar pesos")); paste_weights.setToolTip(self._t("weights.paste_help", "Guarda una cadena de pesos copiada del addon en la build real seleccionada.")); paste_weights.clicked.connect(self._paste_weights)
+        clear = QtWidgets.QPushButton(self._t("interface.clear", "Limpiar interfaz")); clear.setToolTip(self._t("interface.clear_help", "Limpia datos no guardados tras pedir confirmación; mantiene perfiles y rutas.")); clear.clicked.connect(self._clear_workspace)
         for button in (export_scores, copy_weights, paste_weights, clear): actions.addWidget(button)
         actions.addStretch(1); layout.addLayout(actions)
         self._progress = QtWidgets.QProgressBar()
@@ -220,20 +265,20 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
         self._progress.setValue(0)
         self._progress.setTextVisible(False)
         layout.addWidget(self._progress)
-        self._status = QtWidgets.QLabel("En WoW usa /dpslab export app, confirma /reload y vuelve aquí.")
+        self._status = QtWidgets.QLabel(self._t("status.initial", "En WoW usa /dpslab export app, confirma /reload y vuelve aquí."))
         self._status.setWordWrap(True)
         layout.addWidget(self._status)
-        self._details = QtWidgets.QPlainTextEdit(); self._details.setReadOnly(True); self._details.setMaximumBlockCount(200); self._details.setPlaceholderText("Aquí se muestran el equipo y los resultados del perfil."); layout.addWidget(self._details)
+        self._details = QtWidgets.QPlainTextEdit(); self._details.setReadOnly(True); self._details.setMaximumBlockCount(200); self._details.setPlaceholderText(self._t("details.placeholder", "Aquí se muestran el equipo y los resultados del perfil.")); layout.addWidget(self._details)
         self.setCentralWidget(scroll)
         self._refresh_profiles()
         if self._addon_path.text(): self._detect_export()
 
     def _choose_simc(self) -> None:
-        value, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Selecciona simc.exe", self._simc_path.text(), "SimulationCraft (simc.exe);;Todos (*)")
+        value, _ = QtWidgets.QFileDialog.getOpenFileName(self, self._t("dialog.choose_simc", "Selecciona simc.exe"), self._simc_path.text(), "SimulationCraft (simc.exe);;" + self._t("dialog.all_files", "Todos (*)"))
         if value: self._simc_path.setText(value)
 
     def _choose_addon(self) -> None:
-        value = QtWidgets.QFileDialog.getExistingDirectory(self, "Selecciona la carpeta DpsLab del addon", self._addon_path.text())
+        value = QtWidgets.QFileDialog.getExistingDirectory(self, self._t("dialog.choose_addon", "Selecciona la carpeta DpsLab del addon"), self._addon_path.text())
         if value: self._addon_path.setText(value)
 
     def _set_status(self, text: str) -> None:
@@ -255,9 +300,9 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
             self._show_export(export.text)
         except (AddonObservationAcquisitionError, IndexError, OSError, ValueError):
             self._export = ""; self._ids = (); self._names = {}; self._builds.clear()
-            self._set_status("No hay una exportación compatible. En WoW usa /dpslab export app y confirma /reload.")
+            self._set_status(self._t("status.no_export", "No hay una exportación compatible."))
             return
-        self._set_status("Exportación reciente detectada. Selecciona una a cuatro builds, o guarda una cadena importada para simularla sola.")
+        self._set_status(self._t("status.export_detected", "Exportación reciente detectada."))
 
     def _show_export(self, text: str) -> None:
         snapshot = parse_live_analysis_export(text)
@@ -271,14 +316,14 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
             self._character_name.setText(snapshot.character_name); self._realm.setText(snapshot.realm_name)
             if self._character is None: self._profile_name.setText(f"{snapshot.character_name} — {snapshot.realm_name}")
         self._show_builds(snapshot)
-        self._details.setPlainText(f"Equipo exportado: {len(snapshot.equipped)} pieza(s).\nGuarda el perfil para conservar este equipo junto a sus specs y builds.")
+        self._details.setPlainText(tr("details.exported_gear", None if self._locale == "auto" else self._locale, count=len(snapshot.equipped)))
 
     def _paste_export(self) -> None:
         try: self._show_export(self._application.clipboard().text())
         except Exception:
-            self._set_status("El portapapeles no contiene una exportación DpsLab válida.")
+            self._set_status(self._t("status.invalid_export", "El portapapeles no contiene una exportación DpsLab válida."))
             return
-        self._set_status("Exportación manual pegada. Selecciona de una a cuatro builds para simular.")
+        self._set_status(self._t("status.manual_export", "Exportación manual pegada."))
 
     def _show_builds(self, snapshot) -> None:
         builds = () if self._saved_profile_mode else (dict(self._character.specs).get(snapshot.specialization_id, ()) if self._character is not None else ())
@@ -290,11 +335,11 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
         self._builds.clear()
         for build in builds:
             reason = self._unavailable.get(build.build_id)
-            text = build.name if not reason else f"{build.name} — talentos sin asignar" if reason == "talents_unassigned" else f"{build.name} — estado de talentos no disponible"
+            text = build.name if not reason else self._t("builds.talents_unassigned", "{name} — talentos sin asignar").format(name=build.name) if reason == "talents_unassigned" else self._t("builds.talents_unknown", "{name} — estado de talentos no disponible").format(name=build.name)
             item = QtWidgets.QListWidgetItem(text)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, build.build_id)
             if reason:
-                item.setToolTip("Esta build se conserva, pero no se simulará hasta completar sus talentos.")
+                item.setToolTip(self._t("builds.unavailable_help", "Esta build se conserva, pero no se simulará hasta completar sus talentos."))
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsSelectable)
             self._builds.addItem(item)
         for index in range(min(4, self._builds.count())):
@@ -325,13 +370,13 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
 
     def _save_profile(self) -> None:
         if not self._export:
-            self._set_status("Detecta una exportación antes de guardar un perfil."); return
+            self._set_status(self._t("status.need_export", "Detecta una exportación antes de continuar.")); return
         try:
             snapshot = parse_live_analysis_export(self._export); self._prepare_profile(snapshot); self._persist_profile()
         except (ItemScoreProfileError, OSError, ValueError):
             self._set_status("No se pudo guardar el perfil: revisa personaje, reino y nombre del perfil."); return
         specs = len(self._character.specs); builds = sum(len(values) for _, values in self._character.specs)
-        self._set_status(f"Perfil '{self._character.profile_name}' guardado: {specs} especialización(es) y {builds} loadout(s).")
+        self._set_status(tr("status.profile_saved", None if self._locale == "auto" else self._locale, name=self._character.profile_name, specs=specs, builds=builds))
 
     def _open_profile(self) -> None:
         index = self._profiles.currentIndex()
@@ -356,13 +401,13 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
             except (IndexError, ItemScoreProfileError, ValueError):
                 self._export = ""; self._snapshot = None; self._show_saved_profile_builds()
         self._details.setPlainText("\n".join(profile_details(self._character)))
-        self._set_status("Perfil abierto: selecciona builds y simula con su equipo guardado." if matching_export or saved_context else "Perfil antiguo abierto: conserva equipo y builds, pero no guardó nivel y raza. Expórtalo una vez para actualizarlo antes de simular.")
+        self._set_status(self._t("status.profile_opened", "Perfil abierto.") if matching_export or saved_context else self._t("status.profile_old", "Perfil antiguo abierto."))
 
     def _delete_profile(self) -> None:
         index = self._profiles.currentIndex()
         if index < 0 or index >= len(self._profile_ids):
             self._set_status("Selecciona un perfil guardado para eliminar."); return
-        if QtWidgets.QMessageBox.question(self, "Eliminar perfil", "Se eliminarán el perfil local, sus builds, resultados y pesos. WoW no se modificará. ¿Continuar?") != QtWidgets.QMessageBox.StandardButton.Yes:
+        if QtWidgets.QMessageBox.question(self, self._t("dialog.delete_profile_title", "Eliminar perfil"), self._t("dialog.delete_profile_text", "¿Continuar?")) != QtWidgets.QMessageBox.StandardButton.Yes:
             return
         identifier = self._profile_ids[index]
         try: save_character_profiles(self._root, tuple(item for item in list_character_profiles(self._root) if item.character_id != identifier))
@@ -437,12 +482,12 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
         self._import_targets = tuple(build.build_id for build in imported_builds); self._names.update({build.build_id: build.name for build in imported_builds})
         simc = Path(self._simc_path.text())
         if not simc.is_file():
-            self._set_status("No se encontró simc.exe. Abre el paquete de DpsLab o indica una ruta válida.")
+            self._set_status(self._t("status.no_simc", "No se encontró simc.exe."))
             return
         self._running = True
         self._run.setEnabled(False)
         self._progress.setRange(0, 0)
-        self._set_status("Simulando con SimulationCraft; el progreso se actualizará al terminar cada build.")
+        self._set_status(self._t("status.simulating", "Simulando con SimulationCraft."))
         outcome: Queue = Queue(maxsize=1)
         def execute() -> None:
             try:
@@ -476,12 +521,12 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
             if self._remember.isChecked(): _save_paths(_settings_path(), "bundled" if _bundled_simc() else self._simc_path.text(), self._addon_path.text())
             else: _clear_paths(_settings_path())
         except OSError: pass
-        self._set_status(f"{self._skipped}{result.message} Los resultados se guardaron localmente; selecciona una build simulada y usa ‘Exportar pesos elegidos’ para actualizar sus scores en WoW.")
+        self._set_status(f"{self._skipped}{result.message} {self._t('status.results_saved', 'Los resultados se guardaron localmente.')}")
 
     def show_comparison(self, result: LoadoutComparison) -> None:
         equipment = () if self._snapshot is None else self._snapshot.equipped
-        self._table.show_table(comparison_table(result, self._names, equipment))
-        self._details.setPlainText(result.message + "\nLa tabla muestra DPS, equipo exportado y peso de cada build.")
+        self._table.show_table(comparison_table(result, self._names, equipment), self._t("table.stat", "Estadística"))
+        self._details.setPlainText(result.message + "\n" + self._t("details.comparison", "La tabla muestra DPS."))
 
     def _save_character_scores(self, result: LoadoutComparison) -> None:
         try:
@@ -543,12 +588,12 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
     def _clear_workspace(self) -> None:
         if self._running:
             self._set_status("Espera a que termine la simulación antes de limpiar la interfaz."); return
-        if QtWidgets.QMessageBox.question(self, "Limpiar interfaz", "Se borrarán los datos no guardados: personaje, reino, perfil, selección, importaciones y resultados. Los perfiles guardados y rutas se conservarán. ¿Continuar?") != QtWidgets.QMessageBox.StandardButton.Yes:
+        if QtWidgets.QMessageBox.question(self, self._t("dialog.clear_title", "Limpiar interfaz"), self._t("dialog.clear_text", "¿Continuar?")) != QtWidgets.QMessageBox.StandardButton.Yes:
             return
         self._export = ""; self._snapshot = None; self._ids = (); self._build_ids = (); self._names = {}; self._unavailable = {}; self._saved_id_map = {}; self._saved_profile_mode = False; self._comparison = None; self._character = None
         self._imports.clear(); self._case_title.setText("Comparación de loadouts"); self._character_name.clear(); self._realm.clear(); self._profile_name.clear(); self._title.setText("DpsLab — Comparación de loadouts")
         self._profiles.setCurrentIndex(-1); self._builds.clear(); self._details.clear(); self._table.clearContents(); self._table.setRowCount(0); self._table.setColumnCount(0)
-        self._set_status("Interfaz limpia. Los perfiles guardados y las rutas se conservan; detecta una nueva exportación cuando quieras.")
+        self._set_status(self._t("status.cleared", "Interfaz limpia."))
 
     def run(self) -> None:
         self.show()

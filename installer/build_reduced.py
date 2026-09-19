@@ -46,14 +46,15 @@ def main() -> int:
     notice = output / "SIMULATIONCRAFT_NOTICE.txt"
     notice.write_text(
         "SimulationCraft CLI (simc.exe) is included under GPL v3.\n"
-        f"Source SHA-256: {sha256(simc.read_bytes()).hexdigest()}\n"
-        "Source: https://github.com/simulationcraft/simc\n",
+        f"Binary SHA-256: {sha256(simc.read_bytes()).hexdigest()}\n"
+        "Source repository: https://github.com/simulationcraft/simc\n"
+        "The binary hash identifies this packaged executable; it is not a source hash or signature.\n",
         encoding="utf-8",
     )
     root = Path(__file__).resolve().parents[1]
     window_mode = "--console" if args.console else "--windowed"
     # PyInstaller collects PySide6 hooks and platform plugins from the venv.
-    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--runtime-hook", str(qt_runtime_hook), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{root / 'addon' / 'DpsLab'};DpsLabAddon", str(root / "desktop-app" / "launch_dpslab.py")]
+    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--collect-submodules", "dpslab.locales", "--runtime-hook", str(qt_runtime_hook), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{root / 'addon' / 'DpsLab'};DpsLabAddon", "--add-data", f"{root / 'docs' / 'DISTRIBUTION.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-es.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-en.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-pt-BR.md'};Documentation", str(root / "desktop-app" / "launch_dpslab.py")]
     result = subprocess.run(command, check=False).returncode
     if result == 0:
         runtime = output / "DpsLab" / "_internal"

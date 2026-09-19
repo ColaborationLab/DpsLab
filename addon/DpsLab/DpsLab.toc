@@ -1,9 +1,10 @@
 ## Interface: 120000
 ## Title: DpsLab
-## Notes: Local synthetic guidance renderer. No automation or network access.
-## Version: 0.1.0-synthetic
+## Notes: Local loadout comparison and item scores. No automation or network access.
+## Version: 0.2.0
 ## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences
 SyntheticGuidance.lua
+Localization.lua
 SyntheticExchange.lua
 SyntheticObservation.lua
 CharacterIdentityObservation.lua

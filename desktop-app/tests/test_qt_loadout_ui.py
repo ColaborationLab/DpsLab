@@ -11,7 +11,7 @@ from PySide6 import QtTest, QtWidgets
 
 from dpslab.item_score_profiles import ScoreWeights
 from dpslab.loadout_recommendation import LoadoutComparison
-from dpslab.qt_loadout_ui import ComparisonTableWidget, QtLoadoutWorkspace
+from dpslab.qt_loadout_ui import ComparisonTableWidget, QtLoadoutWorkspace, _load_language, _save_language
 from dpslab.addon_live_analysis_transport import PREFIX, canonical_live_analysis_bytes
 
 
@@ -34,12 +34,22 @@ class QtLoadoutUiTests(unittest.TestCase):
         self.assertEqual("A", widget.horizontalHeaderItem(1).text())
         self.assertIn("DPS", " ".join(widget.item(row, 0).text() for row in range(widget.rowCount())))
         self.assertIn("(-100)", widget.item(0, 1).text())
+        widget.show_table(comparison_table(result, {1: "A", 2: "B"}), "Statistic")
+        self.assertEqual("Statistic", widget.horizontalHeaderItem(0).text())
 
     def test_workspace_is_a_native_qt_window(self):
         workspace = QtLoadoutWorkspace(Path("C:/workspace"))
         self.assertIsInstance(workspace, QtWidgets.QMainWindow)
         self.assertIsInstance(workspace._table, ComparisonTableWidget)
         workspace.close()
+
+    def test_language_preference_preserves_auto_and_explicit_locale(self):
+        with TemporaryDirectory() as temporary:
+            path = Path(temporary) / "language.json"
+            _save_language(path, "auto")
+            self.assertEqual(_load_language(path), "auto")
+            _save_language(path, "ptBR")
+            self.assertEqual(_load_language(path), "pt-BR")
 
     def test_workspace_keeps_profile_and_external_build_actions(self):
         with TemporaryDirectory() as temporary:

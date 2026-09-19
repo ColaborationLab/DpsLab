@@ -1,0 +1,30 @@
+MESSAGES = {
+    "app.title": "DpsLab — Comparación de loadouts",
+    "app.subtitle": "Compara de una a cuatro builds. Los datos ausentes quedan como N/D.",
+    "source.group": "Exportación del addon", "source.detect": "Detectar exportación", "source.paste": "Pegar exportación",
+    "source.remember": "Recordar estas rutas en este equipo", "profile.group": "Personaje y perfil local",
+    "profile.save": "Guardar perfil", "profile.open": "Abrir", "profile.delete": "Eliminar perfil",
+    "builds.group": "Builds detectadas", "builds.remove": "Eliminar builds", "simulation.run": "Ejecutar comparación real",
+    "simulation.progress": "Simulando con SimulationCraft; el progreso se actualiza al terminar cada build.",
+    "results.group": "Resultados y pesos", "imports.group": "Builds externas y casos", "imports.save": "Guardar build", "case.save": "Guardar caso",
+    "weights.export": "Exportar pesos elegidos", "weights.copy": "Copiar pesos", "weights.paste": "Pegar pesos", "interface.clear": "Limpiar interfaz",
+    "table.stat": "Estadística", "table.dps": "DPS resultante", "table.equipment": "Equipo", "table.weight": "Peso",
+    "table.highest_dps": "Mayor DPS", "table.highest_weight": "Mayor peso", "status.detected": "Exportación reciente detectada.",
+    "status.saved": "Perfil '{name}' guardado.", "status.not_found": "No hay una exportación compatible.", "language.label": "Idioma", "language.auto": "Auto", "language.help": "Elige Auto, español, inglés o portugués brasileño. Se guarda como preferencia local.", "language.changed": "Idioma actualizado. Abre de nuevo la ventana para aplicar todas las etiquetas.",
+}
+
+MESSAGES.update({
+    "simc.included": "Incluido con DpsLab", "source.addon_path": "Carpeta del addon", "common.choose": "Elegir",
+    "source.addon_help": "Carpeta DpsLab dentro de Interface/AddOns.", "source.simc_help": "El paquete incluye SimulationCraft. Fuera del paquete, indica simc.exe.",
+    "source.detect_help": "Lee la última exportación confirmada del addon.", "source.paste_help": "Lee la exportación manual copiada desde el addon.",
+    "profile.help": "Perfiles locales guardados con equipo, builds, pesos y resultados.", "profile.save_help": "Guarda personaje, equipo, especializaciones y loadouts detectados. No ejecuta SimulationCraft.",
+    "profile.open_help": "Abre el perfil local seleccionado.", "profile.delete_help": "Elimina solo el perfil local seleccionado; World of Warcraft no se modifica.",
+    "profile.character": "Personaje", "profile.realm": "Reino", "profile.name": "Nombre del perfil", "profile.saved": "Perfil guardado",
+    "builds.help": "Selecciona una a cuatro builds. Las inválidas se muestran pero no se ejecutan.", "builds.remove_help": "Quita las builds seleccionadas del perfil local, sin borrar otras especializaciones ni loadouts de WoW.",
+    "simulation.run_help": "Ejecuta SimulationCraft fuera del hilo de la ventana para las builds seleccionadas.", "imports.help": "Usa Nombre|cadena o cadena; separa builds con punto y coma.",
+    "imports.save_help": "Guarda una build externa en el perfil sin simularla.", "case.name": "Nombre del caso", "case.save_help": "Guarda la comparación y sus resultados localmente.",
+    "weights.export_help": "Envía al addon solo pesos de builds reales seleccionadas y simuladas.", "weights.copy_help": "Copia los pesos de una build real simulada.", "weights.paste_help": "Guarda una cadena de pesos copiada del addon en la build real seleccionada.",
+    "interface.clear_help": "Limpia datos no guardados tras pedir confirmación; mantiene perfiles y rutas.", "status.initial": "En WoW usa /dpslab export app, confirma /reload y vuelve aquí.",
+    "details.placeholder": "Aquí se muestran el equipo y los resultados del perfil.", "dialog.choose_simc": "Selecciona simc.exe", "dialog.choose_addon": "Selecciona la carpeta DpsLab del addon", "dialog.all_files": "Todos (*)",
+    "status.no_export": "No hay una exportación compatible. En WoW usa /dpslab export app y confirma /reload.", "status.export_detected": "Exportación reciente detectada. Selecciona una a cuatro builds, o guarda una cadena importada para simularla sola.", "status.manual_export": "Exportación manual pegada. Selecciona de una a cuatro builds para simular.", "status.invalid_export": "El portapapeles no contiene una exportación DpsLab válida.", "details.exported_gear": "Equipo exportado: {count} pieza(s).\nGuarda el perfil para conservar este equipo junto a sus specs y builds.", "builds.talents_unassigned": "{name} — talentos sin asignar", "builds.talents_unknown": "{name} — estado de talentos no disponible", "builds.unavailable_help": "Esta build se conserva, pero no se simulará hasta completar sus talentos.", "status.need_export": "Detecta una exportación antes de continuar.", "status.profile_saved": "Perfil '{name}' guardado: {specs} especialización(es) y {builds} loadout(s).", "status.profile_opened": "Perfil abierto: selecciona builds y simula con su equipo guardado.", "status.profile_old": "Perfil antiguo abierto: conserva equipo y builds, pero no guardó nivel y raza. Expórtalo una vez para actualizarlo antes de simular.", "status.simulating": "Simulando con SimulationCraft; el progreso se actualizará al terminar cada build.", "status.results_saved": "Los resultados se guardaron localmente; selecciona una build simulada y usa Exportar pesos elegidos para actualizar sus scores en WoW.", "details.comparison": "La tabla muestra DPS, equipo exportado y peso de cada build.", "status.no_simc": "No se encontró simc.exe. Abre el paquete de DpsLab o indica una ruta válida.", "dialog.delete_profile_title": "Eliminar perfil", "dialog.delete_profile_text": "Se eliminarán el perfil local, sus builds, resultados y pesos. WoW no se modificará. ¿Continuar?", "dialog.clear_title": "Limpiar interfaz", "dialog.clear_text": "Se borrarán los datos no guardados: personaje, reino, perfil, selección, importaciones y resultados. Los perfiles guardados y rutas se conservarán. ¿Continuar?", "status.cleared": "Interfaz limpia. Los perfiles guardados y las rutas se conservan; detecta una nueva exportación cuando quieras."
+})

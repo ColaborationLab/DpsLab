@@ -1,5 +1,14 @@
 # DpsLab para Windows
 
+Guías completas de distribución:
+
+- `docs/DISTRIBUTION-es.md` — español.
+- `docs/DISTRIBUTION-en.md` — English.
+- `docs/DISTRIBUTION-pt-BR.md` — português do Brasil.
+
+Estas guías incluyen instalación, selección de idioma, perfiles, pesos,
+privacidad, actualización y solución de problemas.
+
 1. Extrae por completo el archivo ZIP en una carpeta con permisos de escritura.
 2. Copia `DpsLab\_internal\DpsLabAddon` a `Interface\AddOns\DpsLab` de tu instalación de WoW.
 3. Abre `DpsLab\DpsLab.exe`.

@@ -1,6 +1,47 @@
 # Next Task — DpsLab
 
-## Preparación vigente — Comparador Qt y navegación del addon (2026-09-13)
+## Preparación vigente — Publicación, actualizaciones y donativos (2026-09-18)
+
+Sí: permite obtener la suite desde CurseForge/GitHub, mantenerla actualizada
+y apoyar voluntariamente la continuidad del proyecto.
+Base local: 49d88bbeb081e55bccaee646706912372218167e; commit Qt sin push.
+Rama remota verificada por API: 11767d3a94a86de5fc23e1b035a231127c72324d.
+Scope remoto incorporado: 9929bfc58cd0878987a4266b65f7718e83c74092.
+Repositorio ColaborationLab/DpsLab actualmente público; no asumir lo contrario.
+Plan: docs/PUBLIC_DISTRIBUTION_PLAN.md.
+Revisión de los 21 pendientes previos: docs/PENDING_COMMIT_REVIEW_2026_09_18.md.
+Estado: lote 0 de localización y documentación corregido, y lote 1 iniciado.
+CurseForge y la recepción de donativos quedan pausados por instrucción de
+Daniel; no se crearán cuentas, enlaces, publicaciones ni automatización de
+esos canales durante esta pausa. La consolidación de los cambios locales y la
+preparación técnica ya existente continúan por separado.
+La app resuelve Auto desde el sistema y preserva esa preferencia; los flujos
+visibles de exportación, perfiles, simulación, borrado y pesos tienen catálogo
+ES/EN/PT-BR. El addon usa el mismo alcance para importación y perfiles de
+pesos. Se creó el ZIP público del addon con raíz `DpsLab/`, sin archivos de
+SavedVariables ni módulos sintéticos cargados en su TOC; el árbol fuente
+histórico se conserva para no romper sus pruebas. Se fijó versión pública
+`0.2.0` para addon y paquete Python. Archivos: `addon/DpsLab/`, `desktop-app/src/dpslab/`,
+`installer/build_addon_zip.py`, `installer/build_reduced.py`, pruebas y guías.
+Prueba de valor: sí, un jugador tiene una suite local más preparada para
+instalar desde un canal público, aunque CurseForge, setup Windows,
+actualizaciones y donativos todavía no se han publicado ni configurado.
+Verificación fresca: 12 pruebas Qt/localización, 9 pruebas de addon/paquete y
+163 pruebas de herramientas aprobadas; no se ejecutó SimC, no hubo commit,
+push ni publicación.
+
+```json
+{"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"f881d21fac23e8dcb32b7e8b42fc41533233670dd8570a0ef433fbf1eaca288e"}}
+```
+
+## Preparación histórica — Suite multilingüe con Luna (2026-09-17)
+
+Objetivo cerrado por transición del 2026-09-18. Implementación parcial de Luna
+conservada; revisión y pendientes de distribución en el informe enlazado arriba.
+Plan original: docs/LOCALIZATION_LUNA_PLAN.md. No constituye encargo vigente.
+Lo inferior permanece histórico y no reactiva autorizaciones anteriores.
+
+## Preparación histórica — Comparador Qt y navegación del addon (2026-09-13)
 
 Esta entrada sustituye los planes y contratos de implementación inferiores,
 conservados como antecedentes. Objetivo anterior aprobado por Daniel y publicado
@@ -20,11 +61,11 @@ Estado: objetivo implementado, aprobado por Daniel y commit autorizado el 2026-0
 Verificación de cierre y límites: docs/QT_COMPARISON_TERRA_PLAN.md, sección Cierre verificado.
 No se reactivan los contratos históricos ni sus permisos de ejecución.
 
-<!-- DPSLAB_TASK_CONTRACT_BEGIN -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_BEGIN -->
 ```json
 {"contract_version":"0.1","task_id":"qt_comparison_navigation_0_1","title":"Implement native Qt build comparison and approachable addon navigation","baseline_commit":"11767d3a94a86de5fc23e1b035a231127c72324d","authorization":{"status":"authorized_for_implementation","authorization_id":"scope-qt-comparison-20260914-daniel","authorized_by":"Daniel","authorized_at":"2026-09-14T00:00:00-05:00"},"scope":{"allowed_paths":["SCOPE_CORRECTION_0_1.md","docs/NEXT_TASK.md","docs/QT_COMPARISON_TERRA_PLAN.md","desktop-app/pyproject.toml","desktop-app/requirements-ci-win-py313.lock","desktop-app/src/dpslab/__main__.py","desktop-app/src/dpslab/comparison_table.py","desktop-app/src/dpslab/launcher.py","desktop-app/src/dpslab/qt_loadout_ui.py","desktop-app/tests/test_comparison_table.py","desktop-app/tests/test_qt_loadout_ui.py","installer/build_reduced.py","security/sbom-runtime-win-py313.spdx.json","security/dependency_vulnerability_policy_0_1.json","tools/tests/test_dependency_supply_chain.py","tools/tests/test_dependency_vulnerability_audit.py"],"generated_paths":[".dpslab/quality-gates/qt_comparison_navigation_0_1/implementation.json",".dpslab/quality-gates/qt_comparison_navigation_0_1/audit.json"],"forbidden_paths":[".github/**","addon/DpsLab/AdvisorSyntheticGuidance.lua","addon/DpsLab/SyntheticExchange.lua","addon/DpsLab/SyntheticGuidance.lua","addon/DpsLab/SyntheticObservation.lua","addon/DpsLab/TrainingDummySession.lua","knowledge/**","profiles/**","scenarios/**","variants/**","comparisons/**","results/**","config/**","flasil.simc","AGENTS.md","SECURITY.md"],"allow_deletions":false,"allow_renames":false},"tests":{"focused":{"working_directory":"desktop-app","argv":["python","-m","unittest","tests.test_comparison_table","tests.test_qt_loadout_ui","tests.test_loadout_ui","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1","QT_QPA_PLATFORM":"offscreen"}},"full":{"working_directory":"desktop-app","argv":["python","-m","unittest","discover","-s","tests","-v"],"environment":{"PYTHONPATH":"src","PYTHONDONTWRITEBYTECODE":"1","QT_QPA_PLATFORM":"offscreen"}},"baseline_test_count":1363,"minimum_test_count":1363},"protected_files":{"AGENTS.md":"59336d24041f8a84f293662aefa24528a5b13d340b18ffec76307d39a233247f","SCOPE_CORRECTION_0_1.md":"a7551f48a938a2bc5128f25b8e0857a028ce17a0f9bab8ff9cfc3bd5416beb3c"},"audit":{"required":true,"independence":"declared_and_procedural"},"acceptance_criteria":["open the complete Qt workspace from the packaged desktop entry and dpslab loadouts","compare one to four builds in native Qt table with stats weights DPS and safe N/D states","retain profile import export selection and background-run flows","pass focused and complete app and tools suites without SimulationCraft"],"express_exclusions":["SimulationCraft execution without a separate concrete authorization","new classes specializations or roles","new security program beyond exact runtime dependency synchronization","commit push release deployment","paths outside the allowlist"]}
 ```
-<!-- DPSLAB_TASK_CONTRACT_END -->
+<!-- DPSLAB_HISTORICAL_TASK_CONTRACT_END -->
 
 
 ## Preparación histórica — Defaults, perfiles de pesos y tooltips (2026-09-12)

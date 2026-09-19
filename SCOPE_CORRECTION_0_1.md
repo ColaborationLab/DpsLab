@@ -17,13 +17,17 @@ explícitamente por escrito.
 
 - 2026-09-13 — Perfiles de pesos editables, importación elegida y scores en tooltips mouseover y comparativos: aprobado visualmente por Daniel y publicado en 11767d3. Defaults trazables en 31 specs; ocho sin defaults permanecen como limitación documentada, sin acreditar simulación real de las 39.
 
+- 2026-09-17 — Comparador Qt y navegación del addon: objetivo cerrado por cambio de objetivo de Daniel, tras aprobación visual del 2026-09-16; ajustes de tabla incorporados localmente. Commit local 49d88bb; push pendiente.
+
+- 2026-09-18 — Suite ES/EN/PT-BR y documentación: objetivo cerrado por cambio de objetivo de Daniel. Revisión técnica detecta localización parcial y pruebas/empaquetado pendientes; correcciones previas a distribución registradas en docs/PENDING_COMMIT_REVIEW_2026_09_18.md. Cambios todavía sin commit; no se acredita publicación ni validación visual multilingüe.
+
 ## 1. Objetivo único vigente (todo lo demás queda congelado)
 
-El único trabajo autorizado a partir de ahora es completar, La app muestra las builds comparadas (hasta 4) en una tabla lado a lado (estilo comparador de tiendas online): una columna por build, una fila por
-estadística relevante (crit, haste, mastery, versatility, DPS resultante), resaltando visualmente en qué estadísticas hay mayor diferencia entre builds y cómo cambia el peso de cada una según la build. Construida con QTableWidget/QTableView nativo de Qt y una sola hoja de estilo — sin editor de temas, sin animaciones, sin paneles flotantes:
+El único trabajo autorizado a partir de ahora es completar, Publicación en CurseForge, donativos, auto-actualización:
 
-1. El addon tiene una interfaz viual navegable. Intuitivamente sencilla de manejar y con ayudas adicionales mediante Tooltips. Un usuario iniciado debe poder usar el addon sin mayor dificultad y con mínimo esfuerzo. Mínimo esfuerzo no quiere decir mínimas opciones de configuracion.
-2. La app tiene una interfaz accesible para usuarios principiantes y muesrta una tabla comparativa de hasta 4 builds mediante tablas side by side.
+1. El addon está disponible en la plataforma CurseForge.
+2. La app Esta lista para ser distribuida junto con instaladores mediante repositorios publicos de github.
+3. La suite tiene una adecuada metodologia de actualizaciones y recepcion de donaciones como colaboracion a la continuidad del proyecto
 
 
 ### 1.1 Decisión de dirección (2026-09-08): empaquetar, no reconstruir
@@ -51,7 +55,7 @@ por separado.
 Antes de proponer, diseñar o implementar cualquier tarea, Codex debe
 responder explícitamente, en una sola frase y en lenguaje simple:
 
-> "¿Esta tarea hace que un jugador disponga de intefases que permiten el uso del addon y de la aplicación y presentan facilidad de comparar builds side by side en un formato tipo tabla?"
+> "¿Esta tarea hace que un jugador disponga de la suite completa desde canales de distribucion conocidos y el propietario del proyecto, puede colectar donativos?"
 
 - Si la respuesta es **no**, la tarea queda congelada. No se diseña, no se
   implementa, no se documenta como "next task" — se descarta o se pospone.

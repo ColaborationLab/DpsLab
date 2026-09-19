@@ -1,4 +1,8 @@
 local DpsLab = {}
+local function T(key, fallback)
+  local value = DpsLabLocalization and DpsLabLocalization.Get and DpsLabLocalization.Get(key)
+  return value or fallback or key
+end
 
 local UNAVAILABLE = {
   status = "unavailable",
@@ -191,14 +195,14 @@ local function confirmAppExport(payload)
   local frame = CreateFrame("Frame", nil, UIParent, "BasicFrameTemplateWithInset")
   frame:SetSize(460, 150); frame:SetPoint("CENTER"); frame:Show()
   frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText("Exportar a la app de DpsLab")
+  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText(T("export_title", "Exportar a la app de DpsLab"))
   frame.detail = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   frame.detail:SetPoint("TOP", 0, -62); frame.detail:SetWidth(400)
-  frame.detail:SetText("Esto guarda solo el análisis actual y recarga la interfaz. La app podrá detectarlo sin copiar texto.")
+  frame.detail:SetText(T("export_help", "Esto guarda solo el análisis actual y recarga la interfaz. La app podrá detectarlo sin copiar texto."))
   frame.accept = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.accept:SetSize(180, 24); frame.accept:SetPoint("BOTTOM", -96, 18); frame.accept:SetText("Exportar y /reload")
+  frame.accept:SetSize(180, 24); frame.accept:SetPoint("BOTTOM", -96, 18); frame.accept:SetText(T("export_reload", "Exportar y /reload"))
   frame.cancel = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.cancel:SetSize(100, 24); frame.cancel:SetPoint("BOTTOM", 96, 18); frame.cancel:SetText("Cancelar")
+  frame.cancel:SetSize(100, 24); frame.cancel:SetPoint("BOTTOM", 96, 18); frame.cancel:SetText(T("cancel", "Cancelar"))
   frame.accept:SetScript("OnClick", function()
     _G.DpsLabObservationExport = "live_analysis:" .. lowerHex(payload)
     ReloadUI()

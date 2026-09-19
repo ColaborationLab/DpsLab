@@ -11,11 +11,19 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[2]
 LUA = (ROOT / "addon/DpsLab/ItemScoreProfiles.lua").read_text(encoding="utf-8")
+LOCALIZATION = (ROOT / "addon/DpsLab/Localization.lua").read_text(encoding="utf-8")
 TOC = (ROOT / "addon/DpsLab/DpsLab.toc").read_text(encoding="utf-8")
 DEFAULTS = (ROOT / "addon/DpsLab/DefaultItemScoreProfiles.lua").read_text(encoding="utf-8")
 
 
 class AddonItemScoreProfilesTests(unittest.TestCase):
+    def test_weight_management_text_has_all_supported_catalogs(self):
+        for text in (
+            'en = {', 'es = {', 'pt = {', 'import_prompt =', 'positive_weights =',
+            'automatic_profile =', 'weights_button_help =', 'delete_profile_help =',
+        ):
+            self.assertIn(text, LOCALIZATION)
+
     def test_tooltip_hook_displays_each_selected_profile_score(self):
         self.assertIn('pcall(GameTooltip.HookScript, GameTooltip, "OnTooltipSetItem", addTooltipScores)', LUA)
         self.assertIn("Scores.ScoreItem(link, profile)", LUA)
@@ -36,14 +44,18 @@ class AddonItemScoreProfilesTests(unittest.TestCase):
         self.assertNotIn("DpsLabAwaitScore", LUA)
         self.assertNotIn("local function tooltipLink", LUA)
         self.assertIn('StaticPopupDialogs["DPSLAB_IMPORT_SCORES"]', LUA)
-        self.assertIn('button1 = "Usar nuevos", button2 = "Conservar actuales", button3 = "Guardar actuales + usar nuevos"', LUA)
+        self.assertIn('button1 = T("use_new", "Usar nuevos")', LUA)
+        self.assertIn('button2 = T("keep_current", "Conservar actuales")', LUA)
+        self.assertIn('button3 = T("save_current_new", "Guardar actuales + usar nuevos")', LUA)
         self.assertIn('dialog:Hide()', LUA)
         self.assertIn('UIDropDownMenuTemplate', LUA)
         self.assertIn('function Scores.ExportString(profile)', LUA)
         self.assertIn('function Scores.ImportString(text)', LUA)
         self.assertIn('"N/D: efecto"', LUA)
-        self.assertIn('frame.removeBuild = button("Eliminar build"', LUA)
-        self.assertIn('frame.removeProfile = button("Eliminar perfil"', LUA)
+        self.assertIn('frame.removeBuild = button(T("delete_build", "Eliminar build")', LUA)
+        self.assertIn('frame.removeProfile = button(T("delete_profile", "Eliminar perfil")', LUA)
+        self.assertIn('local function T(key, fallback)', LUA)
+        self.assertIn('DpsLabLocalization.Get', LUA)
 
     def test_visible_menu_persists_profile_selection_without_automation(self):
         self.assertIn("function Scores.ShowConfig()", LUA)
@@ -55,9 +67,9 @@ class AddonItemScoreProfilesTests(unittest.TestCase):
         self.assertGreaterEqual(DEFAULTS.count("specialization_id"), 31)
         self.assertIn("talent_string", DEFAULTS)
         self.assertIn("report_sha256", DEFAULTS)
-        self.assertIn('frame.copy:SetText("Copiar")', LUA)
+        self.assertIn('frame.copy:SetText(T("copy", "Copiar"))', LUA)
         self.assertIn("build sugerida para principiantes", LUA)
-        self.assertIn('frame.saveProfile:SetText("Guardar perfil")', LUA)
+        self.assertIn('frame.saveProfile:SetText(T("save_profile", "Guardar perfil"))', LUA)
         self.assertIn("Perfiles de pesos guardados", LUA)
         self.assertIn("(b) identifica una build sugerida para principiantes", LUA)
         self.assertIn("ItemScoreProfiles.lua", TOC)

@@ -232,16 +232,15 @@ class GitHubAutomationTests(unittest.TestCase):
     def test_contract_lifecycle_accepts_zero_or_one_active_contract(self) -> None:
         text = NEXT_TASK.read_text(encoding="utf-8")
         active = active_contract(text)
-        self.assertIsNotNone(active)
-        assert active is not None
-        assert_closed_contract(self, active)
+        if active is not None:
+            assert_closed_contract(self, active)
 
         without_active = ACTIVE_PATTERN.sub("", text)
         self.assertIsNone(active_contract(without_active))
         active_block = ACTIVE_PATTERN.search(text)
-        assert active_block is not None
-        with self.assertRaisesRegex(AssertionError, "more than one active"):
-            active_contract(text + "\n" + active_block.group(0))
+        if active_block is not None:
+            with self.assertRaisesRegex(AssertionError, "more than one active"):
+                active_contract(text + "\n" + active_block.group(0))
         for marker in (ACTIVE_BEGIN, ACTIVE_END):
             with self.assertRaisesRegex(AssertionError, "delimiter mismatch"):
                 active_contract(text + "\n" + marker)
@@ -267,17 +266,17 @@ class GitHubAutomationTests(unittest.TestCase):
             with self.assertRaisesRegex(AssertionError, "delimiter mismatch"):
                 historical_contracts(text + "\n" + marker)
 
-        assert active is not None
-        for field in ("task_id", "authorization_id"):
-            replay = json.loads(json.dumps(active))
-            if field == "task_id":
-                replay["task_id"] = historical[0]["task_id"]
-            else:
-                replay["authorization"]["authorization_id"] = (
-                    historical[0]["authorization"]["authorization_id"]
-                )
-            with self.assertRaisesRegex(AssertionError, "identity replay"):
-                assert_unique_authority(replay, historical)
+        if active is not None:
+            for field in ("task_id", "authorization_id"):
+                replay = json.loads(json.dumps(active))
+                if field == "task_id":
+                    replay["task_id"] = historical[0]["task_id"]
+                else:
+                    replay["authorization"]["authorization_id"] = (
+                        historical[0]["authorization"]["authorization_id"]
+                    )
+                with self.assertRaisesRegex(AssertionError, "identity replay"):
+                    assert_unique_authority(replay, historical)
 
     def test_documentation_preserves_authority_boundary(self) -> None:
         documentation = DOCUMENTATION.read_text(encoding="utf-8")

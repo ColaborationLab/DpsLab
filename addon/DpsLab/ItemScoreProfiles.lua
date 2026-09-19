@@ -1,6 +1,10 @@
 -- Local score display. It never runs SimulationCraft or selects gameplay actions.
 local Scores = {}
 local ALLOWED = { Strength=true, Intellect=true, Agility=true, CritRating=true, HasteRating=true, MasteryRating=true, VersatilityRating=true }
+local function T(key, fallback)
+  local value = DpsLabLocalization and DpsLabLocalization.Get and DpsLabLocalization.Get(key)
+  return value or fallback or key
+end
 
 local function notify(text)
   print("[DpsLab] " .. text)
@@ -91,17 +95,17 @@ function Scores.Refresh()
   if Scores._pendingImport == document then return end
   Scores._pendingImport = document
   if type(StaticPopupDialogs) ~= "table" or type(StaticPopup_Show) ~= "function" then
-    print("[DpsLab] Hay nuevos pesos listos para importar; abre /dpslab config tras recargar.")
+    print("[DpsLab] " .. T("import_ready", "Hay nuevos pesos listos para importar; abre /dpslab config tras recargar."))
     return
   end
   StaticPopupDialogs["DPSLAB_IMPORT_SCORES"] = {
-    text = "DpsLab recibió pesos simulados nuevos.\n\nUsar nuevos: sustituye el perfil activo.\nConservar actuales: ignora esta importación.\nGuardar actuales + usar nuevos: guarda una copia del perfil activo y activa los nuevos.",
-    button1 = "Usar nuevos", button2 = "Conservar actuales", button3 = "Guardar actuales + usar nuevos",
+    text = T("import_prompt", "DpsLab recibió pesos simulados nuevos.\n\nUsar nuevos: sustituye el perfil activo.\nConservar actuales: ignora esta importación.\nGuardar actuales + usar nuevos: guarda una copia del perfil activo y activa los nuevos."),
+    button1 = T("use_new", "Usar nuevos"), button2 = T("keep_current", "Conservar actuales"), button3 = T("save_current_new", "Guardar actuales + usar nuevos"),
     wide = true, buttonWidth = 175,
     OnShow = function(dialog)
-      buttonTooltip(dialog.button1, "Activa los pesos recién importados y sustituye el perfil activo actual.")
-      buttonTooltip(dialog.button2, "Mantiene el perfil activo actual e ignora los pesos recién importados.")
-      buttonTooltip(dialog.button3, "Guarda una copia del perfil activo actual y después activa los pesos recién importados.")
+      buttonTooltip(dialog.button1, T("replace_help", "Activa los pesos recién importados y sustituye el perfil activo actual."))
+      buttonTooltip(dialog.button2, T("keep_help", "Mantiene el perfil activo actual e ignora los pesos recién importados."))
+      buttonTooltip(dialog.button3, T("save_current_help", "Guarda una copia del perfil activo actual y después activa los pesos recién importados."))
     end,
     OnAccept = function(dialog, data)
       data = data or dialog.data
@@ -109,14 +113,14 @@ function Scores.Refresh()
       DpsLabItemScorePreferences.import_seen[data.character_id] = CopyTable(data)
       if DpsLabItemScorePreferences.active_saved then DpsLabItemScorePreferences.active_saved[data.character_id] = nil end
       Scores._pendingImport = nil
-      notify("Pesos nuevos activados. Los scores ya usan esta importación.")
+      notify(T("import_activated", "Pesos nuevos activados. Los scores ya usan esta importación."))
       dialog:Hide()
     end,
     OnCancel = function(dialog, data)
       data = data or dialog.data
       DpsLabItemScorePreferences.import_seen[data.character_id] = CopyTable(data)
       Scores._pendingImport = nil
-      notify("Importación descartada. Se conservaron los pesos activos.")
+      notify(T("import_discarded", "Importación descartada. Se conservaron los pesos activos."))
       dialog:Hide()
     end,
     OnAlt = function(dialog, data)
@@ -135,7 +139,7 @@ function Scores.Refresh()
       DpsLabItemScorePreferences.import_seen[data.character_id] = CopyTable(data)
       if DpsLabItemScorePreferences.active_saved then DpsLabItemScorePreferences.active_saved[data.character_id] = nil end
       Scores._pendingImport = nil
-      notify("Perfil anterior guardado y pesos nuevos activados.")
+      notify(T("saved_current_activated", "Perfil anterior guardado y pesos nuevos activados."))
       dialog:Hide()
     end,
     timeout = 0, whileDead = true, hideOnEscape = true,
@@ -335,12 +339,12 @@ function Scores.ShowWeights()
     frame:SetSize(560, 590); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
     frame:SetMovable(true); frame:EnableMouse(true); frame:RegisterForDrag("LeftButton")
     frame:SetScript("OnDragStart", frame.StartMoving); frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
-    frame.TitleText:SetText("DpsLab — pesos estadísticos")
+    frame.TitleText:SetText("DpsLab — " .. T("weights", "pesos estadísticos"))
     frame.heading = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     frame.heading:SetPoint("TOP", 0, -44); frame.heading:SetWidth(470)
     frame.help = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     frame.help:SetPoint("TOP", 0, -77); frame.help:SetWidth(470)
-    frame.help:SetText("(b): referencia beginner. Pesos simulados: estimación local para ese equipo y talentos; el score no equivale a DPS ni mide supervivencia.")
+    frame.help:SetText(T("weights_help", "(b): referencia beginner. Pesos simulados: estimación local para ese equipo y talentos; el score no equivale a DPS ni mide supervivencia."))
     frame.fields = {}
     local labels = { {"Strength", "Fuerza"}, {"Agility", "Agilidad"}, {"Intellect", "Intelecto"}, {"CritRating", "Crítico"}, {"HasteRating", "Celeridad"}, {"MasteryRating", "Maestría"}, {"VersatilityRating", "Versatilidad"} }
     for index, entry in ipairs(labels) do
@@ -355,32 +359,32 @@ function Scores.ShowWeights()
       control:SetSize(width, 24); control:SetPoint("TOPLEFT", x, y); control:SetText(text); return control
     end
     frame.buildLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.buildLabel:SetPoint("TOPLEFT", 30, -309); frame.buildLabel:SetText("Build consultada")
+    frame.buildLabel:SetPoint("TOPLEFT", 30, -309); frame.buildLabel:SetText(T("build", "Build consultada"))
     frame.buildDrop = CreateFrame("Frame", nil, frame, "UIDropDownMenuTemplate")
     frame.buildDrop:SetPoint("TOPLEFT", 190, -292); UIDropDownMenu_SetWidth(frame.buildDrop, 285)
     frame.nameLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.nameLabel:SetPoint("TOPLEFT", 30, -352); frame.nameLabel:SetText("Nombre de la copia")
+    frame.nameLabel:SetPoint("TOPLEFT", 30, -352); frame.nameLabel:SetText(T("copy_name", "Nombre de la copia"))
     frame.name = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
     frame.name:SetSize(250, 22); frame.name:SetPoint("TOPLEFT", 190, -347); frame.name:SetAutoFocus(false)
-    frame.save = button("Guardar y activar", 410, -345, 125)
-    buttonTooltip(frame.save, "Crea una copia con el nombre y valores visibles y la deja como perfil activo. No modifica el perfil importado original.")
+    frame.save = button(T("save_activate", "Guardar y activar"), 410, -345, 125)
+    buttonTooltip(frame.save, T("save_activate_help", "Crea una copia con el nombre y valores visibles y la deja como perfil activo. No modifica el perfil importado original."))
     frame.profileLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.profileLabel:SetPoint("TOPLEFT", 30, -390); frame.profileLabel:SetText("Perfil de pesos activo")
+    frame.profileLabel:SetPoint("TOPLEFT", 30, -390); frame.profileLabel:SetText(T("active_profile", "Perfil de pesos activo"))
     frame.profileDrop = CreateFrame("Frame", nil, frame, "UIDropDownMenuTemplate")
     frame.profileDrop:SetPoint("TOPLEFT", 190, -373); UIDropDownMenu_SetWidth(frame.profileDrop, 285)
-    buttonTooltip(frame.profileDrop, "Elige qué perfil de pesos se usa ahora en los scores. Automático usa la importación de la app o, si no existe, la referencia beginner.")
+    buttonTooltip(frame.profileDrop, T("active_profile_help", "Elige qué perfil de pesos se usa ahora en los scores. Automático usa la importación de la app o, si no existe, la referencia beginner."))
     frame.transferLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.transferLabel:SetPoint("TOPLEFT", 30, -432); frame.transferLabel:SetText("Intercambio manual")
+    frame.transferLabel:SetPoint("TOPLEFT", 30, -432); frame.transferLabel:SetText(T("manual_transfer", "Intercambio manual"))
     frame.transfer = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
     frame.transfer:SetSize(300, 22); frame.transfer:SetPoint("TOPLEFT", 190, -427); frame.transfer:SetAutoFocus(false)
-    frame.copyTransfer = button("Copiar", 30, -466, 110)
-    frame.importTransfer = button("Importar pegado", 150, -466, 145)
-    frame.removeBuild = button("Eliminar build", 305, -466, 115)
-    frame.removeProfile = button("Eliminar perfil", 430, -466, 105)
-    buttonTooltip(frame.copyTransfer, "Copia los pesos de la build visible para pegarlos en la app o guardarlos manualmente.")
-    buttonTooltip(frame.importTransfer, "Lee una cadena DPSLAB-WEIGHTS pegada y la guarda como un perfil nuevo activo.")
-    buttonTooltip(frame.removeBuild, "Elimina la build visible solo del perfil de pesos guardado activo. No borra el loadout de talentos de WoW.")
-    buttonTooltip(frame.removeProfile, "Elimina el perfil de pesos guardado activo. El perfil automático importado no se puede borrar desde aquí.")
+    frame.copyTransfer = button(T("copy", "Copiar"), 30, -466, 110)
+    frame.importTransfer = button(T("paste_import", "Importar pegado"), 150, -466, 145)
+    frame.removeBuild = button(T("delete_build", "Eliminar build"), 305, -466, 115)
+    frame.removeProfile = button(T("delete_profile", "Eliminar perfil"), 430, -466, 105)
+    buttonTooltip(frame.copyTransfer, T("copy_transfer_help", "Copia los pesos de la build visible para pegarlos en la app o guardarlos manualmente."))
+    buttonTooltip(frame.importTransfer, T("import_transfer_help", "Lee una cadena DPSLAB-WEIGHTS pegada y la guarda como un perfil nuevo activo."))
+    buttonTooltip(frame.removeBuild, T("delete_build_help", "Elimina la build visible solo del perfil de pesos guardado activo. No borra el loadout de talentos de WoW."))
+    buttonTooltip(frame.removeProfile, T("delete_profile_help", "Elimina el perfil de pesos guardado activo. El perfil automático importado no se puede borrar desde aquí."))
     frame.status = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     frame.status:SetPoint("BOTTOMLEFT", 30, 15); frame.status:SetWidth(500)
   end
@@ -406,13 +410,13 @@ function Scores.ShowWeights()
       local text = field:GetText()
       if text ~= "" then
         local value = tonumber(text)
-        if not value or value <= 0 or value ~= value or value == math.huge then frame.status:SetText("Usa pesos positivos o deja la casilla vacía."); return end
+        if not value or value <= 0 or value ~= value or value == math.huge then frame.status:SetText(T("positive_weights", "Usa pesos positivos o deja la casilla vacía.")); return end
         weights[stat] = value
       end
     end
-    if not next(weights) then frame.status:SetText("Introduce al menos un peso."); return end
+    if not next(weights) then frame.status:SetText(T("one_weight", "Introduce al menos un peso.")); return end
     local name = frame.name:GetText():match("^%s*(.-)%s*$")
-    if name == "" then frame.status:SetText("Pon un nombre al perfil."); return end
+    if name == "" then frame.status:SetText(T("name_profile", "Pon un nombre al perfil.")); return end
     local copy = CopyTable(document)
     copy.item_scores.profiles[index].weights = weights
     copy.item_scores.profiles[index].edited = true
@@ -420,74 +424,88 @@ function Scores.ShowWeights()
     savedIndex = #saved
     DpsLabItemScorePreferences.active_saved = DpsLabItemScorePreferences.active_saved or {}
     DpsLabItemScorePreferences.active_saved[document.character_id] = savedIndex
-    notify("Perfil de pesos guardado y activado: " .. name)
+    notify(T("profile_saved_active", "Perfil de pesos guardado y activado: ") .. name)
     Scores.ShowWeights()
   end)
-  local profileNames = { "Automático: importado o beginner" }
+  local profileNames = { T("automatic_profile", "Automático: importado o beginner") }
   for _, entry in ipairs(saved) do profileNames[#profileNames + 1] = entry.name end
   local activeSaved = savedIndex
   initializeDropdown(frame.profileDrop, profileNames, activeSaved + 1, function(value)
     DpsLabItemScorePreferences.active_saved = DpsLabItemScorePreferences.active_saved or {}
     DpsLabItemScorePreferences.active_saved[document.character_id] = value > 1 and value - 1 or nil
-    notify("Perfil de pesos activo: " .. profileNames[value]); frame:Hide(); Scores.ShowWeights()
+    notify(T("profile_active", "Perfil de pesos activo: ") .. profileNames[value]); frame:Hide(); Scores.ShowWeights()
   end)
   frame.copyTransfer:SetScript("OnClick", function()
     local value = Scores.ExportString(profiles[index]) or ""
     frame.transfer:SetText(value); frame.transfer:SetFocus(); frame.transfer:HighlightText()
     if type(CopyToClipboard) == "function" then CopyToClipboard(value) end
-    frame.status:SetText("Cadena preparada. Si no se copió automáticamente, usa Ctrl+C.")
+    frame.status:SetText(T("transfer_ready", "Cadena preparada. Si no se copió automáticamente, usa Ctrl+C."))
   end)
   frame.importTransfer:SetScript("OnClick", function()
     local value = Scores.ImportString(frame.transfer:GetText())
-    if not value then frame.status:SetText("La cadena no es válida para la especialización actual."); return end
+    if not value then frame.status:SetText(T("invalid_transfer", "La cadena no es válida para la especialización actual.")); return end
     local copy = CopyTable(document); copy.item_scores.profiles[index].name = value.name
     copy.item_scores.profiles[index].weights = value.weights; copy.item_scores.profiles[index].edited = true
     saved[#saved + 1] = { name=value.name, document=copy }
     DpsLabItemScorePreferences.active_saved = DpsLabItemScorePreferences.active_saved or {}
     DpsLabItemScorePreferences.active_saved[document.character_id] = #saved
-    notify("Cadena importada y activada como perfil: " .. value.name); Scores.ShowWeights()
+    notify(T("transfer_imported", "Cadena importada y activada como perfil: ") .. value.name); Scores.ShowWeights()
   end)
   frame.removeBuild:SetScript("OnClick", function()
-    if savedIndex == 0 or not saved[savedIndex] then frame.status:SetText("Guarda y activa una copia antes de eliminar una build."); return end
+    if savedIndex == 0 or not saved[savedIndex] then frame.status:SetText(T("save_before_delete", "Guarda y activa una copia antes de eliminar una build.")); return end
     local copy = saved[savedIndex].document
     local entries = copy and copy.item_scores and copy.item_scores.profiles
-    if type(entries) ~= "table" or #entries < 2 then frame.status:SetText("El perfil debe conservar al menos una build. Elimina el perfil completo si no lo necesitas."); return end
+    if type(entries) ~= "table" or #entries < 2 then frame.status:SetText(T("keep_one_build", "El perfil debe conservar al menos una build. Elimina el perfil completo si no lo necesitas.")); return end
     table.remove(entries, index)
-    notify("Build eliminada del perfil guardado: " .. saved[savedIndex].name); Scores.ShowWeights()
+    notify(T("build_deleted", "Build eliminada del perfil guardado: ") .. saved[savedIndex].name); Scores.ShowWeights()
   end)
   frame.removeProfile:SetScript("OnClick", function()
-    if savedIndex == 0 or not saved[savedIndex] then frame.status:SetText("El perfil automático no se borra. Elige un perfil guardado en la lista desplegable."); return end
+    if savedIndex == 0 or not saved[savedIndex] then frame.status:SetText(T("auto_not_deleted", "El perfil automático no se borra. Elige un perfil guardado en la lista desplegable.")); return end
     local name = saved[savedIndex].name
     table.remove(saved, savedIndex)
     DpsLabItemScorePreferences.active_saved[document.character_id] = nil
-    notify("Perfil de pesos eliminado: " .. name); Scores.ShowWeights()
+    notify(T("profile_deleted", "Perfil de pesos eliminado: ") .. name); Scores.ShowWeights()
   end)
-  frame.status:SetText("Consulta cada build o guarda una copia con tus ajustes.")
+  frame.status:SetText(T("weights_hint", "Consulta cada build o guarda una copia con tus ajustes."))
   render(); frame:Show()
 end
 
 function Scores.ShowConfig()
   local document = Scores.Active()
   local profiles = document and document.item_scores and document.item_scores.profiles or {}
+  DpsLabItemScorePreferences = type(DpsLabItemScorePreferences) == "table" and DpsLabItemScorePreferences or { enabled=true, selected={} }
   local frame = _G.DpsLabItemScoreConfigFrame or CreateFrame("Frame", "DpsLabItemScoreConfigFrame", UIParent, "BasicFrameTemplateWithInset")
   frame:SetSize(460, 258 + #profiles * 24); frame:SetPoint("CENTER"); frame:Show()
   frame.title = frame.title or frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText("DpsLab — scores de equipo")
+  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText("DpsLab — " .. T("scores_title", "scores de equipo"))
+  frame.localeLabel = frame.localeLabel or frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+  frame.localeLabel:SetPoint("TOPLEFT", 24, -38); frame.localeLabel:SetText(T("language", "Idioma"))
+  frame.localeDrop = frame.localeDrop or CreateFrame("Frame", nil, frame, "UIDropDownMenuTemplate")
+  frame.localeDrop:SetPoint("TOPLEFT", 70, -25); UIDropDownMenu_SetWidth(frame.localeDrop, 150)
+  buttonTooltip(frame.localeDrop, T("language_help", "Elige Auto, español, inglés o portugués brasileño. La preferencia se conserva en este equipo."))
+  local localeValues = { "auto", "es", "en", "pt" }
+  local localeLabels = { T("language_auto", "Auto"), "ES", "EN", "PT-BR" }
+  local selectedLocale = DpsLabItemScorePreferences.locale or "auto"
+  local localeIndex = 1; for index, entry in ipairs(localeValues) do if entry == selectedLocale then localeIndex = index end end
+  initializeDropdown(frame.localeDrop, localeLabels, localeIndex, function(index)
+    local value = localeValues[index]
+    if DpsLabLocalization and DpsLabLocalization.SetLocale then DpsLabLocalization.SetLocale(value) end
+    UIDropDownMenu_SetText(frame.localeDrop, localeLabels[index]); notify(T("language_changed", "Idioma actualizado. Algunas ventanas se actualizarán al abrirlas de nuevo."))
+  end)
   frame.weightsButton = frame.weightsButton or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.weightsButton:SetSize(190, 22); frame.weightsButton:SetPoint("TOPLEFT", 18, -10); frame.weightsButton:SetText("Ver / editar pesos")
+  frame.weightsButton:SetSize(190, 22); frame.weightsButton:SetPoint("TOPLEFT", 18, -10); frame.weightsButton:SetText(T("view_edit", "Ver / editar pesos"))
   frame.weightsButton:SetScript("OnClick", Scores.ShowWeights)
-  buttonTooltip(frame.weightsButton, "Abre la lista de builds y perfiles de pesos. Aquí puedes consultar, nombrar, guardar, activar o transferir pesos.")
+  buttonTooltip(frame.weightsButton, T("weights_button_help", "Abre la lista de builds y perfiles de pesos. Aquí puedes consultar, nombrar, guardar, activar o transferir pesos."))
   frame.manualExport = frame.manualExport or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.manualExport:SetSize(190, 22); frame.manualExport:SetPoint("TOPRIGHT", -18, -10); frame.manualExport:SetText("Copiar exportación")
+  frame.manualExport:SetSize(190, 22); frame.manualExport:SetPoint("TOPRIGHT", -18, -10); frame.manualExport:SetText(T("copy_export", "Copiar exportación"))
   frame.manualExport:SetScript("OnClick", function() if DpsLab and DpsLab.ShowManualAnalysisExport then DpsLab.ShowManualAnalysisExport() end end)
-  buttonTooltip(frame.manualExport, "Muestra la exportación completa para copiarla y pegarla en la app. La detección automática sigue disponible.")
+  buttonTooltip(frame.manualExport, T("manual_export_help", "Muestra la exportación completa para copiarla y pegarla en la app. La detección automática sigue disponible."))
   frame.detail = frame.detail or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   frame.detail:SetPoint("TOP", 0, -62); frame.detail:SetWidth(410)
-  frame.detail:SetText("Los pesos personalizados provienen del loadout elegido en SimC; (b) identifica una build sugerida para principiantes.")
+  frame.detail:SetText(T("config_detail", "Los pesos personalizados provienen del loadout elegido en SimC; (b) identifica una build sugerida para principiantes."))
   frame.toggle = frame.toggle or CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
   frame.toggle:SetPoint("BOTTOMLEFT", 28, 106); frame.toggle.text = frame.toggle.text or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  frame.toggle.text:SetPoint("LEFT", frame.toggle, "RIGHT", 4, 0); frame.toggle.text:SetText("Mostrar scores de item")
-  DpsLabItemScorePreferences = type(DpsLabItemScorePreferences) == "table" and DpsLabItemScorePreferences or { enabled=true, selected={} }
+  frame.toggle.text:SetPoint("LEFT", frame.toggle, "RIGHT", 4, 0); frame.toggle.text:SetText(T("show_item_scores", "Mostrar scores de item"))
   frame.toggle:SetChecked(DpsLabItemScorePreferences.enabled ~= false)
   frame.toggle:SetScript("OnClick", function(self) DpsLabItemScorePreferences.enabled = self:GetChecked() and true or false end)
   local selected = Scores.Visible(document) or {}
@@ -508,24 +526,24 @@ function Scores.ShowConfig()
   DpsLabItemScorePreferences.saved_profiles = type(DpsLabItemScorePreferences.saved_profiles) == "table" and DpsLabItemScorePreferences.saved_profiles or {}
   local saved = characterID and DpsLabItemScorePreferences.saved_profiles[characterID] or {}
   frame.savedTitle = frame.savedTitle or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  frame.savedTitle:SetPoint("BOTTOMLEFT", 28, 80); frame.savedTitle:SetText("Perfiles de pesos guardados: " .. tostring(#saved))
+  frame.savedTitle:SetPoint("BOTTOMLEFT", 28, 80); frame.savedTitle:SetText(T("saved_profiles", "Perfiles de pesos guardados: ") .. tostring(#saved))
   frame.profileName = frame.profileName or CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
   frame.profileName:SetAutoFocus(false); frame.profileName:SetSize(230, 20); frame.profileName:SetPoint("BOTTOMLEFT", 28, 52)
-  frame.profileName:SetText("Perfil de pesos " .. tostring(#saved + 1))
+  frame.profileName:SetText(T("default_profile_name", "Perfil de pesos ") .. tostring(#saved + 1))
   frame.saveProfile = frame.saveProfile or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.saveProfile:SetSize(110, 22); frame.saveProfile:SetPoint("LEFT", frame.profileName, "RIGHT", 8, 0); frame.saveProfile:SetText("Guardar perfil")
+  frame.saveProfile:SetSize(110, 22); frame.saveProfile:SetPoint("LEFT", frame.profileName, "RIGHT", 8, 0); frame.saveProfile:SetText(T("save_profile", "Guardar perfil"))
   frame.saveProfile:SetScript("OnClick", function()
     if type(document) ~= "table" or type(characterID) ~= "string" then return end
     local name = frame.profileName:GetText()
-    if type(name) ~= "string" or name == "" then name = "Perfil de pesos " .. tostring(#saved + 1) end
+    if type(name) ~= "string" or name == "" then name = T("default_profile_name", "Perfil de pesos ") .. tostring(#saved + 1) end
     saved[#saved + 1] = { name = name, document = CopyTable(document) }
     DpsLabItemScorePreferences.saved_profiles[characterID] = saved
-    frame.savedTitle:SetText("Perfiles de pesos guardados: " .. tostring(#saved))
+    frame.savedTitle:SetText(T("saved_profiles", "Perfiles de pesos guardados: ") .. tostring(#saved))
   end)
   frame.savedList = frame.savedList or frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
   local names = {}; for _, entry in ipairs(saved) do names[#names + 1] = entry.name end
   frame.savedList:SetPoint("BOTTOMLEFT", 28, 28); frame.savedList:SetWidth(400); frame.savedList:SetJustifyH("LEFT")
-  frame.savedList:SetText(#names > 0 and table.concat(names, ", ") or "Aún no hay perfiles guardados.")
+  frame.savedList:SetText(#names > 0 and table.concat(names, ", ") or T("no_saved_profiles", "Aún no hay perfiles guardados."))
   local default = profiles[1]
   if frame.talent then frame.talent:Hide(); frame.copy:Hide() end
   if default and default.source == "generic" and type(default.talent_string) == "string" then
@@ -535,7 +553,7 @@ function Scores.ShowConfig()
     frame.talent:SetText(default.talent_string); frame.talent:HighlightText()
     frame.copy = frame.copy or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
     frame.copy:Show()
-    frame.copy:SetSize(78, 22); frame.copy:SetPoint("LEFT", frame.talent, "RIGHT", 8, 0); frame.copy:SetText("Copiar")
+    frame.copy:SetSize(78, 22); frame.copy:SetPoint("LEFT", frame.talent, "RIGHT", 8, 0); frame.copy:SetText(T("copy", "Copiar"))
     frame.copy:SetScript("OnClick", function() frame.talent:SetFocus(); frame.talent:HighlightText() end)
   end
 end
