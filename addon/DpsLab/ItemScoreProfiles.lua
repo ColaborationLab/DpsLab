@@ -6,6 +6,22 @@ local function T(key, fallback)
   return value or fallback or key
 end
 
+-- Presentation only: the existing windows keep their controls and callbacks.
+local function styleLinkFrame(frame)
+  if frame._foundryStyled then return end
+  frame._foundryStyled = true
+  if frame.SetBackdrop then
+    frame:SetBackdrop({ bgFile="Interface\\Buttons\\WHITE8X8", edgeFile="Interface\\Buttons\\WHITE8X8", edgeSize=1, insets={left=1,right=1,top=1,bottom=1} })
+    frame:SetBackdropColor(0.031, 0.055, 0.071, 0.97)
+    frame:SetBackdropBorderColor(0.55, 0.36, 0.17, 1)
+    if frame.Bg then frame.Bg:Hide() end
+    if frame.Inset then frame.Inset:Hide() end
+  end
+  if frame.TitleText then
+    frame.TitleText:SetText("DPSFOUNDRY |cffff8a00/ LINK|r")
+  end
+end
+
 local function notify(text)
   print("[DpsLab] " .. text)
   if type(UIErrorsFrame) == "table" and type(UIErrorsFrame.AddMessage) == "function" then
@@ -334,12 +350,12 @@ function Scores.ShowWeights()
   if not document or not document.item_scores.profiles[1] then print("[DpsLab] No hay pesos disponibles para esta especialización."); return end
   local frame = Scores._weightsFrame
   if not frame then
-    frame = CreateFrame("Frame", "DpsLabWeightsFrame", UIParent, "BasicFrameTemplateWithInset")
+    frame = CreateFrame("Frame", "DpsLabWeightsFrame", UIParent, "BasicFrameTemplateWithInset,BackdropTemplate")
     Scores._weightsFrame = frame
     frame:SetSize(560, 590); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
     frame:SetMovable(true); frame:EnableMouse(true); frame:RegisterForDrag("LeftButton")
     frame:SetScript("OnDragStart", frame.StartMoving); frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
-    frame.TitleText:SetText("DpsLab — " .. T("weights", "pesos estadísticos"))
+    styleLinkFrame(frame)
     frame.heading = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     frame.heading:SetPoint("TOP", 0, -44); frame.heading:SetWidth(470)
     frame.help = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
@@ -474,7 +490,8 @@ function Scores.ShowConfig()
   local document = Scores.Active()
   local profiles = document and document.item_scores and document.item_scores.profiles or {}
   DpsLabItemScorePreferences = type(DpsLabItemScorePreferences) == "table" and DpsLabItemScorePreferences or { enabled=true, selected={} }
-  local frame = _G.DpsLabItemScoreConfigFrame or CreateFrame("Frame", "DpsLabItemScoreConfigFrame", UIParent, "BasicFrameTemplateWithInset")
+  local frame = _G.DpsLabItemScoreConfigFrame or CreateFrame("Frame", "DpsLabItemScoreConfigFrame", UIParent, "BasicFrameTemplateWithInset,BackdropTemplate")
+  styleLinkFrame(frame)
   frame:SetSize(460, 258 + #profiles * 24); frame:SetPoint("CENTER"); frame:Show()
   frame.title = frame.title or frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
   frame.title:SetPoint("TOP", 0, -34); frame.title:SetText("DpsLab — " .. T("scores_title", "scores de equipo"))

@@ -1,123 +1,135 @@
-# DpsFoundry — dirección de implementación con Terra
+# DpsFoundry — plan visual revisado para Terra
 
-## Autoridad y entrega
+## Dirección y estado — 2026-09-19
 
-Preparación solicitada por Daniel el 2026-09-19. Fuente única de alcance:
-`SCOPE_CORRECTION_0_1.md`, incluidas sus secciones 1 a 10 y 13 criterios de
-aceptación. Estado: preparado para continuar con Terra; no iniciado.
-Responsable ejecutor: Terra (gpt-5.6-terra), supervisado por el agente principal.
-La cuenta externa anterior no participa. No hay asignación externa ni nuevo Issue.
+Autoridad: AGENTS.md y SCOPE_CORRECTION_0_1.md actualizados por Daniel en
+origin/main, commit fe6206f313a83273429a8095d644fcdc53876dba, incorporados al
+checkout por el principal. Esta revisión sustituye el plan A–F anterior.
+El objetivo de interfaz continúa abierto: esta aclaración no acredita su cierre.
 
-Base de código: `997648b301ba5b17fc95093b70c419229c7b8e74`.
-Rama de preparación: `codex/dpsfoundry-interface-scope`.
-La preparación documental local se añade a esa base; antes de activar, el
-principal debe conservarla en un commit y entregar su SHA exacto a Terra.
-Este parámetro de activación no autoriza adoptar otros cambios del árbol.
-Comprobar escritores activos y permitir un solo editor por componente.
+Prueba de valor: sí, permite que un jugador reconozca, entienda y use Core/Link
+en el recorrido analizar → decidir → sincronizar → jugar → refinar.
 
-Valor: sí, este trabajo permite al jugador comprender y completar el recorrido
-analizar → decidir → sincronizar → jugar → refinar desde Core y Link.
+Responsable: principal; Terra continúa como ejecutor interno del lote visual
+cuando se retome implementación. No representa la antigua cuenta externa.
+Este encargo documental no inicia agentes, simulaciones, commit ni publicación.
 
-## Base que debe reutilizarse
+Base local: ffe7ccd63344f57c6739ffaaa6cf6b6e07b80cc7, rama
+codex/dpsfoundry-interface-scope. Se conservan cambios no confirmados de A+B en
+qt_loadout_ui.py, dpsfoundry_theme.py, test_qt_loadout_ui.py y los dos documentos
+de diseño/aceptación. No son una baseline visual aprobada.
+Antes de delegar, principal entrega el diff y hashes actuales junto al SHA;
+el SHA por sí solo no describe estos cambios. Un editor por componente.
 
-- `desktop-app/src/dpslab/qt_loadout_ui.py`: ventana Qt real, selección de builds,
-  perfiles, importación, ejecución en segundo plano, tabla y transferencia.
-- `comparison_table.py`: presentación de DPS, estadísticas, pesos y diferencias.
-- `item_score_profiles.py`, `loadout_comparison_library.py`: perfiles y persistencia.
-- `loadout_recommendation.py`, `loadout_profiles.py`, `runner.py`: servicios ya
-  implementados; consumirlos sin reescribir su lógica para acomodar la UI.
-- `addon/DpsLab/ItemScoreProfiles.lua`, `DpsLab.lua`: pesos, tooltips y exportación.
-- `i18n.py`, `locales/`, `addon/DpsLab/Localization.lua`: conservar ES/EN/PT-BR.
-- `launcher.py`, `installer/build_reduced.py`: entrada y empaquetado existentes.
+## Diagnóstico de la revisión de Daniel
 
-Los documentos antiguos de arquitectura read-only son antecedentes; el Scope
-vigente autoriza la UI de ejecución existente. Los nombres internos DpsLab,
-SavedVariables y transporte permanecen compatibles.
+La captura del 2026-09-19 demuestra una estructura de navegación con colores
+básicos, no el sistema visual maestro completo. Hay títulos negros sobre oscuro,
+ausencia de iconografía, jerarquía tipográfica débil, paneles planos repetitivos,
+grandes vacíos y una cabecera que no transmite la identidad del concepto.
+La barra de título nativa tiene un acento del sistema que compite con Foundry.
+Los menús, bordes, superficies y distribución requieren diseño explícito.
 
-## Referencias de diseño
+La ausencia de perfil explica que no haya resultados; no explica esos defectos.
+Los estados vacíos deben tener la misma calidad visual que una pantalla poblada.
+A y B quedan parciales y pendientes de aceptación visual, no terminados.
+Los tests funcionales no prueban parecido al concepto. La cifra previa de 20%
+no es una medición válida de avance visual y no se reutiliza.
 
-Paquete seleccionado por Daniel: `RAIDFORGE_INTERFACE_OBJECTIVE_HANDOFF_v0.1.0.zip`.
-SHA-256: `802ac824b1ac129d39e846ef12c82173c90705084d94d7eefeaa1ca2be3245af`.
-El borrador independiente tiene SHA-256
-`ce75e955a293c434690da7fb76794abd8c10f2b6cb4dfe22e75664198a0986f7`.
-Ubicación de entrada: carpeta Descargas seleccionada por Daniel; no añadir rutas
-personales al repositorio. El principal proveerá las referencias a Terra.
-El manifiesto interno de nueve entradas fue verificado en la revisión previa.
-Antes de diseñar, abrir visualmente los cuatro PNG; el concepto 02 orienta Foundry.
-Las imágenes no han sido revisadas visualmente durante esta preparación.
-La marca de sus renders está descartada: usar DpsFoundry Core/Link/Guide.
-No copiar números ficticios ni incorporar los renders como fondos de producto.
+## Referencia y criterio visual
 
-## Secuencia completa y pruebas de valor
+Concepto 02 del paquete RAIDFORGE_INTERFACE_OBJECTIVE_HANDOFF_v0.1.0.zip.
+SHA-256: 802ac824b1ac129d39e846ef12c82173c90705084d94d7eefeaa1ca2be3245af.
+Las cuatro artes fueron inspeccionadas en la sesión anterior; la captura de
+Daniel vuelve a mostrar el concepto Foundry al lado de la app.
+La marca final es DpsFoundry. El arte orienta material, proporción, jerarquía
+y atmósfera; no se inserta como fondo ni se copian cifras/personajes.
 
-| Lote | Entrega visible y alcance | Evidencia para aceptar |
-| --- | --- | --- |
-| A | Sistema maestro Foundry: tokens, tipografía, espaciado, foco, estados, componentes y slots de spec; especificación breve en docs/DPSFOUNDRY_DESIGN_SYSTEM.md | Tokens semánticos comunes; ejemplos legibles de loading, empty, error, unavailable y success; estados también textuales |
-| B | Shell Qt con Setup, Home, Character/Profile, Simulation, Compare, Recommendations, Link/Sync Center y Settings | Navegación y vuelta atrás conservan selección; datos controlados identificados; primera ruta setup→perfil→simulación comprensible |
-| C | Panel Link compacto/expandido, perfil, Gear/Stats, pesos y sync | Abrir, cerrar y reabrir; tooltips mouseover y comparativos conservan score; muestra perfil que da significado al score |
-| D | arcane_vanguard, foundry, runebound_command y celestial_foundry sobre los mismos componentes | Foundry predeterminado; cambiar tema conserva datos, geometría y resultados en Core y Link |
-| E | Integrar servicios existentes: perfiles, equipo, talentos, simulación, resultados, recomendación y transferencia | Sustituir fixtures; todos los flujos previamente aprobados continúan operativos; errores reales con siguiente acción útil |
-| F | Paquete local y recorrido completo con Daniel | Setup→perfil→análisis→recomendación→Link→pesos/score→Core; criterios 1–13 del Scope con evidencia individual |
+| Elemento | Dirección comprobable en pantalla |
+| --- | --- |
+| Superficies | Carbón y acero oscuro con profundidad sutil, planos diferenciados y gradientes contenidos |
+| Bordes | Aristas finas, separadores y realce interior coherentes; radios pequeños, sin tarjetas genéricas gigantes |
+| Tipografía | Familia instalada o distribuible con licencia conocida; títulos claros, cuerpo legible, cifras dominantes; ningún título negro sobre oscuro |
+| Iconos | Familia propia o permitida coherente en navegación, acciones y métricas; tamaño, trazo y alineación uniformes; no emojis como sustituto |
+| Cabecera | Marca reconocible, contexto personaje/spec y estado de intercambio; no repetir títulos grandes sin función |
+| Navegación | Icono y texto, selección naranja contenida, hover/foco/disabled visibles; distancias y alineación constantes |
+| Composición | Sidebar proporcionada, cabecera compacta, cuadrícula de métricas y paneles de datos; espacio útil sin rellenar por decoración |
+| Controles | Menús desplegables, tabs, tablas, scrollbar, tooltips y diálogos con el mismo lenguaje |
+| Datos | DPS primero; pesos y comparación legibles; estados sin datos conservan estructura sin inventar valores |
+| Ventana | Evaluar título oscuro nativo; cualquier marco propio debe conservar arrastre, resize, minimizar, maximizar, teclado y accesibilidad |
 
-Terra comienza por A y B como primera entrega revisable. Después continúa C–F
-en orden tras revisión del principal, dentro de la activación del ciclo. Guide
-no recibe datos de combate ni funcionalidad; su frontera futura es conceptual.
-Una capacidad ausente se presenta como no disponible, con causa; no se inventa.
+Especificar medidas y tokens efectivos en DPSFOUNDRY_DESIGN_SYSTEM.md antes de
+multiplicar pantallas. Qt Widgets se conserva; no hay una limitación demostrada
+que justifique migrar tecnología para resolver esta captura.
+Iconos y recursos finales propios/permitidos; no extraer assets de WoW.
 
-## Rutas y fronteras de edición
+## Orden de trabajo y salidas
 
-Terra puede editar los módulos de presentación `qt_loadout_ui.py`,
-`comparison_table.py`, `launcher.py`, `i18n.py`, `locales/*.py`; añadir módulos
-UI/temas en `desktop-app/src/dpslab/`; y sus pruebas de presentación en
-`desktop-app/tests/test_*ui*.py`, `test_comparison_table.py`, `test_i18n.py`
-y nuevas pruebas de temas. Puede editar `addon/DpsLab/ItemScoreProfiles.lua`,
-`DpsLab.lua`, `DpsLab.toc`, `Localization.lua`, añadir módulos de panel/tema y
-ajustar sus pruebas en `tools/tests/test_addon_item_score_profiles.py` y nuevas
-pruebas UI/temas. Puede documentar el diseño y la evidencia en
-`docs/DPSFOUNDRY_DESIGN_SYSTEM.md` y `docs/DPSFOUNDRY_INTERFACE_ACCEPTANCE.md`.
-El lote F permite ajustar `installer/build_reduced.py`, `build_addon_zip.py`
-y sus pruebas solo para incluir recursos de UI y mantener el arranque.
+1. **A revisada: muestra visual en Qt.** Afinar tipografía, superficies, bordes,
+   iconografía, controles y estados. Componer Home con contexto y paneles
+   representativos; mostrar estado vacío y estado poblado de demostración
+   inequívocamente identificado, con datos temporales fuera de perfiles reales.
+   El resultado debe ejecutarse en la app, no ser únicamente un render.
+2. **B revisada: aplicar a Core.** Tras revisión visual del principal y Daniel,
+   extender a Setup, Character/Profile, Simulation, Compare, Recommendations,
+   Link/Sync y Settings. Conservar flujos reales ya existentes durante la
+   reorganización. Ningún control editable sin efecto (incluido text scale).
+   Localizar los nuevos textos en ES/EN/PT-BR; no mantener el shell en inglés fijo.
+3. **C: Link.** Panel/HUD compacto y expandido con perfil, pesos, score, comparación
+   y transporte local. Adoptar el lenguaje Foundry con decoración reducida.
+   Mantener scores en mouseover y comparativos e importación con decisión clara.
+4. **D: acabado Foundry.** Validar el tema completo en Core y Link. Los otros tres
+   temas solo demuestran intercambiabilidad de tokens; su pulido queda pendiente
+   de autorización posterior, conforme al Scope actualizado.
+5. **E: completar integración.** Cada área consume los servicios existentes;
+   fixtures de revisión se sustituyen por datos reales, sin ruta ficticia
+   permanente. Compare muestra la comparación y no solo redirige a Simulation.
+6. **F: paquete y recorrido.** Revisión instalada y prueba de Daniel jugando:
+   setup → perfil → análisis → recomendación → Link → pesos/score → refinamiento.
+   Registrar evidencia por cada uno de los 13 criterios del Scope.
 
-AGENTS, Scope, NEXT_TASK y este plan los mantiene el principal. Dominio,
-schemas, parser, runner y transporte son de lectura para Terra; si una conexión
-requiere modificar su contrato, informar el cambio mínimo al principal.
-Perfiles personales, resultados/runs existentes, escenarios, variantes,
-knowledge, seguridad y CI quedan fuera de escritura. No se autorizan nuevas
-dependencias, rename masivo, publicación, cambios de permisos ni simulaciones
-reales desde este encargo documental.
+La próxima entrega se limita al punto 1, con revisión del sistema visual; no se
+amplían ocho pantallas superficialmente antes de resolver su calidad compartida.
 
-## Verificación y no regresión
+## Evidencia y condiciones de aceptación visual
 
-Ejecutar primero pruebas Qt de navegación/estado y modelo de tabla, con
-QT_QPA_PLATFORM=offscreen y datos temporales; después las suites app y tools
-con el Python del proyecto y dependencias existentes. Reportar ejecutadas,
-aprobadas, omitidas y fallidas sin equiparar omisiones a cobertura.
-Usar el quality gate existente conforme a la excepción documental de AGENTS;
-no reactivar contratos históricos para hacerlo pasar.
+- Capturas de la app Windows real, con fuentes renderizadas, junto al concepto
+  a escala comparable: muestra vacía, poblada, menú abierto y diálogo.
+- Revisar 1366×768 y 1920×1080; escalado Windows 100%, 125% y 150% cuando esté
+  disponible. Registrar configuraciones efectivamente probadas y pendientes.
+- Contraste objetivo 4.5:1 para texto normal y 3:1 para texto grande/controles
+  relevantes; foco visible y navegación de teclado; sin truncar acciones críticas.
+- Si la captura no muestra glifos, falla la comprobación visual; no se declara
+  validado el aspecto por existir una imagen offscreen.
+- Describir diferencias deliberadas con el concepto y comprobar las diez filas
+  de la tabla visual. La aprobación de navegación no sustituye el acabado.
+- El principal verifica ventana visible, no solo proceso existente. Daniel
+  confirma la aceptación del diseño; ninguna prueba automatizada la reemplaza.
 
-La matriz de regresión debe cubrir: detección y pegado manual; perfil con equipo
-reabierto sin WoW; build externa guardada sin simular; simulación individual y
-comparación de 2–4; selección entre más de cuatro; talentos incompletos/nivel;
-nombres; borrado de builds/perfiles; limpiar con aviso; DPS primero y diferencias
-solo cuando existen; progreso sin consola; precisión y pesos Intellect;
-exportar solo builds reales a Link; importación/reemplazo/guardar copia;
-scores equipado/candidato y trinkets sin dato como no disponibles; tres idiomas.
+## Frontera de ejecución y no regresión
 
-Cada lote entrega capturas renderizadas o evidencia visual equivalente, diff,
-pruebas, limitaciones y recorrido reproducible. Pruebas simuladas de servicios
-no acreditan WoW real. La prueba final de SimC requiere autorización concreta
-para el personaje/escenario y la prueba visual in-game la confirma Daniel.
+Terra: presentación Qt, tema, componentes/iconos propios y recursos UI,
+comparison_table.py cuando sea presentación, i18n.py/locales, pruebas de UI,
+DPSFOUNDRY_DESIGN_SYSTEM.md y DPSFOUNDRY_INTERFACE_ACCEPTANCE.md.
+En C: presentación en ItemScoreProfiles.lua, DpsLab.lua, DpsLab.toc,
+Localization.lua y módulos UI propios con pruebas correspondientes.
+En F: empaquetado solo para recursos UI y arranque.
+Principal: AGENTS, Scope, NEXT_TASK y este plan.
 
-## Activación y cierre
+Reutilizar parser, perfiles, runner, comparación y transporte. No reescribirlos.
+No tocar addon synthetic, seguridad/CI, datos personales, runs existentes,
+escenarios/variantes ni ampliar capacidades. Guide y distribución siguen pausados.
+Nuevas dependencias o cambios de contratos se justifican al principal antes
+de ampliar el lote; no son el medio inicial para resolver el diseño.
 
-Prompt para Terra: lee AGENTS, Scope y este plan desde la baseline entregada;
-inspecciona las artes; implementa A+B usando la UI y servicios existentes;
-verifica y entrega el recorrido visible con evidencias. No modifiques documentos
-del principal ni reabras la colaboración externa. Resuelve fallos rutinarios
-dentro de las rutas permitidas. Informa solo bloqueos que requieran nueva
-capacidad, una ruta adicional o una decisión de producto no resuelta.
+Tras cambios de código: pruebas focales y suites requeridas por AGENTS con
+Python del proyecto; declarar ejecutadas, aprobadas, omitidas y fallos.
+Verificar detección/pegado manual, perfiles con equipo sin WoW, builds externas,
+una simulación o comparación de 2–4, selección entre más de cuatro, errores,
+nombres, borrado, limpieza con aviso, DPS/diferencias, progreso, pesos,
+transferencia de builds reales, importación con copia y scores/trinkets.
+SimC real requiere autorización concreta. Validación in-game: Daniel.
 
-El principal integra/revisa cada entrega y mantiene NEXT_TASK. La autoridad de
-Terra termina al entregar F o cuando Daniel suspenda su ejecución. El cierre del
-objetivo exige la aceptación visible de Daniel de los 13 criterios del Scope.
-Esta preparación no inicia Terra ni acredita implementación, commit o push.
+Entregar diff, capturas legibles, resultados de pruebas y pendientes reales.
+El lote termina al entregar la muestra para revisión; no autoriza commit/push.
+La planificación conserva el historial y no marca este objetivo como cumplido.

@@ -1,15 +1,323 @@
 # Next Task — DpsFoundry
 
+## Aprobación y entrega acumulada — 2026-09-26
+
+Daniel aprueba todos los avances hasta aquí y autoriza commit y push de la
+rama codex/dpsfoundry-interface-scope. Incluye los puntos visuales 1–4;
+quedan pendientes 5 (navegación/dashboard) y 6 (divisores/bordes), luego la
+revisión funcional completa de Core y la revisión de Link. No se declara
+completado el objetivo principal ni se autoriza merge o release.
+
+Punto 4: badges compactos de simulación e importación local, con texto,
+color, tooltip y estados vacío/listo/en curso/completado/error derivados
+del estado real; no representan conexión en vivo con WoW. Archivos:
+dpsfoundry_theme.py, qt_loadout_ui.py, locales en/es/pt_BR y pruebas Qt.
+Prueba de valor: estado visible y comprensible sin añadir simulación ni
+captura; presentación dentro del objetivo vigente. Aprobación del usuario
+registrada; los registros anteriores de revisión pendiente son históricos.
+
+Verificación repetida antes del commit: escritorio 1382 pruebas reportadas,
+1381 aprobadas, 1 omitida, 0 fallos/errores, salida 0; herramientas/addon
+164 aprobadas, 0 omitidas/fallos/errores, salida 0. Subtests no contabilizados
+por separado. git diff --check correcto. Sin ejecución real de SimC.
+AGENTS.md SHA-256: 71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de.
+SCOPE_CORRECTION_0_1.md SHA-256: b98e4583785b4e7a0b1f8675011c636e6edbb24b63a5d5b002b822e23a1a85c9.
+Coinciden con protected_files. Los perfiles protegidos no tienen cambios.
+Se excluyen build/ (paquetes y capturas), referencias y datos personales;
+los cuatro PNG propios de producción sí forman parte del código entregado.
+Autenticación y acceso remoto verificados fuera del aislamiento; el error
+SEC_E_NO_CREDENTIALS dentro de este no requiere renovar credenciales.
+
+## Atenuación de hover y acción de simulación — 2026-09-20
+
+Feedback puntos 2–3: hover intermedio, halo reducido de 1/2 a 1/3 del activo;
+fondos/bordes hover menos cálidos. Selección activa conservada. Botón pasa
+a Ejecutar Simulación, Run Simulation, Executar Simulação; propiedad subdued
+limita su acento a 30% sobre superficie/borde neutros (reducción de énfasis
+aproximada de 70%, no medida perceptual). Sin cambios de acciones.
+Archivos: dpsfoundry_theme.py, qt_loadout_ui.py y tres catálogos.
+Valor: jerarquía menos distractora; solo presentación. Captura revisada.
+Paquete ignorado: build/foundry-controls-soft-20260920/DpsLab/DpsLab.exe.
+Escritorio: 1381 ejecutadas, 1380 aprobadas, 1 omitida, 0 fallos, salida 0.
+Herramientas/addon: 164 ejecutadas/aprobadas, 0 fallos/omitidas, salida 0.
+Subtests no contados separadamente. Protegidos sin cambios; diff --check 0.
+Sin SimC real, commit, push ni cambios a WoW. Revisión visual pendiente.
+
+## Revisión conjunta puntos 2–3 — 2026-09-20
+
+Daniel autoriza tratar juntos los efectos de iconos y controles. Selección
+de menú y builds: fondo cálido, contorno luminoso completo y marca lateral;
+hover menos intenso, pulsado diferenciado y deshabilitado sin énfasis.
+Ejecutar comparación real adopta jerarquía primaria; resto conserva función.
+Halo compartido por FoundryNavButton y delegado de filas, sin animaciones
+ni sombras sobre el texto. Selección múltiple verificada tras renderizar.
+Archivos: dpsfoundry_theme.py, qt_loadout_ui.py, test_qt_loadout_ui.py.
+Captura controlada en build/review_foundry.py, sin ejecutar SimulationCraft.
+Valor: estado legible del control completo y consistencia de selección;
+100% del cambio de producto es presentación. Punto 1 aprobado se conserva.
+Escritorio: 1381 ejecutadas, 1380 aprobadas, 1 omitida, 0 fallos, salida 0.
+Herramientas/addon: 164 ejecutadas/aprobadas, 0 fallos/omitidas, salida 0.
+Subtests no contabilizados por separado; diff --check salida 0.
+Paquete ignorado build/foundry-controls-point23-20260920/DpsLab/DpsLab.exe,
+SHA-256 f4921225127c34e878eef196554d19bb1f81ca68ab7f96ac5aea755afa8fd9f9.
+AGENTS/Scope sin cambios respecto a los SHA registrados. Sin commit, push,
+publicación o cambios a WoW. Puntos 2–3 pendientes de revisión conjunta;
+no se avanzó a badges, navegación, bordes generales ni addon.
+
+## Punto 2 — efectos de iconografía lateral — 2026-09-20
+
+Punto 1 cumplido y aceptado expresamente por Daniel, incluida integración
+de cabecera/cuerpo. Se inicia únicamente punto 2: mismas formas/tamaño de
+iconos, bisel plateado en reposo, halo ámbar para hover/foco y estado activo.
+Estados prerenderizados sin animación ni efectos sobre todo el botón.
+Archivos: dpsfoundry_theme.py, qt_loadout_ui.py, test_qt_loadout_ui.py.
+Valor: iconos con profundidad y estados distinguibles, cambio 100% visual.
+No se modifica orden de navegación, fondos/bordes de botones ni puntos 3–6.
+Paquete ignorado: build/foundry-icons-point2-20260920/DpsLab/DpsLab.exe.
+Escritorio: 1380 ejecutadas, 1379 aprobadas, 1 omitida, 0 fallos, salida 0.
+Herramientas/addon: 164 ejecutadas/aprobadas, 0 fallos/omitidas, salida 0.
+Comprobación adicional Qt de entrada/salida del cursor: PASS. Subtests no
+contabilizados por separado. Captura revisada; aceptación visual pendiente.
+AGENTS/Scope conservan hashes registrados; diff --check salida 0.
+Sin SimC real, cambios al addon, commit, push ni publicación.
+
+## Integración cabecera/cuerpo — 2026-09-20
+
+Daniel aprobó el logotipo del punto 1 y pidió continuidad de ambientes.
+Conservado su PNG: SHA-256
+14d22ec516a2c7b7b87a4944c298f3244c373d3182ede506ea8677f517e4b358.
+foundry_chrome.py comparte un encuadre de ventana entre cabecera, lateral
+y cuerpo; qt_loadout_ui.py actualiza la variante de cabecera por sección.
+Oscurecimiento gradual para marca/controles, sin nueva imagen ni funciones.
+Valor: transición ambiental coherente; cambio de producto 100% visual.
+Captura revisada, paquete ignorado build/foundry-header-blend-20260920.
+Escritorio: 1379 ejecutadas, 1378 aprobadas, 1 omitida, 0 fallos, salida 0.
+Herramientas/addon: 164 ejecutadas/aprobadas, 0 omitidas/fallos, salida 0.
+Subtests no contabilizados individualmente. diff --check: salida 0.
+AGENTS y Scope conservan los SHA de la línea base registrada.
+Sin SimC real, cambios en WoW, commit/push ni avance a puntos 2–6.
+Integración pendiente de revisión visual; aprobación del logo preservada.
+
+## Punto 1 — materiales del logotipo — 2026-09-20
+
+Solo punto 1 de la revisión secuencial de Daniel. Imagen estática propia
+generada desde la referencia: roca agrietada, resplandor de lava, magma en
+borde del yunque, chispas y letras de acero forjado. Integrada en cabecera
+Foundry, con nombre accesible y fallback vectorial para otros temas.
+Archivos: assets/foundry-brand-forged-v1.png, qt_loadout_ui.py,
+dpsfoundry_theme.py, test_qt_loadout_ui.py; prompt y valor en
+docs/DPSFOUNDRY_LOGO_POINT1.md. No cambios a funciones, menús o addon.
+Paquete ignorado: build/foundry-logo-point1-20260920/DpsLab/DpsLab.exe.
+Captura compacta revisada; aprobación visual de Daniel pendiente.
+Escritorio: 1379 ejecutadas, 1378 aprobadas, 1 omitida, 0 fallos, salida 0.
+Herramientas/addon: 164 ejecutadas/aprobadas, 0 fallos/omitidas, salida 0.
+Subtests no contados separadamente. Protegidos sin cambios respecto a la
+línea base registrada. Sin SimC real, commit, push ni despliegue en WoW.
+No iniciar puntos 2–6 antes de revisar este punto; Link después del ciclo Core.
+
+## Fidelidad de marca hero — 2026-09-20
+
+Tras feedback de Daniel: nuevo símbolo vectorial de yunque con contorno
+incandescente, cuerpo hueco, mesa ancha y chispas; wordmark metálico y módulo
+cobre, tamaño y alineación de cabecera revisados. Solo presentación Core,
+sin cambios de funciones. Archivos: dpsfoundry_theme.py, qt_loadout_ui.py,
+docs/DPSFOUNDRY_REFERENCE_REFINEMENT.md. Valor: identidad más reconocible y
+aproximación visible al hero; no se declara réplica exacta ni aprobación.
+Capturas revisadas, paquete nuevo ignorado build/foundry-hero-20260920.
+Escritorio: 1379 ejecutadas, 1378 aprobadas, 1 omitida, 0 fallos, salida 0.
+Herramientas/addon: 164 ejecutadas/aprobadas, 0 fallos/omitidas, salida 0.
+Subtests no contabilizados separadamente. git diff --check salida 0.
+Hashes protegidos sin cambios respecto a la entrada inmediatamente inferior.
+Sin SimC real, despliegue en WoW, commit ni push. Revisión visual pendiente;
+este incremento está centrado en Core, no completa el pulido integral de Link.
+
+## Referencias visuales Core/Link — 2026-09-20
+
+Refinamiento local autorizado, sin GitHub: icono vectorial de yunque,
+wordmark separado del módulo, descriptor legible, paleta Foundry y menú
+con selección sólida; cabecera y superficie de ventanas existentes de Link.
+Archivos: dpsfoundry_theme.py, qt_loadout_ui.py, ItemScoreProfiles.lua,
+test_qt_loadout_ui.py y docs/DPSFOUNDRY_REFERENCE_REFINEMENT.md.
+Valor: reconocimiento y lectura más claros sin cambiar servicios o flujos.
+No se alteran motor, captura, perfiles ni capacidades; revisión humana pendiente.
+Capturas Core revisadas a 1240x800 y 1060x700; Link no validado en WoW.
+Suite escritorio: 1379 ejecutadas, 1378 aprobadas, 1 omitida, 0 fallos/errores,
+salida 0. Herramientas/addon: 164 ejecutadas y aprobadas, 0 omitidas/fallos,
+salida 0. Subtests no contabilizados individualmente. git diff --check: salida 0.
+Paquete ignorado: build/foundry-reference-20260920/DpsLab/DpsLab.exe;
+SHA-256 a64f6c215a5ec76d310df6b1ddbe78c708f376d04fbc384fb2ccb810a50342be.
+Addon empaquetado coincide con fuente. No instalado sobre WoW activo.
+Referencias/capturas en build/ ignoradas. ZIP fuente SHA-256:
+b31fccbfdfa2cd91d4532ad77601bd8d08779123a82d5dc614366777da6d8193.
+Protegidos antes/después sin cambios: AGENTS.md
+71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de;
+SCOPE_CORRECTION_0_1.md
+b98e4583785b4e7a0b1f8675011c636e6edbb24b63a5d5b002b822e23a1a85c9.
+Sin SimC real, commit, push, publicación ni cierre del objetivo.
+
+## Navegación por tarea y plan de dos capas — 2026-09-20
+
+Valor: sí, permite empezar a analizar directamente en Simulación, sin buscar
+acciones dentro de Setup. Orden: Simulación, Comparar, Personaje; luego Inicio,
+Recomendaciones, Link, Ajustes y Setup reservado. Detectar/pegar exportación y
+acceso a personajes guardados en Simulación; rutas/idioma/estado de motor en
+Ajustes. Las acciones reutilizan sus servicios, sin nuevo runner ni simulaciones.
+Equipo compacto (dos columnas, altura acotada, stats completas en tooltip y
+accesibilidad), marcador de retrato y cabecera con marca compacta y controles
+de ventana agrupados arriba a la derecha. Fondos y menú cambian por contexto:
+exterior en Inicio/Ajustes/Setup, forja en Simulación/Comparar, arsenal/interior
+en Personaje/Recomendaciones/Link. Solo Foundry usa esas artes.
+Ampliaciones preservadas, NO implementadas: docs/DPSFOUNDRY_TWO_LAYER_PLAN.md.
+Incluye inventario/objetos externos, sugerencias meta por slot, gemas y
+encantamientos, capa 2 de una sola build, presupuesto y límites de precisión.
+No se amplió iluminación: benchmark local sin SimC en build/measure_foundry_glow.py.
+Archivos principales: qt_loadout_ui.py, foundry_gear.py, foundry_chrome.py,
+foundry_dashboard.py, catálogos/pruebas. Trabajo solo UI y planificación autorizada.
+Paquete: build/foundry-navigation-20260920/DpsLab/DpsLab.exe (ignorado por Git).
+Verificación final: 1378 ejecutadas, 1377 aprobadas, una omitida, cero
+fallos/errores, salida 0; subtests no contados aparte. Prueba de 17 piezas
+confirma scroll y filas sin solapamiento. Capturas controladas bajo build/.
+SHA-256 del ejecutable: 3bb0ea868cc23762f8caa6d9c42e5ed043fc3b1634f00a9b0ad7fadaae62dc1e.
+Motor incluido verificado; compilación salida 0. Posprocesado habitual quitó
+solo dos DLL ICU del paquete generado, regenerables; sistema sin cambios.
+AGENTS/Scope conservan hashes protected_files; diff --check correcto.
+Pendientes anteriores de CASC/iconos y aceptación real permanecen; no se cierra
+el objetivo ni se hace commit/push. En torno al 85% de sesión dedicado a UI y
+verificación; resto, planificación futura y explicación de rendimiento.
+
+## Arte integrado e idioma en vivo — 2026-09-20
+
+Valor: sí, permite navegar las secciones con arte visible y cambiar el idioma
+sin reiniciar ni perder entradas, perfil, selección o resultados. Todos los
+fondos de sección y el menú lateral usan las variantes existentes de Foundry;
+tarjetas y grupos emplean superficies con transparencia controlada y tokens.
+Se corrigió el repintado de texto sobre el fondo al cambiar idioma.
+El metal segmentado, irregular y desgastado es exclusivo de Foundry: los demás
+temas dibujan su marco con sus tokens, sin metal, remaches ni arte de forja.
+No se declara pulido completo de los otros tres temas.
+Traducción en vivo de controles estáticos, ayudas, avisos, navegación,
+resultados presentados, stats y slots; los textos propios del jugador no se
+traducen. Los mensajes originales del motor se conservan en sus resultados,
+no se alteran los cálculos ni el transporte. Se retiró la galería de estados
+de desarrollo de Ajustes. Escalado interno sigue deshabilitado.
+Archivos: qt_loadout_ui.py, foundry_chrome.py, foundry_gear.py,
+dpsfoundry_theme.py, catálogos ES/EN/PT-BR y pruebas Qt. Solo UI/integración;
+aproximadamente 95% de la sesión dedicado directamente a interfaz y su prueba.
+Capturas controladas por sección/idioma y smoke de Arcane en build/ (ignoradas).
+Paquete de revisión: build/foundry-art-language-20260920/DpsLab/DpsLab.exe.
+Verificación final: 1377 pruebas ejecutadas, 1376 aprobadas, una omitida,
+cero fallos/errores, salida 0; subtests sin conteo independiente. 18 focales
+aprobadas. Hashes AGENTS/Scope coinciden con protected_files; diff --check
+correcto. Compilación final terminada con salida 0, SimC y tres fondos presentes.
+Posprocesado habitual: retiradas solo icudt78.dll e icuuc.dll del directorio
+generado _internal (regenerables). No se tocaron instalaciones del sistema.
+Los pendientes de iconos CASC y deltas reales por pieza del bloque D/E anterior
+permanecen abiertos. Sin ejecución de SimC, commit ni push. Aceptación estética
+y recorrido real del usuario pendientes; objetivo vigente sin cierre.
+
+## Etapas D/E — tarjetas y equipo importado, parcial — 2026-09-20
+
+Valor: sí, presenta el equipo y los resultados existentes de forma más legible
+para decidir sin ampliar simulación ni captura de Link. Petición vigente de
+Daniel: iconos solo de instalación local, nunca red ni redistribución; excepción
+expresa a la regla visual anterior, no un cambio de objetivo.
+Implementado: vistas GearCards en Simulación/Comparar, cuadrícula de equipo en
+Personaje, recomendaciones alternativas numeradas de cambio de loadout; deltas
+del componente y Dashboard con signo, flecha y tokens positivo/negativo. Listas
+con hover/selección y estados informativos sin apariencia de botón/tarjeta.
+Archivos: foundry_gear.py, qt_loadout_ui.py, foundry_dashboard.py,
+dpsfoundry_theme.py, catálogos ES/EN/PT-BR y pruebas Qt.
+Iconos — mecanismo elegido: lectura offline del CASC en <instalación WoW>/Data,
+ubicado desde el addon; correspondencia item ID→textura y extracción pendientes,
+sin assets de WoW incorporados ni solicitudes a un servidor de iconos.
+La exportación actual no contiene textura ni equipos distintos por loadout:
+no se fabrican deltas por pieza ni aportes DPS individuales. El símbolo neutro
+actual está identificado como icono no disponible. Punto 1 y acabado completo
+del punto 2 NO terminados; revisar también mensajes heredados con porcentajes.
+Verificación: 16 focales aprobadas; suite 1375 ejecutadas, 1374 aprobadas,
+una omitida, cero fallos/errores, salida 0; subtests no contados aparte.
+Captura controlada revisada en build/foundry-comparison-review.png (ignorada,
+datos de ejemplo, no simulados). Hashes protegidos coinciden con protected_files.
+Sin cambios en mochila, gemas, encantamientos, motor o datos de Link. Sin SimC,
+commit, push ni nuevo paquete; la app abierta sigue siendo la revisión anterior.
+Este avance no cierra los seis puntos ni la prueba de valor completa de D/E.
+
+## Correcciones de revisión visual — 2026-09-20
+
+Valor: sí, conserva los flujos existentes y aclara qué puede probar el jugador.
+Cursor de resize limitado al marco; borde de 16 px con biseles, placas y
+remaches; brillo localizado y fondos originales distintos para Simulación y
+Comparar. Eliminado el selector visible de SimC: se usa el motor incluido.
+Comparar presenta la tabla real, no solo una indicación de navegación.
+Archivos: foundry_chrome.py, qt_loadout_ui.py, dpsfoundry_theme.py, assets,
+catálogos, pruebas y documentación visual. Alcance funcional detallado en
+docs/DPSFOUNDRY_REVIEW_FUNCTIONS.md.
+Verificación final: 18 pruebas focales aprobadas; suite completa 1373 ejecutadas,
+1372 aprobadas, una omitida, cero fallos/errores, salida 0. Subtests no contados
+por separado. git diff --check correcto; hashes AGENTS y Scope sin cambios
+respecto a protected_files. Tres PNG del paquete coinciden con los originales.
+Paquete local ignorado por Git: build/foundry-visual-20260920/DpsLab/DpsLab.exe,
+con SimC y recursos incluidos. Capturas sintéticas de revisión bajo build/;
+no se incluyen datos de ejemplo en el producto. Retiradas del paquete las dos
+DLL ICU que excluye el constructor habitual; regenerables al compilar.
+Sin ejecución real de SimC, commit ni push. Validación manual del cursor,
+gestos de ventana y aceptación estética pendientes de Daniel.
+
+## Marco y arte Foundry; referencia DPS — 2026-09-20
+
+Valor: sí, mejora lectura y orientación visual al analizar y decidir. A petición
+de Daniel, se añadió fondo original inspirado en el concepto 02, marco metálico
+con controles de ventana, emblema yunque/chispas y brillo tenue de marca.
+Dashboard y tabla muestran diferencia porcentual respecto al máximo simulado
+o una build elegida en la comparación actual; no mezclan personajes/escenarios.
+Archivos principales: foundry_chrome.py, foundry_dashboard.py,
+dpsfoundry_theme.py, qt_loadout_ui.py, comparison_table.py, catálogos/pruebas.
+El único soporte fuera de presentación es incluir el PNG en pyproject.toml y
+installer/build_reduced.py para que el recurso viaje con el paquete.
+Procedencia y prompt: docs/DPSFOUNDRY_VISUAL_ASSETS.md.
+Pruebas focales: 16 aprobadas; suite final: 1371 ejecutadas, 1370 aprobadas,
+una omitida, cero fallos/errores, salida 0 (subtests sin conteo independiente).
+Ventana de escritorio confirmada con handle no nulo tras el arranque. Revisión visual
+del principal mediante capturas de la app, con fuentes legibles; aceptación
+de Daniel pendiente. No se ejecutó SimC, no hay commit/push de este lote.
+
+## Continuación directa con Astra — 2026-09-19
+
+Daniel indicó continuar con el principal, sin delegación a Terra. El plan de
+Terra queda como antecedente de diseño; no se activa ese encargo.
+Retirada organizacional de cedeconcamicon completada: DELETE devolvió 204;
+las listas posteriores de miembros, colaboradores externos y colaboradores
+de DpsLab no contienen esa cuenta. Solo dpcs90 figura en miembros y repositorio.
+
+Valor: sí, el primer panel Foundry ahora organiza el análisis con tipografía
+legible, iconos propios, superficies graduadas, métricas y paneles de rendimiento
+y pesos. Se corrigió el color heredado de los títulos y la superposición al
+reemplazar el estado vacío. Inicio consume los resultados existentes y los pesos
+de la build preferida; datos de ejemplo solo en el script local de revisión.
+Cambios: qt_loadout_ui.py, dpsfoundry_theme.py, foundry_dashboard.py, catálogos
+ES/EN/PT-BR y tests Qt. No se ejecutó SimC ni se modificó el núcleo.
+Verificación: 12 focales aprobadas; suite app 1370 ejecutadas, 1369 aprobadas,
+una omitida, cero fallos/errores, salida 0. No se contaron subtests aparte.
+Capturas con fuentes legibles en build/foundry-home-{empty,populated,compact}.png
+y script build/review_foundry.py, ignorados por Git. Revisadas a 1240×800 y
+1060×700; esto no acredita aún escalado Windows 125/150% ni prueba in-game.
+Pendiente: aceptación de esta muestra, acabado del resto de Core y Link.
+Sin commit ni push; el objetivo visual permanece abierto.
+
 ## Tarea activa — Baseline de interfaz DpsFoundry (2026-09-19)
 
 Sí: define el primer bloque que hace DpsFoundry Core y DpsFoundry Link más fáciles de entender y usar para un jugador dentro de analizar → decidir → sincronizar → jugar → refinar.
 
 Por instrucción de Daniel, las cláusulas completas del borrador se incorporaron al archivo vigente `SCOPE_CORRECTION_0_1.md`, preservando su historial. La copia 0.2 creada localmente se retiró; no existen dos Scopes operativos. Marca: DpsFoundry. Distribución, actualizaciones y donativos siguen pausados, no cumplidos. La membresía organizacional de la cuenta externa sigue pendiente y no bloquea la UI; su permiso de escritura ya fue retirado.
 
-Dirección completa para Terra: `docs/DPSFOUNDRY_INTERFACE_TERRA_PLAN.md`. Secuencia A–F: sistema visual, shell Core, panel Link, cuatro temas, integración progresiva y recorrido real. Primer entregable: A+B, Foundry navegable con estados y datos controlados. Base de código `997648b301ba5b17fc95093b70c419229c7b8e74`; preparación documental local pendiente de commit antes de activar Terra. No se inició implementación ni ejecución real. Se verificaron referencias, cláusulas, hashes y diff; cambios solo documentales.
+Revisión vigente del 2026-09-19: se incorporaron las ediciones de Daniel de AGENTS y Scope desde `fe6206f313a83273429a8095d644fcdc53876dba`. El objetivo visual continúa abierto; no hay un objetivo nuevo cumplido que añadir. El historial del Scope se conserva tal como Daniel lo actualizó. Su declaración sobre la cuenta externa sustituye la nota operativa anterior; no se hizo una nueva comprobación de permisos en esta revisión.
+
+Dirección revisada: `docs/DPSFOUNDRY_INTERFACE_TERRA_PLAN.md`. La preparación se confirmó en `ffe7ccd63344f57c6739ffaaa6cf6b6e07b80cc7`; Terra implementó un shell A+B cuyos cambios siguen locales. La captura de Daniel evidencia que A+B son parciales y no están aceptados visualmente. Próximo entregable: muestra Qt Foundry con tipografía, bordes, superficies, iconografía, controles y composición trabajados, comparada visualmente con el concepto 02. Solo después extender el diseño a Core y Link. Foundry es el único tema a validar de punta a punta; los otros tres solo prueban tokens. El plan detalla fronteras, regresiones, escalado, idiomas y evidencia Windows requerida.
+
+Esta revisión cambia únicamente documentación: AGENTS y Scope incorporados, hashes recalculados, plan y registro de aceptación corregidos. Valor: sí, corrige la dirección para que el jugador pueda entender y usar la interfaz. No añade una función visible todavía; la siguiente sesión debe entregar la muestra visual o explicar el bloqueo concreto según Scope 8. No hubo SimC, commit ni push. Las pruebas históricas reportadas por Terra no se presentan como una nueva ejecución del principal.
 
 ```json
-{"protected_files":{"AGENTS.md":"9fbc856021bf328786e5a9ace451919f397bc6b8ce4fb5efb330775547a6a543","SCOPE_CORRECTION_0_1.md":"8c9feca445e7cff66645959170663e5bd5a2cf82025c2652b03bf4324b951d7c"}}
+{"protected_files":{"AGENTS.md":"71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de","SCOPE_CORRECTION_0_1.md":"b98e4583785b4e7a0b1f8675011c636e6edbb24b63a5d5b002b822e23a1a85c9"}}
 ```
 
 ## Preparación histórica — Publicación, actualizaciones y donativos (2026-09-18)

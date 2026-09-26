@@ -2,44 +2,32 @@
 
 ## Propósito
 
-Coordinar el trabajo futuro en DpsLab sin ampliar implícitamente su alcance ni
-romper la integridad de perfiles, escenarios, variantes o ejecuciones.
+Coordinar el trabajo futuro en DpsFoundry sin ampliar implícitamente su
+alcance ni romper la integridad de perfiles, escenarios, variantes o
+ejecuciones.
 
-## Estado confirmado
+## Estado real de la suite (2026-09-19)
 
-- La aplicación Python vive en `desktop-app/` y requiere Python 3.11 o posterior.
-- El parser de perfiles y el snapshot `results/flasil_snapshot.json` están implementados.
-- El snapshot usa esquema `0.1`, dataclasses tipadas y separa `equipped_gear` de `bag_gear`.
-- El runner local de SimulationCraft está implementado con `subprocess`, lista de argumentos, `shell=False`, timeout y artefactos aislados por run.
-- El intérprete genera `run_summary.json`; el código actual usa esquema `0.3` y acepta metadatos/resúmenes 0.1, 0.2 y 0.3.
-- Existen escenarios TOML reproducibles e independientes de la configuración local.
-- Existen variantes TOML de perfil, perfiles efectivos binarios y verificación before/after.
-- La baseline formal canónica es `results/runs/20260715T072501.415324Z-95439dae`.
-- Se implementaron auditorías semánticas, comparativas y profundas reproducibles.
-- El comparador A/B de collar schema 0.1 está implementado, pero no se ha
-  ejecutado ni existe un `comparison_result` real.
-- El Subbloque 2.2.b1 permanece aprobado (`block_2_2_b1_approved`): el alta
-  planificada pura y copy-on-write conserva intacto su contrato.
-- El Subbloque 2.2.b2 está implementado, auditado y publicado en
-  `d8bc2406b6b9ea2acc46bf16e5b4811d01573243`: la persistencia transaccional
-  reutiliza el candidato puro, confirma el estado durable y mantiene
-  idempotencia sin escritura bajo el modelo single-writer declarado.
-- Automation Foundation fue implementada, auditada mediante independencia
-  declarada y procedimental, y registrada en el commit
-  `3828c098946f6842885fc520f841ef4fdb4e12af`
-  (`automation_foundation_0_1_committed`).
-- La decisión humana posterior aprobó el cierre GitHub inicialmente publicado.
-  GitHub Automation 0.1 fue implementada, auditada y publicada. El `main`
-  local, `origin/main` y el remoto vivo apuntan a
-  `bf2db644bfebeb07246f8e967f39101a7aa3e77a`.
-- Las pruebas focales de 2.2.b1 registraron 20 pruebas aprobadas, 55 subtests
-  aprobados y código de salida 0.
-- La incidencia de fixture de `comparison_models` fue corregida únicamente en
-  su prueba mediante el commit
-  `6bff15c2d6b03c96a65ed520ca4f800161d53d2c`, auditado y publicado.
-- La baseline funcional aprobada registró 208/208 pruebas. La ejecución viva
-  de GitHub Actions `29645964849`, sobre el Python 3.13.14 fijado, aprobó Policy
-  and contract, Tools tests y Functional suite.
+La suite se llama **DpsFoundry**. Tiene tres componentes: **Core**
+(app de escritorio: simulación, análisis, optimización), **Link** (addon
+activo: observación de personaje, transporte, item scoring) y **Guide**
+(futuro: entrenador/rotación — sin empezar).
+
+El núcleo técnico (Core + Link) funciona de punta a punta para cualquier
+clase y especialización del juego, con datos reales, verificado en juego por
+Daniel: comparación de hasta 4 loadouts identificados por nombre,
+importación de build externa por string de talentos, pesos estadísticos por
+spec, score de equipamiento, `simc.exe` empaquetado en el instalador,
+traducción a inglés/español/portugués.
+
+**El objetivo activo y el alcance exacto del ciclo en curso viven en
+`SCOPE_CORRECTION_0_1.md`, sección 1** — ese archivo es la fuente de verdad
+sobre qué se está construyendo ahora mismo. Este documento no repite esa
+descripción para no quedar desactualizado cada vez que el objetivo cambia.
+
+El detalle de contratos y cierres históricos anteriores a esta corrección
+vive en `docs/NEXT_TASK.md` como registro de auditoría; no es necesario
+leerlo para trabajar en el objetivo vigente.
 
 ## Integridad obligatoria
 
@@ -60,52 +48,33 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
   trabajo nuevo de SBOM, firma de releases, modelo de amenazas formal o
   adquisición automática de fuentes salvo autorización nueva y explícita de
   Daniel que mencione esa característica por nombre. Ver
-  `SCOPE_CORRECTION_0_1.md`, sección 4.
+  `SCOPE_CORRECTION_0_1.md`, sección 4 — ahí también está el detalle de qué
+  quedó en cola (como la firma de releases) frente a lo que sigue sin fecha.
 
 ## Restricciones de alcance
 
 - No iniciar comparaciones de equipo o talentos sin una tarea expresamente aprobada.
 - No ejecutar matrices ni generar combinaciones automáticamente sin aprobación.
-- No implementar DpsFoundry Guide, entrenador de combate, motor de simulación
-  propio, matrices masivas ni nueva captura de combate sin alcance aprobado.
 - No procesar todavía Weekly Reward Choices, currencies, high watermarks o achievements.
-- Alcance aprobado para el ciclo actual: interfaz funcional de DpsFoundry Core y
-  DpsFoundry Link, conforme a `SCOPE_CORRECTION_0_1.md`. La
-  generalización visual no autoriza expandir capacidades de clase/spec ni
-  implementar Guide.
+- **Guide** (entrenador/rotación) y el **motor de simulación propio**
+  permanecen fuera de alcance — ver `SCOPE_CORRECTION_0_1.md`, sección 4.
+- El alcance exacto vigente es el de `SCOPE_CORRECTION_0_1.md`, sección 1 —
+  no se repite aquí para evitar que quede desactualizado.
 
 ## Verificación
 
 - Ejecutar toda la suite después de cambios de código y reportar por separado
-  pruebas aprobadas, subtests, fallos y código de salida. La baseline funcional
-  aprobada es 208/208 y su verificación remota concluyó satisfactoriamente.
-- La observación intermitente de Python 3.12 sobre `updated_at` fue
-  diagnosticada como dependencia incorrecta del avance estricto del reloj de
-  pared. Quedó corregida, auditada y publicada en
-  `b19fb6eae2a44240467cc8684adfd2733e09f0bb`: la verificación local Python
-  3.12.13 pasó 213/213 y GitHub Actions run `30326263409` aprobó sus tres lanes
-  en Python 3.13.14.
+  pruebas aprobadas, subtests, fallos y código de salida.
 - Mantener compatibilidad de lectura con esquemas históricos.
 - Regenerar snapshots o resúmenes existentes solo cuando la tarea lo solicite explícitamente.
 - Informar hashes protegidos y cualquier artefacto ignorado por `.gitignore`.
 
-## Incidencia global cerrada
-
-- Prueba anteriormente afectada:
-  `tests/test_comparison_models.py::ComparisonModelTests::test_global_frozen_field_matrix_is_individual_and_prephysical`.
-- Causa confirmada: la fixture asignaba `True` incluso cuando el estado
-  original ya era `True`, por lo que no producía una mutación real.
-- Corrección cerrada: matriz determinista `False→True`, `True→False` y
-  `None→False`, limitada al archivo de prueba.
-- El cierre preservó `block_2_2_b1_approved` y no modificó código productivo.
-
 ## Quality gate y autorizaciones
 
-- Cuando Daniel cambie el objetivo de la sección 1 de
-  `SCOPE_CORRECTION_0_1.md`, tratar el objetivo anterior como
-  cumplido, añadir una línea breve y fechada en su historial de objetivos
-  cumplidos, recalcular el SHA-256 real del documento y actualizar
-  `protected_files` antes de iniciar el objetivo nuevo.
+- Cuando Daniel cambie el objetivo de la sección 1 de `SCOPE_CORRECTION_0_1.md`,
+  tratar el objetivo anterior como cumplido, añadir una línea breve y fechada
+  en su historial de objetivos cumplidos, recalcular el SHA-256 real del
+  documento y actualizar `protected_files` antes de iniciar el objetivo nuevo.
 - Mientras `SCOPE_CORRECTION_0_1.md` esté vigente, el cierre de alcance para
   tareas dentro de su objetivo único NO requiere contrato formal, `task_id`,
   ni "auditoría independiente declarada y procedimental". Basta una entrada
@@ -120,39 +89,25 @@ romper la integridad de perfiles, escenarios, variantes o ejecuciones.
   referencia, no requiere contrato completo ni auditoría, y nunca se resuelve
   revirtiendo la edición de Daniel para hacer coincidir el hash anterior.
 
-## Colaboración y ejecución
+## Protocolo de agentes subordinados y trabajo remoto — histórico, inactivo
 
-- La colaboración externa está cerrada. No se asignan Issues, permisos ni ramas
-  a colaboradores externos sin una nueva autorización expresa de Daniel.
+**La cuenta colaboradora fue removida del proyecto (2026-09-19).** Ver
+`SCOPE_CORRECTION_0_1.md`, sección 9. Lo de abajo queda como referencia
+histórica del protocolo formal original — solo aplica si Daniel decide
+explícitamente volver a un esquema de Issues/contrato completo para un
+colaborador externo nuevo. Mientras el proyecto tenga una sola cuenta activa,
+no rige nada de esta sección.
+
+- La colaboración remota, en su versión formal, se regía por
+  `docs/REMOTE_AGENT_WORKFLOW.md` y las plantillas de `.github/`.
+- Todo colaborador externo, bajo ese esquema formal, debía recibir un Issue
+  con `task_id`, baseline, allowlist, exclusiones, pruebas y criterio de
+  cierre, trabajar en una rama `agent/<task_id>/<slug>` de su fork privado y
+  entregar un PR; nunca directamente en `main`.
 - `desktop-app/src/**`, `addon/**`, `knowledge/**`, `security/**`, CI,
   settings, secretos, perfiles, escenarios, resultados, SimulationCraft,
-  observación real, releases y claves permanecen bajo responsabilidad
-  exclusiva de Codex principal y autorizaciones separadas.
-- Un PR, una prueba verde o una revisión técnica no equivalen a aprobación,
-  merge, commit, push o publicación. Las invitaciones de GitHub se realizan
-  manualmente con el nombre exacto de la cuenta y el mínimo permiso necesario.
-
-- No modificar el árbol sin una tarea explícitamente autorizada y con alcance
-  cerrado en `docs/NEXT_TASK.md`.
-- Iniciar cada tarea futura desde un árbol Git limpio; los cambios previos no
-  se adoptan ni se reparan automáticamente.
-- Ejecutar `python tools/quality_gate.py run` después de implementar una tarea
-  autorizada. Las pruebas focales deben pasar antes de la suite completa.
-- Requerir una auditoría independiente declarada y procedimental antes de
-  aprobar el bloque; esta separación no constituye una garantía criptográfica
-  de identidad.
-- El quality gate no autoriza ni invoca SimulationCraft y no amplía el alcance
-  funcional de la tarea.
-- No aprobar ni iniciar automáticamente el bloque siguiente.
-- La autorización `planned_member_transactional_commit_0_1` está consumida;
-  GitHub Actions run `30328581221` aprobó Policy and contract, Tools tests y
-  Functional suite. Este cierre no autoriza ejecución real ni el bloque
-  siguiente.
-- El contrato de GitHub Automation 0.1 está consumido y se conserva en
-  `docs/NEXT_TASK.md` como evidencia histórica legible por la CI; no autoriza
-  nuevas mutaciones.
-- La autorización `comparison_timestamp_monotonicity_0_1` también está
-  consumida; su cierre no autoriza tareas posteriores ni una ejecución de
-  SimulationCraft.
-- Escalar a Daniel cualquier archivo adicional, eliminación, rename, cambio de
-  alcance o excepción no incluida expresamente en el contrato autorizado.
+  observación real, releases y claves permanecían bajo responsabilidad
+  exclusiva de la cuenta principal.
+- Un PR, una prueba verde o una revisión técnica nunca equivalen a
+  aprobación, merge, commit, push o publicación, en ningún esquema, formal o
+  liviano.

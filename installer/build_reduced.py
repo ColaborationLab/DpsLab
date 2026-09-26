@@ -55,6 +55,7 @@ def main() -> int:
     window_mode = "--console" if args.console else "--windowed"
     # PyInstaller collects PySide6 hooks and platform plugins from the venv.
     command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--collect-submodules", "dpslab.locales", "--runtime-hook", str(qt_runtime_hook), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{root / 'addon' / 'DpsLab'};DpsLabAddon", "--add-data", f"{root / 'docs' / 'DISTRIBUTION.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-es.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-en.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-pt-BR.md'};Documentation", str(root / "desktop-app" / "launch_dpslab.py")]
+    command[3:3] = ["--add-data", f"{root / 'desktop-app' / 'src' / 'dpslab' / 'assets'};dpslab/assets"]
     result = subprocess.run(command, check=False).returncode
     if result == 0:
         runtime = output / "DpsLab" / "_internal"
