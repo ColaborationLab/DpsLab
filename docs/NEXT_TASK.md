@@ -1,5 +1,211 @@
 # Next Task — DpsFoundry
 
+## Link — autorización de commit local — 2026-09-26
+
+Daniel autoriza expresamente el commit del lote aprobado y congelado.
+Los diez hashes congelados se verifican antes de preparar el índice;
+no se modifica código ni se repiten pruebas sin cambios de implementación.
+Este registro acompaña el commit local. Push, merge y release no autorizados
+en esta tarea. Se excluyen respaldos, logs y paquetes de build/.
+
+## Link — versión aprobada y congelada — 2026-09-26
+
+Daniel confirma que todo funciona bien y solicita congelar esta versión,
+lista para commit y push. Queda aprobada la revisión visual/funcional de
+este lote de Link: identidad compartida, controles, pesos, minimapa circular,
+acciones rápidas, menú estable con agrupador y navegación de una ventana.
+No se declara cerrado el objetivo general ni los pendientes de Core.
+
+Estado: aprobada y congelada localmente; commit/push todavía pendientes.
+Base Git: bd798a420288988d12879c5a1a641a07b4c35711,
+rama codex/dpsfoundry-interface-scope. No se modifica código en esta tarea.
+Evidencia vigente: 1381 pruebas de escritorio aprobadas, 1 omitida;
+167 de herramientas/addon aprobadas; 0 fallos/errores, salida 0 en ambas
+suites. Subtests no contados por separado. diff --check correcto.
+AGENTS/Scope mantienen los hashes protegidos vigentes.
+Excluir build/ (respaldos, ZIP anteriores y logs), datos personales y
+resultados locales al preparar el commit. El TGA propio sí se versiona.
+
+SHA-256 de los archivos congelados, sobre sus bytes locales actuales:
+
+```json
+[
+  {
+    "file": "addon/DpsLab/DpsLab.lua",
+    "sha256": "816fbfc7ac9900ed41948ec32a1a921503f86ed3cd96b2671b9347f8ab7bdf9a"
+  },
+  {
+    "file": "addon/DpsLab/DpsLab.toc",
+    "sha256": "ec2f945b1bab0367082b0202fb25f470d8b004a6d48182183b6fe8165dfe5fb6"
+  },
+  {
+    "file": "addon/DpsLab/ItemScoreProfiles.lua",
+    "sha256": "edc6959b57263ba018d2333275ce7911ca588528779c728da40ed989741b336f"
+  },
+  {
+    "file": "addon/DpsLab/Localization.lua",
+    "sha256": "c203b4df396d5255ff90f434a2285af79eed903e1d2e3d50a1d72061660c3dc1"
+  },
+  {
+    "file": "addon/DpsLab/LinkTheme.lua",
+    "sha256": "a4d1e0a32ee6aa86c06c4f2620cea48f80fc0be509983bbf02dd6ef50bc556ca"
+  },
+  {
+    "file": "addon/DpsLab/Minimap.lua",
+    "sha256": "aaf0f1fe7ea75110fc2d9ff142426aec20cb713c23ae6f419a6ecdf2e3d4026a"
+  },
+  {
+    "file": "addon/DpsLab/Media/foundry-brand-core.tga",
+    "sha256": "53913a6683ca365ecc6110c9d7b9c7c1f762a75166551ddc75fc7824dd43b724"
+  },
+  {
+    "file": "desktop-app/tests/test_qt_loadout_ui.py",
+    "sha256": "4f95d700859ccbee0e3970ead570e521af5546c1acc482418405b858c34e3d34"
+  },
+  {
+    "file": "tools/tests/test_addon_item_score_profiles.py",
+    "sha256": "268df7eeb8c86b192e984f534ac3c3f30026ad79440202a238743953d0012998"
+  },
+  {
+    "file": "tools/build_link_brand.py",
+    "sha256": "927284fb35bfa517457b6cfb45f7948b8baba415b4817dc9910e1bfc96023cf9"
+  }
+]
+```
+
+## Link — minimapa compacto y navegación exclusiva — 2026-09-26
+
+Feedback visual de Daniel: icono cuadrado, menú grande que se cierra al
+salir del agrupador y configuración/pesos superpuestos. Minimap.lua aplica
+máscara circular nativa al mismo emblema, aro discreto y menú 216x146 con
+filas de 24 px. OnHide del botón ya no cierra el menú; éste se posiciona
+respecto de UIParent, no del botón que el agrupador puede ocultar/mover.
+No se cambian archivos, eventos ni configuración del agrupador.
+
+ItemScoreProfiles.lua muestra solo configuración o pesos, con Volver a Link
+localizado en ES/EN/PT. Conserva ediciones en memoria al volver si el
+documento activo no cambia; si cambia, carga los pesos actuales. Acceso
+independiente a pesos mediante clic central se conserva. No se añade un
+botón a la ventana de personaje en este lote. Prueba de valor: acceso
+estable y recorrido reversible sin ventanas superpuestas ni comandos.
+
+Instalados/verificados Minimap.lua, ItemScoreProfiles.lua y Localization.lua;
+resultados importados conservan su hash. Respaldo ignorado:
+build/link-backups/before-navigation-20260926-213359/.
+Pruebas: escritorio 1382 reportadas, 1381 aprobadas, 1 omitida, 0 fallos,
+salida 0; herramientas/addon 167 aprobadas, 0 omitidas/fallos, salida 0.
+Subtests no contabilizados por separado. Casos incluyen ocultación del
+botón sin cierre de menú, una ventana visible y conservación/invalidez
+de borradores según el documento. Hashes protegidos sin cambios.
+Revisión visual por Daniel pendiente tras /reload. Sin commit ni push.
+
+## Link — botón de minimapa y accesos rápidos — 2026-09-26
+
+Daniel solicita el acceso principal faltante. Minimap.lua se carga desde
+DpsLab.toc tras los módulos existentes y crea únicamente controles de Link.
+Clic izquierdo abre configuración/interfaz; central abre pesos; derecho
+muestra abrir Link, pesos, exportar a Core, copiar exportación y alternar
+scores. Las acciones reutilizan funciones existentes; exportar a Core
+mantiene la confirmación de /reload. Tooltip ES/EN/PT explica los gestos.
+Valor: navegar y sincronizar sin recordar comandos. Sin nuevas capturas,
+cálculos, simulaciones ni automatización de juego.
+
+El emblema es el mismo asset de Core. Arrastrar conserva minimap_angle en
+las preferencias propias; no cambia posiciones/configuraciones de otros
+addons. OnUpdate existe solo mientras se arrastra y se elimina al soltar
+u ocultar el botón. Menú limitado a pantalla y cerrable con Escape.
+Instalados/verificados tres archivos: TOC, Localization.lua, Minimap.lua.
+Respaldo ignorado: build/link-backups/before-minimap-20260926-144808/.
+Resultados importados conservan su hash. Sin escritura de configuraciones
+del juego, archivos compartidos ni SavedVariables desde herramientas.
+La preferencia se persiste por el mecanismo normal del addon dentro de WoW.
+
+Pruebas escritorio: 1382 reportadas, 1381 aprobadas, 1 omitida, 0 fallos,
+salida 0. Herramientas/addon: 167 aprobadas, 0 omitidas/fallos, salida 0.
+Subtests no contabilizados separadamente. SHA de AGENTS/Scope sin cambios.
+Pendiente revisión visual por Daniel tras /reload; sin commit ni push.
+
+## Link — segunda iteración desde capturas — 2026-09-26
+
+Daniel considera sustancial la mejora inicial y pide el mismo emblema de
+Core y mayor coherencia visual. Se sustituyen BasicFrameTemplateWithInset
+y UIPanelButtonTemplate en las ventanas de Link: sus regiones decorativas
+seguían dibujando fondo moteado, marcos clásicos y botones rojos sobre el
+tema. Se mantienen las funciones y los selectores/checks nativos, con
+superficies oscuras propias, énfasis ámbar y textos secundarios neutros.
+Valor: identidad compartida y estados legibles sin ampliar capacidades.
+
+Link reutiliza el PNG de marca aprobado de Core mediante TGA sin pérdida,
+sin escalar ni modificar sus píxeles; tools/build_link_brand.py convierte y
+rellena el lienzo hasta 4096x1024. El emblema se selecciona con UV en tiempo
+de ejecución. Media/foundry-brand-core.tga ocupa 16 MiB sin comprimir; una
+textura estática compartida, sin animaciones, adquisición externa ni assets
+extraídos de WoW. Core no cambia su imagen original.
+
+Instalados DpsLab.lua, ItemScoreProfiles.lua, LinkTheme.lua y esa textura;
+hashes comprobados. Respaldo ignorado:
+build/link-backups/before-polish-20260926-143434/.
+DpsLabRealRecommendation.lua intacto. No se escriben SavedVariables ni
+configuraciones del juego/otros addons. El ZIP del lote anterior no contiene
+esta segunda iteración; la carpeta instalada sí. Pendiente revisión visual
+con /reload, /dpslab config y Ver / editar pesos. Sin aceptación final,
+commit ni push.
+
+La suite de Core detectó una prueba de selección contaminada por detección
+de la exportación real local (1 fallo, 1 omitida, salida 1). Se aísla solo
+ese test vaciando su lista antes de añadir las tres filas de prueba; no se
+cambia código de producto Core. Un intento de mock sobre el callback Qt
+produjo una terminación nativa (0xC0000005); se retiró y la suite Qt focal
+pasó: 17/17, salida 0. Herramientas/addon: 166/166, salida 0. Comprobación
+pixel a pixel confirma que el TGA conserva todo el PNG original de Core.
+Suite completa final: 1382 reportadas, 1381 aprobadas, 1 omitida, 0 fallos
+ni errores, salida 0 (81.155 s). Subtests no contabilizados por separado.
+diff --check correcto; hashes AGENTS/Scope conservan la línea base vigente.
+
+## Link — instalada primera iteración para revisión — 2026-09-26
+
+Daniel habilita la prueba con WoW abierto y limita cambios a Link/Core.
+Instalados únicamente DpsLab.lua, DpsLab.toc, ItemScoreProfiles.lua,
+Localization.lua y LinkTheme.lua en la carpeta del addon de la instalación
+Retail activa. Cinco hashes instalados coinciden con las fuentes.
+DpsLabRealRecommendation.lua conserva su hash; no se escriben SavedVariables,
+Config.wtf, configuraciones compartidas ni archivos de otros addons.
+Respaldo local ignorado: build/link-backups/before-ui-20260926-142407/.
+Sin cambios nuevos de código: conserva la evidencia de pruebas del lote
+inferior. Pendientes /reload y revisión visual por Daniel de configuración,
+pesos, selección, scroll y exportación. Instalación no equivale a aceptación.
+Sin ejecución de SimC, commit ni push.
+
+## Link — primera pasada de interfaz — 2026-09-26
+
+Daniel prioriza ahora la interfaz del addon con el tratamiento visual de Core.
+Los puntos 5–6 pendientes de Core no se declaran completados. Mismo objetivo
+principal y hashes protegidos; no hay commit/push autorizado para este lote.
+Prueba de valor: consultar pesos, seleccionar builds y exportar resulta más
+legible y ordenado, conservando cálculos, transporte y datos existentes.
+
+LinkTheme.lua comparte cabecera, emblema vectorial nativo, superficies,
+controles, foco y selección; se carga desde DpsLab.toc. ItemScoreProfiles.lua
+reordena pesos/configuración, evita solapamientos, limita altura mediante
+scroll y presenta barras relativas de los pesos (no DPS). DpsLab.lua aplica
+el mismo estilo a exportación manual y confirmación; Localization.lua añade
+etiquetas de estadísticas ES/EN/PT. Sin temporizadores, descargas, texturas
+de terceros, simulación, cambios de pesos ni modificación de datos del juego.
+Las barras se ocultan al editar su valor hasta volver a renderizar el perfil.
+
+Referencia observada: dpsfoundry_link_forged_power_ui.png del pack aprobado.
+No se implementan capacidades ilustradas que aún no existen. Esta pasada
+NO demuestra equivalencia visual final: texturas de roca/magma, pulido de
+marca y revisión dentro de WoW quedan pendientes. No se instala en WoW.
+Parche de revisión ignorado: build/link-ui-review-20260926/; solo cinco
+archivos de código, sin DpsLabRealRecommendation.lua ni SavedVariables.
+Pruebas: escritorio 1382 reportadas, 1381 aprobadas, 1 omitida, 0 fallos,
+salida 0; herramientas/addon 165 aprobadas, 0 omitidas/fallos, salida 0.
+Subtests no contados por separado. Nueva prueba Lua cubre estilo, acciones,
+cierre, campo sin solapamiento y lista de 20 builds. No sustituye WoW real.
+AGENTS/Scope conservan SHA-256 71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de
+y b98e4583785b4e7a0b1f8675011c636e6edbb24b63a5d5b002b822e23a1a85c9.
+
 ## Aprobación y entrega acumulada — 2026-09-26
 
 Daniel aprueba todos los avances hasta aquí y autoriza commit y push de la

@@ -42,6 +42,35 @@ catalogs.en.save_profile = "Save profile"
 catalogs.es.save_profile = "Guardar perfil"
 catalogs.pt.save_profile = "Salvar perfil"
 
+local statLabels = {
+  en = {"Strength", "Agility", "Intellect", "Critical strike", "Haste", "Mastery", "Versatility"},
+  es = {"Fuerza", "Agilidad", "Intelecto", "Crítico", "Celeridad", "Maestría", "Versatilidad"},
+  pt = {"Força", "Agilidade", "Intelecto", "Crítico", "Aceleração", "Maestria", "Versatilidade"},
+}
+for locale, labels in pairs(statLabels) do
+  for index, stat in ipairs({"Strength", "Agility", "Intellect", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}) do
+    catalogs[locale]["stat_" .. stat] = labels[index]
+  end
+end
+catalogs.en.link_copy_hint = "Ctrl+C → Core: Paste export"
+catalogs.es.link_copy_hint = "Ctrl+C → Core: Pegar exportación"
+catalogs.pt.link_copy_hint = "Ctrl+C → Core: Colar exportação"
+catalogs.en.link_open = "Open DpsFoundry Link"
+catalogs.es.link_open = "Abrir DpsFoundry Link"
+catalogs.pt.link_open = "Abrir DpsFoundry Link"
+catalogs.en.link_back = "Back to Link"
+catalogs.es.link_back = "Volver a Link"
+catalogs.pt.link_back = "Voltar ao Link"
+catalogs.en.link_export_core = "Export to Core…"
+catalogs.es.link_export_core = "Exportar a Core…"
+catalogs.pt.link_export_core = "Exportar para Core…"
+catalogs.en.link_hide_scores = "Hide item scores"
+catalogs.es.link_hide_scores = "Ocultar scores de objetos"
+catalogs.pt.link_hide_scores = "Ocultar scores de itens"
+catalogs.en.link_minimap_help = "Left click: open Link.\nRight click: quick actions.\nMiddle click: weights.\nDrag: move around the minimap."
+catalogs.es.link_minimap_help = "Clic izquierdo: abrir Link.\nClic derecho: acciones rápidas.\nClic central: pesos.\nArrastrar: mover alrededor del minimapa."
+catalogs.pt.link_minimap_help = "Clique esquerdo: abrir Link.\nClique direito: ações rápidas.\nClique central: pesos.\nArraste: mover ao redor do minimapa."
+
 DpsLabLocalization = {
   catalogs = catalogs,
   locale = localeKey,

@@ -168,9 +168,13 @@ end
 
 local function showManualAnalysisExport(payload)
   local frame = CreateFrame("Frame", "DpsLabManualAnalysisExportFrame", UIParent, "BackdropTemplate")
-  frame:SetSize(700, 180); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
-  local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
-  box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(660, 140); box:SetPoint("CENTER")
+  frame:SetSize(700, 260); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Frame(frame) end
+  local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate,BackdropTemplate")
+  box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(640, 110); box:SetPoint("TOPLEFT", 30, -122)
+  if DpsLabLinkTheme then DpsLabLinkTheme.Field(box) end
+  local hint = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  hint:SetPoint("TOPLEFT", 30, -96); hint:SetText(T("link_copy_hint", "Ctrl+C → Core: Pegar exportación"))
   box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
   if type(CopyToClipboard) == "function" then CopyToClipboard(payload) end
 end
@@ -192,16 +196,19 @@ local function lowerHex(payload)
 end
 
 local function confirmAppExport(payload)
-  local frame = CreateFrame("Frame", nil, UIParent, "BasicFrameTemplateWithInset")
-  frame:SetSize(460, 150); frame:SetPoint("CENTER"); frame:Show()
+  local frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
+  frame:SetSize(520, 250); frame:SetPoint("CENTER"); frame:Show()
+  if DpsLabLinkTheme then DpsLabLinkTheme.Frame(frame) end
   frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText(T("export_title", "Exportar a la app de DpsLab"))
+  frame.title:SetPoint("TOP", 0, -100); frame.title:SetText(T("export_title", "Exportar a la app de DpsLab"))
   frame.detail = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  frame.detail:SetPoint("TOP", 0, -62); frame.detail:SetWidth(400)
+  frame.detail:SetPoint("TOP", 0, -132); frame.detail:SetWidth(450)
   frame.detail:SetText(T("export_help", "Esto guarda solo el análisis actual y recarga la interfaz. La app podrá detectarlo sin copiar texto."))
-  frame.accept = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.accept = CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.accept, true) end
   frame.accept:SetSize(180, 24); frame.accept:SetPoint("BOTTOM", -96, 18); frame.accept:SetText(T("export_reload", "Exportar y /reload"))
-  frame.cancel = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.cancel = CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.cancel) end
   frame.cancel:SetSize(100, 24); frame.cancel:SetPoint("BOTTOM", 96, 18); frame.cancel:SetText(T("cancel", "Cancelar"))
   frame.accept:SetScript("OnClick", function()
     _G.DpsLabObservationExport = "live_analysis:" .. lowerHex(payload)

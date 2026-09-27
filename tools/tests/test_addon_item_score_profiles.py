@@ -14,9 +14,20 @@ LUA = (ROOT / "addon/DpsLab/ItemScoreProfiles.lua").read_text(encoding="utf-8")
 LOCALIZATION = (ROOT / "addon/DpsLab/Localization.lua").read_text(encoding="utf-8")
 TOC = (ROOT / "addon/DpsLab/DpsLab.toc").read_text(encoding="utf-8")
 DEFAULTS = (ROOT / "addon/DpsLab/DefaultItemScoreProfiles.lua").read_text(encoding="utf-8")
+THEME = (ROOT / "addon/DpsLab/LinkTheme.lua").read_text(encoding="utf-8")
 
 
 class AddonItemScoreProfilesTests(unittest.TestCase):
+    def test_link_reuses_core_brand_and_avoids_blizzard_button_art(self):
+        import struct
+        texture = (ROOT / "addon/DpsLab/Media/foundry-brand-core.tga").read_bytes()
+        self.assertEqual((4096, 1024, 32, 0x28), struct.unpack_from("<HHBB", texture, 12))
+        self.assertEqual(18 + 4096 * 1024 * 4, len(texture))
+        self.assertIn('Media\\\\foundry-brand-core.tga', THEME)
+        self.assertNotIn('CreateLine', THEME)
+        self.assertNotIn('BasicFrameTemplateWithInset', LUA)
+        self.assertNotIn('UIPanelButtonTemplate', LUA)
+
     def test_weight_management_text_has_all_supported_catalogs(self):
         for text in (
             'en = {', 'es = {', 'pt = {', 'import_prompt =', 'positive_weights =',
@@ -124,12 +135,25 @@ class AddonScoreRuntimeTests(unittest.TestCase):
                 return popupDialog
             end
             function widget()
-                return setmetatable({scripts={}, text="", shown=false}, {__index=function(t,k)
-                    if k=="CreateFontString" then return widget end
-                    if k=="SetText" then return function(self,v) self.text=v end end
-                    if k=="GetText" then return function(self) return self.text end end
+                return setmetatable({scripts={}, _text="", shown=false}, {__index=function(t,k)
+                    if k=="CreateFontString" or k=="CreateTexture" or k=="CreateLine" or k=="CreateMaskTexture" then return widget end
+                    if k=="IsEnabled" then return function() return true end end
+                    if k=="SetSize" then return function(self,w,h) self.width=w; self.height=h end end
+                    if k=="SetWidth" then return function(self,w) self.width=w end end
+                    if k=="SetHeight" then return function(self,h) self.height=h end end
+                    if k=="SetPoint" then return function(self,...) self.point={...} end end
+                    if k=="HookScript" then return function(self,event,f)
+                        local previous=self.scripts[event]
+                        self.scripts[event]=function(...) if previous then previous(...) end; f(...) end
+                    end end
+                    if k=="SetText" then return function(self,v) self._text=v end end
+                    if k=="GetText" then return function(self) return self._text end end
                     if k=="SetScript" then return function(self,event,f) self.scripts[event]=f end end
                     if k=="Show" then return function(self) self.shown=true end end
+                    if k=="IsShown" then return function(self) return self.shown end end
+                    if k=="Hide" then return function(self) self.shown=false end end
+                    if not k:match("^[A-Z]") or k=="Bg" or k=="Inset" or k=="NineSlice" or k=="CloseButton"
+                        or k=="TitleBg" or k=="TopTileStreaks" or k=="Left" or k=="Middle" or k=="Right" then return nil end
                     return function() end
                 end})
             end
@@ -142,7 +166,90 @@ class AddonScoreRuntimeTests(unittest.TestCase):
             function UIDropDownMenu_Initialize(control,callback) control.initialize=callback; callback() end
             UIParent={}
         ''')
+        self.lua.execute(THEME)
         self.lua.execute(LUA)
+
+    def test_minimap_actions_reuse_existing_functions_and_stop_drag_updates(self):
+        self.lua.execute('''
+            GameTooltip=widget(); UISpecialFrames={}
+            Minimap=widget()
+            function Minimap:GetFrameLevel() return 1 end
+            function Minimap:GetWidth() return 160 end
+            function Minimap:GetHeight() return 160 end
+            function Minimap:GetCenter() return 100,100 end
+            function Minimap:GetEffectiveScale() return 1 end
+            function UIParent:GetEffectiveScale() return 1 end
+            function GetCursorPosition() return 180,100 end
+            DpsLabLocalization={Get=function(key) return key end}
+            opened=0; weightsOpened=0; exportsOpened=0; exportCommand=nil
+            DpsLabItemScores.ShowConfig=function() opened=opened+1 end
+            DpsLabItemScores.ShowWeights=function() weightsOpened=weightsOpened+1 end
+            DpsLab={ShowManualAnalysisExport=function() exportsOpened=exportsOpened+1 end}
+            SlashCmdList={DPSLAB=function(command) exportCommand=command end}
+            local original=CreateFrame
+            function CreateFrame(...)
+                local frame=original(...); lastCreated=frame
+                function frame:GetEffectiveScale() return 1 end
+                function frame:GetLeft() return 800 end
+                function frame:GetBottom() return 600 end
+                return frame
+            end
+        ''')
+        self.lua.execute((ROOT / "addon/DpsLab/Minimap.lua").read_text(encoding="utf-8"))
+        self.lua.execute('''
+            local loader=lastCreated
+            loader.scripts.OnEvent(loader,"ADDON_LOADED","OtherAddon")
+            assert(DpsFoundryMinimapButton==nil)
+            loader.scripts.OnEvent(loader,"ADDON_LOADED","DpsLab")
+            local button=DpsFoundryMinimapButton; local menu=DpsFoundryMinimapMenu
+            button.scripts.OnClick(button,"LeftButton"); assert(opened==1)
+            button.scripts.OnClick(button,"MiddleButton"); assert(weightsOpened==1)
+            button.scripts.OnClick(button,"RightButton"); assert(menu.shown)
+            assert(menu.width==216 and menu.height==146)
+            assert(menu.point[2]==UIParent)
+            button.scripts.OnHide(); assert(menu.shown)
+            button.scripts.OnLeave(); assert(menu.shown)
+            menu.controls[3].scripts.OnClick(); assert(exportCommand=="export app" and not menu.shown)
+            menu.controls[4].scripts.OnClick(); assert(exportsOpened==1)
+            menu.controls[5].scripts.OnClick(); assert(DpsLabItemScorePreferences.enabled==false)
+            menu.controls[5].scripts.OnClick(); assert(DpsLabItemScorePreferences.enabled==true)
+            button.scripts.OnDragStart(); assert(button.scripts.OnUpdate)
+            button.scripts.OnUpdate(); assert(DpsLabItemScorePreferences.minimap_angle==0)
+            button.scripts.OnDragStop(); assert(button.scripts.OnUpdate==nil)
+            button.scripts.OnDragStart(); button.scripts.OnHide(); assert(button.scripts.OnUpdate==nil)
+            assert(#UISpecialFrames==1)
+        ''')
+
+    def test_foundry_windows_keep_actions_and_bounded_build_list(self):
+        self.assertLess(TOC.index("LinkTheme.lua"), TOC.index("DpsLab.lua"))
+        self.lua.execute('''
+            DpsLabItemScores.ShowWeights()
+            local f=DpsLabWeightsFrame
+            assert(f._foundryStyled and f.save._foundryButton and f.name._foundryField)
+            assert(f.fields.Strength.weightBar.width==240)
+            assert(f.name.point[2]+f.name.width < f.save.point[2])
+            GameTooltip=widget()
+            f.save.scripts.OnEnter(f.save); f.save.scripts.OnLeave(f.save)
+            f.CloseButton.scripts.OnClick(); assert(not f.shown)
+            local document=DpsLabItemScores.Active()
+            local profiles=document.item_scores.profiles
+            for i=2,20 do local p=CopyTable(profiles[1]); p.id="default:6:250:"..i; profiles[i]=p end
+            DpsLabItemScores.Active=function() return document end
+            DpsLabItemScores.ShowConfig()
+            local config=DpsLabItemScoreConfigFrame
+            assert(config.height==684 and config.buildScroll.height==224)
+            assert(config.buildList.height==560 and #config.choices==20)
+            config.weightsButton.scripts.OnClick(); assert(f.shown and not config.shown)
+            f.fields.Strength:SetText("9.25")
+            f.back.scripts.OnClick(); assert(config.shown and not f.shown)
+            config.weightsButton.scripts.OnClick()
+            assert(f.shown and not config.shown and f.fields.Strength:GetText()=="9.25")
+            f.back.scripts.OnClick()
+            document.item_scores.profiles[1].weights.Strength=4
+            config.weightsButton.scripts.OnClick()
+            assert(f.fields.Strength:GetText()=="4")
+            assert(f.foundryBrand:GetText():find("DPSFOUNDRY"))
+        ''')
 
     def test_comparison_without_getitem_renders_once_and_survives_rebuild(self):
         self.lua.execute('''

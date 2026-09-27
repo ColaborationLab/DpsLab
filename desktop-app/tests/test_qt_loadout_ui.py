@@ -67,6 +67,7 @@ class QtLoadoutUiTests(unittest.TestCase):
         from dpslab.dpsfoundry_theme import FoundrySelectionDelegate
         workspace = QtLoadoutWorkspace(Path('C:/workspace'))
         self.assertIsInstance(workspace._builds.itemDelegate(), FoundrySelectionDelegate)
+        workspace._builds.clear()
         workspace._builds.addItems(['A', 'B', 'C'])
         workspace._builds.item(0).setSelected(True)
         workspace._builds.item(2).setSelected(True)
