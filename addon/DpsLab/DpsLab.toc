@@ -5,6 +5,7 @@
 ## SavedVariables: DpsLabObservationExport, DpsLabItemScoreProfiles, DpsLabItemScorePreferences
 SyntheticGuidance.lua
 Localization.lua
+LinkTheme.lua
 SyntheticExchange.lua
 SyntheticObservation.lua
 CharacterIdentityObservation.lua
@@ -16,3 +17,4 @@ DpsLabRealRecommendation.lua
 DpsLab.lua
 DefaultItemScoreProfiles.lua
 ItemScoreProfiles.lua
+Minimap.lua

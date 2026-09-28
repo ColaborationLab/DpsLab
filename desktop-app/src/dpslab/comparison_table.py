@@ -47,9 +47,10 @@ def _number(value: float, suffix: str = "") -> str:
     return f"{value:,.1f}{suffix}" if value % 1 else f"{value:,.0f}{suffix}"
 
 
-def _dps_delta(values: tuple[float | None, ...]) -> tuple[str, ...]:
-    reference = max((value for value in values if value is not None), default=None)
-    return tuple("" if value is None or reference is None or value == reference else _number(value - reference) for value in values)
+def _dps_delta(values: tuple[float | None, ...], reference: float | None = None) -> tuple[str, ...]:
+    if reference is None:
+        reference = max((value for value in values if value is not None), default=None)
+    return tuple("" if value is None or reference is None or reference <= 0 or value == reference else f"{(value / reference - 1) * 100:+.2f} %" for value in values)
 
 
 def _highlight(values: tuple[float | None, ...]) -> bool:
@@ -80,19 +81,21 @@ def _equipment_stats(equipped: Iterable[object]) -> Mapping[str, float]:
     return totals
 
 
-def comparison_table(comparison: LoadoutComparison, names: Mapping[int, str], equipped: Iterable[object] = ()) -> ComparisonTable:
+def comparison_table(comparison: LoadoutComparison, names: Mapping[int, str], equipped: Iterable[object] = (), reference_id: int | None = None) -> ComparisonTable:
     """Present known equipment, per-build SimC weights and DPS without inventing values."""
     ids = _columns(comparison, names)
     if not ids:
         return ComparisonTable((), ())
     scores = dict(comparison.loadouts)
     columns = _column_names(ids, names, scores)
+    if reference_id in ids:
+        columns = tuple(label + (" — Referencia" if identifier == reference_id else "") for identifier, label in zip(ids, columns))
     equipment = _equipment_stats(equipped)
     weights = {item.build_id: dict(item.values) for item in comparison.score_weights if item.build_id is not None}
     dps = tuple(scores.get(identifier) for identifier in ids)
     rows: list[ComparisonRow] = [ComparisonRow(
-        f"{comparison.metric} resultante", "Resultado de SimulationCraft; diferencia frente a la build de mayor DPS",
-        tuple(ComparisonCell("N/D" if value is None else _number(value), value, delta) for value, delta in zip(dps, _dps_delta(dps))), _highlight(dps)
+        f"{comparison.metric} resultante", "Resultado de SimulationCraft; diferencia porcentual frente a la referencia elegida o al máximo simulado",
+        tuple(ComparisonCell("N/D" if value is None else _number(value), value, delta) for value, delta in zip(dps, _dps_delta(dps, scores.get(reference_id) if reference_id in ids else None))), _highlight(dps)
     )]
     for key, label in _PRIMARY + _STATS:
         weight_values = tuple(weights.get(identifier, {}).get(key) for identifier in ids)

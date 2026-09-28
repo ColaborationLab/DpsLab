@@ -1,5 +1,10 @@
 # DpsLab
 
+> Referencia técnica/CLI del núcleo que hoy usa **DpsFoundry Core**; `DpsLab`
+> sigue siendo el identificador interno. No es la guía del flujo normal del
+> jugador ni implica que deba elegir la ruta de SimC en la interfaz empaquetada.
+> Para estado, alcance y navegación vigentes, comenzar en el [README raíz](../README.md).
+
 Aplicación local DpsLab. Interpreta un perfil de SimulationCraft, genera un
 snapshot JSON y contiene un ejecutor aislado para una simulación base. No usa
 el archivo HTML del addon como entrada y no genera combinaciones de equipo.

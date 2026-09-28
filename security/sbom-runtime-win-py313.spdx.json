@@ -9,6 +9,7 @@
   "documentNamespace": "https://dpslab.local/spdx/runtime-win-py313/0.1",
   "name": "DpsLab runtime and build dependencies for Windows CPython 3.13",
   "packages": [
+    {"SPDXID":"SPDXRef-Package-pillow","checksums":[{"algorithm":"SHA256","checksumValue":"1cca606cd25738df4ed873d5ad46bbdb3d83b5cbca291f6b4ff13a4df6b0bbe8"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/pillow@12.3.0","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"pillow","versionInfo":"12.3.0"},
     {"SPDXID":"SPDXRef-Package-DpsLab","downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/dpslab@0.1.0","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"dpslab","versionInfo":"0.1.0"},
     {"SPDXID":"SPDXRef-Package-cffi","checksums":[{"algorithm":"SHA256","checksumValue":"1aa5645c30469b09530c4ebca77ebf8f17618293c58f8549cb1a543a50236e7d"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/cffi@2.1.1","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"cffi","versionInfo":"2.1.1"},
     {"SPDXID":"SPDXRef-Package-cryptography","checksums":[{"algorithm":"SHA256","checksumValue":"aed8db4f6d71c51efb89530e12d9464e7bf2923d46c3205dc794a2a93f8c0648"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/cryptography@50.0.1","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"cryptography","versionInfo":"50.0.1"},
@@ -22,6 +23,7 @@
     ,{"SPDXID":"SPDXRef-Package-shiboken6","checksums":[{"algorithm":"SHA256","checksumValue":"38261c88e87a1c32d1302b642b755470d2369c78af3c7d7d9e95d631f79b556c"}],"downloadLocation":"NOASSERTION","externalRefs":[{"referenceCategory":"PACKAGE-MANAGER","referenceLocator":"pkg:pypi/shiboken6@6.10.3","referenceType":"purl"}],"filesAnalyzed":false,"licenseConcluded":"NOASSERTION","licenseDeclared":"NOASSERTION","name":"shiboken6","versionInfo":"6.10.3"}
   ],
   "relationships": [
+    {"relatedSpdxElement":"SPDXRef-Package-pillow","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-DpsLab"},
     {"relatedSpdxElement":"SPDXRef-Package-cffi","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-cryptography"},
     {"relatedSpdxElement":"SPDXRef-Package-cryptography","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-DpsLab"},
     {"relatedSpdxElement":"SPDXRef-Package-numpy","relationshipType":"DEPENDS_ON","spdxElementId":"SPDXRef-Package-scipy"},

@@ -6,6 +6,11 @@ local function T(key, fallback)
   return value or fallback or key
 end
 
+-- Presentation only: the existing windows keep their controls and callbacks.
+local function styleLinkFrame(frame)
+  if DpsLabLinkTheme then DpsLabLinkTheme.Frame(frame) end
+end
+
 local function notify(text)
   print("[DpsLab] " .. text)
   if type(UIErrorsFrame) == "table" and type(UIErrorsFrame.AddMessage) == "function" then
@@ -330,63 +335,85 @@ function Scores.HookTooltips()
 end
 
 function Scores.ShowWeights()
+  if _G.DpsLabAppExportFrame then _G.DpsLabAppExportFrame:Hide() end
+  if _G.DpsLabManualAnalysisExportFrame then _G.DpsLabManualAnalysisExportFrame:Hide() end
   local document = Scores.Active()
   if not document or not document.item_scores.profiles[1] then print("[DpsLab] No hay pesos disponibles para esta especialización."); return end
+  if _G.DpsLabItemScoreConfigFrame then _G.DpsLabItemScoreConfigFrame:Hide() end
   local frame = Scores._weightsFrame
+  if frame and frame.resumeFromConfig and sameData(frame.displayDocument, document) then
+    frame.resumeFromConfig = false; frame:Show(); return
+  end
+  if frame then frame.resumeFromConfig = false end
   if not frame then
-    frame = CreateFrame("Frame", "DpsLabWeightsFrame", UIParent, "BasicFrameTemplateWithInset")
+    frame = CreateFrame("Frame", "DpsLabWeightsFrame", UIParent, "BackdropTemplate")
     Scores._weightsFrame = frame
-    frame:SetSize(560, 590); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
+    frame:SetSize(620, 690); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
     frame:SetMovable(true); frame:EnableMouse(true); frame:RegisterForDrag("LeftButton")
     frame:SetScript("OnDragStart", frame.StartMoving); frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
-    frame.TitleText:SetText("DpsLab — " .. T("weights", "pesos estadísticos"))
+    styleLinkFrame(frame)
     frame.heading = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-    frame.heading:SetPoint("TOP", 0, -44); frame.heading:SetWidth(470)
+    frame.heading:SetPoint("TOPLEFT", 28, -98); frame.heading:SetWidth(555); frame.heading:SetJustifyH("LEFT")
     frame.help = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    frame.help:SetPoint("TOP", 0, -77); frame.help:SetWidth(470)
+    frame.help:SetPoint("TOPLEFT", 28, -126); frame.help:SetWidth(555); frame.help:SetJustifyH("LEFT")
     frame.help:SetText(T("weights_help", "(b): referencia beginner. Pesos simulados: estimación local para ese equipo y talentos; el score no equivale a DPS ni mide supervivencia."))
     frame.fields = {}
     local labels = { {"Strength", "Fuerza"}, {"Agility", "Agilidad"}, {"Intellect", "Intelecto"}, {"CritRating", "Crítico"}, {"HasteRating", "Celeridad"}, {"MasteryRating", "Maestría"}, {"VersatilityRating", "Versatilidad"} }
     for index, entry in ipairs(labels) do
       local label = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-      label:SetPoint("TOPLEFT", 30, -116 - (index - 1) * 27); label:SetText(entry[2])
-      local field = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
-      field:SetSize(180, 22); field:SetPoint("TOPLEFT", 260, -112 - (index - 1) * 27); field:SetAutoFocus(false)
+      label:SetPoint("TOPLEFT", 30, -184 - (index - 1) * 27); label:SetText(T("stat_" .. entry[1], entry[2])); label:SetTextColor(0.78,0.81,0.84)
+      local field = CreateFrame("EditBox", nil, frame, "InputBoxTemplate,BackdropTemplate")
+      field:SetSize(120, 23); field:SetPoint("TOPLEFT", 460, -180 - (index - 1) * 27); field:SetAutoFocus(false)
+      if DpsLabLinkTheme then
+        DpsLabLinkTheme.Field(field)
+        local track = frame:CreateTexture(nil, "BACKGROUND")
+        track:SetPoint("TOPLEFT", 190, -189 - (index - 1) * 27); track:SetSize(240, 5); track:SetColorTexture(0.11,0.15,0.17,1)
+        field.weightBar = frame:CreateTexture(nil, "ARTWORK")
+        field.weightBar:SetPoint("TOPLEFT", track, "TOPLEFT"); field.weightBar:SetHeight(5); field.weightBar:SetColorTexture(1,0.54,0.08,0.8)
+        field:HookScript("OnTextChanged", function(_, userInput) if userInput then field.weightBar:Hide() end end)
+      end
       frame.fields[entry[1]] = field
     end
     local function button(text, x, y, width)
-      local control = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+      local control = CreateFrame("Button", nil, frame, "BackdropTemplate")
+      if DpsLabLinkTheme then DpsLabLinkTheme.Button(control) end
       control:SetSize(width, 24); control:SetPoint("TOPLEFT", x, y); control:SetText(text); return control
     end
     frame.buildLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.buildLabel:SetPoint("TOPLEFT", 30, -309); frame.buildLabel:SetText(T("build", "Build consultada"))
+    frame.buildLabel:SetPoint("TOPLEFT", 30, -385); frame.buildLabel:SetText(T("build", "Build consultada"))
     frame.buildDrop = CreateFrame("Frame", nil, frame, "UIDropDownMenuTemplate")
-    frame.buildDrop:SetPoint("TOPLEFT", 190, -292); UIDropDownMenu_SetWidth(frame.buildDrop, 285)
+    frame.buildDrop:SetPoint("TOPLEFT", 190, -368); UIDropDownMenu_SetWidth(frame.buildDrop, 355)
     frame.nameLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.nameLabel:SetPoint("TOPLEFT", 30, -352); frame.nameLabel:SetText(T("copy_name", "Nombre de la copia"))
-    frame.name = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
-    frame.name:SetSize(250, 22); frame.name:SetPoint("TOPLEFT", 190, -347); frame.name:SetAutoFocus(false)
-    frame.save = button(T("save_activate", "Guardar y activar"), 410, -345, 125)
+    frame.nameLabel:SetPoint("TOPLEFT", 30, -428); frame.nameLabel:SetText(T("copy_name", "Nombre de la copia"))
+    frame.name = CreateFrame("EditBox", nil, frame, "InputBoxTemplate,BackdropTemplate")
+    frame.name:SetSize(215, 24); frame.name:SetPoint("TOPLEFT", 200, -422); frame.name:SetAutoFocus(false)
+    frame.save = button(T("save_activate", "Guardar y activar"), 435, -422, 150)
     buttonTooltip(frame.save, T("save_activate_help", "Crea una copia con el nombre y valores visibles y la deja como perfil activo. No modifica el perfil importado original."))
     frame.profileLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.profileLabel:SetPoint("TOPLEFT", 30, -390); frame.profileLabel:SetText(T("active_profile", "Perfil de pesos activo"))
+    frame.profileLabel:SetPoint("TOPLEFT", 30, -472); frame.profileLabel:SetText(T("active_profile", "Perfil de pesos activo"))
     frame.profileDrop = CreateFrame("Frame", nil, frame, "UIDropDownMenuTemplate")
-    frame.profileDrop:SetPoint("TOPLEFT", 190, -373); UIDropDownMenu_SetWidth(frame.profileDrop, 285)
+    frame.profileDrop:SetPoint("TOPLEFT", 190, -455); UIDropDownMenu_SetWidth(frame.profileDrop, 355)
     buttonTooltip(frame.profileDrop, T("active_profile_help", "Elige qué perfil de pesos se usa ahora en los scores. Automático usa la importación de la app o, si no existe, la referencia beginner."))
     frame.transferLabel = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    frame.transferLabel:SetPoint("TOPLEFT", 30, -432); frame.transferLabel:SetText(T("manual_transfer", "Intercambio manual"))
-    frame.transfer = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
-    frame.transfer:SetSize(300, 22); frame.transfer:SetPoint("TOPLEFT", 190, -427); frame.transfer:SetAutoFocus(false)
-    frame.copyTransfer = button(T("copy", "Copiar"), 30, -466, 110)
-    frame.importTransfer = button(T("paste_import", "Importar pegado"), 150, -466, 145)
-    frame.removeBuild = button(T("delete_build", "Eliminar build"), 305, -466, 115)
-    frame.removeProfile = button(T("delete_profile", "Eliminar perfil"), 430, -466, 105)
+    frame.transferLabel:SetPoint("TOPLEFT", 30, -518); frame.transferLabel:SetText(T("manual_transfer", "Intercambio manual"))
+    frame.transfer = CreateFrame("EditBox", nil, frame, "InputBoxTemplate,BackdropTemplate")
+    frame.transfer:SetSize(385, 24); frame.transfer:SetPoint("TOPLEFT", 200, -512); frame.transfer:SetAutoFocus(false)
+    if DpsLabLinkTheme then DpsLabLinkTheme.Field(frame.name); DpsLabLinkTheme.Field(frame.transfer) end
+    frame.copyTransfer = button(T("copy", "Copiar"), 30, -557, 115)
+    frame.importTransfer = button(T("paste_import", "Importar pegado"), 155, -557, 155)
+    frame.removeBuild = button(T("delete_build", "Eliminar build"), 320, -557, 125)
+    frame.removeProfile = button(T("delete_profile", "Eliminar perfil"), 455, -557, 130)
     buttonTooltip(frame.copyTransfer, T("copy_transfer_help", "Copia los pesos de la build visible para pegarlos en la app o guardarlos manualmente."))
     buttonTooltip(frame.importTransfer, T("import_transfer_help", "Lee una cadena DPSLAB-WEIGHTS pegada y la guarda como un perfil nuevo activo."))
     buttonTooltip(frame.removeBuild, T("delete_build_help", "Elimina la build visible solo del perfil de pesos guardado activo. No borra el loadout de talentos de WoW."))
     buttonTooltip(frame.removeProfile, T("delete_profile_help", "Elimina el perfil de pesos guardado activo. El perfil automático importado no se puede borrar desde aquí."))
     frame.status = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    frame.status:SetPoint("BOTTOMLEFT", 30, 15); frame.status:SetWidth(500)
+    frame.status:SetPoint("BOTTOMLEFT", 30, 25); frame.status:SetWidth(555); frame.status:SetJustifyH("LEFT")
+    frame.back = button(T("link_back", "Volver a Link"), 30, -600, 160)
+    frame.back:SetScript("OnClick", function() Scores.ShowConfig() end)
+    for _, label in ipairs({frame.buildLabel, frame.nameLabel, frame.profileLabel, frame.transferLabel}) do
+      label:SetTextColor(0.78, 0.81, 0.84)
+    end
   end
   local profiles = document.item_scores.profiles
   local index = 1
@@ -398,7 +425,16 @@ function Scores.ShowWeights()
   local function render()
     local profile = profiles[index]
     frame.heading:SetText(profileLabel(profile) .. "  (" .. index .. "/" .. #profiles .. ")")
-    for stat, field in pairs(frame.fields) do field:SetText(profile.weights[stat] and tostring(profile.weights[stat]) or "") end
+    local maximum = 0
+    for _, weight in pairs(profile.weights) do maximum = math.max(maximum, weight) end
+    for stat, field in pairs(frame.fields) do
+      local weight = profile.weights[stat]
+      field:SetText(weight and tostring(weight) or "")
+      if field.weightBar then
+        field.weightBar:SetWidth(weight and maximum > 0 and 240 * weight / maximum or 0)
+        field.weightBar:SetShown(weight ~= nil)
+      end
+    end
     frame.name:SetText(displayName(profile))
     frame.transfer:SetText(Scores.ExportString(profile) or "")
   end
@@ -467,21 +503,29 @@ function Scores.ShowWeights()
     notify(T("profile_deleted", "Perfil de pesos eliminado: ") .. name); Scores.ShowWeights()
   end)
   frame.status:SetText(T("weights_hint", "Consulta cada build o guarda una copia con tus ajustes."))
-  render(); frame:Show()
+  render(); frame.displayDocument = CopyTable(document); frame:Show()
 end
 
 function Scores.ShowConfig()
+  if _G.DpsLabAppExportFrame then _G.DpsLabAppExportFrame:Hide() end
+  if _G.DpsLabManualAnalysisExportFrame then _G.DpsLabManualAnalysisExportFrame:Hide() end
+  if Scores._weightsFrame then
+    if Scores._weightsFrame:IsShown() then Scores._weightsFrame.resumeFromConfig = true end
+    Scores._weightsFrame:Hide()
+  end
   local document = Scores.Active()
   local profiles = document and document.item_scores and document.item_scores.profiles or {}
   DpsLabItemScorePreferences = type(DpsLabItemScorePreferences) == "table" and DpsLabItemScorePreferences or { enabled=true, selected={} }
-  local frame = _G.DpsLabItemScoreConfigFrame or CreateFrame("Frame", "DpsLabItemScoreConfigFrame", UIParent, "BasicFrameTemplateWithInset")
-  frame:SetSize(460, 258 + #profiles * 24); frame:SetPoint("CENTER"); frame:Show()
+  local frame = _G.DpsLabItemScoreConfigFrame or CreateFrame("Frame", "DpsLabItemScoreConfigFrame", UIParent, "BackdropTemplate")
+  styleLinkFrame(frame)
+  local listHeight = math.max(28, math.min(224, #profiles * 28))
+  frame:SetSize(580, 504 + listHeight); frame:SetPoint("CENTER"); frame:Show()
   frame.title = frame.title or frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText("DpsLab — " .. T("scores_title", "scores de equipo"))
+  frame.title:SetPoint("TOPLEFT", 28, -190); frame.title:SetText(T("scores_title", "scores de equipo"))
   frame.localeLabel = frame.localeLabel or frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-  frame.localeLabel:SetPoint("TOPLEFT", 24, -38); frame.localeLabel:SetText(T("language", "Idioma"))
+  frame.localeLabel:SetPoint("BOTTOMLEFT", 28, 166); frame.localeLabel:SetText(T("language", "Idioma"))
   frame.localeDrop = frame.localeDrop or CreateFrame("Frame", nil, frame, "UIDropDownMenuTemplate")
-  frame.localeDrop:SetPoint("TOPLEFT", 70, -25); UIDropDownMenu_SetWidth(frame.localeDrop, 150)
+  frame.localeDrop:SetPoint("BOTTOMLEFT", 110, 148); UIDropDownMenu_SetWidth(frame.localeDrop, 150)
   buttonTooltip(frame.localeDrop, T("language_help", "Elige Auto, español, inglés o portugués brasileño. La preferencia se conserva en este equipo."))
   local localeValues = { "auto", "es", "en", "pt" }
   local localeLabels = { T("language_auto", "Auto"), "ES", "EN", "PT-BR" }
@@ -491,34 +535,55 @@ function Scores.ShowConfig()
     local value = localeValues[index]
     if DpsLabLocalization and DpsLabLocalization.SetLocale then DpsLabLocalization.SetLocale(value) end
     UIDropDownMenu_SetText(frame.localeDrop, localeLabels[index]); notify(T("language_changed", "Idioma actualizado. Algunas ventanas se actualizarán al abrirlas de nuevo."))
+    Scores.ShowConfig()
   end)
-  frame.weightsButton = frame.weightsButton or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.weightsButton:SetSize(190, 22); frame.weightsButton:SetPoint("TOPLEFT", 18, -10); frame.weightsButton:SetText(T("view_edit", "Ver / editar pesos"))
+  frame.weightsButton = frame.weightsButton or CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.weightsButton, true) end
+  frame.weightsButton:SetSize(168, 30); frame.weightsButton:SetPoint("TOPLEFT", 28, -96); frame.weightsButton:SetText(T("view_edit", "Ver / editar pesos"))
   frame.weightsButton:SetScript("OnClick", Scores.ShowWeights)
   buttonTooltip(frame.weightsButton, T("weights_button_help", "Abre la lista de builds y perfiles de pesos. Aquí puedes consultar, nombrar, guardar, activar o transferir pesos."))
-  frame.manualExport = frame.manualExport or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.manualExport:SetSize(190, 22); frame.manualExport:SetPoint("TOPRIGHT", -18, -10); frame.manualExport:SetText(T("copy_export", "Copiar exportación"))
+  frame.manualExport = frame.manualExport or CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.manualExport) end
+  frame.manualExport:SetSize(168, 30); frame.manualExport:SetPoint("TOPRIGHT", -28, -96); frame.manualExport:SetText(T("copy_export", "Copiar para Core"))
   frame.manualExport:SetScript("OnClick", function() if DpsLab and DpsLab.ShowManualAnalysisExport then DpsLab.ShowManualAnalysisExport() end end)
   buttonTooltip(frame.manualExport, T("manual_export_help", "Muestra la exportación completa para copiarla y pegarla en la app. La detección automática sigue disponible."))
+  frame.appExport = frame.appExport or CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.appExport, true) end
+  frame.appExport:SetSize(168, 30); frame.appExport:SetPoint("TOPLEFT", 206, -96)
+  frame.appExport:SetText(T("link_export_core", "Exportar con recarga"))
+  frame.appExport:SetScript("OnClick", function() SlashCmdList.DPSLAB("export app") end)
+  buttonTooltip(frame.appExport, T("link_reload_help", "Confirma la recarga; después usa Detectar exportación en Core. No necesitas copiar texto."))
+  frame.exportNote = frame.exportNote or frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  frame.exportNote:SetPoint("TOPLEFT", 28, -134); frame.exportNote:SetWidth(524); frame.exportNote:SetJustifyH("LEFT")
+  frame.exportNote:SetText(T("link_export_routes", "Con recarga: Detectar exportación en Core. Sin recarga: copiar y Pegar exportación en Core."))
   frame.detail = frame.detail or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  frame.detail:SetPoint("TOP", 0, -62); frame.detail:SetWidth(410)
+  frame.detail:SetPoint("TOPLEFT", 28, -215); frame.detail:SetWidth(520); frame.detail:SetJustifyH("LEFT")
   frame.detail:SetText(T("config_detail", "Los pesos personalizados provienen del loadout elegido en SimC; (b) identifica una build sugerida para principiantes."))
   frame.toggle = frame.toggle or CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
-  frame.toggle:SetPoint("BOTTOMLEFT", 28, 106); frame.toggle.text = frame.toggle.text or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+  frame.toggle:SetPoint("BOTTOMLEFT", 28, 194); frame.toggle.text = frame.toggle.text or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
   frame.toggle.text:SetPoint("LEFT", frame.toggle, "RIGHT", 4, 0); frame.toggle.text:SetText(T("show_item_scores", "Mostrar scores de item"))
   frame.toggle:SetChecked(DpsLabItemScorePreferences.enabled ~= false)
   frame.toggle:SetScript("OnClick", function(self) DpsLabItemScorePreferences.enabled = self:GetChecked() and true or false end)
   local selected = Scores.Visible(document) or {}
   frame.choices = frame.choices or {}
+  if not frame.buildScroll then
+    frame.buildScroll = CreateFrame("ScrollFrame", nil, frame, "UIPanelScrollFrameTemplate")
+    frame.buildScroll:SetPoint("TOPLEFT", 28, -264); frame.buildScroll:SetWidth(498)
+    frame.buildList = CreateFrame("Frame", nil, frame.buildScroll)
+    frame.buildList:SetWidth(498); frame.buildScroll:SetScrollChild(frame.buildList)
+  end
+  frame.buildScroll:SetHeight(listHeight); frame.buildList:SetHeight(math.max(28, #profiles * 28))
   for _, choice in ipairs(frame.choices) do choice:Hide() end
   for index, profile in ipairs(profiles) do
     if validWeights(profile) then
-      local choice = frame.choices[index] or CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
+      local choice = frame.choices[index] or CreateFrame("CheckButton", nil, frame.buildList, "UICheckButtonTemplate")
       frame.choices[index] = choice; choice:Show()
-      choice:SetPoint("TOPLEFT", 26, -86 - (index - 1) * 24)
+      choice:SetPoint("TOPLEFT", 0, -(index - 1) * 28)
       choice.text = choice.text or choice:CreateFontString(nil, "OVERLAY", "GameFontNormal")
       choice.text:SetPoint("LEFT", choice, "RIGHT", 4, 0); choice.text:SetText(displayName(profile))
+      choice.text:SetWidth(440); choice.text:SetJustifyH("LEFT"); choice.text:SetWordWrap(false)
       choice:SetChecked(selected[profile.id] ~= false)
+      if DpsLabLinkTheme then DpsLabLinkTheme.Choice(choice) end
       choice:SetScript("OnClick", function(self) selected[profile.id] = self:GetChecked() and true or false end)
     end
   end
@@ -526,12 +591,16 @@ function Scores.ShowConfig()
   DpsLabItemScorePreferences.saved_profiles = type(DpsLabItemScorePreferences.saved_profiles) == "table" and DpsLabItemScorePreferences.saved_profiles or {}
   local saved = characterID and DpsLabItemScorePreferences.saved_profiles[characterID] or {}
   frame.savedTitle = frame.savedTitle or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  frame.savedTitle:SetPoint("BOTTOMLEFT", 28, 80); frame.savedTitle:SetText(T("saved_profiles", "Perfiles de pesos guardados: ") .. tostring(#saved))
-  frame.profileName = frame.profileName or CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
-  frame.profileName:SetAutoFocus(false); frame.profileName:SetSize(230, 20); frame.profileName:SetPoint("BOTTOMLEFT", 28, 52)
+  frame.savedTitle:SetPoint("BOTTOMLEFT", 28, 126); frame.savedTitle:SetText(T("saved_profiles", "Perfiles de pesos guardados: ") .. tostring(#saved))
+  frame.profileName = frame.profileName or CreateFrame("EditBox", nil, frame, "InputBoxTemplate,BackdropTemplate")
+  frame.profileName:SetAutoFocus(false); frame.profileName:SetSize(340, 26); frame.profileName:SetPoint("BOTTOMLEFT", 28, 90)
   frame.profileName:SetText(T("default_profile_name", "Perfil de pesos ") .. tostring(#saved + 1))
-  frame.saveProfile = frame.saveProfile or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-  frame.saveProfile:SetSize(110, 22); frame.saveProfile:SetPoint("LEFT", frame.profileName, "RIGHT", 8, 0); frame.saveProfile:SetText(T("save_profile", "Guardar perfil"))
+  frame.saveProfile = frame.saveProfile or CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.saveProfile) end
+  frame.saveProfile:SetSize(172, 26); frame.saveProfile:SetPoint("LEFT", frame.profileName, "RIGHT", 8, 0); frame.saveProfile:SetText(T("save_profile", "Guardar perfil"))
+  if DpsLabLinkTheme then
+    DpsLabLinkTheme.Field(frame.profileName)
+  end
   frame.saveProfile:SetScript("OnClick", function()
     if type(document) ~= "table" or type(characterID) ~= "string" then return end
     local name = frame.profileName:GetText()
@@ -542,18 +611,23 @@ function Scores.ShowConfig()
   end)
   frame.savedList = frame.savedList or frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
   local names = {}; for _, entry in ipairs(saved) do names[#names + 1] = entry.name end
-  frame.savedList:SetPoint("BOTTOMLEFT", 28, 28); frame.savedList:SetWidth(400); frame.savedList:SetJustifyH("LEFT")
+  frame.savedList:SetPoint("BOTTOMLEFT", 28, 58); frame.savedList:SetWidth(520); frame.savedList:SetHeight(26); frame.savedList:SetJustifyH("LEFT")
   frame.savedList:SetText(#names > 0 and table.concat(names, ", ") or T("no_saved_profiles", "Aún no hay perfiles guardados."))
+  for _, label in ipairs({frame.detail, frame.localeLabel, frame.savedTitle, frame.savedList, frame.toggle.text}) do
+    label:SetTextColor(0.78, 0.81, 0.84)
+  end
   local default = profiles[1]
   if frame.talent then frame.talent:Hide(); frame.copy:Hide() end
   if default and default.source == "generic" and type(default.talent_string) == "string" then
-    frame.talent = frame.talent or CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
+    frame.talent = frame.talent or CreateFrame("EditBox", nil, frame, "InputBoxTemplate,BackdropTemplate")
     frame.talent:Show()
-    frame.talent:SetAutoFocus(false); frame.talent:SetSize(330, 20); frame.talent:SetPoint("BOTTOMLEFT", 28, 4)
+    frame.talent:SetAutoFocus(false); frame.talent:SetSize(420, 24); frame.talent:SetPoint("BOTTOMLEFT", 28, 24)
     frame.talent:SetText(default.talent_string); frame.talent:HighlightText()
-    frame.copy = frame.copy or CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+    frame.copy = frame.copy or CreateFrame("Button", nil, frame, "BackdropTemplate")
+    if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.copy) end
     frame.copy:Show()
     frame.copy:SetSize(78, 22); frame.copy:SetPoint("LEFT", frame.talent, "RIGHT", 8, 0); frame.copy:SetText(T("copy", "Copiar"))
+    if DpsLabLinkTheme then DpsLabLinkTheme.Field(frame.talent) end
     frame.copy:SetScript("OnClick", function() frame.talent:SetFocus(); frame.talent:HighlightText() end)
   end
 end

@@ -1,5 +1,11 @@
 # DpsLab para Windows
 
+Construcción local con íconos (2026-09-27): preparar primero el lector descrito
+en [LOCAL_ITEM_ICONS](../docs/LOCAL_ITEM_ICONS.md). El empaquetador requiere
+`CascLib.dll`, incluye sus licencias y nunca incorpora texturas de WoW.
+Core y Link deben actualizarse juntos para leer las nuevas exportaciones 0.10.
+Este paquete de revisión no activa la distribución pública de Scope 1.10.
+
 Guías completas de distribución:
 
 - `docs/DISTRIBUTION-es.md` — español.

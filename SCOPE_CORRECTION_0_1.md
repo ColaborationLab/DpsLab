@@ -11,6 +11,13 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente
 
+**Actualización de Daniel — 2026-09-27:** interfaz Core/Link aprobada y lista
+para fase de prueba, incluidos íconos locales, identidad discreta y navegación
+de exportación. Autoriza commit y push del estado actual y pasar al objetivo
+de la sección 1.10. La fusión a `main` con CI verde sigue siendo un pendiente
+de integración de 1.9, no un hecho consumado. El contenido de interfaz que
+sigue se conserva como baseline aprobado; esta entrega no implementa 1.10.
+
 **Estado real de la suite (2026-09-19):** el core técnico (addon + app)
 funciona de punta a punta para cualquier clase y especialización del juego,
 verificado personalmente por Daniel en juego: comparación de hasta 4
@@ -179,11 +186,12 @@ firma un proyecto sin releases previos, así que la beta en sí queda sin
 firmar de todos modos — la solicitud a SignPath se presenta en paralelo,
 sin bloquear el lanzamiento.
 
-### 1.10 Objetivo en cola — listo para activarse al cerrar el punto 1 de 1.9
+### 1.10 Siguiente objetivo autorizado — beta abierta
 
-**No se activa todavía.** Reemplaza al objetivo de la sección 1 solo cuando
-Daniel cierre (verificado por él, jugando) el punto 1 de la sección 1.9:
-íconos resueltos, rama de interfaz fusionada a `main`.
+**Transición autorizada por Daniel el 2026-09-27** tras aprobar el estado de
+interfaz. Implementación aún no iniciada. Antes de integrar la entrega de beta,
+resolver la fusión pendiente de interfaz a `main` con CI verde; no se presume
+esa fusión por haber autorizado commit/push ni por aprobar la revisión visual.
 
 > Preparar DpsFoundry para su beta abierta: (a) agregar archivo `LICENSE`
 > (MIT) en la raíz del repositorio; (b) construir un instalador `.exe` de
@@ -355,6 +363,10 @@ autorizar una separación física distinta de los componentes, o cambiar la
 identidad visual flagship.
 
 ## Historial de objetivos cerrados
+
+- 2026-09-27: Interfaz DpsFoundry Core/Link aprobada por Daniel y lista para
+  fase de prueba; íconos locales, identidad y exportación revisados. Pendiente
+  separado: fusión de la rama de interfaz a `main`.
 
 - 2026-09-08: Restauración de Druida real de punta a punta — verificado en
   juego.

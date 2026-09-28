@@ -24,7 +24,7 @@ class ComparisonTableTests(unittest.TestCase):
         self.assertEqual("DPS resultante", table.rows[0].label)
         self.assertEqual("Equipo: 200\nPeso: 2", rows["Crítico"].cells[0].text)
         self.assertEqual("Equipo: 200\nPeso: 3\nMayor peso", rows["Crítico"].cells[1].text)
-        self.assertEqual("-100", rows["DPS resultante"].cells[0].delta)
+        self.assertEqual("-9.09 %", rows["DPS resultante"].cells[0].delta)
         self.assertEqual("", rows["DPS resultante"].cells[1].delta)
         self.assertTrue(rows["DPS resultante"].highlighted)
         self.assertEqual("N/D", rows["Maestría"].cells[0].text)
@@ -35,6 +35,15 @@ class ComparisonTableTests(unittest.TestCase):
         rows = {row.label: row for row in table.rows}
         self.assertEqual("", rows["DPS resultante"].cells[0].delta)
         self.assertFalse(rows["DPS resultante"].highlighted)
+
+    def test_selected_reference_and_zero_reference(self):
+        result = LoadoutComparison("Listo", ((1, 900.0), (2, 1000.0)), 2, 11, 102, "dps")
+        table = comparison_table(result, {}, reference_id=1)
+        self.assertEqual("", table.rows[0].cells[0].delta)
+        self.assertEqual("+11.11 %", table.rows[0].cells[1].delta)
+        self.assertIn("Referencia", table.columns[0])
+        zero = LoadoutComparison("Listo", ((1, 0.0), (2, 1000.0)), 2, 11, 102, "dps")
+        self.assertTrue(all(not cell.delta for cell in comparison_table(zero, {}, reference_id=1).rows[0].cells))
 
     def test_table_keeps_at_most_four_build_columns(self):
         comparison = LoadoutComparison("Listo", tuple((index, float(index)) for index in range(1, 6)), 5, 11, 102, "dps")

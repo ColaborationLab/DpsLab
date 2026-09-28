@@ -167,11 +167,28 @@ function DpsLab.GetSyntheticAdvisorGuidance(role)
 end
 
 local function showManualAnalysisExport(payload)
+  if _G.DpsLabAppExportFrame then _G.DpsLabAppExportFrame:Hide() end
+  if _G.DpsLabManualAnalysisExportFrame then _G.DpsLabManualAnalysisExportFrame:Hide() end
+  if _G.DpsLabItemScoreConfigFrame then _G.DpsLabItemScoreConfigFrame:Hide() end
+  if _G.DpsLabWeightsFrame then _G.DpsLabWeightsFrame:Hide() end
   local frame = CreateFrame("Frame", "DpsLabManualAnalysisExportFrame", UIParent, "BackdropTemplate")
-  frame:SetSize(700, 180); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
-  local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate")
-  box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(660, 140); box:SetPoint("CENTER")
+  frame:SetSize(700, 440); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG"); frame:SetClampedToScreen(true)
+  if DpsLabLinkTheme then DpsLabLinkTheme.Frame(frame) end
+  local scroll = CreateFrame("ScrollFrame", nil, frame, "UIPanelScrollFrameTemplate")
+  scroll:SetPoint("TOPLEFT", 30, -152); scroll:SetPoint("BOTTOMRIGHT", -50, 62)
+  local box = CreateFrame("EditBox", nil, scroll, "InputBoxTemplate,BackdropTemplate")
+  box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(620, 226); scroll:SetScrollChild(box)
+  scroll:SetScript("OnSizeChanged", function(self, width) box:SetWidth(width) end)
+  if DpsLabLinkTheme then DpsLabLinkTheme.Field(box) end
+  local hint = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  hint:SetPoint("TOPLEFT", 30, -96); hint:SetWidth(620); hint:SetJustifyH("LEFT"); hint:SetText(T("link_copy_hint", "Ctrl+C; en Core: Pegar exportación. No requiere recarga."))
+  local back = CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(back) end
+  back:SetSize(180, 28); back:SetPoint("BOTTOM", 0, 20); back:SetText(T("link_back", "Volver a Link"))
+  back:SetScript("OnClick", function() frame:Hide(); DpsLabItemScores.ShowConfig() end)
+  box:SetScript("OnEscapePressed", function() frame:Hide(); DpsLabItemScores.ShowConfig() end)
   box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
+  scroll:SetVerticalScroll(0)
   if type(CopyToClipboard) == "function" then CopyToClipboard(payload) end
 end
 
@@ -192,22 +209,30 @@ local function lowerHex(payload)
 end
 
 local function confirmAppExport(payload)
-  local frame = CreateFrame("Frame", nil, UIParent, "BasicFrameTemplateWithInset")
-  frame:SetSize(460, 150); frame:SetPoint("CENTER"); frame:Show()
+  for _, name in ipairs({"DpsLabItemScoreConfigFrame", "DpsLabWeightsFrame", "DpsLabManualAnalysisExportFrame", "DpsLabAppExportFrame"}) do
+    if _G[name] then _G[name]:Hide() end
+  end
+  local frame = CreateFrame("Frame", "DpsLabAppExportFrame", UIParent, "BackdropTemplate")
+  frame:SetSize(520, 250); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG"); frame:SetClampedToScreen(true); frame:Show()
+  if DpsLabLinkTheme then DpsLabLinkTheme.Frame(frame) end
   frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  frame.title:SetPoint("TOP", 0, -34); frame.title:SetText(T("export_title", "Exportar a la app de DpsLab"))
+  frame.title:SetPoint("TOP", 0, -100); frame.title:SetText(T("export_title", "Exportar a la app de DpsLab"))
   frame.detail = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  frame.detail:SetPoint("TOP", 0, -62); frame.detail:SetWidth(400)
+  frame.detail:SetPoint("TOP", 0, -132); frame.detail:SetWidth(450)
   frame.detail:SetText(T("export_help", "Esto guarda solo el análisis actual y recarga la interfaz. La app podrá detectarlo sin copiar texto."))
-  frame.accept = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.accept = CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.accept, true) end
   frame.accept:SetSize(180, 24); frame.accept:SetPoint("BOTTOM", -96, 18); frame.accept:SetText(T("export_reload", "Exportar y /reload"))
-  frame.cancel = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
+  frame.cancel = CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.cancel) end
   frame.cancel:SetSize(100, 24); frame.cancel:SetPoint("BOTTOM", 96, 18); frame.cancel:SetText(T("cancel", "Cancelar"))
   frame.accept:SetScript("OnClick", function()
     _G.DpsLabObservationExport = "live_analysis:" .. lowerHex(payload)
     ReloadUI()
   end)
-  frame.cancel:SetScript("OnClick", function() frame:Hide() end)
+  local function back() frame:Hide(); DpsLabItemScores.ShowConfig() end
+  frame.cancel:SetScript("OnClick", back)
+  if frame.CloseButton then frame.CloseButton:SetScript("OnClick", back) end
 end
 
 local function syntheticExportCandidate()

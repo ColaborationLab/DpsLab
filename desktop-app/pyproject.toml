@@ -8,10 +8,13 @@ version = "0.2.0"
 description = "Local DpsLab loadout comparison with bundled SimulationCraft"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["scipy>=1.11.0,<2.0.0", "cryptography>=50.0.1,<51.0.0", "PySide6==6.10.3"]
+dependencies = ["scipy>=1.11.0,<2.0.0", "cryptography>=50.0.1,<51.0.0", "PySide6==6.10.3", "Pillow==12.3.0"]
 
 [project.scripts]
 dpslab = "dpslab.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+dpslab = ["assets/*.png", "native/*.dll", "native/*.txt"]

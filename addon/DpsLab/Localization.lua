@@ -42,6 +42,47 @@ catalogs.en.save_profile = "Save profile"
 catalogs.es.save_profile = "Guardar perfil"
 catalogs.pt.save_profile = "Salvar perfil"
 
+local statLabels = {
+  en = {"Strength", "Agility", "Intellect", "Critical strike", "Haste", "Mastery", "Versatility"},
+  es = {"Fuerza", "Agilidad", "Intelecto", "Crítico", "Celeridad", "Maestría", "Versatilidad"},
+  pt = {"Força", "Agilidade", "Intelecto", "Crítico", "Aceleração", "Maestria", "Versatilidade"},
+}
+for locale, labels in pairs(statLabels) do
+  for index, stat in ipairs({"Strength", "Agility", "Intellect", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}) do
+    catalogs[locale]["stat_" .. stat] = labels[index]
+  end
+end
+catalogs.en.link_copy_hint = "1. Press Ctrl+C to copy the selected text (Ctrl+A selects all).\n2. In Core, choose Paste export. No reload needed."
+catalogs.es.link_copy_hint = "1. Pulsa Ctrl+C para copiar el texto seleccionado (Ctrl+A selecciona todo).\n2. En Core, elige Pegar exportación. No requiere recarga."
+catalogs.pt.link_copy_hint = "1. Pressione Ctrl+C para copiar o texto selecionado (Ctrl+A seleciona tudo).\n2. No Core, escolha Colar exportação. Não requer recarga."
+catalogs.en.copy_export = "Copy for Core"
+catalogs.es.copy_export = "Copiar para Core"
+catalogs.pt.copy_export = "Copiar para Core"
+catalogs.en.manual_export_help = "Opens selectable text. Press Ctrl+C, then use Paste export in Core. No reload required; this does not save the export for automatic detection."
+catalogs.es.manual_export_help = "Abre el texto para seleccionar y copiar con Ctrl+C. En Core usa Pegar exportación. No recarga ni guarda la exportación para detección automática."
+catalogs.pt.manual_export_help = "Abre o texto para selecionar e copiar com Ctrl+C. No Core use Colar exportação. Não recarrega nem salva a exportação para detecção automática."
+catalogs.en.link_reload_help = "Confirm the reload to save this export. Afterwards, use Detect export in Core. No copying needed."
+catalogs.es.link_reload_help = "Confirma la recarga para guardar esta exportación. Después usa Detectar exportación en Core. No necesitas copiar texto."
+catalogs.pt.link_reload_help = "Confirme a recarga para salvar esta exportação. Depois use Detectar exportação no Core. Não precisa copiar texto."
+catalogs.en.link_export_routes = "With reload: Detect export in Core.\nWithout reload: copy, then Paste export in Core."
+catalogs.es.link_export_routes = "Con recarga: Detectar exportación en Core.\nSin recarga: copiar y Pegar exportación en Core."
+catalogs.pt.link_export_routes = "Com recarga: Detectar exportação no Core.\nSem recarga: copiar e Colar exportação no Core."
+catalogs.en.link_open = "Open DpsFoundry Link"
+catalogs.es.link_open = "Abrir DpsFoundry Link"
+catalogs.pt.link_open = "Abrir DpsFoundry Link"
+catalogs.en.link_back = "Back to Link"
+catalogs.es.link_back = "Volver a Link"
+catalogs.pt.link_back = "Voltar ao Link"
+catalogs.en.link_export_core = "Export with reload"
+catalogs.es.link_export_core = "Exportar con recarga"
+catalogs.pt.link_export_core = "Exportar com recarga"
+catalogs.en.link_hide_scores = "Hide item scores"
+catalogs.es.link_hide_scores = "Ocultar scores de objetos"
+catalogs.pt.link_hide_scores = "Ocultar scores de itens"
+catalogs.en.link_minimap_help = "Left click: open Link.\nRight click: quick actions.\nMiddle click: weights.\nDrag: move around the minimap."
+catalogs.es.link_minimap_help = "Clic izquierdo: abrir Link.\nClic derecho: acciones rápidas.\nClic central: pesos.\nArrastrar: mover alrededor del minimapa."
+catalogs.pt.link_minimap_help = "Clique esquerdo: abrir Link.\nClique direito: ações rápidas.\nClique central: pesos.\nArraste: mover ao redor do minimapa."
+
 DpsLabLocalization = {
   catalogs = catalogs,
   locale = localeKey,

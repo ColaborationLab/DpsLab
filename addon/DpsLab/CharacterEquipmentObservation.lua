@@ -6,7 +6,7 @@ local function api()
   return {
     GetBuildInfo = GetBuildInfo, UnitClass = UnitClass,
     GetSpecialization = GetSpecialization, GetSpecializationInfo = GetSpecializationInfo,
-    UnitLevel = UnitLevel, UnitRace = UnitRace,
+    UnitLevel = UnitLevel, UnitRace = UnitRace, UnitFactionGroup = UnitFactionGroup,
     UnitFullName = UnitFullName, GetRealmName = GetRealmName,
     GetMaxLevelForPlayerExpansion = GetMaxLevelForPlayerExpansion,
     GetInventoryItemLink = GetInventoryItemLink,
@@ -55,7 +55,14 @@ local function item(a, link, location, includeStats)
     table.sort(stats)
     suffix = ',"stats":{' .. table.concat(stats, ",") .. '}'
   end
-  return '{"item_id":' .. itemId .. ',"item_level":' .. itemLevel
+  local iconId
+  local getIcon = type(a.C_Item) == "table" and a.C_Item.GetItemIconByID
+  if type(getIcon) == "function" then
+    local iconOk, value = pcall(getIcon, link)
+    if iconOk then iconId = number(value, 1, 2147483647) end
+  end
+  return '{"icon_file_data_id":' .. (iconId and tostring(iconId) or "null")
+    .. ',"item_id":' .. itemId .. ',"item_level":' .. itemLevel
     .. ',"item_link":"' .. json(link) .. '","location":' .. location
     .. ',"slot":"slot_' .. location .. '","source":"equipped"' .. suffix .. '}'
 end
@@ -127,11 +134,18 @@ function Equipment.Capture(selectedLoadout, injected)
     if type(a[name]) ~= "function" then return nil, "analysis_api_unavailable" end
   end
   local buildOk, _, build, _, interface = pcall(a.GetBuildInfo)
-  local classOk, _, _, classId = pcall(a.UnitClass, "player")
+  local classOk, className, _, classId = pcall(a.UnitClass, "player")
   local specOk, specIndex = pcall(a.GetSpecialization)
   local levelOk, level = pcall(a.UnitLevel, "player")
   local maxLevelOk, maxLevel = pcall(a.GetMaxLevelForPlayerExpansion)
-  local raceOk, _, _, raceId = pcall(a.UnitRace, "player")
+  local raceOk, raceName, _, raceId = pcall(a.UnitRace, "player")
+  local faction = ""
+  if type(a.UnitFactionGroup) == "function" then
+    local ok, value = pcall(a.UnitFactionGroup, "player")
+    if ok and (value == "Alliance" or value == "Horde" or value == "Neutral") then faction = value end
+  end
+  className = type(className) == "string" and #className <= 80 and className or ""
+  raceName = type(raceName) == "string" and #raceName <= 80 and raceName or ""
   local identityOk, characterName, realmName = pcall(a.UnitFullName, "player")
   if identityOk and (type(realmName) ~= "string" or #realmName == 0) then
     local realmOk, realm = pcall(a.GetRealmName)
@@ -163,9 +177,10 @@ function Equipment.Capture(selectedLoadout, injected)
   local text = '{"analysis_context":' .. talentContext
     .. ',"compatibility":{"build":' .. build .. ',"interface_version":' .. interface
     .. ',"wow_product":"retail"},"equipment":{"equipped":[' .. table.concat(equipped, ",")
-    .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":true,"executable":false,"no_automation":true},"schema_version":"0.9","subject":{"character_name":"' .. json(characterName) .. '","class_id":'
+    .. ']},"observation_type":"live_manual_analysis_export","safety":{"contains_direct_identifiers":true,"executable":false,"no_automation":true},"schema_version":"0.11","subject":{"character_name":"' .. json(characterName) .. '","class_id":'
     .. classId .. ',"level":' .. level .. ',"max_level":' .. maxLevel .. ',"race_id":' .. raceId
-    .. ',"realm_name":"' .. json(realmName) .. '","role":"' .. subjectRole .. '","specialization_id":' .. specializationId .. '}}\n'
+    .. ',"realm_name":"' .. json(realmName) .. '","role":"' .. subjectRole .. '","specialization_id":' .. specializationId
+    .. ',"visual_identity":["' .. json(raceName) .. '","' .. json(className) .. '","' .. faction .. '"]}}\n'
   if #text > 65536 then return nil, "analysis_payload_invalid" end
   return "DPSLAB-LIVE-ANALYSIS-0.1\n" .. text, "analysis_export_ready"
 end
