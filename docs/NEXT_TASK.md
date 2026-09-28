@@ -1,5 +1,16 @@
 # Next Task — DpsFoundry
 
+## Integración y beta autorizadas — 2026-09-27
+
+Daniel activa únicamente los puntos 1 (main/CI) y 2 (beta); Patreon y Guide
+esperan indicación expresa. PR #13 abierto. Conciliación manual del único
+conflicto, Scope: se conserva todo main más aprobación/transición/historial ya
+aprobados; árbol de código idéntico al baseline 5d4f2ff. Git normalizó los finales
+de línea locales de Scope; nuevo SHA-256 sobre bytes:
+`protected_files.SCOPE_CORRECTION_0_1.md = cff988f13046bcd9e158c5e704f693dddfebbb134e5bc0e65954743fb0dc7973`.
+AGENTS conserva `71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de`.
+La fusión remota sigue condicionada al resultado de CI.
+
 ## Aprobación y entrega del baseline — 2026-09-27
 
 Daniel confirma «está todo correcto», listo para fase de prueba, y autoriza
