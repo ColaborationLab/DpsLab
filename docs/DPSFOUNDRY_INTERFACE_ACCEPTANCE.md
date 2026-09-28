@@ -1,4 +1,33 @@
-# DpsFoundry Core interface acceptance — A+B
+# DpsFoundry — aceptación de interfaz
+
+## Estado vigente — 2026-09-26
+
+Actualización 2026-09-27: Daniel aprueba el estado completo presentado y autoriza
+commit/push y transición a 1.10. Los pendientes visuales enumerados más abajo
+son antecedentes, no bloqueos de esta aceptación. Fusión a main y CI remoto
+siguen separados; no se certifica una matriz de pantallas no probada.
+
+Core: Daniel aprobó los puntos 1 (marca e integración), 2 (iconografía),
+3 (estados/jerarquía de botones) y 4 (badges). Publicados en `bd798a4`.
+Link: revisión visual/funcional aprobada por Daniel, congelada y publicada
+en `0b9d5f0`: identidad compartida, pesos, minimapa circular y menú compacto
+estable, navegación de una sola ventana con regreso a Link.
+
+Pendientes: puntos 5 (orden y navegación resumida del dashboard) y 6
+(divisores/esquinas/bordes) de Core, y cierre explícito del recorrido completo
+de Etapa F. No se presume validada toda la matriz de resoluciones/escalado.
+Los otros tres temas no tienen aprobación de acabado completo.
+No hay cierre del objetivo general, merge en main ni release.
+
+Pruebas del lote: escritorio 1381 aprobadas, 1 omitida; herramientas/addon
+167 aprobadas; 0 fallos/errores y salida 0 en ambas suites. No sustituyen
+la aceptación humana. Detalle de publicación e historial: [NEXT_TASK](NEXT_TASK.md).
+
+## Antecedentes A+B — superados, no estado vigente
+
+Lo siguiente conserva la evaluación de la primera muestra. Sus rechazos,
+pendientes y rutas describen aquella entrega, no revierten las aprobaciones
+anteriores. Para el flujo actual, usar [la guía](DPSFOUNDRY_REVIEW_FUNCTIONS.md).
 
 ## Astra visual sample — pending human acceptance
 

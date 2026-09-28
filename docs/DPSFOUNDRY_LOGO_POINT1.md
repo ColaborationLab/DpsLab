@@ -1,5 +1,14 @@
 # Punto 1 — logotipo forjado
 
+## Cierre vigente — 2026-09-26
+
+Daniel aceptó el punto 1, incluida la integración cabecera/cuerpo, y autorizó
+avanzar a los siguientes puntos. Publicado con Core en `bd798a4`. Link ya
+reutiliza el mismo emblema en `0b9d5f0`. Las restricciones y la aceptación
+pendiente descritas abajo pertenecen a la entrega previa a esa aprobación.
+
+## Registro de la entrega inicial
+
 Daniel aprobó el logotipo y pidió integrar cabecera/cuerpo (2026-09-20).
 El recurso aprobado se conserva byte a byte. El fondo existente se dibuja
 ahora en coordenadas de ventana compartidas por cabecera, lateral y página;

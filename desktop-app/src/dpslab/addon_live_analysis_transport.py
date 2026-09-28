@@ -26,6 +26,7 @@ class LiveAnalysisItem:
     source: str
     expansion_id: int | None = None
     stats: tuple[tuple[str, int], ...] = ()
+    icon_file_data_id: int | None = None
 
 
 @dataclass(frozen=True, repr=False)
@@ -73,6 +74,7 @@ class LiveAnalysisSnapshot:
     character_name: str = ""
     realm_name: str = ""
     max_level: int = 0
+    visual_identity: tuple[str, str, str] = ("", "", "")
 
     @property
     def restoration_talent_loadouts(self) -> TalentLoadouts | None:
@@ -88,6 +90,15 @@ class LiveAnalysisSnapshot:
             TalentLoadout(self.talent_loadouts.active_config_id, self.talent_loadouts.active_talent_string),
             TalentLoadout(self.talent_loadouts.comparison_config_id, self.talent_loadouts.comparison_talent_string),
         )
+
+
+def parse_visual_identity(value) -> tuple[str, str, str]:
+    if not isinstance(value, (list, tuple)) or len(value) != 3 or any(
+        not isinstance(text, str) or len(text) > 80 or any(ord(char) < 32 for char in text)
+        for text in value
+    ) or value[2] not in {"", "Alliance", "Horde", "Neutral"}:
+        _fail("live_analysis_visual_identity_invalid")
+    return tuple(value)
 
 
 def _fail(reason: str) -> None:
@@ -130,8 +141,10 @@ def _item(value: Any, source: str, schema_version: str) -> LiveAnalysisItem:
     fields = {"item_id", "item_level", "item_link", "location", "slot", "source"}
     if schema_version in {"0.2", "0.3"}:
         fields.add("expansion_id")
-    if schema_version in {"0.6", "0.7", "0.8", "0.9"}:
+    if schema_version in {"0.6", "0.7", "0.8", "0.9", "0.10"}:
         fields.add("stats")
+    if schema_version == "0.10":
+        fields.add("icon_file_data_id")
     item = _closed(value, fields, "item")
     if item["source"] != source or not isinstance(item["item_link"], str) or not 1 <= len(item["item_link"]) <= 2048:
         _fail("live_analysis_item_invalid")
@@ -139,7 +152,7 @@ def _item(value: Any, source: str, schema_version: str) -> LiveAnalysisItem:
         _fail("live_analysis_item_invalid")
     expansion_id = _integer(item["expansion_id"], "expansion_id", 0, 100) if schema_version in {"0.2", "0.3"} else None
     stats = ()
-    if schema_version in {"0.6", "0.7", "0.8", "0.9"}:
+    if schema_version in {"0.6", "0.7", "0.8", "0.9", "0.10"}:
         raw_stats = item["stats"]
         if not isinstance(raw_stats, dict) or set(raw_stats) - {"Strength", "Intellect", "Agility", "CritRating", "HasteRating", "MasteryRating", "VersatilityRating"}:
             _fail("live_analysis_item_invalid")
@@ -150,6 +163,8 @@ def _item(value: Any, source: str, schema_version: str) -> LiveAnalysisItem:
         item["item_link"],
         _integer(item["location"], "location", 0, 40),
         item["slot"], source, expansion_id, stats,
+        (_integer(item["icon_file_data_id"], "icon_file_data_id", 1, 2_147_483_647)
+         if schema_version == "0.10" and item["icon_file_data_id"] is not None else None),
     )
 
 
@@ -227,13 +242,14 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
         document = json.loads(raw.decode("utf-8"), object_pairs_hook=_pairs, parse_constant=_nonfinite)
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise LiveAnalysisTransportError("live_analysis_json_invalid") from exc
-    if not isinstance(document, dict) or document.get("schema_version") not in {"0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9"}:
+    if not isinstance(document, dict) or document.get("schema_version") not in {"0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "0.10", "0.11"}:
         _fail("live_analysis_schema_incompatible")
-    schema_version = document["schema_version"]
+    # 0.11 adds presentation metadata; all simulation fields retain 0.10 rules.
+    schema_version = "0.10" if document["schema_version"] == "0.11" else document["schema_version"]
     root_fields = {"compatibility", "equipment", "observation_type", "safety", "schema_version", "subject"}
     if schema_version in {"0.2", "0.3"}:
         root_fields.add("item_eligibility")
-    if schema_version in {"0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9"}:
+    if schema_version in {"0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "0.10"}:
         root_fields.add("analysis_context")
     root = _closed(document, root_fields, "root")
     if root["observation_type"] != "live_manual_analysis_export":
@@ -244,18 +260,21 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
     if compatibility["wow_product"] != "retail":
         _fail("live_analysis_product_unsupported")
     subject_fields = {"class_id", "level", "race_id", "role", "specialization_id"}
-    if schema_version in {"0.8", "0.9"}:
+    if schema_version in {"0.8", "0.9", "0.10"}:
         subject_fields |= {"character_name", "realm_name"}
-    if schema_version == "0.9":
+    if schema_version in {"0.9", "0.10"}:
         subject_fields.add("max_level")
+    if document["schema_version"] == "0.11":
+        subject_fields.add("visual_identity")
     subject = _closed(root["subject"], subject_fields, "subject")
+    visual_identity = parse_visual_identity(subject.get("visual_identity", ("", "", "")))
     if subject["role"] not in {"damage", "healer", "tank"}:
         _fail("live_analysis_role_invalid")
-    equipment_fields = {"equipped"} if schema_version in {"0.4", "0.5", "0.6", "0.7", "0.8", "0.9"} else {"bag", "equipped"}
+    equipment_fields = {"equipped"} if schema_version in {"0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "0.10"} else {"bag", "equipped"}
     equipment = _closed(root["equipment"], equipment_fields, "equipment")
     if not isinstance(equipment["equipped"], list) or not 1 <= len(equipment["equipped"]) <= 19:
         _fail("live_analysis_items_invalid")
-    bag_values = [] if schema_version in {"0.4", "0.5", "0.6", "0.7", "0.8", "0.9"} else equipment["bag"]
+    bag_values = [] if schema_version in {"0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "0.10"} else equipment["bag"]
     if not isinstance(bag_values, list) or len(bag_values) > 40:
         _fail("live_analysis_items_invalid")
     equipped = tuple(_item(item, "equipped", schema_version) for item in equipment["equipped"])
@@ -263,7 +282,7 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
     if len({(item.source, item.location) for item in (*equipped, *bag)}) != len(equipped) + len(bag):
         _fail("live_analysis_item_duplicate")
     safety = _closed(root["safety"], {"contains_direct_identifiers", "executable", "no_automation"}, "safety")
-    if safety != {"contains_direct_identifiers": schema_version in {"0.8", "0.9"}, "executable": False, "no_automation": True}:
+    if safety != {"contains_direct_identifiers": schema_version in {"0.8", "0.9", "0.10"}, "executable": False, "no_automation": True}:
         _fail("live_analysis_safety_invalid")
     eligibility_basis = current_expansion_id = None
     if schema_version in {"0.2", "0.3"}:
@@ -274,12 +293,12 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
         current_expansion_id = _integer(eligibility["current_expansion_id"], "current_expansion_id", 1, 100)
     legacy = _legacy_talent_context(root["analysis_context"]) if schema_version == "0.3" else None
     loadouts = _talent_loadouts(root["analysis_context"]) if schema_version == "0.4" else None
-    multiple_loadouts = _multiple_talent_loadouts(root["analysis_context"], schema_version in {"0.7", "0.8", "0.9"}, schema_version == "0.9") if schema_version in {"0.5", "0.6", "0.7", "0.8", "0.9"} else ()
+    multiple_loadouts = _multiple_talent_loadouts(root["analysis_context"], schema_version in {"0.7", "0.8", "0.9", "0.10"}, schema_version in {"0.9", "0.10"}) if schema_version in {"0.5", "0.6", "0.7", "0.8", "0.9", "0.10"} else ()
     character_name = subject.get("character_name", "")
     realm_name = subject.get("realm_name", "")
-    if schema_version in {"0.8", "0.9"} and (not isinstance(character_name, str) or not 1 <= len(character_name.strip()) <= 80 or not isinstance(realm_name, str) or not 1 <= len(realm_name.strip()) <= 80):
+    if schema_version in {"0.8", "0.9", "0.10"} and (not isinstance(character_name, str) or not 1 <= len(character_name.strip()) <= 80 or not isinstance(realm_name, str) or not 1 <= len(realm_name.strip()) <= 80):
         _fail("live_analysis_character_identity_invalid")
-    max_level = _integer(subject["max_level"], "max_level", 1, 1000) if schema_version == "0.9" else 0
+    max_level = _integer(subject["max_level"], "max_level", 1, 1000) if schema_version in {"0.9", "0.10"} else 0
     if max_level and subject["level"] > max_level:
         _fail("live_analysis_max_level_invalid")
     return LiveAnalysisSnapshot(
@@ -290,5 +309,5 @@ def parse_live_analysis_export(text: str) -> LiveAnalysisSnapshot:
         subject["role"], _integer(subject["level"], "level", 1, 1000),
         _integer(subject["race_id"], "race_id", 1, 1000), equipped, bag,
         hashlib.sha256(raw).hexdigest(), eligibility_basis, current_expansion_id,
-        legacy, loadouts, multiple_loadouts, character_name.strip(), realm_name.strip(), max_level,
+        legacy, loadouts, multiple_loadouts, character_name.strip(), realm_name.strip(), max_level, visual_identity,
     )

@@ -167,15 +167,28 @@ function DpsLab.GetSyntheticAdvisorGuidance(role)
 end
 
 local function showManualAnalysisExport(payload)
+  if _G.DpsLabAppExportFrame then _G.DpsLabAppExportFrame:Hide() end
+  if _G.DpsLabManualAnalysisExportFrame then _G.DpsLabManualAnalysisExportFrame:Hide() end
+  if _G.DpsLabItemScoreConfigFrame then _G.DpsLabItemScoreConfigFrame:Hide() end
+  if _G.DpsLabWeightsFrame then _G.DpsLabWeightsFrame:Hide() end
   local frame = CreateFrame("Frame", "DpsLabManualAnalysisExportFrame", UIParent, "BackdropTemplate")
-  frame:SetSize(700, 260); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG")
+  frame:SetSize(700, 440); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG"); frame:SetClampedToScreen(true)
   if DpsLabLinkTheme then DpsLabLinkTheme.Frame(frame) end
-  local box = CreateFrame("EditBox", nil, frame, "InputBoxTemplate,BackdropTemplate")
-  box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(640, 110); box:SetPoint("TOPLEFT", 30, -122)
+  local scroll = CreateFrame("ScrollFrame", nil, frame, "UIPanelScrollFrameTemplate")
+  scroll:SetPoint("TOPLEFT", 30, -152); scroll:SetPoint("BOTTOMRIGHT", -50, 62)
+  local box = CreateFrame("EditBox", nil, scroll, "InputBoxTemplate,BackdropTemplate")
+  box:SetMultiLine(true); box:SetAutoFocus(false); box:SetSize(620, 226); scroll:SetScrollChild(box)
+  scroll:SetScript("OnSizeChanged", function(self, width) box:SetWidth(width) end)
   if DpsLabLinkTheme then DpsLabLinkTheme.Field(box) end
   local hint = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-  hint:SetPoint("TOPLEFT", 30, -96); hint:SetText(T("link_copy_hint", "Ctrl+C → Core: Pegar exportación"))
+  hint:SetPoint("TOPLEFT", 30, -96); hint:SetWidth(620); hint:SetJustifyH("LEFT"); hint:SetText(T("link_copy_hint", "Ctrl+C; en Core: Pegar exportación. No requiere recarga."))
+  local back = CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(back) end
+  back:SetSize(180, 28); back:SetPoint("BOTTOM", 0, 20); back:SetText(T("link_back", "Volver a Link"))
+  back:SetScript("OnClick", function() frame:Hide(); DpsLabItemScores.ShowConfig() end)
+  box:SetScript("OnEscapePressed", function() frame:Hide(); DpsLabItemScores.ShowConfig() end)
   box:SetText(payload); box:HighlightText(); box:SetFocus(); frame:Show()
+  scroll:SetVerticalScroll(0)
   if type(CopyToClipboard) == "function" then CopyToClipboard(payload) end
 end
 
@@ -196,8 +209,11 @@ local function lowerHex(payload)
 end
 
 local function confirmAppExport(payload)
-  local frame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
-  frame:SetSize(520, 250); frame:SetPoint("CENTER"); frame:Show()
+  for _, name in ipairs({"DpsLabItemScoreConfigFrame", "DpsLabWeightsFrame", "DpsLabManualAnalysisExportFrame", "DpsLabAppExportFrame"}) do
+    if _G[name] then _G[name]:Hide() end
+  end
+  local frame = CreateFrame("Frame", "DpsLabAppExportFrame", UIParent, "BackdropTemplate")
+  frame:SetSize(520, 250); frame:SetPoint("CENTER"); frame:SetFrameStrata("DIALOG"); frame:SetClampedToScreen(true); frame:Show()
   if DpsLabLinkTheme then DpsLabLinkTheme.Frame(frame) end
   frame.title = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
   frame.title:SetPoint("TOP", 0, -100); frame.title:SetText(T("export_title", "Exportar a la app de DpsLab"))
@@ -214,7 +230,9 @@ local function confirmAppExport(payload)
     _G.DpsLabObservationExport = "live_analysis:" .. lowerHex(payload)
     ReloadUI()
   end)
-  frame.cancel:SetScript("OnClick", function() frame:Hide() end)
+  local function back() frame:Hide(); DpsLabItemScores.ShowConfig() end
+  frame.cancel:SetScript("OnClick", back)
+  if frame.CloseButton then frame.CloseButton:SetScript("OnClick", back) end
 end
 
 local function syntheticExportCandidate()

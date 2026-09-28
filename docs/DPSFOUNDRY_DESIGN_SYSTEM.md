@@ -54,14 +54,28 @@ keep text readable under normal Qt/system accessibility scaling.
 
 | Route | User-visible responsibility | Data source in this delivery |
 | --- | --- | --- |
-| Setup | choose bundled/local SimulationCraft and detect or paste Link export | existing local controls |
-| Home | show the next player action | controlled state derived from loaded export/result |
-| Character | save/open the active local profile | existing profile controls |
-| Simulation | select supported loadouts and start the existing runner | existing service-backed workspace |
-| Compare | explain where the selected result is available | controlled state; existing comparison table stays in Simulation |
-| Recommendations | distinguish simulated guidance from universal rules | controlled state from comparison result |
+| Setup | reserved entry for guided onboarding refinement | no duplicate detection controls |
+| Home | comparison summary, preferred weights and reference selection | current comparison; dashboard navigation refinement pending |
+| Character | save/open/delete profile and show compact equipment | imported profile/equipment; neutral portrait/icon fallback |
+| Simulation | detect/paste export, open profile, select builds and run | existing service-backed workspace; result cards |
+| Compare | display comparison results and equipment cards | existing comparison; no invented item substitutions |
+| Recommendations | numbered loadout alternatives with signed impact | existing comparison result, not new gear recommendations |
 | Link / Sync | explain local file exchange and its next step | controlled state; no live connection is claimed |
-| Settings | select an appearance-only theme | local theme preference |
+| Settings | addon path, language, appearance and bundled motor status | existing local preferences; no SimC path prompt in packaged UI |
+
+## Accepted refinements — 2026-09-26
+
+Foundry uses the approved forged raster wordmark over continuous contextual
+backgrounds. Navigation and build rows share selected/hover emphasis; hover
+is weaker than selection. The primary Run Simulation action has restrained
+emphasis. Status badges accompany text. Core points 1–4 are approved; points
+5–6 remain open. This is not acceptance of every theme or all scaling settings.
+
+Link uses LinkTheme.lua, the same emblem converted losslessly to TGA, dark
+surfaces and amber focus/selection. Its circular minimap entry and compact
+menu reuse existing actions. Configuration and weights are mutually exclusive
+windows with a return path. See the current acceptance record, not the early
+A+B plan, for approval status. No functional architecture is duplicated.
 
 ## State contract
 

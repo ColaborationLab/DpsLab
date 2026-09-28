@@ -11,6 +11,13 @@ explícitamente por escrito.
 
 ## 1. Objetivo único vigente
 
+**Actualización de Daniel — 2026-09-27:** interfaz Core/Link aprobada y lista
+para fase de prueba, incluidos íconos locales, identidad discreta y navegación
+de exportación. Autoriza commit y push del estado actual y pasar al objetivo
+de la sección 1.10. La fusión a `main` con CI verde sigue siendo un pendiente
+de integración de 1.9, no un hecho consumado. El contenido de interfaz que
+sigue se conserva como baseline aprobado; esta entrega no implementa 1.10.
+
 **Estado real de la suite (2026-09-19):** el core técnico (addon + app)
 funciona de punta a punta para cualquier clase y especialización del juego,
 verificado personalmente por Daniel en juego: comparación de hasta 4
@@ -147,6 +154,56 @@ Daniel decida retomarlo con algún agente.
 Publicación en CurseForge, donativos y auto-actualización quedan **pausados,
 no cancelados**, hasta cerrar el baseline funcional de interfaz (sección 7).
 
+### 1.9 Decisión de dirección (2026-09-26): forma de la distribución pública
+
+**Cierre pendiente del ciclo de interfaz — objetivo activo, sin cambios:**
+1. Fuente de íconos resuelta: se extraen del cliente local de WoW del
+   usuario, nunca de un servidor externo ni redistribuidos.
+2. Fusionar `codex/dpsfoundry-interface-scope` a `main` (CI en verde,
+   revisión de Daniel).
+3. Verificación personal de Daniel del recorrido completo, ya con íconos —
+   no el reporte de sesión.
+
+**Decisiones de distribución tomadas, para cuando el punto anterior cierre:**
+- La beta es **abierta al público**, no restringida a testers de confianza
+  — el objetivo es maximizar feedback. Incluye un enlace a un formulario
+  (tipo Google Forms) visible desde la app y/o la ficha de CurseForge.
+- DpsFoundry Link se publica en **CurseForge** para que los jugadores lo
+  encuentren donde ya buscan addons.
+- DpsFoundry Core se distribuye como **un instalador `.exe`** (Inno Setup o
+  equivalente), no un `.zip` para extraer — instalación tipo
+  "siguiente, siguiente, finalizar", con `simc.exe` empaquetado adentro.
+
+**Decisión de firma de código (2026-09-26):** beta abierta sale **sin
+firmar**, con instrucción visible de "Más información → Ejecutar de todas
+formas" en la página de descarga — no se bloquea el lanzamiento por esto. En
+paralelo se aplica a **SignPath Foundation** (firma gratuita para proyectos
+de código abierto) para que la firma cubra la versión posterior a la beta.
+**Confirmado por Daniel: Core se publica bajo licencia open source (MIT por
+defecto, salvo que Daniel indique otra) para calificar a SignPath.** El
+addon ya es efectivamente abierto en la práctica. SignPath normalmente no
+firma un proyecto sin releases previos, así que la beta en sí queda sin
+firmar de todos modos — la solicitud a SignPath se presenta en paralelo,
+sin bloquear el lanzamiento.
+
+### 1.10 Siguiente objetivo autorizado — beta abierta
+
+**Transición autorizada por Daniel el 2026-09-27** tras aprobar el estado de
+interfaz. Implementación aún no iniciada. Antes de integrar la entrega de beta,
+resolver la fusión pendiente de interfaz a `main` con CI verde; no se presume
+esa fusión por haber autorizado commit/push ni por aprobar la revisión visual.
+
+> Preparar DpsFoundry para su beta abierta: (a) agregar archivo `LICENSE`
+> (MIT) en la raíz del repositorio; (b) construir un instalador `.exe` de
+> Core con Inno Setup o equivalente, `simc.exe` incluido, sin requerir pasos
+> manuales de extracción; (c) armar la ficha de publicación de DpsFoundry
+> Link en CurseForge (descripción, categoría, capturas, changelog inicial);
+> (d) agregar un enlace visible a un formulario de feedback (tipo Google
+> Forms) en la pantalla de inicio de Core y en la ficha de CurseForge; (e)
+> iniciar la solicitud a SignPath Foundation (no bloqueante, puede quedar en
+> curso al momento del lanzamiento). Ninguna otra funcionalidad nueva del
+> simulador o del addon se toca en este ciclo.
+
 ## 2. Prueba de valor obligatoria
 
 Antes de proponer o implementar una tarea, Codex responde en una frase:
@@ -182,13 +239,15 @@ No se inicia ni expande, salvo autorización nueva y explícita de Daniel:
 - Nuevo pipeline de knowledge; nueva adquisición automática de fuentes
   oficiales/notas de parche (se actualiza a mano).
 - Expansión funcional a clases/specs solo para "probar la interfaz".
-- Nuevas ceremonias de firma, SBOM, modelo de amenazas o gobernanza más allá
-  del escaneo básico ya integrado. Excepción ya en cola, no congelada: firma
-  de código (Windows code-signing) para cuando se active distribución —
-  evita la advertencia de SmartScreen al descargar el instalador.
+- Nuevas ceremonias de SBOM, modelo de amenazas o gobernanza más allá del
+  escaneo básico ya integrado. Firma de código (Windows code-signing): no
+  congelada, pero pendiente de que Daniel elija entre firmar antes de la
+  beta o abrir sin firmar — ver 1.9. No implementar ninguna opción sin esa
+  elección explícita.
 - Rediseño de CI que no sea indispensable para probar la UI.
-- Auto-actualizador; sistema de donaciones; publicación en CurseForge —
-  pausados, no cancelados (ver 1.8).
+- Auto-actualizador; sistema de donativos — pausados, no cancelados (ver
+  1.8). Publicación en CurseForge e instalador `.exe`: decididos (ver 1.9),
+  pero no se inician hasta cerrar el punto 1 de la sección 1.9.
 - Migración masiva del nombre interno `DpsLab`/`RaidForge` a `DpsFoundry` en
   todo el código.
 - Separación física inmediata del addon actual en dos paquetes si no es
@@ -304,6 +363,10 @@ autorizar una separación física distinta de los componentes, o cambiar la
 identidad visual flagship.
 
 ## Historial de objetivos cerrados
+
+- 2026-09-27: Interfaz DpsFoundry Core/Link aprobada por Daniel y lista para
+  fase de prueba; íconos locales, identidad y exportación revisados. Pendiente
+  separado: fusión de la rama de interfaz a `main`.
 
 - 2026-09-08: Restauración de Druida real de punta a punta — verificado en
   juego.

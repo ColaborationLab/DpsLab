@@ -11,7 +11,7 @@ import re
 import tempfile
 from uuid import uuid4
 
-from .addon_live_analysis_transport import PREFIX, LiveAnalysisItem, LiveAnalysisSnapshot, canonical_live_analysis_bytes
+from .addon_live_analysis_transport import PREFIX, LiveAnalysisItem, LiveAnalysisSnapshot, canonical_live_analysis_bytes, parse_visual_identity
 from .balance_stat_weights import BalanceStatWeights, load_balance_stat_weights
 from .loadout_capabilities import CAPABILITIES
 
@@ -68,6 +68,7 @@ class CharacterScoreProfile:
     profile_name: str = ""
     level: int = 0
     race_id: int = 0
+    visual_identity: tuple[str, str, str] = ("", "", "")
 
 
 @dataclass(frozen=True, repr=False)
@@ -145,14 +146,21 @@ def _path(root: Path) -> Path:
     return root / "character-score-profiles.json"
 
 
-def _item(item: LiveAnalysisItem) -> dict[str, object]:
-    return {"item_id": item.item_id, "item_level": item.item_level, "item_link": item.item_link, "location": item.location, "slot": item.slot, "source": item.source, "stats": dict(item.stats)}
+def _item(item: LiveAnalysisItem, *, include_icon: bool = False) -> dict[str, object]:
+    value = {"item_id": item.item_id, "item_level": item.item_level, "item_link": item.item_link, "location": item.location, "slot": item.slot, "source": item.source, "stats": dict(item.stats)}
+    if include_icon:
+        value["icon_file_data_id"] = item.icon_file_data_id
+    return value
 
 
 def _read_item(value: object) -> LiveAnalysisItem:
-    if not isinstance(value, dict) or set(value) != {"item_id", "item_level", "item_link", "location", "slot", "source", "stats"} or not isinstance(value["stats"], dict):
+    fields = {"item_id", "item_level", "item_link", "location", "slot", "source", "stats"}
+    if not isinstance(value, dict) or set(value) not in (fields, fields | {"icon_file_data_id"}) or not isinstance(value["stats"], dict):
         raise ValueError
-    return LiveAnalysisItem(value["item_id"], value["item_level"], value["item_link"], value["location"], value["slot"], value["source"], None, tuple(sorted(value["stats"].items())))
+    icon = value.get("icon_file_data_id")
+    if icon is not None and (type(icon) is not int or not 1 <= icon <= 2147483647):
+        raise ValueError
+    return LiveAnalysisItem(value["item_id"], value["item_level"], value["item_link"], value["location"], value["slot"], value["source"], None, tuple(sorted(value["stats"].items())), icon)
 
 
 def _weight(value: ScoreWeights) -> dict[str, object]:
@@ -194,7 +202,7 @@ def _document(profiles: tuple[CharacterScoreProfile, ...]) -> dict[str, object]:
                  "weights": [_weight(weight) for weight in build.weights], "simulations": [_simulation(value) for value in build.simulations]} for build in builds
             ]})
         characters.append({"character_id": character.character_id, "name": character.name, "realm": character.realm, "profile_name": character.profile_name,
-                           "class_id": character.class_id, "level": character.level, "race_id": character.race_id, "equipped": [_item(item) for item in character.equipped], "specs": specs})
+                           "class_id": character.class_id, "level": character.level, "race_id": character.race_id, "visual_identity": list(character.visual_identity), "equipped": [_item(item, include_icon=True) for item in character.equipped], "specs": specs})
     return {"schema_version": "0.5", "characters": characters}
 
 
@@ -209,7 +217,7 @@ def load_profiles(root: Path) -> tuple[CharacterScoreProfile, ...]:
             character_fields = {"character_id", "name", "realm", "class_id", "equipped", "specs"}
             if document["schema_version"] in {"0.3", "0.4", "0.5"}: character_fields.add("profile_name")
             if document["schema_version"] in {"0.4", "0.5"}: character_fields |= {"level", "race_id"}
-            if not isinstance(value, dict) or set(value) != character_fields or not isinstance(value["specs"], list) or not isinstance(value["equipped"], list): raise ValueError
+            if not isinstance(value, dict) or set(value) not in (character_fields, character_fields | {"visual_identity"}) or not isinstance(value["specs"], list) or not isinstance(value["equipped"], list): raise ValueError
             specs = []
             for spec in value["specs"]:
                 if not isinstance(spec, dict) or set(spec) != {"specialization_id", "builds"} or not isinstance(spec["builds"], list): raise ValueError
@@ -219,6 +227,7 @@ def load_profiles(root: Path) -> tuple[CharacterScoreProfile, ...]:
                 specs.append((spec["specialization_id"], builds))
             character = CharacterScoreProfile(value["character_id"], value["name"], value["realm"], value["class_id"], tuple(specs), tuple(_read_item(item) for item in value["equipped"]), value.get("profile_name", ""), value.get("level", 0), value.get("race_id", 0))
             if not (len(character.character_id) == 32 and _valid_text(character.name) and _valid_text(character.realm) and (not character.profile_name or _valid_text(character.profile_name)) and isinstance(character.class_id, int) and character.class_id > 0 and isinstance(character.level, int) and 0 <= character.level <= 1000 and isinstance(character.race_id, int) and 0 <= character.race_id <= 1000): raise ValueError
+            character = replace(character, visual_identity=parse_visual_identity(value.get("visual_identity", ("", "", ""))))
             output.append(character)
         if len({item.character_id for item in output}) != len(output): raise ValueError
         return tuple(output)
@@ -254,7 +263,7 @@ def update_from_export(character: CharacterScoreProfile, snapshot: LiveAnalysisS
     existing = dict(character.specs); old = {build.build_id: build for build in existing.get(snapshot.specialization_id, ())}
     imported = tuple(build for build in existing.get(snapshot.specialization_id, ()) if build.build_id < 0)
     existing[snapshot.specialization_id] = tuple(replace(old.get(build.build_id, build), name=build.name, talent_string=build.talent_string) for build in builds) + imported
-    return replace(character, specs=tuple(sorted(existing.items())), equipped=snapshot.equipped, level=snapshot.level, race_id=snapshot.race_id)
+    return replace(character, specs=tuple(sorted(existing.items())), equipped=snapshot.equipped, level=snapshot.level, race_id=snapshot.race_id, visual_identity=snapshot.visual_identity)
 
 
 def store_imported_build(character: CharacterScoreProfile, specialization_id: int, name: str, talent_string: str) -> CharacterScoreProfile:

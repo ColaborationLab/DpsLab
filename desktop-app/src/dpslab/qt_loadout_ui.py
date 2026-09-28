@@ -24,6 +24,7 @@ from .i18n import DEFAULT_LOCALE, SUPPORTED_LOCALES, messages, normalize_locale,
 from .dpsfoundry_theme import THEMES, StatePanel, StateBadge, apply_theme, foundry_icon, FoundryWordmark, FoundryNavButton, FoundrySelectionDelegate
 from .foundry_dashboard import FoundryDashboard
 from .foundry_gear import GearCards
+from .local_item_icons import ItemIcons
 from .foundry_chrome import FoundryFrame, FoundryTitleBar, FoundryBackdrop, soft_glow
 
 
@@ -180,7 +181,13 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
         self.resize(1240, 800)
         self.setWindowIcon(foundry_icon("forge", "#f28c28"))
         apply_theme(self, self._theme_id)
+        self._local_icons = ItemIcons(self)
+        self._local_icons.changed.connect(self._set_item_icons)
         self._build_ui()
+
+    def _set_item_icons(self, images):
+        for view in (self._gear_view, self._table, self._comparison_view):
+            view.set_icons(images)
 
     def _t(self, key: str, fallback: str) -> str:
         locale = None if self._locale == "auto" else self._locale
@@ -499,13 +506,16 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
         character_layout.addWidget(self._card(self._t("shell.character", "Character / Profile"), self._t("shell.character_help", "Profiles keep the character, supported loadouts, saved results and stat weights together.")))
         identity = QtWidgets.QHBoxLayout()
         portrait = QtWidgets.QLabel()
-        portrait.setPixmap(foundry_icon('character').pixmap(40, 40))
-        portrait.setFixedSize(48, 48)
+        portrait.setPixmap(foundry_icon('character').pixmap(28, 28))
+        portrait.setFixedSize(36, 36)
         portrait.setToolTip(self._t('flow.portrait', 'Character portrait placeholder; not an imported portrait.'))
         identity.addWidget(portrait)
         self._character_identity = QtWidgets.QLabel()
         self._character_identity.setTextFormat(QtCore.Qt.TextFormat.PlainText)
         identity.addWidget(self._character_identity, 1)
+        self._character_faction = QtWidgets.QLabel()
+        self._character_faction.setFixedSize(28, 28)
+        identity.addWidget(self._character_faction)
         character_layout.addLayout(identity)
         self._profile_state = StatePanel("empty", "No local profile is open yet.")
         character_layout.addWidget(self._profile_state)
@@ -637,12 +647,24 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
             self._link_state.set_state("unavailable", self._t("shell.link_empty", "No Link export loaded."))
         self._shell_context.setText(profile)
         subject = self._snapshot or self._character
-        name = getattr(subject, 'character_name', getattr(subject, 'name', ''))
-        realm = getattr(subject, 'realm_name', getattr(subject, 'realm', ''))
+        name = getattr(subject, 'character_name', '') or getattr(self._character, 'name', '')
+        realm = getattr(subject, 'realm_name', '') or getattr(self._character, 'realm', '')
         self._character_identity.setText(f'{name} — {realm}' if name else self._t('foundry.no_profile', 'No active profile'))
+        race, character_class, faction = getattr(subject, 'visual_identity', ('', '', ''))
+        if name and (race or character_class):
+            self._character_identity.setText(f'{name} — {realm}\n' + ' · '.join(value for value in (race, character_class) if value))
+        faction_key = {'Alliance': 'alliance', 'Horde': 'horde', 'Neutral': 'neutral'}.get(faction)
+        self._character_faction.setVisible(bool(faction_key))
+        if faction_key:
+            color = {'Alliance': '#70aaff', 'Horde': '#ed7068', 'Neutral': '#c0c8c5'}[faction]
+            self._character_faction.setPixmap(foundry_icon('faction_' + faction_key, color).pixmap(24, 24))
+            label = self._t('flow.faction_' + faction_key, faction)
+            self._character_faction.setToolTip(label)
+            self._character_faction.setAccessibleName(label)
         self._dashboard.update_data(self._comparison, self._names, self._builds.count(), self._character, bool(self._export))
         equipment = self._snapshot.equipped if self._snapshot is not None else (self._character.equipped if self._character else ())
         self._gear_view.show_equipment(equipment)
+        self._local_icons.request(Path(self._addon_path.text()), equipment)
         self._recommendations_view.show_recommendations(self._comparison, self._names)
         if self._running or getattr(self, '_simulation_error', False):
             self._home_state.set_state('loading' if self._running else 'error', self._status.text())
@@ -783,7 +805,8 @@ class QtLoadoutWorkspace(QtWidgets.QMainWindow):
             try:
                 specialization_id = self._character.specs[0][0]; self._export = profile_export(self._character, specialization_id)
                 self._saved_id_map = {profile_simulation_id(build.build_id): build.build_id for build in dict(self._character.specs)[specialization_id] if build.build_id < 0}; self._saved_profile_mode = True
-                self._snapshot = parse_live_analysis_export(self._export); self._show_builds(self._snapshot); saved_context = True
+                self._snapshot = replace(parse_live_analysis_export(self._export), equipped=self._character.equipped, visual_identity=self._character.visual_identity)
+                self._show_builds(self._snapshot); saved_context = True
             except (IndexError, ItemScoreProfileError, ValueError):
                 self._export = ""; self._snapshot = None; self._show_saved_profile_builds()
         self._details.setPlainText(tr('details.exported_gear', self._locale, count=len(self._character.equipped)))

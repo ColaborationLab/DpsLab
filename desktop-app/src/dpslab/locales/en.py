@@ -37,7 +37,10 @@ MESSAGES = {
 MESSAGES.update({
     "flow.saved": "Open saved character",
     "flow.setup_reserved": "This area will be redefined. Begin in Simulation; preferences are in Settings.",
-    "flow.portrait": "Character portrait placeholder; not an imported portrait.",
+    "flow.portrait": "Generic character portrait; no screenshot required.",
+    "flow.faction_alliance": "Alliance",
+    "flow.faction_horde": "Horde",
+    "flow.faction_neutral": "Neutral",
     "ui.level_error": "Character level: {level}; maximum: {maximum}. Reach the maximum level before simulating.",
     "ui.unassigned": "Not simulated: {names}. Unassigned talents.",
     "ui.run_error": "Comparison could not be generated: {error}",

@@ -229,7 +229,14 @@ class QtLoadoutUiTests(unittest.TestCase):
     def test_workspace_keeps_profile_and_external_build_actions(self):
         with TemporaryDirectory() as temporary:
             workspace = QtLoadoutWorkspace(Path(temporary).resolve())
-            workspace._show_export(_export())
+            import json
+            document = json.loads(_export().split('\n', 1)[1])
+            document['schema_version'] = '0.11'
+            document['subject']['visual_identity'] = ['Tauren', 'Druid', 'Horde']
+            document['equipment']['equipped'][0]['icon_file_data_id'] = 134400
+            # No access to a real installation in this persistence regression test.
+            workspace._addon_path.setText('')
+            workspace._show_export(PREFIX + canonical_live_analysis_bytes(document).decode())
             self.assertEqual(3, workspace._builds.count())
             workspace._save_profile()
             self.assertEqual(1, workspace._profiles.count())
@@ -239,6 +246,10 @@ class QtLoadoutUiTests(unittest.TestCase):
             workspace._export = ""
             workspace._open_profile()
             self.assertTrue(workspace._export)
+            self.assertEqual(134400, workspace._snapshot.equipped[0].icon_file_data_id)
+            self.assertEqual(('Tauren', 'Druid', 'Horde'), workspace._snapshot.visual_identity)
+            self.assertIn('Tauren · Druid', workspace._character_identity.text())
+            self.assertFalse(workspace._character_faction.pixmap().isNull())
             workspace.close()
 
     def test_workspace_rejects_five_selected_builds_before_simulation(self):

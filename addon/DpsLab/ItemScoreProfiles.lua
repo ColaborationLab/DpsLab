@@ -335,6 +335,8 @@ function Scores.HookTooltips()
 end
 
 function Scores.ShowWeights()
+  if _G.DpsLabAppExportFrame then _G.DpsLabAppExportFrame:Hide() end
+  if _G.DpsLabManualAnalysisExportFrame then _G.DpsLabManualAnalysisExportFrame:Hide() end
   local document = Scores.Active()
   if not document or not document.item_scores.profiles[1] then print("[DpsLab] No hay pesos disponibles para esta especialización."); return end
   if _G.DpsLabItemScoreConfigFrame then _G.DpsLabItemScoreConfigFrame:Hide() end
@@ -505,6 +507,8 @@ function Scores.ShowWeights()
 end
 
 function Scores.ShowConfig()
+  if _G.DpsLabAppExportFrame then _G.DpsLabAppExportFrame:Hide() end
+  if _G.DpsLabManualAnalysisExportFrame then _G.DpsLabManualAnalysisExportFrame:Hide() end
   if Scores._weightsFrame then
     if Scores._weightsFrame:IsShown() then Scores._weightsFrame.resumeFromConfig = true end
     Scores._weightsFrame:Hide()
@@ -515,9 +519,9 @@ function Scores.ShowConfig()
   local frame = _G.DpsLabItemScoreConfigFrame or CreateFrame("Frame", "DpsLabItemScoreConfigFrame", UIParent, "BackdropTemplate")
   styleLinkFrame(frame)
   local listHeight = math.max(28, math.min(224, #profiles * 28))
-  frame:SetSize(580, 460 + listHeight); frame:SetPoint("CENTER"); frame:Show()
+  frame:SetSize(580, 504 + listHeight); frame:SetPoint("CENTER"); frame:Show()
   frame.title = frame.title or frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-  frame.title:SetPoint("TOPLEFT", 28, -146); frame.title:SetText(T("scores_title", "scores de equipo"))
+  frame.title:SetPoint("TOPLEFT", 28, -190); frame.title:SetText(T("scores_title", "scores de equipo"))
   frame.localeLabel = frame.localeLabel or frame:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
   frame.localeLabel:SetPoint("BOTTOMLEFT", 28, 166); frame.localeLabel:SetText(T("language", "Idioma"))
   frame.localeDrop = frame.localeDrop or CreateFrame("Frame", nil, frame, "UIDropDownMenuTemplate")
@@ -535,16 +539,25 @@ function Scores.ShowConfig()
   end)
   frame.weightsButton = frame.weightsButton or CreateFrame("Button", nil, frame, "BackdropTemplate")
   if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.weightsButton, true) end
-  frame.weightsButton:SetSize(248, 30); frame.weightsButton:SetPoint("TOPLEFT", 28, -96); frame.weightsButton:SetText(T("view_edit", "Ver / editar pesos"))
+  frame.weightsButton:SetSize(168, 30); frame.weightsButton:SetPoint("TOPLEFT", 28, -96); frame.weightsButton:SetText(T("view_edit", "Ver / editar pesos"))
   frame.weightsButton:SetScript("OnClick", Scores.ShowWeights)
   buttonTooltip(frame.weightsButton, T("weights_button_help", "Abre la lista de builds y perfiles de pesos. Aquí puedes consultar, nombrar, guardar, activar o transferir pesos."))
   frame.manualExport = frame.manualExport or CreateFrame("Button", nil, frame, "BackdropTemplate")
   if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.manualExport) end
-  frame.manualExport:SetSize(248, 30); frame.manualExport:SetPoint("TOPRIGHT", -28, -96); frame.manualExport:SetText(T("copy_export", "Copiar exportación"))
+  frame.manualExport:SetSize(168, 30); frame.manualExport:SetPoint("TOPRIGHT", -28, -96); frame.manualExport:SetText(T("copy_export", "Copiar para Core"))
   frame.manualExport:SetScript("OnClick", function() if DpsLab and DpsLab.ShowManualAnalysisExport then DpsLab.ShowManualAnalysisExport() end end)
   buttonTooltip(frame.manualExport, T("manual_export_help", "Muestra la exportación completa para copiarla y pegarla en la app. La detección automática sigue disponible."))
+  frame.appExport = frame.appExport or CreateFrame("Button", nil, frame, "BackdropTemplate")
+  if DpsLabLinkTheme then DpsLabLinkTheme.Button(frame.appExport, true) end
+  frame.appExport:SetSize(168, 30); frame.appExport:SetPoint("TOPLEFT", 206, -96)
+  frame.appExport:SetText(T("link_export_core", "Exportar con recarga"))
+  frame.appExport:SetScript("OnClick", function() SlashCmdList.DPSLAB("export app") end)
+  buttonTooltip(frame.appExport, T("link_reload_help", "Confirma la recarga; después usa Detectar exportación en Core. No necesitas copiar texto."))
+  frame.exportNote = frame.exportNote or frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+  frame.exportNote:SetPoint("TOPLEFT", 28, -134); frame.exportNote:SetWidth(524); frame.exportNote:SetJustifyH("LEFT")
+  frame.exportNote:SetText(T("link_export_routes", "Con recarga: Detectar exportación en Core. Sin recarga: copiar y Pegar exportación en Core."))
   frame.detail = frame.detail or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-  frame.detail:SetPoint("TOPLEFT", 28, -171); frame.detail:SetWidth(520); frame.detail:SetJustifyH("LEFT")
+  frame.detail:SetPoint("TOPLEFT", 28, -215); frame.detail:SetWidth(520); frame.detail:SetJustifyH("LEFT")
   frame.detail:SetText(T("config_detail", "Los pesos personalizados provienen del loadout elegido en SimC; (b) identifica una build sugerida para principiantes."))
   frame.toggle = frame.toggle or CreateFrame("CheckButton", nil, frame, "UICheckButtonTemplate")
   frame.toggle:SetPoint("BOTTOMLEFT", 28, 194); frame.toggle.text = frame.toggle.text or frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -555,7 +568,7 @@ function Scores.ShowConfig()
   frame.choices = frame.choices or {}
   if not frame.buildScroll then
     frame.buildScroll = CreateFrame("ScrollFrame", nil, frame, "UIPanelScrollFrameTemplate")
-    frame.buildScroll:SetPoint("TOPLEFT", 28, -220); frame.buildScroll:SetWidth(498)
+    frame.buildScroll:SetPoint("TOPLEFT", 28, -264); frame.buildScroll:SetWidth(498)
     frame.buildList = CreateFrame("Frame", nil, frame.buildScroll)
     frame.buildList:SetWidth(498); frame.buildScroll:SetScrollChild(frame.buildList)
   end

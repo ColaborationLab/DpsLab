@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import math
 import re
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 
 def percentage_label(value, reference, parent=None):
@@ -25,10 +25,13 @@ class GearCards(QtWidgets.QScrollArea):
     def __init__(self, translate, parent=None):
         super().__init__(parent)
         self.t = translate
+        self._icons = {}
+        self._icon_labels = []
         self.setWidgetResizable(True)
         self.reset()
 
     def reset(self):
+        self._icon_labels = []
         previous = self.takeWidget()
         if previous:
             previous.hide()
@@ -46,6 +49,17 @@ class GearCards(QtWidgets.QScrollArea):
         label.setTextFormat(QtCore.Qt.TextFormat.PlainText)
         label.setWordWrap(True)
         return label
+
+    def set_icons(self, images):
+        self._icons = images
+        for identifier, label in self._icon_labels:
+            image = images.get(identifier)
+            if image is not None:
+                label.setPixmap(QtGui.QPixmap.fromImage(image).scaled(30, 30, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation))
+                label.setToolTip('')
+            else:
+                label.setText('◇')
+                label.setToolTip(self.t('gear.icon_missing', 'Local item icon unavailable. This symbol is not the item icon.'))
 
     def show_equipment(self, equipment, comparison=None, names=None, reference_id=None):
         self.reset()
@@ -83,6 +97,7 @@ class GearCards(QtWidgets.QScrollArea):
             icon.setFixedSize(30, 30)
             icon.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             icon.setToolTip(self.t("gear.icon_missing", "Local item icon unavailable. This symbol is not the item icon."))
+            self._icon_labels.append((item.icon_file_data_id, icon))
             row.addWidget(icon)
             title = self.label(item_name(item))
             title.setMaximumHeight(36)
@@ -97,6 +112,7 @@ class GearCards(QtWidgets.QScrollArea):
             frame.setMinimumHeight(68)
             grid.addWidget(frame, index // 2, index % 2)
         self.content.addLayout(grid)
+        self.set_icons(self._icons)
         if not equipment:
             self.content.addWidget(self.label(self.t("gear.empty", "Import or open a character profile to view equipped items.")))
         self.content.addStretch(1)

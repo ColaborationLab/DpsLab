@@ -237,7 +237,10 @@ class AddonScoreRuntimeTests(unittest.TestCase):
             DpsLabItemScores.Active=function() return document end
             DpsLabItemScores.ShowConfig()
             local config=DpsLabItemScoreConfigFrame
-            assert(config.height==684 and config.buildScroll.height==224)
+            assert(config.height==728 and config.buildScroll.height==224)
+            local command
+            SlashCmdList={DPSLAB=function(value) command=value end}
+            config.appExport.scripts.OnClick(); assert(command=="export app")
             assert(config.buildList.height==560 and #config.choices==20)
             config.weightsButton.scripts.OnClick(); assert(f.shown and not config.shown)
             f.fields.Strength:SetText("9.25")

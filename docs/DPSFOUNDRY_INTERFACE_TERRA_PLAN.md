@@ -1,5 +1,12 @@
 # DpsFoundry — plan visual revisado para Terra
 
+> Plan histórico del 2026-09-19, no encargo vigente para Terra. Daniel cambió
+> la ejecución al principal/Astra. La baseline sucia, próxima muestra y
+> delegación descritas abajo quedaron superadas; no iniciar agentes por este
+> documento. Estado actual y siguientes pendientes en
+> [aceptación](DPSFOUNDRY_INTERFACE_ACCEPTANCE.md) y [NEXT_TASK](NEXT_TASK.md).
+> El Scope sigue siendo la autoridad; se conserva este plan como antecedente.
+
 ## Dirección y estado — 2026-09-19
 
 Autoridad: AGENTS.md y SCOPE_CORRECTION_0_1.md actualizados por Daniel en

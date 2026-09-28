@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from hashlib import sha256
+from importlib.metadata import distribution
 from pathlib import Path
 import subprocess
 import sys
@@ -52,10 +53,17 @@ def main() -> int:
         encoding="utf-8",
     )
     root = Path(__file__).resolve().parents[1]
+    casc = root / 'desktop-app/src/dpslab/native/CascLib.dll'
+    if not casc.is_file():
+        raise SystemExit('Local icon reader missing: run tools/build_casc_reader.py first')
     window_mode = "--console" if args.console else "--windowed"
     # PyInstaller collects PySide6 hooks and platform plugins from the venv.
     command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--collect-submodules", "dpslab.locales", "--runtime-hook", str(qt_runtime_hook), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{root / 'addon' / 'DpsLab'};DpsLabAddon", "--add-data", f"{root / 'docs' / 'DISTRIBUTION.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-es.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-en.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-pt-BR.md'};Documentation", str(root / "desktop-app" / "launch_dpslab.py")]
     command[3:3] = ["--add-data", f"{root / 'desktop-app' / 'src' / 'dpslab' / 'assets'};dpslab/assets"]
+    command[3:3] = ['--add-binary', f'{casc};dpslab/native', '--add-data',
+                    f'{casc.parent / "CascLib-LICENSE.txt"};dpslab/native',
+                    '--add-data', f'{distribution("Pillow").locate_file("pillow-12.3.0.dist-info/licenses/LICENSE")};Pillow-license',
+                    '--hidden-import', 'PIL.BlpImagePlugin']
     result = subprocess.run(command, check=False).returncode
     if result == 0:
         runtime = output / "DpsLab" / "_internal"

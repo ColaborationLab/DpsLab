@@ -1,4 +1,28 @@
-# Qué probar en la revisión Foundry — 2026-09-20
+# Qué probar en la revisión Foundry
+
+## Estado vigente — 2026-09-26
+
+Core y Link tienen lotes aprobados publicados en la rama de interfaz; ver
+[aceptación](DPSFOUNDRY_INTERFACE_ACCEPTANCE.md). Los paquetes con fecha
+20260920 citados más abajo son históricos, no la última versión para instalar.
+El ZIP inicial de Link también fue superado por la carpeta instalada revisada;
+no se ofrece como distribución actual. GitHub contiene las fuentes y assets,
+no un instalador nuevo publicado por esta conciliación.
+
+Link: clic izquierdo en minimapa abre la interfaz, central abre pesos, derecho
+abre acciones rápidas; arrastrar mueve el botón. El menú permite abrir Link,
+pesos, exportar a Core con confirmación, copiar exportación y alternar scores.
+Configuración y pesos se alternan sin superposición, con botón Volver a Link.
+La revisión de este lote fue aprobada; no está pendiente repetirla para el push.
+No existe un botón nuevo en la ventana de personaje de WoW.
+
+## Flujo actual de Core y antecedentes de paquetes
+
+Actualización 2026-09-27: lector de íconos CASC local integrado en las tres vistas
+de equipo; [mecanismo y revisión pendiente](LOCAL_ITEM_ICONS.md). Requiere Core y
+Link actualizados juntos y una exportación nueva para incorporar FileDataID.
+Las referencias a iconos pendientes en los antecedentes siguientes describen
+aquellos paquetes, no esta implementación local.
 
 Revisión de navegación: build/foundry-navigation-20260920/DpsLab/DpsLab.exe.
 La app inicia en Simulación: detectar/pegar, abrir personaje guardado y elegir
@@ -32,14 +56,14 @@ módulo CLI desde el checkout no equivale a probar ese paquete.
 | Área | Qué debe funcionar ahora | Qué falta |
 | --- | --- | --- |
 | Ventana | Mover por la cabecera, redimensionar por el marco, minimizar, maximizar/restaurar y cerrar; cursor normal sobre contenido | Validación manual Windows de estos gestos |
-| Configuración inicial | Detectar exportación, pegar exportación manual, elegir addon, recordar rutas, idioma; motor incluido sin selector de SimC | Acabado y localización total del shell nuevo |
+| Configuración inicial | Entrada reservada; detección/pegado están en Simulación; rutas e idioma en Ajustes | Redefinición guiada dentro del punto 5 |
 | Personaje | Abrir/guardar/eliminar perfil con equipo, builds y resultados locales | Resumen visual completo de equipo y talentos |
 | Simulación | Guardar build externa sin simular, elegir 1–4 builds, simular, progreso, resultados; borrar builds y limpiar con aviso | Refinar distribución; una ejecución real requiere datos válidos y la acción del usuario |
 | Inicio | Resumen de la comparación de esta sesión, pesos de la build preferida y referencia porcentual seleccionable | Resumen histórico agregado entre ejecuciones compatibles |
-| Comparar | Tabla real de la comparación de esta sesión, DPS primero, porcentajes y pesos | Selector de referencia dentro de la propia sección; por ahora se elige en Inicio |
+| Comparar | Tarjetas de resultados de esta sesión, DPS, porcentajes y pesos; equipo importado sin inventar deltas por pieza | Selector de referencia dentro de la propia sección; por ahora se elige en Inicio |
 | Pesos | Exportar pesos elegidos, copiar/pegar pesos desde los controles de Simulación | Reorganizar estos controles en Link/Intercambio |
-| Recomendaciones | Resumen textual del loadout preferido tras simular | Panel de recomendaciones detallado |
-| Link/Intercambio | Estado textual de exportación local | Centro completo de acciones y HUD nuevo del addon; no es conexión en tiempo real |
+| Recomendaciones | Lista numerada de alternativas de loadout con variación porcentual calculada | Recomendaciones nuevas de piezas/gemas/encantamientos fuera del ciclo |
+| Link/Intercambio | Estado del intercambio local; addon con interfaz y pesos aprobados | Reorganización de acciones en Core; no es conexión en tiempo real |
 | Ajustes | Cambiar tema; Foundry es el acabado en revisión | Escalado interno deshabilitado; tres temas alternativos sin pulido completo |
 
 No hay datos de ejemplo en el paquete para el jugador. Las capturas con

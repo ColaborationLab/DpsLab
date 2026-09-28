@@ -1,5 +1,254 @@
 # Next Task — DpsFoundry
 
+## Aprobación y entrega del baseline — 2026-09-27
+
+Daniel confirma «está todo correcto», listo para fase de prueba, y autoriza
+commit/push del estado acumulado. Cierre humano del objetivo de interfaz
+registrado en Scope; siguiente objetivo autorizado 1.10, no implementado aquí.
+Integración a main/CI pendiente separado. Se conserva el último resultado:
+Core 1389 aprobadas + 1 omitida, herramientas/addon 170 aprobadas, salida 0;
+no se ejecutó SimulationCraft. Cambios posteriores a esas suites: documentación.
+Valor: congelar una versión revisada que pueda recuperarse y usarse para pruebas.
+Se publican fuentes, pruebas, dependencias declaradas y documentación, no builds,
+SDK, DLL generado, respaldos ni texturas de WoW. Antecedentes debajo.
+
+Línea base `protected_files` posterior a la aprobación:
+```json
+{"AGENTS.md":"71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de","SCOPE_CORRECTION_0_1.md":"3da3ba350c33f473b191b1128deba95504053895ebe265af2e161731e0dab4f5"}
+```
+Preflight remoto: rama de interfaz en `0b9d5f00691b6310b257052686a7fb795603ffea`,
+main en `5d89e577536af3cf94cfc68612787dfea0fa21b5`. Acceso autenticado confirmado
+fuera del sandbox. El push autorizado no incluye merge ni release.
+
+## Identidad discreta y revisión de exportación — 2026-09-27
+
+Daniel descarta captura manual y retrato personalizado: silueta genérica de
+28 px, nombre/reino prioritarios y segunda línea raza/clase. Distintivo pequeño
+de facción con tooltip localizado: escudos vectoriales propios A/H/N, no arte
+oficial de Blizzard ni inferencia desde la raza. No se incorporan fotografías,
+capturas, servicios remotos ni renderizador de personajes.
+
+Link transporta visual_identity (raza, clase y facción real del cliente) en 0.11;
+Core mantiene reglas de simulación 0.10 y lectura histórica. Campos acotados y
+facción validada; perfiles antiguos siguen abiertos sin inventar datos faltantes.
+Metadatos guardados/reabiertos con el perfil. Etiquetas raza/clase mantienen el
+idioma del cliente como los nombres de objetos; tooltips de interfaz ES/EN/PT.
+La prueba de reapertura detectó cabecera vacía para export reconstruido 0.7;
+ahora recupera nombre/reino del perfil, sin cambiar entradas de simulación.
+
+Valor: reconocer el personaje con menor protagonismo visual y sin pasos nuevos.
+Archivos: CharacterEquipmentObservation.lua, transporte/perfiles/UI Qt,
+dpsfoundry_theme, tres catálogos y pruebas. La corrección de ventana superpuesta
+del registro siguiente se incluye sin cambios. Nueva exportación necesaria para
+raza/clase/facción; paquete local `build/foundry-identity-20260927`.
+Sin commit/push/merge, simulación real ni sección 1.10.
+
+Verificación final: Core 1390 ejecutadas, 1389 aprobadas y 1 omitida, 0 fallos,
+salida 0 (82.746 s); herramientas/addon 170 aprobadas, salida 0. Subtests no
+contados aparte. Incluye exportación Lua 0.11 real con API inyectada, validación
+canónica y facción de Pandaren, persistencia y reapertura Qt, y navegación de
+confirmación/cancelación. diff --check correcto; hashes protegidos sin cambios.
+Paquete construido y abierto; SHA-256 del exe
+`7ea2db30cd68fbe1ba3ac158f0a408f308c5b0fc1c6e6022a0bcb7c6dafb40a5`.
+Los cuatro archivos de Link afectados en estas iteraciones coinciden con fuentes;
+exportador instalado con respaldo
+`build/link-backups/identity-20260927-c7a5f2de930e471e8778398b014715f2`.
+Artefactos de build/respaldo ignorados; inspección personal de Daniel pendiente.
+
+## Corrección de superposición al confirmar recarga — 2026-09-27
+
+La captura de Daniel mostró que confirmAppExport todavía dejaba Config visible:
+la corrección anterior cubría únicamente la copia. Ahora oculta Config, Pesos y
+otras exportaciones antes de abrir la confirmación identificada; Cancelar y X
+regresan a Link. Abrir Config/Pesos desde minimapa también cierra exportaciones.
+Valor: una sola ventana activa en ambas rutas, sin cambiar transporte ni datos.
+Modificados DpsLab.lua e ItemScoreProfiles.lua, con prueba Lua que verifica
+ocultación, regreso y ausencia de ReloadUI antes de confirmar. 169 pruebas de
+herramientas/addon aprobadas, salida 0. Instalados solo esos dos archivos, con
+respaldo `build/link-backups/export-navigation-20260927-b5a02b5e4e56481b8ab5c016370fbf2c`.
+Paquete local sincronizado; hashes protegidos intactos y diff --check correcto.
+Revisión visual pendiente tras /reload. Sin commit/push ni sección 1.10.
+
+## Exportación de Link visible y acotada — 2026-09-27
+
+Valor: el jugador distingue exportación con recarga (Detectar exportación en
+Core) de copia manual (Pegar exportación), sin buscar comandos. La ventana
+principal expone ambos botones, notas y tooltips ES/EN/PT. Se reutiliza la
+confirmación existente; no cambia el transporte ni se ejecuta ReloadUI sin clic.
+Copy Export usa ScrollFrame con EditBox como hijo, texto completo seleccionable,
+ventana limitada a pantalla y regreso a Link; oculta configuración/pesos para
+evitar superposición. Archivos: DpsLab.lua, ItemScoreProfiles.lua, Localization.lua
+y pruebas de exportación/perfiles. Solo esos tres archivos de Link instalados
+con respaldo bajo `build/link-backups/export-ui-20260927-*`; copia de addon del
+paquete local actualizada también. Core no requiere reinicio por este ajuste.
+
+Verificación: 169 pruebas herramientas/addon aprobadas (incluida copia de 60000
+caracteres sin truncar y botón directo al flujo confirmado); Core 1388 aprobadas,
+1 omitida, 0 fallos/errores; salida 0 en ambas suites. Subtests no contados aparte.
+Hashes AGENTS, Scope y ambos perfiles protegidos sin cambios respecto a la línea
+base inferior. diff --check correcto. Revisión visual pendiente: Daniel hace
+/reload y comprueba ambas rutas. Sin commit/push/merge ni trabajo de 1.10.
+
+## Lector de íconos locales integrado — 2026-09-27
+
+Valor: el jugador puede identificar visualmente sus piezas en Personaje,
+Simulación y Comparar sin un catálogo remoto. Fuente: `<WoW>/.build.info` y
+`<WoW>/Data`, CASC offline por FileDataID exportado por Link; BLP2 decodificado
+en memoria. No se descargan ni redistribuyen texturas de WoW.
+
+Implementado en `local_item_icons.py`, `foundry_gear.py` y `qt_loadout_ui.py`;
+la reapertura conserva los IDs del perfil sin alterar el export de simulación.
+Lector nativo reproducible con `tools/build_casc_reader.py`, empaquetado local
+existente actualizado para incluir DLL/licencias. Pillow fijado en el lock y
+en los controles de dependencias existentes, sin ampliar su alcance.
+
+Bloqueos superados: SDK C++ ausente resuelto con paquetes locales bajo `build/`;
+acceso CASC restringido por sandbox verificado mediante lectura elevada;
+timeout artificial de 120 s superado al permitir terminar la suite. Smoke real:
+FileDataID 134400, BLP 3916 bytes, 64×64, salida 0; también tras añadir cancelación
+preventiva de descargas. No se ejecutó SimulationCraft ni se modificó su
+configuración ni la de otros addons.
+
+Artefactos ignorados: SDK, fuentes CascLib, venv, DLL generado y paquete de
+revisión bajo `build/foundry-local-icons-20260927`. Son dependencias/builds,
+no iconos extraídos. Detalle: [LOCAL_ITEM_ICONS](LOCAL_ITEM_ICONS.md).
+
+Verificación final de Core: 1389 pruebas ejecutadas en 142.026 s, 1388 aprobadas,
+1 omitida, 0 fallos/errores, salida 0. Incluye pruebas de límite BLP, apertura
+offline/cancelación de descargas, placeholders, resultados obsoletos y reapertura
+del perfil con icono. Subtests no contabilizados por separado. Herramientas/addon:
+168 aprobadas, 0 fallos, salida 0; se corrigieron dos conteos fijos de dependencias
+para incluir Pillow. `git diff --check` correcto. No es un resultado de CI remoto
+ni sustituye la revisión humana.
+
+Paquete local construido (salida 0) y abierto: Core responde con ventana
+`DpsFoundry Core`. Ejecutable `build/foundry-local-icons-20260927/DpsLab/DpsLab.exe`,
+SHA-256 `5c3eeee1142e9294a4e03e72e9bd25ffb87718a9e77ba1068bd88319d5e9735b`.
+DLL empaquetado: `b3606b88e9186747777d09e214fadf1f56eafb1b92748e140f723da452e84a8c`.
+Licencias CascLib y Pillow presentes; sin metadatos de ruta personal de pip.
+Solo se actualizó `CharacterEquipmentObservation.lua` del Link instalado, tras
+confirmar igualdad con HEAD aprobado y respaldarlo en
+`build/link-backups/icons-20260927-b324acb95b0d4e4c86256e1a982eee77/`.
+Hash instalado: `15fb06d02dced8f35f6be79573aea22b6a36d5d3f6c16c0cd4438e1f969b28d9`.
+WoW estaba cerrado. Próxima acción: Daniel abre el juego, realiza una exportación
+nueva, revisa iconos y reabre el perfil guardado; luego verifica el recorrido
+completo. Arranque confirmado no equivale a inspección visual aprobada.
+
+Pendientes de cierre: revisión personal con exportación nueva, publicación y
+fusión a main con CI/revisión. No hay commit/push/merge nuevo ni cierre humano
+de 1.9; 1.10 permanece inactiva. Los registros siguientes son antecedentes.
+
+Integridad: AGENTS y Scope conservan los hashes de la línea base de esta fecha;
+ambos `flasil.simc` mantienen SHA-256
+`f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738`.
+
+## Identificador de ícono autorizado — 2026-09-27
+
+Daniel autoriza añadir únicamente el FileDataID del icono a cada pieza ya
+exportada. CharacterEquipmentObservation usa C_Item.GetItemIconByID con
+pcall; ausencia o valor fuera de rango se representa como null sin impedir
+exportar el equipo. Transporte 0.10 con icon_file_data_id obligatorio y
+nullable; Core conserva lectura 0.1–0.9, valida enteros positivos (no bool,
+texto ni fracciones) y guarda el campo en perfiles. El export de simulación
+reconstruido desde perfil sigue en 0.7 sin metadatos visuales; el perfil
+persistido conserva el identificador para la futura integración visual.
+
+Valor: habilita la identificación exacta del archivo local sin catálogo remoto
+ni captación de mochila. No cambia pesos ni cálculos. Pendiente: lector
+offline CASC/BLP e integración visual, incluido el perfil reabierto. No se
+declaran visibles los iconos ni cerrado el punto 1.9.1.
+No se instala Link solo: el nuevo export requiere Core actualizado.
+Sección 1.10 inactiva, sin commit/push/merge ni simulación real.
+
+Verificación: 28 pruebas focales de transporte/perfiles aprobadas, salida 0;
+168 de herramientas/addon aprobadas, salida 0 (incluye ejecución Lua para ID
+válido, ausente e inválido); subtests no contados aparte. diff --check correcto.
+Suite completa de escritorio NO acreditada: primer intento interrumpido sin
+resumen; repetición diagnóstica agotó el límite impuesto de 120 s en la prueba
+Qt test_workspace_is_a_native_qt_window, durante FoundryBackdrop.set_variant.
+Esto identifica el punto al vencer el límite, no demuestra causa ni regresión
+del cambio. Falta repetir con un presupuesto suficiente antes de entrega.
+No hay nueva función visible instalada: este incremento prepara el transporte
+para los íconos; 100% del cambio de producto es soporte de esa integración UI.
+
+## Reanudación del cierre de interfaz — 2026-09-27
+
+Scope local sincronizado con la edición de Daniel leída de main (referencia
+consultada: 5d89e577536af3cf94cfc68612787dfea0fa21b5). No se fusiona Git ni
+se reemplazan los cambios documentales locales. Secciones 1.9/1.10 ya visibles
+localmente; 1.10 permanece inactiva. Sigue el mismo objetivo de interfaz,
+por lo que no se añade un cierre al historial de objetivos.
+
+Nueva línea base sobre bytes locales:
+
+```json
+{"protected_files":{"AGENTS.md":"71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de","SCOPE_CORRECTION_0_1.md":"b99cc12fd185eb410056ddadf9916162c7d0eb12733ee0d3849c07b27309cb94"}}
+```
+
+Valor: preparar íconos auténticos para que el jugador identifique las piezas
+durante el recorrido final. Diagnóstico: GearCards todavía dibuja un rombo;
+CharacterEquipmentObservation y el parser cerrado exportan/aceptan item_id,
+enlace, nivel, slot y stats, pero no el identificador del archivo del icono.
+No se encontró lector CASC/BLP ya integrado. Mecanismo previsto: leer solo
+<instalación WoW>/Data, offline; no usar CDN, no redistribuir ni subir texturas.
+
+Antes de cambiar captura, confirmar con Daniel la excepción a su instrucción
+de mantener los datos que capta Link: añadir únicamente el identificador de
+textura de cada pieza ya exportada permitiría resolver su archivo local sin
+un catálogo remoto. Alternativa dentro de la restricción: resolver item_id
+con las tablas DB2 del cliente, más lector compatible con su build; no se
+declara implementada ni verificada. No confundir item_id con FileDataID.
+
+No se cambia código de producto, no se ejecuta SimC, no se instala sobre WoW,
+no se crea PR, commit, push ni release. La sección 1.9 requiere todavía íconos
+implementados, fusión con CI verde/revisión y recorrido personal de Daniel.
+Los SHA de main citados en entradas inferiores son históricos.
+
+## Estado vigente y conciliación documental — 2026-09-26
+
+Daniel solicita resolver las incidencias documentales. Valor: un lector puede
+identificar la interfaz aprobada y sus límites sin confundir planes o revisiones
+antiguas con el producto actual. No se cambia producto, alcance ni configuración.
+
+- Core aprobado/publicado: bd798a420288988d12879c5a1a641a07b4c35711.
+- Link aprobado, congelado, commit autorizado y push autorizado posteriormente:
+  0b9d5f00691b6310b257052686a7fb795603ffea.
+- Verificación remota por git ls-remote: esa misma revisión en
+  refs/heads/codex/dpsfoundry-interface-scope; main permanece en
+  fe6206f313a83273429a8095d644fcdc53876dba. Sin merge ni release.
+- La aprobación de Link incluye minimapa circular, menú estable, navegación
+  exclusiva y pesos. Supera las revisiones pendientes de las entradas inferiores.
+- Core: puntos visuales 1–4 aprobados; 5 (navegación/dashboard) y 6
+  (divisores/esquinas/bordes) siguen pendientes. No se cierra todo el ciclo.
+- Evidencia del lote publicado: escritorio 1381 aprobadas + 1 omitida;
+  herramientas/addon 167 aprobadas; 0 fallos/errores, salida 0 en ambas suites.
+  Subtests no contabilizados por separado. No son pruebas repetidas en esta tarea.
+
+Se añade README raíz y se concilian aceptación, guía de revisión, sistema
+visual, assets, plan histórico Terra, punto 1 y refinamiento de referencias;
+el README técnico se identifica como documentación de desarrollo, no onboarding.
+La nota histórica de iluminación queda diferenciada de los efectos ya aprobados.
+Verificación documental: enlaces locales y git diff --check; no se ejecuta SimC
+ni pruebas de código al no cambiar implementación. Esta conciliación local
+requiere nueva autorización de commit/push para publicarse.
+
+Hashes protegidos comprobados, sin modificar AGENTS ni Scope:
+AGENTS.md: 71cb145b3a8a6f873b4f16b48d024379c1d1d47c4b24b7a78a0949df08e218de.
+SCOPE_CORRECTION_0_1.md: b98e4583785b4e7a0b1f8675011c636e6edbb24b63a5d5b002b822e23a1a85c9.
+build/ conserva artefactos ignorados; no se incorporan paquetes ni datos locales.
+
+Siguiente trabajo de producto: retomar el punto 5 con Daniel; no iniciar las
+ampliaciones de simulación ni distribución. No existe bloqueo documental para
+continuarlo. El recorrido completo de Etapa F y su cierre siguen separados.
+Esta sesión dedica 0% a cambios visuales y 100% a la conciliación solicitada:
+no añade controles; mejora la lectura del flujo y su estado de entrega.
+
+## Historial de sesiones
+
+Las entradas siguientes conservan el estado y la autorización en su fecha.
+Sus frases «pendiente», «sin commit/push» o «no autorizado» no anulan las
+transiciones posteriores registradas arriba. No son tareas activas duplicadas.
+
 ## Link — autorización de commit local — 2026-09-26
 
 Daniel autoriza expresamente el commit del lote aprobado y congelado.

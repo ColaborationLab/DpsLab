@@ -18,7 +18,10 @@ MESSAGES = {
 MESSAGES.update({
     "flow.saved": "Abrir personaje guardado",
     "flow.setup_reserved": "Esta sección se redefinirá. Empieza en Simulación; las preferencias están en Ajustes.",
-    "flow.portrait": "Marcador de retrato del personaje; no es un retrato importado.",
+    "flow.portrait": "Retrato genérico del personaje; no requiere captura.",
+    "flow.faction_alliance": "Alianza",
+    "flow.faction_horde": "Horda",
+    "flow.faction_neutral": "Neutral",
     "ui.level_error": "Nivel del personaje: {level}; máximo: {maximum}. Alcanza el nivel máximo para simular.",
     "ui.unassigned": "No se simularon: {names}. Talentos sin asignar.",
     "ui.run_error": "No se generó comparación: {error}",

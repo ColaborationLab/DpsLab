@@ -80,7 +80,13 @@ Nada de lo propuesto queda descartado. Hasta autorización funcional específica
 no hay nuevos botones que aparenten poder ejecutar la capa 2, captura de mochila,
 adquisición de catálogo, gemas/encantamientos ni DPS individual por objeto.
 
-## Iluminación: decisión pendiente
+## Iluminación: medición histórica y decisión posterior
+
+Actualización 2026-09-26: se implementaron y aprobaron los efectos estáticos
+de marca, iconografía y estados de selección/hover de Core (puntos 1–3).
+La propuesta de no ampliarlos que sigue corresponde a la medición inicial;
+no es un bloqueo actual. No se autoriza blur generalizado ni animación continua,
+ni se convierte esta medición en garantía de rendimiento para todos los equipos.
 
 No se amplía el brillo en esta entrega. Se mide el efecto existente sin SimC,
 con/sin efectos, en la misma ventana y resolución. Una prueba offscreen de grab()

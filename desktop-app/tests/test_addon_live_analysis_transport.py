@@ -16,6 +16,29 @@ def identified_balance_document():
 def eligible_balance_document():
  value=identified_balance_document(); value["schema_version"]="0.9"; value["subject"]["max_level"]=90; value["analysis_context"]["talent_loadouts"]=[{**item,"simulatable":index != 2,"unavailable_reason":"" if index != 2 else "talents_unassigned"} for index,item in enumerate(value["analysis_context"]["talent_loadouts"], 1)]; return value
 class LiveAnalysisTransportTests(unittest.TestCase):
+ def test_visual_identity_is_bounded_and_does_not_infer_faction(self):
+  value=eligible_balance_document(); value['schema_version']='0.11'
+  value['equipment']['equipped'][0]['icon_file_data_id']=None
+  value['subject']['visual_identity']=['Pandaren', 'Monk', 'Horde']
+  self.assertEqual(('Pandaren','Monk','Horde'), parse_live_analysis_export(payload(value)).visual_identity)
+  for bad in (None, ['x','y'], ['x','y','guess'], [True,'y','Horde'], ['x'*81,'y','Horde']):
+   value['subject']['visual_identity']=bad
+   with self.assertRaises(LiveAnalysisTransportError): parse_live_analysis_export(payload(value))
+ def test_icon_identifier_is_bounded_and_legacy_exports_still_work(self):
+  from dpslab.item_score_profiles import _item, _read_item
+  value=eligible_balance_document(); value["schema_version"]="0.10"
+  item=value["equipment"]["equipped"][0]
+  for icon_id in (None, 134400, 2147483647):
+   item["icon_file_data_id"]=icon_id
+   self.assertEqual(icon_id, parse_live_analysis_export(payload(value)).equipped[0].icon_file_data_id)
+   parsed=parse_live_analysis_export(payload(value)).equipped[0]
+   self.assertEqual(parsed, _read_item(_item(parsed, include_icon=True)))
+  for invalid in (True, 0, -1, 2147483648, "134400", 1.5):
+   item["icon_file_data_id"]=invalid
+   with self.assertRaises(LiveAnalysisTransportError): parse_live_analysis_export(payload(value))
+  del item["icon_file_data_id"]
+  with self.assertRaises(LiveAnalysisTransportError): parse_live_analysis_export(payload(value))
+  self.assertIsNone(parse_live_analysis_export(payload(eligible_balance_document())).equipped[0].icon_file_data_id)
  def test_valid(self):
   result=parse_live_analysis_export(payload()); self.assertEqual(1,len(result.equipped)); self.assertEqual(64,len(result.receipt_sha256))
  def test_prefix(self):

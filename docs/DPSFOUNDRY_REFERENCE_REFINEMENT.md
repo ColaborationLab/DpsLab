@@ -1,5 +1,11 @@
 # Refinamiento de referencias — 2026-09-20
 
+> Antecedente visual superado: la marca Foundry vectorial de esta pasada fue
+> sustituida por el asset forjado aprobado, documentado en
+> [punto 1](DPSFOUNDRY_LOGO_POINT1.md). Link fue instalado, revisado y aprobado
+> posteriormente; ver [aceptación vigente](DPSFOUNDRY_INTERFACE_ACCEPTANCE.md).
+> «Sin commit/push» y «pendiente» describen solo esta pasada histórica.
+
 Segunda pasada tras rechazo visual: se sustituye el pictograma lineal por
 un yunque vectorial de mesa ancha, cintura hueca, base abierta y tres chispas,
 con contornos incandescentes superpuestos y bisel estático. La cabecera usa
