@@ -48,17 +48,23 @@ def main() -> int:
     notice.write_text(
         "SimulationCraft CLI (simc.exe) is included under GPL v3.\n"
         f"Binary SHA-256: {sha256(simc.read_bytes()).hexdigest()}\n"
-        "Source repository: https://github.com/simulationcraft/simc\n"
+        "Corresponding source: https://github.com/simulationcraft/simc/tree/98395518bc03c99f70668662f5eb6229b357eb9f\n"
         "The binary hash identifies this packaged executable; it is not a source hash or signature.\n",
         encoding="utf-8",
     )
+    copying = simc.parent / "COPYING"
+    if not copying.is_file():
+        raise SystemExit("SimulationCraft COPYING file missing beside simc.exe")
     root = Path(__file__).resolve().parents[1]
+    icon = root / "desktop-app" / "src" / "dpslab" / "assets" / "dpsfoundry-core.ico"
+    if not icon.is_file():
+        raise SystemExit("DpsFoundry icon missing: run tools/build_brand_icon.py first")
     casc = root / 'desktop-app/src/dpslab/native/CascLib.dll'
     if not casc.is_file():
         raise SystemExit('Local icon reader missing: run tools/build_casc_reader.py first')
     window_mode = "--console" if args.console else "--windowed"
     # PyInstaller collects PySide6 hooks and platform plugins from the venv.
-    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--paths", str(root / "desktop-app" / "src"), "--collect-submodules", "dpslab.locales", "--runtime-hook", str(qt_runtime_hook), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{root / 'addon' / 'DpsLab'};DpsLabAddon", "--add-data", f"{root / 'docs' / 'DISTRIBUTION.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-es.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-en.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-pt-BR.md'};Documentation", str(root / "desktop-app" / "launch_dpslab.py")]
+    command = [sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--onedir", window_mode, "--name", "DpsLab", "--icon", str(icon), "--paths", str(root / "desktop-app" / "src"), "--collect-submodules", "dpslab.locales", "--runtime-hook", str(qt_runtime_hook), "--distpath", str(output), "--workpath", str(output / "work"), "--specpath", str(output / "spec"), "--add-binary", f"{simc};simc", "--add-data", f"{notice};.", "--add-data", f"{copying};.", "--add-data", f"{root / 'LICENSE'};.", "--add-data", f"{root / 'addon' / 'DpsLab'};DpsLabAddon", "--add-data", f"{root / 'docs' / 'DISTRIBUTION.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-es.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-en.md'};Documentation", "--add-data", f"{root / 'docs' / 'DISTRIBUTION-pt-BR.md'};Documentation", str(root / "desktop-app" / "launch_dpslab.py")]
     command[3:3] = ["--add-data", f"{root / 'desktop-app' / 'src' / 'dpslab' / 'assets'};dpslab/assets"]
     command[3:3] = ['--add-binary', f'{casc};dpslab/native', '--add-data',
                     f'{casc.parent / "CascLib-LICENSE.txt"};dpslab/native',

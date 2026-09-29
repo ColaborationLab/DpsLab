@@ -2,14 +2,14 @@
 
 ## Package and installation
 
-The reduced package includes DpsLab.exe, its internal files, simc.exe, the
-DpsLabAddon folder and SIMULATIONCRAFT_NOTICE.txt. A separate SimulationCraft
+The beta installer includes DpsFoundry Core, simc.exe, the DpsLabAddon folder
+and SIMULATIONCRAFT_NOTICE.txt. A separate SimulationCraft
 installation or external simc.exe path is not required.
 
-1. Extract the complete ZIP to a writable local folder.
-2. Copy DpsLabAddon to World of Warcraft/_retail_/Interface/AddOns/DpsLab.
+1. Run DpsFoundry-Core-*-Setup.exe and accept the proposed user folder.
+2. Copy DpsLabAddon from the installed folder to World of Warcraft/_retail_/Interface/AddOns/DpsLab.
 3. Close WoW if an older addon is installed and replace its contents.
-4. Run DpsLab.exe and choose Auto, ES, EN or PT-BR.
+4. Run DpsFoundry Core and choose Auto, ES, EN or PT-BR.
 5. In WoW run /dpslab export app and confirm /reload.
 6. In the app click Detect export, choose one to four builds and run it.
 7. Save the profile when you want to retain character, gear, builds and results.
@@ -36,14 +36,19 @@ character name, realm, gear, talents and builds; review them before sharing.
 
 ## Updates and troubleshooting
 
-Close WoW and the app before replacing the addon or updating the package. To
+Close WoW and Core before replacing the addon or updating the installation. To
 start without path or language preferences, remove only
 %LOCALAPPDATA%/DpsLab/workspace_paths.json and language.json; this does not
 delete saved character profiles. If the app does
-not open, extract the complete ZIP again and keep _internal intact. If no export
+not open, reinstall the complete package and keep _internal intact. If no export
 is detected, install the matching addon version, run /reload and click Detect
 export. If a score is missing, verify the compatible weight profile and enable
 Show item scores. Incomplete builds and characters below max level are excluded.
 
+## Beta feedback
+
+Report issues or suggestions through [GitHub Issues](https://github.com/ColaborationLab/DpsLab/issues/new?title=Beta+feedback%3A+).
+Do not post a character name, realm, or complete export unless it is essential.
+
 SimulationCraft is distributed under GPL v3. See
-SIMULATIONCRAFT_NOTICE.txt for the included binary SHA-256 and source repository.
+SIMULATIONCRAFT_NOTICE.txt for the included binary SHA-256 and exact source revision.

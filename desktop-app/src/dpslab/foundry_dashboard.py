@@ -1,9 +1,12 @@
 """Foundry overview built from the same live comparison used by Simulation."""
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 from .dpsfoundry_theme import StatePanel, foundry_icon
 from .foundry_chrome import FoundryBackdrop, soft_glow
 from .foundry_gear import percentage_label
+
+
+FEEDBACK_URL = "https://github.com/ColaborationLab/DpsLab/issues/new?title=Beta+feedback%3A+"
 
 
 class FoundryDashboard(QtWidgets.QScrollArea):
@@ -29,6 +32,11 @@ class FoundryDashboard(QtWidgets.QScrollArea):
         self.action.setIcon(foundry_icon("link", "#17120d"))
         self.action.clicked.connect(lambda: navigate("simulation"))
         heading.addWidget(self.action)
+        feedback = QtWidgets.QPushButton(self.t("foundry.feedback", "Send beta feedback"))
+        feedback.setIcon(foundry_icon("link"))
+        feedback.setToolTip(self.t("foundry.feedback_help", "Opens GitHub Issues in your browser. Do not include private character or account information."))
+        feedback.clicked.connect(lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(FEEDBACK_URL)))
+        heading.addWidget(feedback)
         layout.addLayout(heading)
 
         metrics = QtWidgets.QHBoxLayout()

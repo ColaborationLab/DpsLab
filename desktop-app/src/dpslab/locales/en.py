@@ -173,6 +173,8 @@ MESSAGES.update({
     "foundry.home": "Your next improvement starts here",
     "foundry.no_profile": "No active profile",
     "foundry.import": "Import from Link",
+    "foundry.feedback": "Send beta feedback",
+    "foundry.feedback_help": "Opens GitHub Issues in your browser. Do not include private character or account information.",
     "foundry.metric.dps": "SIMULATED DPS",
     "foundry.metric.builds": "LOADOUTS",
     "foundry.metric.weights": "STAT WEIGHTS",

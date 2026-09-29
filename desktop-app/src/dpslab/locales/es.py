@@ -154,6 +154,8 @@ MESSAGES.update({
     "foundry.home": "Tu próxima mejora empieza aquí",
     "foundry.no_profile": "Sin perfil activo",
     "foundry.import": "Importar desde Link",
+    "foundry.feedback": "Enviar feedback de beta",
+    "foundry.feedback_help": "Abre GitHub Issues en tu navegador. No incluyas información privada de tu cuenta o personaje.",
     "foundry.metric.dps": "DPS SIMULADO",
     "foundry.metric.builds": "BUILDS",
     "foundry.metric.weights": "PESOS ESTADÍSTICOS",
