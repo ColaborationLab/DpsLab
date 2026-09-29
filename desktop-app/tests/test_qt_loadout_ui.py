@@ -206,6 +206,14 @@ class QtLoadoutUiTests(unittest.TestCase):
         self.assertFalse(dashboard.reference.isEnabled())
         dashboard.close()
 
+    def test_dashboard_exposes_the_provisional_feedback_route(self):
+        from dpslab.foundry_dashboard import FEEDBACK_URL, FoundryDashboard
+        dashboard = FoundryDashboard(lambda page: None, lambda key, fallback: fallback)
+        self.assertEqual("https", QtCore.QUrl(FEEDBACK_URL).scheme())
+        self.assertIn("github.com/ColaborationLab/DpsLab/issues/new", FEEDBACK_URL)
+        self.assertTrue(any(button.text() == "Send beta feedback" for button in dashboard.findChildren(QtWidgets.QPushButton)))
+        dashboard.close()
+
     def test_theme_preference_and_textual_states_are_bounded(self):
         with TemporaryDirectory() as temporary:
             path = Path(temporary) / "theme.json"

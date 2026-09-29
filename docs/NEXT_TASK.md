@@ -1,5 +1,78 @@
 # Next Task — DpsFoundry
 
+## Integración resuelta y preparación beta — 2026-09-28
+
+PR #13 fusionado a main: `551efb46ba465fab708ac27cb9267562179c7892`,
+verificado contra el remoto. CI `36414685823`: cuatro jobs aprobados.
+Se cumple el pendiente de integración de §1.9; comienza la preparación de §1.10.
+Patreon y Guide siguen inactivos. No se ha publicado una release beta.
+
+Valor: el jugador recibirá un paquete de Link completo, con tema, minimapa
+y marca, en lugar de un ZIP que omita componentes de la interfaz aprobada.
+Corregidos `installer/build_addon_zip.py` y su prueba: manifiesto cerrado de
+Lua más asset propio, validación de todas las entradas del TOC público.
+Añadida `LICENSE` MIT para el código propio; no relicencia SimulationCraft,
+Qt ni otros componentes de terceros, ni concede derechos sobre assets de WoW.
+Pruebas: Core 1390 ejecutadas (1389 aprobadas, 1 omitida); herramientas 170
+aprobadas; ambos comandos salida 0, sin fallos. No se ejecutó SimulationCraft.
+Cambios beta locales todavía sin commit/push ni publicación.
+
+Pendientes beta: instalador compilado y probado; licencias de terceros y
+fuente correspondiente; ficha/capturas de CurseForge; URL de feedback que
+Daniel debe facilitar o sustituir expresamente por Issues; solicitud SignPath
+(no bloqueante). Se localizó la distribución original de SimC 1210.01.9839551
+y se resolvió el commit upstream `98395518bc03c99f70668662f5eb6229b357eb9f`;
+esto no sustituye aún la entrega de fuente/licencias junto al paquete.
+Hashes protegidos sin cambios frente a la línea base de integración inferior;
+ambos `flasil.simc`: `f733c73d8455aca4c3efc81ce69c71aec899d7fd95585e38e989e983a055d738`.
+
+### Avance de beta — canal GitHub e instalador local — 2026-09-28
+
+Daniel autoriza GitHub Issues como primer canal de feedback, ampliable más
+adelante. Inicio de Core abre la creación de un Issue de beta y las tres guías
+de distribución más la ficha de CurseForge muestran la misma ruta, con aviso
+de no publicar datos personales innecesarios. La ficha preparada se guarda en
+`docs/CURSEFORGE_LISTING.md` y sus variantes EN/PT-BR; aún no se ha creado ni
+enviado un proyecto externo.
+
+Se añadió el instalador per-user de Inno Setup: no toca WoW ni otros addons,
+instala Core con SimC y publica `DpsLabAddon` junto a Core para copiarlo
+fácilmente. El candidato local `DpsFoundry-Core-0.2.0-beta.1-Setup.exe` pasó
+instalación silenciosa aislada, con Core, desinstalador, addon completo,
+licencia MIT, `COPYING` GPLv3 y `SIMULATIONCRAFT_NOTICE.txt`. Este último ahora
+identifica el binario y enlaza al commit fuente exacto
+`98395518bc03c99f70668662f5eb6229b357eb9f`. SHA-256 del candidato:
+`e2bedffdcb99391e789bceda54a78519df83570651a5d0cc8d9f2d28883c5327`
+; artefactos `build/` siguen ignorados.
+
+Inno Setup 6.7.3 se descargó desde el release oficial y su firma de editor
+Pyrsys B.V. se verificó antes de compilar; se conserva solo bajo `build/tools`.
+No se ejecutó SimulationCraft. Verificación posterior: Core 1391 ejecutadas,
+1390 aprobadas, 1 omitida, salida 0; herramientas 172 aprobadas, salida 0.
+El smoke de desinstalación aislada también aprobó: elimina exactamente la
+carpeta de prueba. Estado técnico del candidato local:
+`candidate_ready_for_verification`; no es aprobación, publicación ni release.
+
+Revisión visual de Daniel: el instalador funciona correctamente; se reemplaza
+el icono genérico de ejecutable/acceso directo por el emblema Foundry. Se genera
+`dpsfoundry-core.ico` desde el recorte de marca que Link ya usa, se incrusta en
+`DpsLab.exe` y se usa también para Setup y los accesos de Inno. Verificación:
+el icono fue extraído del ejecutable construido (32×32, no vacío). Candidato
+actual con icono: SHA-256
+`6b0be7711da57175cb5dac9abbad8f8d4195b140bc916f51c5f94e9f666d6e75`.
+
+Daniel aprueba el flujo del instalador y autoriza commit/push. Las capturas de
+Core/Link de perfil guardado aportadas el 2026-09-28 se incorporan como material
+beta temporal para la ficha CurseForge; se reemplazarán antes de una versión
+estable al recuperar acceso al juego.
+
+SignPath no se inicia todavía: sus condiciones públicas exigen una release ya
+publicada, una política pública de firma y roles de autor/revisor/aprobador
+con MFA. La beta explícitamente autorizada sale sin firma; no se declarará una
+política ni roles inexistentes para forzar la solicitud. Restan capturas reales
+para CurseForge, su envío cuando Daniel lo autorice y SignPath tras esos
+prerrequisitos no bloqueantes.
+
 ## Integración y beta autorizadas — 2026-09-27
 
 Daniel activa únicamente los puntos 1 (main/CI) y 2 (beta); Patreon y Guide

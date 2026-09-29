@@ -20,3 +20,7 @@ class AddonPackageTests(unittest.TestCase):
                 self.assertIn("## Version: 0.2.0", toc)
                 self.assertNotIn("SyntheticGuidance.lua", toc)
                 self.assertNotIn("DpsLabObservationExport", tuple(archive.namelist()))
+                for entry in toc.splitlines():
+                    if entry and not entry.startswith("#"):
+                        self.assertIn(f"DpsLab/{entry}", archive.namelist())
+                self.assertIn("DpsLab/Media/foundry-brand-core.tga", archive.namelist())
